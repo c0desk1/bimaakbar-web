@@ -10,10 +10,10 @@ function loadCategoriesForIndex() {
   var categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
 
-  categoryGrid.innerHTML = '<div class="loading-spinner">Loading...</div>';
+  categoryGrid.innerHTML = '<div class="loading-spinner">Memuat...</div>';
 
   var promises = categories.map(function(cat) {
-    return fetch('d/' + cat.name + '.json')
+    return fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label')
       .then(function(res) {
         if (!res.ok) throw new Error('Gagal fetch data kategori ' + cat.name);
         return res.json();
@@ -23,7 +23,7 @@ function loadCategoriesForIndex() {
 
         var card = document.createElement('a');
         card.className = 'category-card';
-        card.href = 'partials/' + cat.name + '.html';
+        card.href = 'html/d/' + cat.name + '.html';
         card.innerHTML =
           '<img src="' + (latestPost && latestPost.thumbnail ? latestPost.thumbnail : 'assets/default-thumb.jpg') + '" ' +
           'alt="' + (latestPost && latestPost.title ? latestPost.title : cat.title) + '" ' +
