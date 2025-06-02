@@ -15,7 +15,10 @@ function renderAffiliateItems() {
                 var card = document.createElement('a');
                 card.href = item.link;
                 card.target = '_blank';
-                card.className += ' affiliate-card';
+                card.className = 'affiliate-card';
+
+                // Debug: cek url gambar
+                console.log('Gambar:', item.image);
 
                 var img = document.createElement('img');
                 img.src = item.image;
@@ -23,7 +26,7 @@ function renderAffiliateItems() {
                 img.loading = 'lazy';
                 img.onerror = function() {
                     this.onerror = null;
-                    this.src = 'null';
+                    this.src = 'https://via.placeholder.com/150?text=No+Image'; // Placeholder
                 };
 
                 card.appendChild(img);
@@ -36,5 +39,4 @@ function renderAffiliateItems() {
         });
 }
 
-// Simpan fungsi ke global
 window.renderAffiliateItems = renderAffiliateItems;
