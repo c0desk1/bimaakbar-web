@@ -1,37 +1,38 @@
 function loadCategoriesForIndex() {
-  var categoryGrid = document.querySelector('.category-grid');
+  const categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
 
   categoryGrid.innerHTML = '<div class="loading-spinner">Memuat...</div>';
 
-  var promises = categories.map(function(cat) {
-    return fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label-list')
-      .then(function(res) {
-        if (!res.ok) throw new Error('Gagal fetch data kategori ' + cat.name);
-        return res.json();
-      })
-      .then(function(json) {
-        var latestPost = json.posts && json.posts.length > 0 ? json.posts[0] : null;
+  const promises = categories.map(async (cat) => {
+    try {
+      const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${cat.name}`);
+      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${cat.name}`);
 
-        var card = document.createElement('a');
-        card.className = 'category-card';
-        card.href = 'html/d/' + cat.name + '.html';
-        card.innerHTML =
-          '<img src="' + (latestPost && latestPost.thumbnail ? latestPost.thumbnail : 'assets/default-thumb.jpg') + '" ' +
-          'alt="' + (latestPost && latestPost.title ? latestPost.title : cat.title) + '" ' +
-          'loading="lazy" onerror="this.onerror=null;this.src=\'assets/default-thumb.jpg\';">' +
-          '<h3>' + cat.title + '</h3>';
-        return card;
-      })
-      .catch(function(err) {
-        console.error('Gagal load kategori: ' + cat.name, err);
-        return null;
-      });
+      const posts = await res.json();
+      const latestPost = posts.length > 0 ? posts[0] : null;
+
+      // Ambil thumbnail dari post terbaru, jika tidak ada pakai default
+      const thumbnail = latestPost?.thumbnail?.trim() || 'assets/default-thumb.jpg';
+
+      const card = document.createElement('a');
+      card.className = 'category-card';
+      card.href = `html/d/${cat.name}.html`;
+      card.innerHTML = `
+        <img src="${thumbnail}" alt="${cat.title}" loading="lazy"
+             onerror="this.onerror=null;this.src='assets/default-thumb.jpg';">
+        <h3>${cat.title}</h3>
+      `;
+      return card;
+    } catch (error) {
+      console.error(`Gagal load kategori: ${cat.name}`, error);
+      return null;
+    }
   });
 
-  Promise.all(promises).then(function(cards) {
+  Promise.all(promises).then((cards) => {
     categoryGrid.innerHTML = '';
-    cards.forEach(function(card) {
+    cards.forEach((card) => {
       if (card) categoryGrid.appendChild(card);
     });
   });
