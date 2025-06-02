@@ -3,7 +3,7 @@ function loadPostsTips() {
   if (!container) return;
 
   container.innerHTML = '<p>Loading...</p>';
-  fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips-list')
+  fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips-trik-list')
     .then(function(res) {
       if (!res.ok) throw new Error('Gagal fetch tips dantrik');
       return res.json();
