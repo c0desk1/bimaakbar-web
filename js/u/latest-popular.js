@@ -27,7 +27,7 @@ function loadLatestPosts() {
         const el = document.createElement('div');
         el.className = 'post-card';
         el.innerHTML = `
-          <a href="${post.link}">
+          <a href="${post.url || post.link}">
             <img src="${post.thumbnail}" alt="${post.title}" loading="lazy" onerror="this.onerror=null;this.src='/assets/default-thumb.jpg';">
             <h3>${post.title}</h3>
             <p class="post-description">${post.description}</p>
