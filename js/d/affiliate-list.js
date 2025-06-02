@@ -6,7 +6,7 @@ function renderAffiliateItems() {
 
     fetch('https://opensheet.elk.sh/1NiExGcDs8CxJUQDBG7EX-XT1N991a7pnhtIcUvjpjKQ/affiliate-list')
         .then(function(response) {
-            if (!response.ok) throw new Error('Gagal memuat affiliate.json');
+            if (!response.ok) throw new Error('Gagal memuat affiliate');
             return response.json();
         })
         .then(function(items) {
