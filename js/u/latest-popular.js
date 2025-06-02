@@ -4,9 +4,9 @@ function loadLatestPosts() {
 
   container.innerHTML = '<p>Loading...</p>';
 
-  fetch('d/all-posts.json')
+  fetch('p/dummy.json')
     .then(res => {
-      if (!res.ok) throw new Error('Gagal fetch all-posts.json');
+      if (!res.ok) throw new Error('Gagal fetch .json');
       return res.json();
     })
     .then(data => {
