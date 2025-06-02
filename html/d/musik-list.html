@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Tips & Trik terbaru seputar teknologi, blogging, dan pengembangan diri dari Bima Akbar. Dapatkan info lengkap dan praktis di sini." />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <meta name="description" content="Deskripsi halaman di sini." />
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <title>Musik – Bima Akbar</title>
 </head>
-
 <body>
   <!-- HEADER -->
   <header>
-	<div id="header-include"></div>
-    <h1 class="page-title"></h1> 
+    <div id="header-include"></div>
   </header>
 
   <!-- SIDEBAR -->
@@ -26,43 +23,37 @@
   <div id="search-overlay-include"></div>
 
   <!-- MAIN CONTENT -->
-	<main> 
-		<div id="hero-include"></div>
-		<section id="musik" class="section-title">
-			<div id="post-list-musik" class="card-grid"></div>
-			<div id="newsletter-include"></div>
-		</section>
-	</main>
+  <main> 
+    <div id="hero-include"></div>
+    <section id="musik" class="section-title">
+      <div id="post-list-musik" class="card-grid"></div>
+      <div id="newsletter-include"></div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer id="footer-include"></footer>
 
-  <!-- SCRIPT SECTION -->		
-		<!-- Utilitas dasar -->
-		<script src="../js/u/includeHTML.js"></script>
-		<script src="../js/u/fetchPosts.js"></script>
-		<script src="../js/u/pageTitle.js"></script>
-		<script src="../js/u/postTitle.js"></script>
-		<script src="../js/u/stats.js"></script>
-		
-		<!-- Komponen dan interaksi -->
-		<script src="../js/u/header.js"></script>
-		<script src="../js/u/search.js"></script>
-		<script src="../js/u/handleSearchInput.js"></script>
-		
-		<!-- Data dinamis -->
-		<script src="../js/affiliate.js"></script>
-		<script src="../js/u/kategori.js"></script>
-		
-		<!-- Kategori khusus (hanya jika dibutuhkan di halaman itu) -->
-		<script src="../js/kategori-musik.js"></script>
-		<script src="../js/kategori-tutorial.js"></script>
-		<script src="../js/kategori-tips.js"></script>
-		<script src="../js/kategori-game.js"></script>
-		<script src="../js/kategori-shop.js"></script>
-		
-		<!-- Entry point utama -->
-		<script src="../js/u/main.js"></script>
+  <!-- SCRIPT SECTION -->    
+  <!-- Utilitas dasar -->
+  <script src="../js/u/layout.js"></script>
+  <script src="../js/u/page-title.js"></script>
+  <script src="../js/u/post-title.js"></script>
+  <script src="../js/u/latest-popular.js"></script>
+  <script src="../js/u/stats.js"></script>
+  
+  <!-- Komponen dan interaksi -->
+  <script src="../js/u/header.js"></script>
+  <script src="../js/u/search.js"></script>
+  
+  <!-- Data dinamis -->
+  <script src="../js/d/affiliate-list.js"></script>
+  <script src="../js/d/label-list.js"></script>
+  
+  <!-- Kategori khusus (aktifkan hanya yang perlu) -->
+  <script src="../js/d/musik-list.js"></script>
+  
+  <!-- Entry point utama -->
+  <script src="../js/u/main.js"></script>
 </body>
-
 </html>
