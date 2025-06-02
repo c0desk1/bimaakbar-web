@@ -1,6 +1,6 @@
 async function updateFooterStats() {
   try {
-    const response = await fetch('d/dummy.json');
+    const response = await fetch('p/dummy.json');
     const posts = await response.json();
 
     const totalPosts = posts.length;
