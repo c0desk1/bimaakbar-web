@@ -5,7 +5,7 @@ function loadCategoriesForIndex() {
   categoryGrid.innerHTML = '<div class="loading-spinner">Memuat...</div>';
 
   var promises = categories.map(function(cat) {
-    return fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label')
+    return fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label-list')
       .then(function(res) {
         if (!res.ok) throw new Error('Gagal fetch data kategori ' + cat.name);
         return res.json();
