@@ -1,6 +1,6 @@
 async function fetchPosts() {
   try {
-    const response = await fetch('../d/dummy.json');
+    const response = await fetch('p/dummy.json');
     return await response.json();
   } catch (error) {
     console.error('Gagal memuat pencarian post:', error);
