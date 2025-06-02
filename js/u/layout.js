@@ -5,9 +5,9 @@ function includeHTML() {
   var promises = Array.prototype.map.call(elements, function(el) {
     var file = el.id.replace('-include', '') + '.html';
 
-    var path = window.location.pathname.indexOf('/partials/') !== -1
-      ? '../partials/' + file
-      : 'partials/' + file;
+    var path = window.location.pathname.indexOf('/html/l/') !== -1
+      ? '../html/l/' + file
+      : 'html/l/' + file;
 
     console.log('Mencoba load:', path);
 
@@ -26,7 +26,7 @@ function includeHTML() {
   });
 
   return Promise.all(promises).then(function() {
-    console.log("Semua partial selesai dimuat.");
+    console.log("Semua html selesai dimuat.");
   });
 }
 
