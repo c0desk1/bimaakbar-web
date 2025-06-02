@@ -3,7 +3,7 @@ function loadPostsTutorial() {
   if (!container) return;
 
   container.innerHTML = '<p>Loading tutorial...</p>';
-  fetch('https://opensheet.elk.sh/10mlJVNqfUinj7gWlZ3_VcItX4EyBrRpWs3isOKXK5_M/draft-tutorial')
+  fetch('https://opensheet.elk.sh/10mlJVNqfUinj7gWlZ3_VcItX4EyBrRpWs3isOKXK5_M/tutorial-list')
     .then(res => {
       if (!res.ok) throw new Error('Gagal fetch data tutorial');
       return res.json();
