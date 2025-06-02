@@ -1,11 +1,3 @@
-var categories = [
-  { name: "musik", title: "Musik" },
-  { name: "tutorial", title: "Tutorial" },
-  { name: "tips", title: "Tips & Trik" },
-  { name: "game", title: "Game" },
-  { name: "shop", title: "Shop" }
-];
-
 function loadCategoriesForIndex() {
   var categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
