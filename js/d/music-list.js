@@ -6,7 +6,7 @@ function loadPostsMusik() {
   }
 
   container.innerHTML = '<p>Loading posts...</p>';
-  fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/draft-musik')
+  fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/musik-list')
     .then(function(res) {
       if (!res.ok) throw new Error('Gagal fetch JSON: ' + res.status + ' ' + res.statusText);
       return res.json();
