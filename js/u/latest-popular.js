@@ -17,7 +17,7 @@ function loadLatestPosts() {
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
                 .slice(0, 6);
 
-            container.innerHTML = 'html/l/latest-post.html';
+            container.innerHTML = 'html/l/latest.html';
             container.classList.add('card-grid');
 
             sorted.forEach(post => {
@@ -115,7 +115,7 @@ function loadPopularPosts() {
                 .sort((a, b) => b.views - a.views)
                 .slice(0, 6); // Tampilkan 6 postingan terpopuler
 
-            container.innerHTML = 'htmls/l/popular-post.html';
+            container.innerHTML = 'htmls/l/popular.html';
             container.classList.add('card-grid');
 
             popular.forEach(post => {
