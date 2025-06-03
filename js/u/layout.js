@@ -4,17 +4,16 @@ function includeHTML() {
   var promises = Array.from(elements).map(el => {
     var file = el.id.replace('-include', '') + '.html';
 
-    // Ambil direktori saat ini tanpa menambahkan duplikasi path
-    var currentDir = window.location.pathname.split('/').slice(0, -1).join('/') + '/';
-
-    // Tentukan path berdasarkan folder HTML yang ada
+    // Pastikan path tidak duplikat dan sesuai lokasi file
+    var basePath = "/html/"; // Folder utama tempat menyimpan HTML
     var path;
-    if (currentDir.includes('/html/d/')) {
-      path = '/html/d/' + file;
-    } else if (currentDir.includes('/html/l/')) {
-      path = '/html/l/' + file;
+
+    if (window.location.pathname.includes('/html/l/')) {
+      path = basePath + "l/" + file;
+    } else if (window.location.pathname.includes('/html/d/')) {
+      path = basePath + "d/" + file;
     } else {
-      path = '/html/' + file; // Default untuk root
+      path = basePath + file; // Jika berada di root
     }
 
     console.log(`🔍 Mencoba load: ${path}`);
