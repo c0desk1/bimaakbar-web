@@ -17,7 +17,7 @@ function loadLatestPosts() {
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
                 .slice(0, 6);
 
-            container.innerHTML = '';
+            container.innerHTML = 'html/l/latest-post.html';
             container.classList.add('card-grid');
 
             sorted.forEach(post => {
