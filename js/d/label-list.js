@@ -23,14 +23,14 @@ function loadCategoriesForIndex() {
       const posts = await res.json();
       const latestPost = posts.length > 0 ? posts[0] : null;
 
-      const thumbnail = latestPost?.thumbnail?.trim() || 'assets/default-thumb.jpg';
+      const thumbnail = latestPost?.thumbnail?.trim() || 'assets/logo.png';
 
       const card = document.createElement('a');
       card.className = 'category-card';
       card.href = `html/d/${name}-list.html`;
       card.innerHTML = `
         <img src="${thumbnail}" alt="${title}" loading="lazy"
-             onerror="this.onerror=null;this.src='assets/default-thumb.jpg';">
+             onerror="this.onerror=null;this.src='assets/logo.png';">
         <h3>${title}</h3>
       `;
       return card;
