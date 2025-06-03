@@ -5,9 +5,9 @@ function includeHTML() {
   var promises = Array.prototype.map.call(elements, function(el) {
     var file = el.id.replace('-include', '') + '.html';
 
-    var path = window.location.pathname.indexOf('/html/l/') !== -1
-      ? '../html/l/' + file
-      : 'html/l/' + file;
+    var path = window.location.pathname.indexOf('html/l/') !== -1
+      ? '/html/l/' + file
+      : '../html/l/' + file;
 
     console.log('Mencoba load:', path);
 
