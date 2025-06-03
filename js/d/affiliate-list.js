@@ -18,7 +18,7 @@ function renderAffiliateItems() {
                 card.className = 'affiliate-card';
 
                 // Debug: cek url gambar
-                console.log('Gambar:', item.image);
+                console.log('Gambar:', item.img);
 
                 var img = document.createElement('img');
                 img.src = item.image;
