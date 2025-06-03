@@ -2,9 +2,16 @@ function updatePostTitle({
   titleElementId = 'dynamic-title',
   descElementId = 'dynamic-description',
   defaultTitle = 'Judul Postingan',
-  defaultDesc = 'Deskripsi belum tersedia'
+  defaultDesc = 'Deskripsi belum tersedia',
+  titleSeparator = '-' // karakter pemisah yang biasa dipakai di title
 } = {}) {
-  const titleFromHead = document.title || defaultTitle;
+  let titleFromHead = document.title || defaultTitle;
+
+  // Pisahkan title berdasarkan separator dan ambil bagian pertama sebagai judul postingan
+  if (titleFromHead.includes(titleSeparator)) {
+    titleFromHead = titleFromHead.split(titleSeparator)[0].trim();
+  }
+
   const metaDescTag = document.querySelector('meta[name="description"]');
   const descFromHead = metaDescTag ? metaDescTag.getAttribute('content') : defaultDesc;
 
@@ -15,5 +22,4 @@ function updatePostTitle({
   if (heroDesc) heroDesc.textContent = descFromHead;
 }
 
-// Tetap pakai nama fungsi lama agar main.js tidak perlu diubah
 window.updatePostTitle = updatePostTitle;
