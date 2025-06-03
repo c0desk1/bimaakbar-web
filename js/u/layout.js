@@ -4,16 +4,16 @@ function includeHTML() {
   var promises = Array.from(elements).map(el => {
     var file = el.id.replace('-include', '') + '.html';
 
-    // Tentukan jumlah level direktori berdasarkan lokasi file saat ini
-    var depth = window.location.pathname.split('/').length - 2; // Hitung kedalaman dari root
-    var prefix = depth > 0 ? '../'.repeat(depth) : ''; // Menyesuaikan dengan kedalaman folder
+    // Hitung kedalaman folder untuk menentukan prefix relatif
+    var depth = window.location.pathname.split('/').length - 2; 
+    var prefix = depth > 0 ? '../'.repeat(depth) : ''; 
 
-    var path = prefix + 'html/' + file; // Menentukan path berdasarkan folder html
-    console.log('Mencoba load:', path);
+    var path = prefix + 'html/' + file; 
+    console.log(`🔍 Mencoba load: ${path}`);
 
     return fetch(path)
       .then(res => {
-        if (!res.ok) throw new Error('Gagal memuat ' + file);
+        if (!res.ok) throw new Error(`❌ Gagal memuat ${file} (${res.status})`);
         return res.text();
       })
       .then(html => {
@@ -21,12 +21,12 @@ function includeHTML() {
       })
       .catch(err => {
         console.error(err);
-        if (el) el.innerHTML = '<p style="color:red;">Error loading ' + file + '</p>';
+        if (el) el.innerHTML = `<p style="color:red;">Error loading ${file}</p>`;
       });
   });
 
   return Promise.all(promises).then(() => {
-    console.log("Semua HTML selesai dimuat.");
+    console.log("✅ Semua HTML selesai dimuat.");
   });
 }
 
