@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       page.func();
     }
   }
-
+  updateTimes();
+  setInterval(updateTimes, 60000); // Perbarui setiap 1 menit
   console.log('✅ Halaman siap!');
 });
