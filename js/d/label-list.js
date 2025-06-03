@@ -13,15 +13,17 @@ function loadCategoriesForIndex() {
   ];
 
   const promises = categories.map(async (cat) => {
-    const name = cat.name.trim();
-    const title = cat.title.trim();
+    const { name, title } = cat;
 
     try {
       const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label`);
-      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}-list`);
+      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}`);
 
       const posts = await res.json();
-      const latestPost = posts.length > 0 ? posts[0] : null;
+
+      // Filter berdasarkan label kategori
+      const filteredPosts = posts.filter(post => post.label?.toLowerCase() === name);
+      const latestPost = filteredPosts[0] || null;
 
       const thumbnail = latestPost?.thumbnail?.trim() || 'assets/logo.png';
 
@@ -47,5 +49,3 @@ function loadCategoriesForIndex() {
     });
   });
 }
-
-window.loadCategoriesForIndex = loadCategoriesForIndex;
