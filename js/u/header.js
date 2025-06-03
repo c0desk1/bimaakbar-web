@@ -83,6 +83,7 @@ function initHeaderLogo() {
     logoContainer.innerHTML = `
       <a href="/">
         <img src="https://drive.google.com/file/d/1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb/view?usp=sharing" alt="Logo Blog Anda" />
+        1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb
       </a>
     `;
   } else {
