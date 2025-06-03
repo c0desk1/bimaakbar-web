@@ -21,7 +21,7 @@ function renderAffiliateItems() {
                 console.log('Gambar:', item.img);
 
                 var img = document.createElement('img');
-                img.src = item.image;
+                img.src = item.img;
                 img.alt = item.alt ? item.alt : 'Affiliate Item';
                 img.loading = 'lazy';
                 img.onerror = function() {
