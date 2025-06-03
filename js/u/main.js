@@ -1,48 +1,21 @@
-document.addEventListener('DOMContentLoaded', async function () {
-  await includeHTML();
+async function loadLatestPosts() {
+  const container = document.getElementById('latest-posts');
+  if (!container) return;
 
-  console.log('Semua komponen HTML sudah dimuat');
+  container.innerHTML = '<p>Loading...</p>';
 
-  // Fungsi global
-  if (typeof updatePageTitle === 'function') updatePageTitle();
-  if (typeof updatePostTitle === 'function') updatePostTitle();
-  if (typeof initHeaderEvents === 'function') initHeaderEvents();
-  if (typeof initHeaderLogo === 'function') initHeaderLogo();
-  if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
-  if (typeof loadLatestPosts === 'function') loadLatestPosts();
-  if (typeof loadPopularPosts === 'function') loadPopularPosts();
-  if (typeof updateStats === 'function') updateStats();
+  try {
+    const res = await fetch('p/dummy.json');
+    if (!res.ok) throw new Error('Gagal fetch .json');
+    const data = await res.json();
 
-  // Event listener untuk search (jika ada)
-  const input = document.querySelector('.search-input-group input[type="text"]');
-  if (input && typeof handleSearchInput === 'function') {
-    input.addEventListener('input', handleSearchInput);
+    // proses data seperti biasa
+    // ...
+    // setelah selesai:
+    updateTimes();
+
+  } catch (err) {
+    console.error('Gagal memuat latest posts:', err);
+    container.innerHTML = '<p style="color:red;">Gagal memuat postingan terbaru.</p>';
   }
-
-  // Deteksi halaman dari URL
-  const path = window.location.pathname.toLowerCase();
-
-  // Pemetaan halaman ke fungsi
-  const pageMap = [
-    { keyword: 'index', func: loadCategoriesForIndex },
-    { keyword: '/', func: loadCategoriesForIndex },
-    { keyword: 'musik', func: loadPostsMusik },
-    { keyword: 'tutorial', func: loadPostsTutorial },
-    { keyword: 'tips', func: loadPostsTips },
-    { keyword: 'trik', func: loadPostsTips },
-    { keyword: 'game', func: loadPostsGame },
-    { keyword: 'shop', func: loadPostsShop }
-  ];
-
-  for (const page of pageMap) {
-    const isHome = path === '/' || path.includes('index');
-    const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
-    if (isMatched && typeof page.func === 'function') {
-      console.log(`📦 Memuat konten: ${page.keyword}`);
-      page.func();
-    }
-  }
-  updateTimes();
-  setInterval(updateTimes, 60000); // Perbarui setiap 1 menit
-  console.log('✅ Halaman siap!');
-});
+}
