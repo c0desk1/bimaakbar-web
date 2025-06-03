@@ -80,24 +80,23 @@ function initHeaderLogo() {
     window.location.pathname === '/' ||
     window.location.pathname.endsWith('/index.html');
 
+  const currentTitle = document.title || 'Halaman';
+
   if (isIndexPage) {
-    // Tampilkan logo di tengah
+    // Di index.html: Judul kiri, logo tengah
     logoContainer.innerHTML = `
       <a href="/">
         <img src="assets/logo.png" alt="Logo" style="height: 32px;" />
       </a>
     `;
-    pageTitle.innerHTML = ''; // Tidak perlu tombol kembali
+    pageTitle.textContent = currentTitle; // Judul seperti "Beranda"
   } else {
-    // Tampilkan tombol kembali di kiri dan judul di tengah
+    // Di halaman lain: Tombol kembali kiri, judul di tengah
     pageTitle.innerHTML = `
       <button onclick="historyBack()" class="back-button" aria-label="Kembali">
         <i class="fas fa-arrow-left"></i>
       </button>
     `;
-
-    // Ambil title dari <title> atau isi default
-    const currentTitle = document.title || 'Halaman';
     logoContainer.textContent = currentTitle;
   }
 }
