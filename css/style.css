@@ -87,11 +87,6 @@ a:hover {
             /* Slightly brighter on hover */
         }
         
-        button {
-  outline: none;
-}
-
-
         /* Header */
         .header {
         	position: relative;
@@ -1155,3 +1150,10 @@ a:hover {
 		.back-button:active i {
 		  color: var(--primary-color);
 		}
+		
+		.back-button:focus-visible,
+.sidebar-close:focus-visible,
+.header-icons button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
