@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Pemetaan halaman ke fungsi
   const pageMap = [
     { keyword: 'index', func: loadCategoriesForIndex },
+    { keyword: '/', func: loadCategoriesForIndex },
     { keyword: 'musik', func: loadPostsMusik },
     { keyword: 'tutorial', func: loadPostsTutorial },
     { keyword: 'tips', func: loadPostsTips },
@@ -33,14 +34,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     { keyword: 'shop', func: loadPostsShop }
   ];
 
-  // Jalankan fungsi berdasarkan keyword path
   for (const page of pageMap) {
-  // Tambahkan pengecekan jika home ('/') dan keyword 'index'
-  if ((path === '/' && page.keyword === 'index') || path.includes(page.keyword)) {
-    console.log(`ðŸ”„ Memuat konten: ${page.keyword}`);
-    page.func();
+    const isHome = path === '/' || path.includes('index');
+    const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
+    if (isMatched && typeof page.func === 'function') {
+      console.log(`📦 Memuat konten: ${page.keyword}`);
+      page.func();
+    }
   }
-}
 
-  console.log('âœ… Halaman siap!');
+  console.log('✅ Halaman siap!');
 });
