@@ -82,7 +82,7 @@ function initHeaderLogo() {
   if (isIndexPage) {
     logoContainer.innerHTML = `
       <a href="/">
-        <img src="https://drive.google.com/uc?export=view&id=1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb" alt="Logo Blog Anda" />
+        <img href="assets/logo.png" alt="Logo Blog Anda" />
         
       </a>
     `;
