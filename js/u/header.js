@@ -82,8 +82,8 @@ function initHeaderLogo() {
   if (isIndexPage) {
     logoContainer.innerHTML = `
       <a href="/">
-        <img src="https://drive.google.com/file/d/1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb/view?usp=sharing" alt="Logo Blog Anda" />
-        1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb
+        <img src="https://lh3.googleusercontent.com/a/1YqTO39Ty0Ll9U7G6bseSzE1eKCLxwTmb=s288-c-no" alt="Logo Blog Anda" />
+        
       </a>
     `;
   } else {
