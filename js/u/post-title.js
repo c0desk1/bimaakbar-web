@@ -2,24 +2,17 @@ function updatePostTitle({
   titleElementId = 'dynamic-title',
   descElementId = 'dynamic-description',
   defaultTitle = 'Judul Postingan',
-  defaultDesc = 'Deskripsi belum tersedia',
-  titleSeparator = '-' // karakter pemisah yang biasa dipakai di title
+  defaultDesc = 'Deskripsi belum tersedia'
 } = {}) {
-  let titleFromHead = document.title || defaultTitle;
+  const metaTitleTag = document.querySelector('meta[name="post-title"]');
+  const metaDescTag = document.querySelector('meta[name="post-description"]');
 
-  // Pisahkan title berdasarkan separator dan ambil bagian pertama sebagai judul postingan
-  if (titleFromHead.includes(titleSeparator)) {
-    titleFromHead = titleFromHead.split(titleSeparator)[0].trim();
-  }
-
-  const metaDescTag = document.querySelector('meta[name="description"]');
-  const descFromHead = metaDescTag ? metaDescTag.getAttribute('content') : defaultDesc;
+  const title = metaTitleTag ? metaTitleTag.getAttribute('content') : defaultTitle;
+  const desc = metaDescTag ? metaDescTag.getAttribute('content') : defaultDesc;
 
   const heroTitle = document.getElementById(titleElementId);
   const heroDesc = document.getElementById(descElementId);
 
-  if (heroTitle) heroTitle.textContent = titleFromHead;
-  if (heroDesc) heroDesc.textContent = descFromHead;
+  if (heroTitle) heroTitle.textContent = title;
+  if (heroDesc) heroDesc.textContent = desc;
 }
-
-window.updatePostTitle = updatePostTitle;
