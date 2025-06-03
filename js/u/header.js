@@ -73,26 +73,41 @@ function initHeaderEvents() {
 
 function initHeaderLogo() {
   const logoContainer = document.getElementById('logo-container');
-  if (!logoContainer) return;
+  const pageTitle = document.querySelector('.page-title');
+  if (!logoContainer || !pageTitle) return;
 
   const isIndexPage =
     window.location.pathname === '/' ||
     window.location.pathname.endsWith('/index.html');
 
   if (isIndexPage) {
+    // Tampilkan logo di tengah
     logoContainer.innerHTML = `
       <a href="/">
-        <img src="assets/logo.png" alt="assets/logo.png" />
+        <img src="assets/logo.png" alt="Logo" style="height: 32px;" />
       </a>
     `;
+    pageTitle.innerHTML = ''; // Tidak perlu tombol kembali
   } else {
-    logoContainer.innerHTML = `
-      <button onclick="history.back()" class="back-button" aria-label="Kembali">
+    // Tampilkan tombol kembali di kiri dan judul di tengah
+    pageTitle.innerHTML = `
+      <button onclick="historyBack()" class="back-button" aria-label="Kembali">
         <i class="fas fa-arrow-left"></i>
       </button>
     `;
+
+    // Ambil title dari <title> atau isi default
+    const currentTitle = document.title || 'Halaman';
+    logoContainer.textContent = currentTitle;
   }
 }
 
-// Simpan fungsi di global agar bisa dipanggil di file lain
+function historyBack() {
+  if (document.referrer && document.referrer !== location.href) {
+    history.back();
+  } else {
+    window.location.href = '/';
+  }
+}
+window.historyBack = historyBack;
 window.initHeaderEvents = initHeaderEvents;
