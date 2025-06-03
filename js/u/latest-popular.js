@@ -11,36 +11,74 @@ function loadLatestPosts() {
     })
     .then(data => {
       const posts = data.posts || [];
+      // Urutkan posting berdasarkan timestamp dan ambil 6 postingan terbaru
       const sorted = posts
         .filter(p => p.timestamp)
         .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-        .slice(0, 6); // Tampilkan 6 terbaru
+        .slice(0, 6);
 
       container.innerHTML = '';
       container.classList.add('card-grid');
 
       sorted.forEach(post => {
-        const hashtags = Array.isArray(post.hashtags) ? post.hashtags : [];
-        const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
-        const labelHTML = post.label ? `<span class="post-label">#${post.label}</span>` : '';
-
+        // Membuat container untuk masing-masing postingan
         const el = document.createElement('div');
         el.className = 'post-card';
-        el.innerHTML = `
-          <a href="${post.url || post.link}">
-            <img src="${post.thumbnail}" alt="${post.title}" loading="lazy" onerror="this.onerror=null;this.src='/assets/default-thumb.jpg';">
-            <h3>${post.title}</h3>
-            <p class="post-description">${post.description}</p>
-          </a>
-          <div class="post-meta">
-            <div class="post-hashtags">${labelHTML} ${hashtagsHTML}</div>
-            <div class="post-time" data-timestamp="${post.timestamp || ''}"></div>
-          </div>
-        `;
+
+        // Buat elemen link untuk postingan
+        const link = document.createElement('a');
+        link.href = post.url || post.link;
+        el.appendChild(link);
+
+        // Buat elemen image secara dinamis tanpa inline onerror
+        const img = document.createElement('img');
+        img.src = post.thumbnail;
+        img.alt = post.title;
+        img.loading = 'lazy';
+
+        // Event listener untuk error pada image, gunakan fallback URL dari Google
+        function handleImageError() {
+          img.removeEventListener('error', handleImageError); // Hindari loop error
+          img.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no';
+        }
+        img.addEventListener('error', handleImageError);
+        link.appendChild(img);
+
+        // Buat elemen heading untuk judul postingan
+        const heading = document.createElement('h3');
+        heading.textContent = post.title;
+        link.appendChild(heading);
+
+        // Buat elemen paragraf untuk deskripsi
+        const description = document.createElement('p');
+        description.className = 'post-description';
+        description.textContent = post.description;
+        link.appendChild(description);
+
+        // Buat container untuk metadata posting seperti hashtags, label, dan timestamp
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'post-meta';
+        el.appendChild(metaDiv);
+
+        // Buat elemen untuk label dan hashtags
+        const hashtagsDiv = document.createElement('div');
+        hashtagsDiv.className = 'post-hashtags';
+        const labelHTML = post.label ? `<span class="post-label">#${post.label}</span>` : '';
+        const hashtagsHTML = Array.isArray(post.hashtags)
+          ? post.hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ')
+          : '';
+        hashtagsDiv.innerHTML = labelHTML + ' ' + hashtagsHTML;
+        metaDiv.appendChild(hashtagsDiv);
+
+        // Buat elemen untuk waktu posting (timestamp)
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'post-time';
+        timeDiv.setAttribute('data-timestamp', post.timestamp || '');
+        metaDiv.appendChild(timeDiv);
 
         container.appendChild(el);
 
-        // Animasi muncul untuk label dan hashtags
+        // Tambahkan animasi untuk label dan hashtags menggunakan requestAnimationFrame
         const tags = el.querySelectorAll('.post-hashtag, .post-label');
         tags.forEach(tag => {
           requestAnimationFrame(() => {
@@ -49,6 +87,7 @@ function loadLatestPosts() {
         });
       });
 
+      // Pastikan fungsi ini sudah didefinisikan agar mengupdate waktu posting
       updateTimes(container);
     })
     .catch(err => {
