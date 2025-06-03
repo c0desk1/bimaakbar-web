@@ -4,11 +4,16 @@ function includeHTML() {
   var promises = Array.from(elements).map(el => {
     var file = el.id.replace('-include', '') + '.html';
 
-    // Hitung kedalaman folder untuk menentukan prefix relatif
-    var depth = window.location.pathname.split('/').length - 2; 
-    var prefix = depth > 0 ? '../'.repeat(depth) : ''; 
+    // Tentukan lokasi berdasarkan pathname
+    var path;
+    if (window.location.pathname.includes('/html/d/')) {
+      path = 'html/d/' + file;
+    } else if (window.location.pathname.includes('/html/l/')) {
+      path = 'html/l/' + file;
+    } else {
+      path = 'html/' + file; // Default jika di root atau lokasi lain
+    }
 
-    var path = prefix + 'html/' + file; 
     console.log(`🔍 Mencoba load: ${path}`);
 
     return fetch(path)
