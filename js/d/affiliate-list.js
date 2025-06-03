@@ -24,13 +24,18 @@ function renderAffiliateItems() {
         img.alt = item.alt || 'Affiliate Item';
         img.loading = 'lazy';
 
-        // Pasang event listener untuk menangani error pada image dengan fallback URL
+        // Tangani error gambar dengan fallback
         img.addEventListener('error', function handleImageError() {
-          img.removeEventListener('error', handleImageError);
-          
+          img.src = 'https://via.placeholder.com/150'; // URL gambar default jika gagal
         });
 
-        card.appendChild(img);
+        // Bungkus gambar dalam tag <a> agar bisa diklik ke URL item
+        const imgLink = document.createElement('a');
+        imgLink.href = item.url;
+        imgLink.target = '_blank';
+        imgLink.appendChild(img);
+
+        card.appendChild(imgLink);
         affiliateList.appendChild(card);
       });
     })
