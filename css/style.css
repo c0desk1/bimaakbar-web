@@ -95,10 +95,9 @@ a:hover {
 			align-items: center;
 			justify-content: space-between;
 			height: 60px;
-			padding: 8px;
+			padding: 0 16px;
 			background-color: var(--card-background-dark);
 			box-shadow: 0 2px 8px var(--shadow-dark);
-			z-index: 1000; 
 }
         
         #header-include {
@@ -110,7 +109,7 @@ a:hover {
 			margin: 0;
 			display: flex;
 			align-items: center;
-			width: 56px;
+			min-width: 56px;
 			text-align: center;
 			font-size: 1.2rem;
 			color: var(--text-lighter);
@@ -125,7 +124,9 @@ a:hover {
 			align-items: center;
 			justify-content: center;
 			hight: 100%;
-}
+			text-align: center;
+			font-size: 1.2rem;
+		}
 
         .logo img {
         	width: 60px;
