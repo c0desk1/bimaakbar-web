@@ -2,58 +2,56 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Deskripsi halaman di sini." />
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-  <title>Tutorial – Bima Akbar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Tips & Trik terbaru seputar teknologi, blogging, dan pengembangan diri dari Bima Akbar. Dapatkan info lengkap dan praktis di sini." />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Bima Akbar - Tutorial</title>
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <div id="header-include"></div>
-  </header>
+ <!-- HEADER -->
+    <header class="header">
+        <div id="header-include"></div>
+    </header>
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar-include"></aside>
+    <!-- SIDEBAR -->
+    <div id="sidebar-include"></div>
 
-  <!-- SEARCH OVERLAY -->
-  <div id="search-overlay-include"></div>
+    <!-- SEARCH OVERLAY -->
+    <div id="search-include"></div>
 
-  <!-- MAIN CONTENT -->
-  <main> 
-    <div id="hero-include"></div>
-    <section id="tutorial" class="section-title">
-      <div id="post-list-tutorial" class="card-grid"></div>
-      <div id="newsletter-include"></div>
-    </section>
-  </main>
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <div id="hero-include"></div>
+        <section class="category-grid"></section>
+        <div id="affiliate-include"></div>
+        <div id="popular-include"></div>
+        <div id="latest-include"></div>
+        <div id="newsletter-include"></div>
+    </main>
+    <div id="stats-include"></div>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div id="footer-include"></div>
+    </footer>
 
-  <!-- FOOTER -->
-  <footer id="footer-include"></footer>
+    <!-- SCRIPT SECTION -->
+    <!-- Utilitas dasar -->
+    <script src="js/u/layout.js"></script>
+    <script src="js/u/page-title.js"></script>
+    <script src="js/u/post-title.js"></script>
+    <script src="js/u/latest-popular.js"></script>
+    <script src="js/u/stats.js"></script>
 
-  <!-- SCRIPT SECTION -->    
-  <!-- Utilitas dasar -->
-  <script src="../js/u/layout.js"></script>
-  <script src="../js/u/page-title.js"></script>
-  <script src="../js/u/post-title.js"></script>
-  <script src="../js/u/latest-popular.js"></script>
-  <script src="../js/u/stats.js"></script>
-  
-  <!-- Komponen dan interaksi -->
-  <script src="../js/u/header.js"></script>
-  <script src="../js/u/search.js"></script>
-  
-  <!-- Data dinamis -->
-  <script src="../js/d/affiliate-list.js"></script>
-  <script src="../js/d/label-list.js"></script>
+    <!-- Komponen dan interaksi -->
+    <script src="js/u/header.js"></script>
+    <script src="js/u/search.js"></script>
   
   <!-- Kategori khusus (aktifkan hanya yang perlu) -->
-  <script src="../js/d/tutorial-list.js"></script>
+  <script src="/js/d/tutorial-list.js"></script>
   
   <!-- Entry point utama -->
-  <script src="../js/u/main.js"></script>
+  <script src="/js/u/main.js"></script>
 </body>
 </html>
