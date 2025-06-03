@@ -115,7 +115,7 @@ function loadPopularPosts() {
                 .sort((a, b) => b.views - a.views)
                 .slice(0, 6); // Tampilkan 6 postingan terpopuler
 
-            container.innerHTML = '';
+            container.innerHTML = 'htmls/l/popular-post.html';
             container.classList.add('card-grid');
 
             popular.forEach(post => {
