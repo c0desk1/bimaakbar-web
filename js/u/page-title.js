@@ -2,24 +2,24 @@ function updatePageTitle() {
   const path = window.location.pathname.toLowerCase();
   const pageTitleElement = document.querySelector('h1.page-title');
   
-  let judul = "Bima Akbar";
+  let judulHalaman = "Bima Akbar";
 
   if (path.includes("index")) {
-    judul = "Beranda – Bima Akbar";
+    judulHalaman = "Beranda";
   } else if (path.includes("musik")) {
-    judul = "Musik – Bima Akbar";
+    judulHalaman = "Musik";
   } else if (path.includes("tips") || path.includes("trik")) {
-    judul = "Tips & Trik – Bima Akbar";
+    judulHalaman = "Tips & Trik";
   } else if (path.includes("tutorial")) {
-    judul = "Tutorial – Bima Akbar";
+    judulHalaman = "Tutorial";
   } else if (path.includes("game")) {
-    judul = "Game – Bima Akbar";
+    judulHalaman = "Game";
   } else if (path.includes("shop")) {
-    judul = "Shop – Bima Akbar";
+    judulHalaman = "Shop";
   }
 
-  document.title = judul;
-  if (pageTitleElement) pageTitleElement.textContent = judul.split(' – ')[0]; // hanya kata sebelum –
+  // Jangan ubah document.title supaya judul postingan tetap bisa diatur secara terpisah
+  if (pageTitleElement) pageTitleElement.textContent = judulHalaman;
 }
 
 window.updatePageTitle = updatePageTitle;
