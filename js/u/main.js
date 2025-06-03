@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
   if (typeof loadLatestPosts === 'function') loadLatestPosts();
   if (typeof loadPopularPosts === 'function') loadPopularPosts();
-  if (typeof updateFooterStats === 'function') updateFooterStats();
+  if (typeof updateStats === 'function') updateStats();
 
   // Event listener untuk search (jika ada)
   const input = document.querySelector('.search-input-group input[type="text"]');
