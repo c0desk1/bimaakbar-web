@@ -4,7 +4,7 @@ function renderAffiliateItems() {
 
     affiliateList.innerHTML = '';
 
-    fetch('https://opensheet.elk.sh/1NiExGcDs8CxJUQDBG7EX-XT1N991a7pnhtIcUvjpjKQ/affiliate-list')
+    fetch('https://docs.google.com/spreadsheets/d/1NiExGcDs8CxJUQDBG7EX-XT1N991a7pnhtIcUvjpjKQ/edit?usp=sharing')
         .then(function(response) {
             if (!response.ok) throw new Error('Gagal memuat affiliate');
             return response.json();
