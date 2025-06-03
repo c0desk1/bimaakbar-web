@@ -4,7 +4,7 @@ function loadPostsGame() {
 
   container.innerHTML = '<p>Loading game posts...</p>';
 
-  fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game-list')    
+  fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game')    
     .then(function(res) {
       if (!res.ok) throw new Error('Gagal fetch game.json');
       return res.json();
