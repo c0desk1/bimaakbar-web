@@ -86,6 +86,10 @@ a:hover {
             background: #FF4D6B;
             /* Slightly brighter on hover */
         }
+        
+        button {
+  outline: none;
+}
 
 
         /* Header */
@@ -765,8 +769,8 @@ a:hover {
   background-color: #FF4D6B;
   transform: translateY(-2px);
 }
-        /* Footer - Grid Horizontal Stats */
-       .stats {
+/* Footer - Grid Horizontal Stats */
+   .stats {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(120px, 1fr);
