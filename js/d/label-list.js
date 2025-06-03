@@ -17,7 +17,7 @@ function loadCategoriesForIndex() {
     const title = cat.title.trim();
 
     try {
-      const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${name}`);
+      const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${name}-list`);
       if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}`);
 
       const posts = await res.json();
