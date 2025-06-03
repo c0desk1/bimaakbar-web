@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
   await includeHTML();
 
-  console.log('âœ… Semua komponen HTML sudah dimuat');
+  console.log('Semua komponen HTML sudah dimuat');
 
   // Fungsi global
   if (typeof updatePageTitle === 'function') updatePageTitle();
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (typeof initHeaderLogo === 'function') initHeaderLogo();
   if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
   if (typeof loadLatestPosts === 'function') loadLatestPosts();
-	if (typeof loadPopularPosts === 'function') loadPopularPosts();
+  if (typeof loadPopularPosts === 'function') loadPopularPosts();
   if (typeof updateFooterStats === 'function') updateFooterStats();
 
   // Event listener untuk search (jika ada)
@@ -35,11 +35,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Jalankan fungsi berdasarkan keyword path
   for (const page of pageMap) {
-    if (path.includes(page.keyword) && typeof page.func === 'function') {
-      console.log(`ðŸ”„ Memuat konten: ${page.keyword}`);
-      page.func();
-    }
+  // Tambahkan pengecekan jika home ('/') dan keyword 'index'
+  if ((path === '/' && page.keyword === 'index') || path.includes(page.keyword)) {
+    console.log(`ðŸ”„ Memuat konten: ${page.keyword}`);
+    page.func();
   }
+}
 
   console.log('âœ… Halaman siap!');
 });
