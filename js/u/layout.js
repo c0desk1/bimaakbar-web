@@ -8,7 +8,7 @@ function includeHTML() {
     if var path = window.location.pathname.indexOf('/html/l/') !== -1
       ? '../html/l/' + file
       : 'html/l/' + file;
-    else var path = window.location.pathname.indexOf('/html/d/') !== -1
+    if var path = window.location.pathname.indexOf('/html/d/') !== -1
       ? '../html/d/' + file
       : 'html/d/' + file;
 
