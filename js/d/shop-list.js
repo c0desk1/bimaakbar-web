@@ -3,7 +3,7 @@ function loadPostsShop() {
   if (!container) return;
 
   container.innerHTML = '<p>Loading produk toko...</p>';
-  fetch('https://opensheet.elk.sh/1B2qNWH-cyDuVYJ2m1mLITKJvU7bPmYQYVt1g4Sxh19A/shop-list')
+  fetch('https://opensheet.elk.sh/1B2qNWH-cyDuVYJ2m1mLITKJvU7bPmYQYVt1g4Sxh19A/shop')
     .then(function(res) {
       if (!res.ok) throw new Error('Gagal fetch shop');
       return res.json();
