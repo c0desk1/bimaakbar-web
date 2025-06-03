@@ -127,8 +127,8 @@ a {
 }
 
         .logo img {
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
   object-fit: contain;
   border-radius: 5px;
   filter: brightness(0.8) invert(1);
@@ -253,13 +253,6 @@ a {
             /* Pastikan iklan mengisi lebar sidebar */
         }
 
-        .ad-slot h4 {
-            margin-bottom: 10px;
-            color: var(--secondary-color);
-            font-size: 0.9em;
-            /* Ukuran font disesuaikan */
-        }
-
         .about-me {
             text-align: center;
             margin-bottom: 20px;
@@ -361,84 +354,72 @@ a {
 
         /* Category Grid */
         .category-grid {
-            display: grid;
-		  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		  gap: 25px;
-		  margin-top: 30px;
-		  margin-bottom: 50px;
-		  position: relative;
-        }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  justify-items: center; /* Pusatkan card di tiap kolom */
+}
 
-        .category-card {
-        	position: relative;
+.category-card {
   width: 100%;
+  max-width: 160px; /* Cegah terlalu lebar di layar besar */
   background-color: var(--card-background-dark);
   border-radius: 12px;
   box-shadow: 0 6px 15px var(--shadow-dark);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
   text-align: center;
-  padding-bottom: 15px;
   border: 1px solid var(--border-dark);
-            
-        }
-
-        .category-card:hover {
-            transform: translateY(-8px);
-  box-shadow: 0 10px 25px var(--shadow-medium-dark);
-        }
-
-        .category-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 12px;
   position: relative;
-  z-index: 0;
-  margin-bottom: 0;
+  aspect-ratio: 1 / 1; /* Card selalu persegi */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-        
-        /* Overlay gradien gelap supaya teks tetap terbaca */
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px var(--shadow-medium-dark);
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom: none;
+  display: block;
+}
+
+.category-card h3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: var(--text-lighter);
+  font-size: 1.3em;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+
+  /* Gaya stroke + glow minimalis */
+  -webkit-text-stroke: 1px var(--primary-color);
+  text-shadow: 0 0 6px var(--primary-color);
+}
+
 .category-card::before {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(18, 18, 18, 0.25) 0%,
-    rgba(26, 26, 26, 0.6) 100%
+    rgba(18, 18, 18, 0.1),
+    rgba(26, 26, 26, 0.6)
   );
-  border-radius: 12px;
-  pointer-events: none;
   z-index: 1;
-}
-
-        .category-card h3 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  padding: 0 12px;
-  color: var(--text-lighter);
-  font-size: 1.4em;
-  font-weight: 700;
-  text-align: center;
-  white-space: nowrap;
   pointer-events: none;
-
-  -webkit-text-stroke: 0.9px var(--primary-color);
-  text-stroke: 0.9px var(--primary-color);
-
-  text-shadow:
-    0 0 10px var(--primary-color),
-    0 2px 12px var(--shadow-medium-dark);
-
-  z-index: 2;
 }
+
 	
         .category-card p {
             font-size: 0.9em;
@@ -659,69 +640,55 @@ a {
 
         /* Affiliate Links Section */
 		.affiliate-links {
-  padding: 20px;
-  text-align: center;
-  background-color: var(--card-background-dark);
-  border-radius: 12px;
-  box-shadow: 0 4px 15px var(--shadow-medium-dark);
-  margin-bottom: 40px;
-}
+		  padding: 20px;
+		  text-align: center;
+		  background-color: var(--card-background-dark);
+		  border-radius: 12px;
+		  box-shadow: 0 4px 15px var(--shadow-medium-dark);
+		  margin-bottom: 40px;
+		}
 
-.affiliate-links h2 {
-  color: var(--text-lighter);
-  margin-bottom: 15px;
-  font-size: 1.6em;
-}
+		.affiliate-links h2 {
+		  color: var(--text-lighter);
+		  margin-bottom: 15px;
+		  font-size: 1.6em;
+		}
 
-.affiliate-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
+		.affiliate-scroll {
+		  display: grid;
+		  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+		  gap: 16px;
+		  justify-content: center;
+		}
 
-.affiliate-card {
-  flex: 0 0 auto;
-  scroll-snap-align: center;
-  background-color: var(--background-dark);
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  box-shadow: 0 2px 8px var(--shadow-dark);
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+		.affiliate-card {
+		  position: relative;
+		  width: 100%;
+		  aspect-ratio: 1 / 1; /* Tetapkan rasio 1:1 */
+		  border-radius: 10px;
+		  
+		  background-color: var(--background-dark);
+		  transition: transform 0.3s ease;
+		  box-shadow: 0 2px 8px var(--shadow-dark);
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  padding: 6px;
+		}
 
-.affiliate-card img {
-  width: 100px;
-  height: auto;
-  display: block;
-  border-radius: 6px;
-}
+		.affiliate-card img {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		  border-radius: 6px;
+		  display: block;
+		}
+		
+		.affiliate-card:hover {
+		  transform: scale(1.05);
+		}
 
-.affiliate-card:hover {
-  transform: scale(1.05);
-}
 
-/* Tampilan berubah ke grid saat layar >=600px */
-@media (min-width: 600px) {
-  .affiliate-scroll {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    justify-content: center;
-    overflow: visible;
-    gap: 16px;
-  }
-
-  .affiliate-card {
-    flex: unset;
-    scroll-snap-align: unset;
-  }
-}
 
 
         /* Newsletter Subscribe - Unified & Clean Version */ 
@@ -814,113 +781,85 @@ a {
   transform: translateY(-2px);
 }
         /* Footer - Grid Horizontal Stats */
+       .stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(120px, 1fr);
+  gap: 16px;
+  padding: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stats::-webkit-scrollbar {
+  height: 6px;
+}
+
+.stats::-webkit-scrollbar-thumb {
+  background-color: rgba(254, 44, 85, 0.5); /* TikTok Red */
+  border-radius: 10px;
+}
+
+.stats::-webkit-scrollbar-track {
+  background-color: var(--border-dark);
+  border-radius: 10px;
+}
+
+.stats-item {
+  background-color: var(--card-background-dark);
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-dark);
+  box-shadow: 0 2px 8px var(--shadow-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+  min-width: 120px;
+}
+
+.stats-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px var(--shadow-medium-dark);
+}
+
+.stats-item i {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  margin-bottom: 6px;
+}
+
+.stats-item span:first-of-type {
+  font-size: 0.85em;
+  color: var(--secondary-color);
+  margin-bottom: 4px;
+}
+
+.stats-item span:last-of-type {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-lighter);
+}
+
         .footer {
-            text-align: center;
-            padding: 4px 20px;
-            background-color: var(--card-background-dark);
-            color: var(--secondary-color);
-            border-top: 0px solid var(--primary-color);
-        }
-        
-        .stats {
-            background-color: var(--card-background-dark);
-            color: var(--secondary-color);
-            border-top: 5px solid var(--primary-color);
-        }
+  background-color: var(--card-background-dark);
+  padding: 20px 16px;
+  text-align: center;
+  border-top: 1px solid var(--border-dark);
+  box-shadow: 0 -4px 12px var(--shadow-dark);
+  margin-top: 40px;
+}
 
-        .stats {
-        	padding: 20px 20px;
-            display: grid;
-            grid-auto-flow: column;
-            /* Arrange items horizontally */
-            grid-auto-columns: minmax(120px, 1fr);
-            /* Each column gets at least 120px */
-            gap: 20px;
-            justify-content: center;
-            /* Center the grid items */
-            overflow-x: auto;
-            /* Allow horizontal scrolling if too many items */
-            padding-bottom: 20px;
-            /* Space for scrollbar */
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-        }
-        .stats {
-                grid-auto-flow: row;
-                /* Stack vertically if needed */
-                grid-auto-columns: 1fr;
-                /* Take full width */
-                gap: 15px;
-                padding-bottom: 0;
-                /* No horizontal scrollbar space needed */
-            }
-
-        .stats::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .stats::-webkit-scrollbar-thumb {
-            background-color: rgba(254, 44, 85, 0.5);
-            /* Primary color, slightly transparent */
-            border-radius: 10px;
-        }
-
-        .stats::-webkit-scrollbar-track {
-            background-color: var(--border-dark);
-            border-radius: 10px;
-        }
-
-
-        .stats-item {
-            background-color: var(--background-dark);
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px var(--shadow-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            /* Prevent items from shrinking */
-            scroll-snap-align: start;
-            border: 1px solid var(--border-dark);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .stats-item {
-                width: 100%;
-                /* Take full width */
-            }
-
-        .stats-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 12px var(--shadow-medium-dark);
-        }
-
-        .stats-item i {
-            font-size: 1.8em;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-        }
-
-        .stats-item span:first-of-type {
-            /* Label like "Total Dilihat" */
-            font-size: 0.9em;
-            color: var(--secondary-color);
-            margin-bottom: 5px;
-        }
-
-        .stats-item span:last-of-type {
-            /* Actual number */
-            font-size: 1.4em;
-            font-weight: bold;
-            color: var(--text-lighter);
-        }
-
-        .copyright {
-            font-size: 0.85em;
-            opacity: 0.7;
-            margin-top: 20px;
-        }
+.footer .copyright {
+  font-size: 0.85em;
+  color: var(--text-light);
+  opacity: 0.7;
+  margin: 0;
+}
 
         /* Responsive Design */
 @media (max-width: 768px) {
@@ -1054,6 +993,16 @@ a {
 		.category-grid {
 			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 		}
+		
+	  .stats {
+	grid-auto-flow: row;
+	grid-auto-columns: 100%;
+	overflow-x: hidden;
+	  }
+	
+	  .stats-item {
+	width: 100%;
+	  }
 	}
 
 	@media (max-width: 480px) {
@@ -1191,4 +1140,29 @@ a {
 		    opacity: 1;
 		    transform: scale(1);
 		  }
+		}
+		
+		.back-button {
+		  background-color: transparent;
+		  border: 1px solid var(--primary-color);
+		  color: var(--primary-color);
+		  padding: 8px 12px;
+		  border-radius: 8px;
+		  font-size: 1em;
+		  cursor: pointer;
+		  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+		  display: flex;
+		  align-items: center;
+		  gap: 6px;
+		  box-shadow: 0 0 10px rgba(254, 44, 85, 0.2);
+		}
+		
+		.back-button:hover {
+		  background-color: var(--primary-color);
+		  color: var(--background-dark);
+		  box-shadow: 0 0 15px rgba(254, 44, 85, 0.4);
+		}
+		
+		.back-button i {
+		  font-size: 1.1em;
 		}
