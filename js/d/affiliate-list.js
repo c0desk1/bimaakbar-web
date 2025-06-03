@@ -1,43 +1,42 @@
 function renderAffiliateItems() {
-    var affiliateList = document.getElementById('affiliate-list');
-    if (!affiliateList) return;
+  const affiliateList = document.getElementById('affiliate-list');
+  if (!affiliateList) return;
 
-    affiliateList.innerHTML = '';
+  affiliateList.innerHTML = '';
 
-    fetch('https://opensheet.elk.sh/1NiExGcDs8CxJUQDBG7EX-XT1N991a7pnhtIcUvjpjKQ/affiliate-list')
-        
-        .then(function(response) {
-            if (!response.ok) throw new Error('Gagal memuat affiliate');
-            return response.json();
-        })
-        .then(function(items) {
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                var card = document.createElement('a');
-                card.href = item.link || item.url;
-                card.target = '_blank';
-                card.className = 'affiliate-card';
+  fetch('https://opensheet.elk.sh/1NiExGcDs8CxJUQDBG7EX-XT1N991a7pnhtIcUvjpjKQ/affiliate-list')
+    .then(response => {
+      if (!response.ok) throw new Error('Gagal memuat affiliate');
+      return response.json();
+    })
+    .then(items => {
+      items.forEach(item => {
+        const card = document.createElement('a');
+        card.href = item.link || item.url;
+        card.target = '_blank';
+        card.className = 'affiliate-card';
 
-                // Debug: cek url gambar
-                console.log('Gambar:', item.image);
+        // Debug: cek URL gambar di konsol
+        console.log('Gambar:', item.image);
 
-                var img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.alt ? item.alt : 'Affiliate Item';
-                img.loading = 'lazy';
-                img.onerror = function() {
-                    this.onerror = null;
-                    this.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no'; // Placeholder
-                };
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.alt || 'Affiliate Item';
+        img.loading = 'lazy';
 
-                card.appendChild(img);
-                affiliateList.appendChild(card);
-            }
-        })
-        .catch(function(error) {
-            console.error('Gagal memuat affiliate items:', error);
-            
+        // Pasang event listener untuk menangani error pada image dengan fallback URL
+        img.addEventListener('error', function handleImageError() {
+          img.removeEventListener('error', handleImageError);
+          img.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no'; // Placeholder
         });
+
+        card.appendChild(img);
+        affiliateList.appendChild(card);
+      });
+    })
+    .catch(error => {
+      console.error('Gagal memuat affiliate items:', error);
+    });
 }
 
 window.renderAffiliateItems = renderAffiliateItems;
