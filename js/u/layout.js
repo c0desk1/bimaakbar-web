@@ -5,13 +5,14 @@ function includeHTML() {
   var promises = Array.prototype.map.call(elements, function(el) {
     var file = el.id.replace('-include', '') + '.html';
 
-    var path = window.location.pathname.indexOf('/html/l/') !== -1
-      ? '../html/l/' + file
-      : 'html/l/' + file;
-    var path = window.location.pathname.indexOf('/html/d/') !== -1
-      ? '../html/d/' + file
-      : 'html/d/' + file;
-
+    var path;
+    if (window.location.pathname.indexOf('/html/l/') !== -1) {
+      path = '../html/l/' + file;
+    } else if (window.location.pathname.indexOf('/html/d/') !== -1) {
+      path = '../html/d/' + file;
+    } else {
+      path = 'html/l/' + file; // Default path jika tidak cocok
+    }
     console.log('Mencoba load:', path);
 
     return fetch(path)
