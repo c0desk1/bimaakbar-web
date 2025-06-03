@@ -27,7 +27,7 @@ function loadLatestPosts() {
 
         // Buat elemen link untuk postingan
         const link = document.createElement('a');
-        link.href = post.url || post.link;
+        link.href = post.url || post.link #;
         el.appendChild(link);
 
         // Buat elemen image secara dinamis tanpa inline onerror
@@ -119,13 +119,14 @@ function loadPopularPosts() {
       container.classList.add('card-grid');
 
       popular.forEach(post => {
+        
         // Buat container postingan
         const el = document.createElement('div');
         el.className = 'post-card';
 
         // Buat elemen link
         const link = document.createElement('a');
-        link.href = post.url || post.link;
+        link.href = post.url || post.link #;
         el.appendChild(link);
 
         // Buat elemen image tanpa inline onerror untuk memenuhi CSP
