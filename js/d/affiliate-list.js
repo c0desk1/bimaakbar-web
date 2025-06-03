@@ -26,7 +26,7 @@ function renderAffiliateItems() {
                 img.loading = 'lazy';
                 img.onerror = function() {
                     this.onerror = null;
-                    this.src = 'https://via.placeholder.com/150?text=No+Image'; // Placeholder
+                    this.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no'; // Placeholder
                 };
 
                 card.appendChild(img);
