@@ -5,10 +5,10 @@ function includeHTML() {
   var promises = Array.prototype.map.call(elements, function(el) {
     var file = el.id.replace('-include', '') + '.html';
 
-    if var path = window.location.pathname.indexOf('/html/l/') !== -1
+    var path = window.location.pathname.indexOf('/html/l/') !== -1
       ? '../html/l/' + file
       : 'html/l/' + file;
-    if var path = window.location.pathname.indexOf('/html/d/') !== -1
+    var path = window.location.pathname.indexOf('/html/d/') !== -1
       ? '../html/d/' + file
       : 'html/d/' + file;
 
