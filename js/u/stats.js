@@ -1,4 +1,4 @@
-async function updateFooterStats() {
+async function updateStats() {
   try {
     const response = await fetch('p/dummy.json');
     const posts = await response.json();
