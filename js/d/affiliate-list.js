@@ -27,7 +27,7 @@ function renderAffiliateItems() {
         // Pasang event listener untuk menangani error pada image dengan fallback URL
         img.addEventListener('error', function handleImageError() {
           img.removeEventListener('error', handleImageError);
-          img.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no'; // Placeholder
+          
         });
 
         card.appendChild(img);
