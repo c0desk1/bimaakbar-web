@@ -345,6 +345,7 @@ a {
 		    letter-spacing: 1px;
 		    color: var(--text-lighter);
 		    animation: fadeScale 1s ease-out both;
+			animation-fill-mode: forwards;
         }
 
         .blog-description {
@@ -354,7 +355,9 @@ a {
 		    opacity: 0.8;
 		    animation: fadeScale 1s ease-out both;
 		    animation-delay: 0.3s;
+			animation-fill-mode: forwards;
         }
+
 
         /* Category Grid */
         .category-grid {
@@ -668,7 +671,7 @@ a {
 			box-shadow: 0 10px 30px var(--shadow-medium-dark); 
 			position: relative; 
 			overflow: hidden; }
-
+			
 		.newsletter-subscribe::before { 
 			content: ''; 
 			position: absolute; 
@@ -748,13 +751,20 @@ a {
         /* Footer - Grid Horizontal Stats */
         .footer {
             text-align: center;
-            padding: 40px 20px;
+            padding: 4px 20px;
+            background-color: var(--card-background-dark);
+            color: var(--secondary-color);
+            border-top: 0px solid var(--primary-color);
+        }
+        
+        .stats {
             background-color: var(--card-background-dark);
             color: var(--secondary-color);
             border-top: 5px solid var(--primary-color);
         }
 
-        .footer-stats {
+        .stats {
+        	padding: 20px 20px;
             display: grid;
             grid-auto-flow: column;
             /* Arrange items horizontally */
@@ -763,32 +773,40 @@ a {
             gap: 20px;
             justify-content: center;
             /* Center the grid items */
-            margin-bottom: 25px;
             overflow-x: auto;
             /* Allow horizontal scrolling if too many items */
-            padding-bottom: 10px;
+            padding-bottom: 20px;
             /* Space for scrollbar */
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
         }
+        .stats {
+                grid-auto-flow: row;
+                /* Stack vertically if needed */
+                grid-auto-columns: 1fr;
+                /* Take full width */
+                gap: 15px;
+                padding-bottom: 0;
+                /* No horizontal scrollbar space needed */
+            }
 
-        .footer-stats::-webkit-scrollbar {
+        .stats::-webkit-scrollbar {
             height: 6px;
         }
 
-        .footer-stats::-webkit-scrollbar-thumb {
+        .stats::-webkit-scrollbar-thumb {
             background-color: rgba(254, 44, 85, 0.5);
             /* Primary color, slightly transparent */
             border-radius: 10px;
         }
 
-        .footer-stats::-webkit-scrollbar-track {
+        .stats::-webkit-scrollbar-track {
             background-color: var(--border-dark);
             border-radius: 10px;
         }
 
 
-        .stat-item {
+        .stats-item {
             background-color: var(--background-dark);
             padding: 15px 20px;
             border-radius: 10px;
@@ -803,26 +821,30 @@ a {
             border: 1px solid var(--border-dark);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        .stats-item {
+                width: 100%;
+                /* Take full width */
+            }
 
-        .stat-item:hover {
+        .stats-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 12px var(--shadow-medium-dark);
         }
 
-        .stat-item i {
+        .stats-item i {
             font-size: 1.8em;
             color: var(--primary-color);
             margin-bottom: 8px;
         }
 
-        .stat-item span:first-of-type {
+        .stats-item span:first-of-type {
             /* Label like "Total Dilihat" */
             font-size: 0.9em;
             color: var(--secondary-color);
             margin-bottom: 5px;
         }
 
-        .stat-item span:last-of-type {
+        .stats-item span:last-of-type {
             /* Actual number */
             font-size: 1.4em;
             font-weight: bold;
@@ -929,21 +951,6 @@ a {
             .subscribe-form button {
                 margin-bottom: 0;
                 /* No margin on last item */
-            }
-
-            .footer-stats {
-                grid-auto-flow: row;
-                /* Stack vertically if needed */
-                grid-auto-columns: 1fr;
-                /* Take full width */
-                gap: 15px;
-                padding-bottom: 0;
-                /* No horizontal scrollbar space needed */
-            }
-
-            .stat-item {
-                width: 100%;
-                /* Take full width */
             }
 
             /* Responsive untuk Search Overlay */
@@ -1113,4 +1120,13 @@ a {
 			  margin-top: 8px;
 			  font-style: italic;
 			}
-			
+			@keyframes fadeScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
