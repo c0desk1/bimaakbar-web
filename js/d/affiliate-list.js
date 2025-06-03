@@ -36,7 +36,7 @@ function renderAffiliateItems() {
         })
         .catch(function(error) {
             console.error('Gagal memuat affiliate items:', error);
-            affiliateList.innerHTML = '<p style="color:red;">Gagal memuat affiliate items.</p>';
+            
         });
 }
 
