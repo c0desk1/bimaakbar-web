@@ -27,7 +27,7 @@ function loadLatestPosts() {
 
         // Buat elemen link untuk postingan
         const link = document.createElement('a');
-        link.href = post.url || post.link #;
+        link.href = post.url || post.link || #;
         el.appendChild(link);
 
         // Buat elemen image secara dinamis tanpa inline onerror
@@ -126,7 +126,7 @@ function loadPopularPosts() {
 
         // Buat elemen link
         const link = document.createElement('a');
-        link.href = post.url || post.link #;
+        link.href = post.url || post.link || #;
         el.appendChild(link);
 
         // Buat elemen image tanpa inline onerror untuk memenuhi CSP
