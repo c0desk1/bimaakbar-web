@@ -18,7 +18,7 @@ function loadCategoriesForIndex() {
 
     try {
       const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${name}-list`);
-      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}`);
+      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}-list`);
 
       const posts = await res.json();
       const latestPost = posts.length > 0 ? posts[0] : null;
