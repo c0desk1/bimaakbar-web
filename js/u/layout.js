@@ -1,36 +1,32 @@
-// Fungsi untuk menyertakan partial HTML
 function includeHTML() {
   var elements = document.querySelectorAll('[id$="-include"]');
 
-  var promises = Array.prototype.map.call(elements, function(el) {
+  var promises = Array.from(elements).map(el => {
     var file = el.id.replace('-include', '') + '.html';
 
-    var path;
-    if (window.location.pathname.indexOf('/html/l/') !== -1) {
-      path = '../html/l/' + file;
-    } else if (window.location.pathname.indexOf('/html/d/') !== -1) {
-      path = '../html/d/' + file;
-    } else {
-      path = 'html/l/' + file; // Default path jika tidak cocok
-    }
+    // Tentukan jumlah level direktori berdasarkan lokasi file saat ini
+    var depth = window.location.pathname.split('/').length - 2; // Hitung kedalaman dari root
+    var prefix = depth > 0 ? '../'.repeat(depth) : ''; // Menyesuaikan dengan kedalaman folder
+
+    var path = prefix + 'html/' + file; // Menentukan path berdasarkan folder html
     console.log('Mencoba load:', path);
 
     return fetch(path)
-      .then(function(res) {
+      .then(res => {
         if (!res.ok) throw new Error('Gagal memuat ' + file);
         return res.text();
       })
-      .then(function(html) {
-        el.innerHTML = html;
+      .then(html => {
+        if (el) el.innerHTML = html;
       })
-      .catch(function(err) {
+      .catch(err => {
         console.error(err);
-        el.innerHTML = '<p style="color:red;">Error loading ' + file + '</p>';
+        if (el) el.innerHTML = '<p style="color:red;">Error loading ' + file + '</p>';
       });
   });
 
-  return Promise.all(promises).then(function() {
-    console.log("Semua html selesai dimuat.");
+  return Promise.all(promises).then(() => {
+    console.log("Semua HTML selesai dimuat.");
   });
 }
 
