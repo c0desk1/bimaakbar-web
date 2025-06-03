@@ -40,7 +40,7 @@ function loadPostsMusik() {
         postEl.className = 'post-card';
 
         postEl.innerHTML =
-          '<a href="' + (post.link || post.url) + '" target="_blank" rel="noopener noreferrer">' +
+          '<a href="' + (post.url) + '" target="_blank" rel="noopener noreferrer">' +
             '<img src="' + post.thumbnail + '" alt="' + post.title + '" loading="lazy" ' +
                  'onerror="this.onerror=null;this.src=\'/assets/default-thumb.jpg\';">' +
             '<h3>' + post.title + '</h3>' +
