@@ -81,7 +81,6 @@ function loadLatestPosts() {
             if (typeof updateTimes === 'function') {
                 updateTimes(container);
             }
-          
         })
         .catch(err => {
             console.error('Gagal memuat latest posts:', err);
