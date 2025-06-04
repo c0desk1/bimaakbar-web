@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   console.log('Semua komponen HTML sudah dimuat');
 
-  // Panggil fungsi-fungsi global jika ada
+  // Fungsi global
   if (typeof updatePageTitle === 'function') updatePageTitle();
   if (typeof updatePostTitle === 'function') updatePostTitle();
   if (typeof initHeaderEvents === 'function') initHeaderEvents();
@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (typeof loadLatestPosts === 'function') loadLatestPosts();
   if (typeof loadPopularPosts === 'function') loadPopularPosts();
   if (typeof updateStats === 'function') updateStats();
-
-  // Hanya panggil updateTimes(), bukan timeSince()
+  if (typeof timeSince === 'function') timeSince();
   if (typeof updateTimes === 'function') updateTimes();
 
   // Event listener untuk search (jika ada)
@@ -25,25 +24,24 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Deteksi halaman dari URL
   const path = window.location.pathname.toLowerCase();
 
-  // Pemetaan halaman ke fungsi load post
+  // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
   const pageMap = [
-    { keyword: '/', func: typeof loadCategoryLabels === 'function' ? loadCategoryLabels : null },
-    { keyword: 'musik', func: typeof loadPostsMusik === 'function' ? loadPostsMusik : null },
-    { keyword: 'tutorial', func: typeof loadPostsTutorial === 'function' ? loadPostsTutorial : null },
-    { keyword: 'tips', func: typeof loadPostsTips === 'function' ? loadPostsTips : null },
-    { keyword: 'game', func: typeof loadPostsGame === 'function' ? loadPostsGame : null },
-    { keyword: 'shop', func: typeof loadPostsShop === 'function' ? loadPostsShop : null }
-  ];
+	  { keyword: '/', func: typeof loadCategoryLabels === 'function' ? loadCategoryLabels : null },
+	  { keyword: 'musik', func: typeof loadPostsMusik === 'function' ? loadPostsMusik : null },
+	  { keyword: 'tutorial', func: typeof loadPostsTutorial === 'function' ? loadPostsTutorial : null },
+	  { keyword: 'tips', func: typeof loadPostsTips === 'function' ? loadPostsTips : null },
+	  { keyword: 'game', func: typeof loadPostsGame === 'function' ? loadPostsGame : null },
+	  { keyword: 'shop', func: typeof loadPostsShop === 'function' ? loadPostsShop : null }
+	];
+	
+	for (const page of pageMap) {
+	  const isHome = path === '/' || path.includes('index');
+	  const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
+	  if (isMatched && typeof page.func === 'function') {
+	    console.log(`ðŸ”Ž Memuat konten: ${page.keyword}`);
+	    page.func(); // <- Ini harus terpanggil
+	  }
+	}
 
-  for (const page of pageMap) {
-    const isHome = path === '/' || path.includes('index');
-    const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
-    if (isMatched && typeof page.func === 'function') {
-      console.log(`🔎 Memuat konten: ${page.keyword}`);
-      // Jika fungsi async, bisa await page.func();
-      page.func();
-    }
-  }
-
-  console.log('… Halaman siap!');
+  console.log('Ã¢Å“â€¦ Halaman siap!');
 });
