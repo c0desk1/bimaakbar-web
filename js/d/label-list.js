@@ -41,6 +41,16 @@ function loadCategoriesForIndex() {
       return null;
     }
   });
+  const cards = await Promise.all(promises);
+console.log('Cards dibuat:', cards);
+categoryGrid.innerHTML = '';
+cards.forEach((card) => {
+  if (card) {
+    console.log('Tambah card:', card);
+    categoryGrid.appendChild(card);
+  }
+});
+
 
   Promise.all(promises).then((cards) => {
     categoryGrid.innerHTML = '';
