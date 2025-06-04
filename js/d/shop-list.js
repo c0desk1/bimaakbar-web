@@ -1,6 +1,6 @@
 function loadPostsShop() {
   console.log('🔍 loadPostsShop dipanggil');
-  
+
   const container = document.getElementById('post-list-shop');
   if (!container) {
     console.warn('Elemen #post-list-shop tidak ditemukan.');
@@ -23,7 +23,6 @@ function loadPostsShop() {
         return;
       }
 
-      // Filter hanya produk dengan label 'shop' (opsional, bisa dihilangkan)
       const filtered = data.filter(item => (item.label || '').toLowerCase() === 'shop');
       if (!filtered.length) {
         container.innerHTML = '<p>Tidak ada produk dengan label "shop".</p>';
@@ -71,8 +70,12 @@ function loadPostsShop() {
           });
         }
       }
+
+      // ✅ Panggil updateTimes setelah semua post dimuat
+      if (typeof updateTimes === 'function') {
+        updateTimes();
+      }
     })
-    if (typeof updateTimes === 'function') updateTimes();
 
     .catch(function(error) {
       console.error('Error saat memuat produk toko:', error);
