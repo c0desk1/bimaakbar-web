@@ -6,12 +6,12 @@ function loadCategoryLabels() {
   }
 
   const labels = [
-    { name: 'Musik', sheet: 'musik', url: 'musik-list.html' },
-    { name: 'Game', sheet: 'game', url: 'game-list.html' },
-    { name: 'Tutorial', sheet: 'tutorial', url: 'tutorial-list.html' },
-    { name: 'Tips', sheet: 'tips', url: 'tips-list.html' },
-    { name: 'Shop', sheet: 'shop', url: 'shop-list.html' },
-  ];
+	  { name: 'Musik', sheet: 'musik', url: 'html/d/musik.html' },
+	  { name: 'Game', sheet: 'game', url: 'html/d/game.html' },
+	  { name: 'Tutorial', sheet: 'tutorial', url: 'html/d/tutorial.html' },
+	  { name: 'Tips', sheet: 'tips', url: 'html/d/tips.html' },
+	  { name: 'Shop', sheet: 'shop', url: 'html/d/shop.html' },
+	];
 
   labels.forEach(label => {
     fetch(`https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/${label.sheet}`)
