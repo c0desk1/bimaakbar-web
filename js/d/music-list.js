@@ -8,70 +8,70 @@ function loadPostsMusik() {
     }
 
     container.innerHTML = '<p>Loading posts...</p>';
+
     fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/musik')
         .then(function(res) {
             if (!res.ok) throw new Error('Gagal fetch Data: ' + res.status + ' ' + res.statusText);
             return res.json();
         })
-
         .then(function(data) {
-            console.log('📀 Data musik:', data);
+            console.log('📦 Data musik:', data);
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
             }
 
             container.innerHTML = '';
-            if (!container.classList.contains('card-grid')) {
-                container.classList.add('card-grid');
-            }
+            container.classList.add('card-grid');
 
             for (var i = 0; i < data.length; i++) {
                 var post = data[i];
 
-                // Buat HTML hashtags
-                var hashtags = Array.isArray(post.hashtags) ? post.hashtags : [];
-                var hashtagsHTML = '';
-                for (var j = 0; j < hashtags.length; j++) {
-                    hashtagsHTML += '<span class="post-hashtag">#' + hashtags[j] + '</span> ';
+                // === [ PERBAIKAN: Parsingan hashtags fleksibel ] ===
+                var hashtags = [];
+                if (Array.isArray(post.hashtags)) {
+                    hashtags = post.hashtags;
+                } else if (typeof post.hashtags === 'string') {
+                    hashtags = post.hashtags
+                        .split(',')
+                        .map(s => s.trim())
+                        .filter(s => s !== '');
                 }
 
-                // Label tetap ada tapi disembunyikan (CSS hidden)
-                var labelHTML = post.label ? '<span class="post-label" style="display:none;">#' + post.label + '</span> ' : '';
+                var hashtagsHTML = hashtags
+                    .map(tag => '<span class="post-hashtag">#' + tag + '</span>')
+                    .join(' ');
+
+                var labelHTML = post.label ? '<span class="post-label">#' + post.label + '</span>' : '';
 
                 var postEl = document.createElement('div');
                 postEl.className = 'post-card';
 
-                postEl.innerHTML =
-                    '<a href="' + post.url + '" target="_blank" rel="noopener noreferrer">' +
-                    '<img src="' + post.thumbnail + '" alt="' + post.title + '" loading="lazy" ' +
-                    'onerror="this.onerror=null;this.src=\'/assets/error.jpg\';">' +
-                    '<h3>' + post.title + '</h3>' +
-                    '<p class="post-description">' + post.description + '</p>' +
-                    '</a>' +
-                    '<div class="post-meta">' +
-                    // Label disembunyikan, hashtags tampil
-                    '<div class="post-hashtags">' + labelHTML + hashtagsHTML + '</div>' +
-                    // Waktu posting dengan data-timestamp
-                    '<div class="post-time" data-timestamp="' + (post.timestamp || '') + '"></div>' +
-                    '</div>';
+                postEl.innerHTML = `
+                    <a href="${post.url}" target="_blank" rel="noopener noreferrer">
+                        <img src="${post.thumbnail}" alt="${post.title}" loading="lazy"
+                            onerror="this.onerror=null;this.src='/assets/error.jpg';">
+                        <h3>${post.title}</h3>
+                        <p class="post-description">${post.description}</p>
+                    </a>
+                    <div class="post-meta">
+                        <div class="post-hashtags">${labelHTML} ${hashtagsHTML}</div>
+                        <div class="post-time" data-timestamp="${post.timestamp || ''}"></div>
+                    </div>
+                `;
 
                 container.appendChild(postEl);
 
-                // Animasi hashtag dan label (meskipun label hidden, tetap ada)
                 var tags = postEl.querySelectorAll('.post-hashtag, .post-label');
-                for (var k = 0; k < tags.length; k++) {
-                    (function(tag) {
-                        requestAnimationFrame(function() {
-                            tag.classList.add('show');
-                        });
-                    })(tags[k]);
-                }
+                tags.forEach(function(tag) {
+                    requestAnimationFrame(function() {
+                        tag.classList.add('show');
+                    });
+                });
             }
 
-            // Update waktu posting dengan fungsi global yang sudah kamu buat
             if (typeof updateTimes === 'function') {
-                updateTimes();
+                updateTimes(container);
             } else {
                 console.warn('Fungsi updateTimes() tidak ditemukan.');
             }
