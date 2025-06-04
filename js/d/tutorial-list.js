@@ -9,7 +9,7 @@ function loadPostsTutorial() {
       return res.json();
     })
     .then(data => {
-      const filteredPosts = data.filter(post => post.label && post.label.toLowerCase() === 'tutorial');
+      const filteredPosts = data.filter(post => post.label && post.label.toLowerCase() === 'Tutorial');
 
       if (!filteredPosts.length) {
         container.innerHTML = '<p>Belum ada postingan dengan label "tutorial".</p>';
