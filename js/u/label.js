@@ -23,7 +23,7 @@ function loadCategoriesForIndex() {
       categories.forEach(cat => {
         var card = document.createElement('a');
         card.className = 'category-card';
-        card.href = 'html/d/' + cat.name + '.html';
+        card.href = 'html/d/' + cat.name + '-list.html';
         card.innerHTML =
           `<img src="${cat.thumbnail}" 
             alt="${cat.title}" 
