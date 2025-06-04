@@ -65,8 +65,8 @@ function loadPostsGame() {
 	  }
 	})
     .catch(function(error) {
-      console.error('Error saat memuat post musik:', error);
-      container.innerHTML = '<p style="color:red;">Gagal memuat postingan musik.</p>';
+      console.error('Error saat memuat post game:', error);
+      container.innerHTML = '<p style="color:red;">Gagal memuat postingan game.</p>';
     });
 }
 window.loadPostsGame = loadPostsGame;
