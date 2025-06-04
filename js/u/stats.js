@@ -16,18 +16,29 @@ if (!firebase.apps.length) {
 // Ambil statistik dari Firebase secara real-time
 function updateStats() {
   try {
-    firebase.database().ref('posts').on('value', (snapshot) => {
+    const postsRef = firebase.database().ref('posts');
+    const statsRef = firebase.database().ref('stats');
+
+    // Ambil statistik dari database
+    postsRef.on('value', (snapshot) => {
       const postsData = snapshot.val() || {};
       const posts = Object.values(postsData);
-  
+
       const totalPosts = posts.length;
       const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
-      const totalMembers = 187; // Bisa dibuat dinamis nanti
-  
+
       document.getElementById('total-posts').textContent = `${totalPosts} post`;
       document.getElementById('total-views').textContent = `${totalViews.toLocaleString()} view`;
-      document.getElementById('total-members').textContent = `${totalMembers.toLocaleString()} member`;
     });
+
+    // Ambil total members (followers) secara real-time
+    statsRef.on('value', (snapshot) => {
+      const statsData = snapshot.val();
+      if (statsData) {
+        document.getElementById('total-members').textContent = `${statsData.totalFollowers.toLocaleString()} member`;
+      }
+    });
+
   } catch (err) {
     console.error("Gagal memuat data stats dari Firebase:", err);
   }
