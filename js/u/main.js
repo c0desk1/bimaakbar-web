@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
   const pageMap = [
-	  { keyword: '/', func: loadCategoryLabels },
-	  { keyword: 'musik', func: loadPostsMusik },
-	  { keyword: 'tutorial', func: loadPostsTutorial },
-	  { keyword: 'tips', func: loadPostsTips },
-	  { keyword: 'game', func: loadPostsGame },
-	  { keyword: 'shop', func: loadPostsShop }
+	  { keyword: '/', func: typeof loadCategoryLabels === 'function' ? loadCategoryLabels : null },
+	  { keyword: 'musik', func: typeof loadPostsMusik === 'function' ? loadPostsMusik : null },
+	  { keyword: 'tutorial', func: typeof loadPostsTutorial === 'function' ? loadPostsTutorial : null },
+	  { keyword: 'tips', func: typeof loadPostsTips === 'function' ? loadPostsTips : null },
+	  { keyword: 'game', func: typeof loadPostsGame === 'function' ? loadPostsGame : null },
+	  { keyword: 'shop', func: typeof loadPostsShop === 'function' ? loadPostsShop : null }
 	];
 	
 	for (const page of pageMap) {
