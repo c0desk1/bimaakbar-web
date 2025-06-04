@@ -64,6 +64,13 @@ function loadPostsGame() {
 	    }
 	  }
 	})
+	  // Update waktu posting
+        if (typeof updateTimes === 'function') {
+            updateTimes();
+        } else {
+            console.warn('Fungsi updateTimes() tidak ditemukan.');
+        }
+    })
     .catch(function(error) {
       console.error('Error saat memuat post game:', error);
       container.innerHTML = '<p style="color:red;">Gagal memuat postingan game.</p>';
