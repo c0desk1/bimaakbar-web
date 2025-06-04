@@ -1,4 +1,6 @@
-
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // Fungsi ambil statistik
 async function updateStats() {
