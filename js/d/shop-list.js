@@ -71,13 +71,6 @@ function loadPostsShop() {
           });
         }
       }
-
-      // Update waktu posting
-      if (typeof updateTimes === 'function') {
-        updateTimes();
-      } else {
-        console.warn('Fungsi updateTimes() tidak ditemukan.');
-      }
     })
 
     .catch(function(error) {
