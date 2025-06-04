@@ -1,7 +1,16 @@
-if (!firebase.apps.length) {
+const firebaseConfig = {
+  apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+  authDomain: "bima-akbar-web.firebaseapp.com",
+  databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "bima-akbar-web",
+  storageBucket: "bima-akbar-web.appspot.com",
+  messagingSenderId: "521611265429",
+  appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+};
+
+if (!firebase.apps?.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
 // Fungsi ambil statistik
 async function updateStats() {
   try {
