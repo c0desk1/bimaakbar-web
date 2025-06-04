@@ -19,19 +19,23 @@ function loadCategoriesForIndex() {
 
       categories.forEach(cat => {
         const filtered = data.filter(item => item.label === cat.name);
-        
-        // Urutkan berdasarkan tanggal terbaru
+
+        // Sort berdasarkan tanggal terbaru
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        const latestPost = filtered[0]; // ambil satu thumbnail saja
+
+        const latestPost = filtered[0];
+
+        // Fallback jika tidak ada postingan
+        const thumbnail = latestPost?.thumbnail || 'assets/error.jpg';
+        const altText = latestPost?.title || 'No posting';
 
         const card = document.createElement('a');
         card.className = 'category-card';
         card.href = `html/d/${cat.name}-list.html`;
 
         card.innerHTML = `
-          <img src="${latestPost?.thumbnail || 'assets/error.jpg'}"
-               alt="${cat.title}" 
+          <img src="${thumbnail}" 
+               alt="${altText}" 
                loading="lazy"
                onerror="this.onerror=null;this.src='assets/error.jpg';">
           <h3>${cat.title}</h3>
