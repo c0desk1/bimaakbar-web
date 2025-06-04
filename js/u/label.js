@@ -18,9 +18,12 @@ function loadCategoriesForIndex() {
       categoryGrid.innerHTML = '';
 
       categories.forEach(cat => {
-filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
         const filtered = data.filter(item => item.label === cat.name);
-        const latestPost = filtered[0];
+        
+        // Urutkan berdasarkan tanggal terbaru
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        const latestPost = filtered[0]; // ambil satu thumbnail saja
 
         const card = document.createElement('a');
         card.className = 'category-card';
@@ -28,7 +31,7 @@ filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         card.innerHTML = `
           <img src="${latestPost?.thumbnail || 'assets/error.jpg'}"
-               alt="${latestPost?.title || cat.title}" 
+               alt="${cat.title}" 
                loading="lazy"
                onerror="this.onerror=null;this.src='assets/error.jpg';">
           <h3>${cat.title}</h3>
