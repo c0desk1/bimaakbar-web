@@ -7,7 +7,7 @@ function loadCategoriesForIndex() {
   const categories = [
     { name: 'musik', title: 'Musik' },
     { name: 'tutorial', title: 'Tutorial' },
-    { name: 'tips-trik', title: 'Tips & Trik' },
+    { name: 'tips', title: 'Tips & Trik' },
     { name: 'game', title: 'Game' },
     { name: 'shop', title: 'Shop' }
   ];
