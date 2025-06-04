@@ -50,12 +50,3 @@ cards.forEach((card) => {
     categoryGrid.appendChild(card);
   }
 });
-
-
-  Promise.all(promises).then((cards) => {
-    categoryGrid.innerHTML = '';
-    cards.forEach((card) => {
-      if (card) categoryGrid.appendChild(card);
-    });
-  });
-}
