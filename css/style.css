@@ -1121,6 +1121,7 @@ a:hover {
 			  font-size: 0.9em; /* sedikit lebih besar */
 			  color: var(--text-light); /* gunakan warna teks terang dari tema kamu */
 			  margin-top: 8px;
+			margin-left: 8px;
 			  font-style: italic;
 			  display: block; /* pastikan tampil sebagai elemen blok */
 			  opacity: 0.85;   /* sedikit transparan untuk gaya */
