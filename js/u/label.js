@@ -1,4 +1,4 @@
-async function loadCategoriesForIndex() {
+function loadCategoriesForIndex() {
   const categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
 
@@ -12,32 +12,40 @@ async function loadCategoriesForIndex() {
     { name: 'shop', title: 'Shop' }
   ];
 
-  try {
-    // Fetch data label hanya 1x
-    const res = await fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label');
-    if (!res.ok) throw new Error('Gagal fetch data kategori');
-    const posts = await res.json();
+  const promises = categories.map(async (cat) => {
+    const name = cat.name.trim();
+    const title = cat.title.trim();
 
-    categoryGrid.innerHTML = '';
+    try {
+      const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${name}`);
+      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}`);
 
-    categories.forEach(({ name, title }) => {
-      const filteredPosts = posts.filter(post => post.label?.toLowerCase() === name);
-      const latestPost = filteredPosts[0] || null;
+      const posts = await res.json();
+      const latestPost = posts.length > 0 ? posts[0] : null;
+
       const thumbnail = latestPost?.thumbnail?.trim() || 'assets/logo.png';
 
       const card = document.createElement('a');
       card.className = 'category-card';
       card.href = `html/d/${name}-list.html`;
       card.innerHTML = `
-        <img src="${thumbnail}" alt="${title}" loading="lazy" onerror="this.onerror=null;this.src='assets/logo.png';">
+        <img src="${thumbnail}" alt="${title}" loading="lazy"
+             onerror="this.onerror=null;this.src='assets/logo.png';">
         <h3>${title}</h3>
       `;
+      return card;
+    } catch (error) {
+      console.error(`Gagal load kategori: ${name}`, error);
+      return null;
+    }
+  });
 
-      categoryGrid.appendChild(card);
+  Promise.all(promises).then((cards) => {
+    categoryGrid.innerHTML = '';
+    cards.forEach((card) => {
+      if (card) categoryGrid.appendChild(card);
     });
-
-  } catch (error) {
-    console.error('Error loadCategoriesForIndex:', error);
-    categoryGrid.innerHTML = '<p>Gagal memuat kategori.</p>';
-  }
+  });
 }
+
+window.loadCategoriesForIndex = loadCategoriesForIndex;
