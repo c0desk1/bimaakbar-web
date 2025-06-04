@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
     if (typeof loadLatestPosts === 'function') loadLatestPosts();
     if (typeof loadPopularPosts === 'function') loadPopularPosts();
-    if (typeof updateStats === 'function') updateStats();
+    if (typeof updateTimes === 'function') updateTimes();
    
 
     // Event listener untuk search (jika ada)
