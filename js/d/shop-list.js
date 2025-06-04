@@ -72,6 +72,7 @@ function loadPostsShop() {
         }
       }
     })
+    if (typeof updateTimes === 'function') updateTimes();
 
     .catch(function(error) {
       console.error('Error saat memuat produk toko:', error);
