@@ -25,20 +25,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
   const pageMap = [
-    { keyword: 'musik', func: loadPostsMusik },
-    { keyword: 'tutorial', func: loadPostsTutorial },
-    { keyword: 'tips', func: loadPostsTips },
-    { keyword: 'game', func: loadPostsGame },
-    { keyword: 'shop', func: loadPostsShop }
-  ];
+	  { keyword: '/', func: loadCategoriesForIndex },
+	  { keyword: 'musik', func: loadPostsMusik },
+	  { keyword: 'tutorial', func: loadPostsTutorial },
+	  { keyword: 'tips', func: loadPostsTips },
+	  { keyword: 'game', func: loadPostsGame },
+	  { keyword: 'shop', func: loadPostsShop }
+	];
+	
+	for (const page of pageMap) {
+	  const isHome = path === '/' || path.includes('index');
+	  const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
+	  if (isMatched && typeof page.func === 'function') {
+	    console.log(`🔎 Memuat konten: ${page.keyword}`);
+	    page.func(); // <- Ini harus terpanggil
+	  }
+	}
 
-  for (const page of pageMap) {
-    const isMatched = path.includes(page.keyword);
-    if (isMatched && typeof page.func === 'function') {
-      console.log(`🎯 Memuat konten: ${page.keyword}`);
-      page.func();
-    }
-  }
-
-  console.log('✅ Halaman siap!');
+  console.log('âœ… Halaman siap!');
 });
