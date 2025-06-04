@@ -54,7 +54,7 @@ function loadPostsShop() {
               'onerror="this.onerror=null;this.src=\'/assets/logo.png\';">' +
             '<h3>' + product.title + '</h3>' +
             '<p class="post-description">' + product.description + '</p>' +
-            '<p class="product-price">Harga: ' + product.price + '</p>' +
+            '<p class="post-price">Harga: ' + product.price + '</p>' +
           '</a>' +
           '<div class="post-meta">' +
             '<div class="post-hashtags">' + labelHTML + ' ' + hashtagsHTML + '</div>' +
