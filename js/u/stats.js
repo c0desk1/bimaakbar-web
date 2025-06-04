@@ -49,3 +49,4 @@ if (firebase.apps.length) {
 } else {
   console.warn('⚠️ Firebase belum siap, updateStats dibatalkan.');
 }
+window.updateStats = updateStats;
