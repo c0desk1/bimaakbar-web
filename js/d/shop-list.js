@@ -1,6 +1,9 @@
 function loadPostsShop() {
   const container = document.getElementById('post-list-shop');
-  if (!container) return;
+  if (!container) {
+    console.warn('Elemen #post-list-shop tidak ditemukan');
+    return;
+  }
 
   container.innerHTML = '<p>Loading produk toko...</p>';
 
@@ -10,12 +13,14 @@ function loadPostsShop() {
       return res.json();
     })
     .then(data => {
+      console.log('Data fetch shop:', data);
       if (!data || !data.length) {
         container.innerHTML = '<p>Belum ada produk di toko.</p>';
         return;
       }
 
       const filtered = data.filter(item => (item.label || '').toLowerCase() === 'shop');
+      console.log('Filtered shop data:', filtered);
       if (!filtered.length) {
         container.innerHTML = '<p>Tidak ada produk dengan label "shop".</p>';
         return;
@@ -25,14 +30,14 @@ function loadPostsShop() {
       container.classList.add('card-grid');
 
       filtered.forEach(product => {
+        console.log('Render product:', product);
+        // lanjut seperti kode kamu
         const hashtags = (product.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
         const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
 
-        // Elemen kartu
         const productEl = document.createElement('div');
         productEl.className = 'post-card';
 
-        // Spinner dan thumbnail wrapper
         const spinner = document.createElement('div');
         spinner.className = 'loading-spinner';
 
@@ -53,9 +58,8 @@ function loadPostsShop() {
         imgWrapper.appendChild(spinner);
         imgWrapper.appendChild(img);
 
-        // Buat elemen link dan isi lainnya
         const link = document.createElement('a');
-        link.href = product.url;
+        link.href = product.url || '#';
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.appendChild(imgWrapper);
@@ -85,7 +89,6 @@ function loadPostsShop() {
         meta.appendChild(tags);
         meta.appendChild(time);
 
-        // Susun struktur elemen kartu
         productEl.appendChild(link);
         productEl.appendChild(title);
         productEl.appendChild(desc);
@@ -94,19 +97,20 @@ function loadPostsShop() {
 
         container.appendChild(productEl);
 
-        // Animasi hashtag
         productEl.querySelectorAll('.post-hashtag').forEach(tag => {
           requestAnimationFrame(() => tag.classList.add('show'));
         });
       });
 
-      // ✅ Setelah semua produk ditambahkan, update waktu
-      updateTimes();
+      if (typeof updateTimes === 'function') {
+        updateTimes();
+      } else {
+        console.warn('updateTimes() tidak ditemukan');
+      }
     })
     .catch(err => {
       console.error('Gagal memuat produk toko:', err);
       container.innerHTML = '<p style="color:red;">Gagal memuat data toko.</p>';
     });
 }
-
 window.loadPostsShop = loadPostsShop;
