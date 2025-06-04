@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
     if (typeof loadLatestPosts === 'function') loadLatestPosts();
     if (typeof loadPopularPosts === 'function') loadPopularPosts();
-    if (typeof updateTimes === 'function') updateTimes();
-   
+    if (typeof updateStats === 'function') updateStats();   
+    if (typeof updateTimes=== 'function') updateTimes();
 
     // Event listener untuk search (jika ada)
     const input = document.querySelector('.search-input-group input[type="text"]');
@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         const isHome = path === '/' || path.includes('index');
         const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
         if (isMatched && typeof page.func === 'function') {
-            console.log(`🔎 Memuat konten: ${page.keyword}`);
+            console.log(`ðŸ”Ž Memuat konten: ${page.keyword}`);
             page.func(); // <- Ini harus terpanggil
         }
     }
 
-    console.log('âœ… Halaman siap!');
+    console.log('Ã¢Å“â€¦ Halaman siap!');
 });
