@@ -1,20 +1,26 @@
 // Cek dan inisialisasi Firebase hanya sekali di global scope
-if (!window.firebaseConfig) {
-  window.firebaseConfig = {
-    apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
-    authDomain: "bima-akbar-web.firebaseapp.com",
-    databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "bima-akbar-web",
-    storageBucket: "bima-akbar-web.appspot.com",
-    messagingSenderId: "521611265429",
-    appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
-  };
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(window.firebaseConfig);
-    console.log('✅ Firebase berhasil diinisialisasi.');
+(function initStats() {
+  if (typeof firebase === 'undefined') {
+    console.warn('⏳ Firebase belum tersedia, coba lagi nanti...');
+    return;
   }
-}
+
+  if (!window.firebaseConfig) {
+    window.firebaseConfig = {
+      apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+      authDomain: "bima-akbar-web.firebaseapp.com",
+      databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "bima-akbar-web",
+      storageBucket: "bima-akbar-web.appspot.com",
+      messagingSenderId: "521611265429",
+      appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(window.firebaseConfig);
+      console.log('✅ Firebase berhasil diinisialisasi.');
+    }
+  }
 
 function updateStats() {
   try {
