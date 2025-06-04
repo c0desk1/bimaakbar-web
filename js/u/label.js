@@ -1,61 +1,39 @@
+var spreadsheetURL = "https://docs.google.com/spreadsheets/d/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/gviz/tq?tqx=out:json";
+
 function loadCategoriesForIndex() {
-  const categoryGrid = document.querySelector('.category-grid');
+  var categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
 
-  categoryGrid.innerHTML = '<div class="loading-spinner">Memuat...</div>';
+  categoryGrid.innerHTML = '<div class="loading-spinner">Loading...</div>';
 
-  const categories = [
-    { name: 'musik', title: 'Musik' },
-    { name: 'tutorial', title: 'Tutorial' },
-    { name: 'tips-trik', title: 'Tips & Trik' },
-    { name: 'game', title: 'Game' },
-    { name: 'shop', title: 'Shop' }
-  ];
+  fetch(spreadsheetURL)
+    .then(res => res.text())
+    .then(text => {
+      var jsonText = text.substring(47, text.length - 2);
+      var data = JSON.parse(jsonText);
+      var rows = data.table.rows;
 
-  const promises = categories.map(async (cat) => {
-    const name = cat.name.trim();
-    const title = cat.title.trim();
+      var categories = rows.map(row => ({
+        name: row.c[0].v.toLowerCase(),
+        title: row.c[1].v,
+        thumbnail: row.c[2] ? row.c[2].v : "assets/default-thumb.jpg" // Menambahkan gambar dari spreadsheet
+      }));
 
-    try {
-      const res = await fetch(`https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/${name}`);
-      if (!res.ok) throw new Error(`Gagal fetch data kategori: ${name}`);
+      categoryGrid.innerHTML = '';
+      categories.forEach(cat => {
+        var card = document.createElement('a');
+        card.className = 'category-card';
+        card.href = 'html/d/' + cat.name + '.html';
+        card.innerHTML =
+          `<img src="${cat.thumbnail}" 
+            alt="${cat.title}" 
+            loading="lazy" onerror="this.onerror=null;this.src='assets/default-thumb.jpg';">
+          <h3>${cat.title}</h3>`;
 
-      const posts = await res.json();
-      const latestPost = posts.length > 0 ? posts[0] : null;
-
-      const thumbnail = latestPost?.thumbnail?.trim() || 'assets/logo.png';
-
-      const card = document.createElement('a');
-      card.className = 'category-card';
-      card.href = `html/d/${name}-list.html`;
-      card.innerHTML = `
-        <img src="${thumbnail}" alt="${title}" loading="lazy"
-             onerror="this.onerror=null;this.src='assets/logo.png';">
-        <h3>${title}</h3>
-      `;
-      return card;
-    } catch (error) {
-      console.error(`Gagal load kategori: ${name}`, error);
-      return null;
-    }
-  });
-
-  Promise.all(promises).then((cards) => {
-    categoryGrid.innerHTML = '';
-    cards.forEach((card) => {
-      if (card) categoryGrid.appendChild(card);
-    });
-  });
-  const res = await fetch(url);
-console.log('Status fetch:', res.status, res.statusText);
-
-const posts = await res.json();
-console.log('Data posts:', posts);
-
-posts.forEach(post => {
-  console.log('Label:', post.label, 'Thumbnail:', post.thumbnail);
-});
-
+        categoryGrid.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Gagal fetch data dari Google Spreadsheet", err));
 }
 
 window.loadCategoriesForIndex = loadCategoriesForIndex;
