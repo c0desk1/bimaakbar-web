@@ -1,4 +1,3 @@
-
 function loadPostsShop() {
     console.log('🔍 loadPostsShop dipanggil');
 
@@ -43,7 +42,7 @@ function loadPostsShop() {
                     (product.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
 
                 const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
-                var labelHTML = post.label ? '<span style="display:none;" class="post-label">' + post.label + '</span>' : '';
+                const labelHTML = post.label ? '<span style="display:none;" class="post-label">' + post.label + '</span>' : '';
 
                 const productEl = document.createElement('div');
                 productEl.className = 'post-card';
