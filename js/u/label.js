@@ -27,7 +27,7 @@ function loadCategoriesForIndex() {
 
       const card = document.createElement('a');
       card.className = 'category-card';
-      card.href = `html/d/${name}-list.html`;
+      card.href = `/html/d/${name}-list.html`;
       card.innerHTML = `
         <img src="${thumbnail}" alt="${title}" loading="lazy"
              onerror="this.onerror=null;this.src='assets/error.jpg';">
