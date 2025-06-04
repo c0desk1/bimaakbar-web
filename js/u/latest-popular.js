@@ -11,7 +11,7 @@ function loadLatestPosts() {
         })
         .then(data => {
             const posts = data.posts || [];
-            // Urutkan posting berdasarkan timestamp dan ambil 6 postingan terbaru
+
             const sorted = posts
                 .filter(p => p.timestamp)
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -33,11 +33,9 @@ function loadLatestPosts() {
                 img.alt = post.title;
                 img.loading = 'lazy';
 
-                function handleImageError() {
-                    img.removeEventListener('error', handleImageError);
+                img.onerror = () => {
                     img.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no';
-                }
-                img.addEventListener('error', handleImageError);
+                };
                 link.appendChild(img);
 
                 const heading = document.createElement('h3');
@@ -55,11 +53,12 @@ function loadLatestPosts() {
 
                 const hashtagsDiv = document.createElement('div');
                 hashtagsDiv.className = 'post-hashtags';
-                const labelHTML = post.label ? `<span class="post-label">#${post.label}</span>` : '';
-                const hashtagsHTML = Array.isArray(post.hashtags) ?
-                    post.hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ') :
-                    '';
-                hashtagsDiv.innerHTML = labelHTML + ' ' + hashtagsHTML;
+
+                // HANYA hashtag, tanpa label
+                const hashtagsHTML = Array.isArray(post.hashtags)
+                    ? post.hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ')
+                    : '';
+                hashtagsDiv.innerHTML = hashtagsHTML;
                 metaDiv.appendChild(hashtagsDiv);
 
                 const timeDiv = document.createElement('div');
@@ -69,18 +68,12 @@ function loadLatestPosts() {
 
                 container.appendChild(el);
 
-                // Animasi label dan hashtag
-                const tags = el.querySelectorAll('.post-hashtag, .post-label');
-                tags.forEach(tag => {
-                    requestAnimationFrame(() => {
-                        tag.classList.add('show');
-                    });
+                el.querySelectorAll('.post-hashtag').forEach(tag => {
+                    requestAnimationFrame(() => tag.classList.add('show'));
                 });
             });
 
-            if (typeof updateTimes === 'function') {
-                updateTimes(container);
-            }
+            updateTimes(); // ✅ Waktu ditampilkan setelah konten ter-render
         })
         .catch(err => {
             console.error('Gagal memuat latest posts:', err);
@@ -101,7 +94,7 @@ function loadPopularPosts() {
         })
         .then(data => {
             const posts = data.posts || [];
-            // Filter posting dengan properti views dan urutkan secara menurun (populer)
+
             const popular = posts
                 .filter(p => p.views)
                 .sort((a, b) => b.views - a.views)
@@ -123,11 +116,9 @@ function loadPopularPosts() {
                 img.alt = post.title;
                 img.loading = 'lazy';
 
-                function handleImageError() {
-                    img.removeEventListener('error', handleImageError);
+                img.onerror = () => {
                     img.src = 'https://lh3.googleusercontent.com/a/ACg8ocIqhNUvjLocKzLpoo7S9YyKLkDMw4sa01d1OR_IxbVHNbQCS2Y=s288-c-no';
-                }
-                img.addEventListener('error', handleImageError);
+                };
                 link.appendChild(img);
 
                 const heading = document.createElement('h3');
@@ -145,11 +136,12 @@ function loadPopularPosts() {
 
                 const hashtagsDiv = document.createElement('div');
                 hashtagsDiv.className = 'post-hashtags';
-                const labelHTML = post.label ? `<span class="post-label">#${post.label}</span>` : '';
-                const hashtagsHTML = Array.isArray(post.hashtags) ?
-                    post.hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ') :
-                    '';
-                hashtagsDiv.innerHTML = labelHTML + ' ' + hashtagsHTML;
+
+                // HANYA hashtag, tanpa label
+                const hashtagsHTML = Array.isArray(post.hashtags)
+                    ? post.hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ')
+                    : '';
+                hashtagsDiv.innerHTML = hashtagsHTML;
                 metaDiv.appendChild(hashtagsDiv);
 
                 const viewsDiv = document.createElement('div');
@@ -159,11 +151,8 @@ function loadPopularPosts() {
 
                 container.appendChild(el);
 
-                const tags = el.querySelectorAll('.post-hashtag, .post-label');
-                tags.forEach(tag => {
-                    requestAnimationFrame(() => {
-                        tag.classList.add('show');
-                    });
+                el.querySelectorAll('.post-hashtag').forEach(tag => {
+                    requestAnimationFrame(() => tag.classList.add('show'));
                 });
             });
         })
@@ -173,6 +162,5 @@ function loadPopularPosts() {
         });
 }
 
-// Ekspos fungsi agar bisa dipanggil di main.js
 window.loadPopularPosts = loadPopularPosts;
 window.loadLatestPosts = loadLatestPosts;
