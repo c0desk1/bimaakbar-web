@@ -14,7 +14,7 @@ function loadCategoryLabels() {
 	];
 
   labels.forEach(label => {
-    fetch(`https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/label`)
+    fetch(`https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/${label.name}`)
       .then(res => res.json())
       .then(data => {
         const post = data[0]; // Ambil postingan terbaru
