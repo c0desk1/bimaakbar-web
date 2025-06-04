@@ -1,3 +1,6 @@
+console.log(firebase);
+console.log(firebase.database);
+
 // Inisialisasi Firebase (hanya jika belum diinisialisasi)
 const firebaseConfig = {
   apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
