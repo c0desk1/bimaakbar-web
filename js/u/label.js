@@ -1,53 +1,42 @@
-const categories = [
-  { name: "musik", title: "Musik" },
-  { name: "tutorial", title: "Tutorial" },
-  { name: "tips", title: "Tips & Trik" },
-  { name: "game", title: "Game" },
-  { name: "shop", title: "Shop" }
-];
+function loadCategoryLabels() {
+  const container = document.getElementById('category-labels');
+  if (!container) {
+    console.warn('Elemen #category-labels tidak ditemukan.');
+    return;
+  }
 
-function loadCategoriesForIndex() {
-  const categoryGrid = document.querySelector('.category-grid');
-  if (!categoryGrid) return;
+  const labels = [
+    { name: 'Musik', sheet: 'musik', url: 'musik-list.html' },
+    { name: 'Game', sheet: 'game', url: 'game-list.html' },
+    { name: 'Tutorial', sheet: 'tutorial', url: 'tutorial-list.html' },
+    { name: 'Tips', sheet: 'tips', url: 'tips-list.html' },
+    { name: 'Shop', sheet: 'shop', url: 'shop-list.html' },
+  ];
 
-  categoryGrid.innerHTML = `<div class="loading-spinner">Loading...</div>`;
-
-  fetch('https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label')
-    .then(res => res.json())
-    .then(data => {
-      categoryGrid.innerHTML = '';
-
-      categories.forEach(cat => {
-        const filtered = data.filter(item => item.label === cat.name);
-
-        // Sort berdasarkan tanggal terbaru
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        const latestPost = filtered[0];
-
-        // Fallback jika tidak ada postingan
-        const thumbnail = latestPost?.thumbnail || 'assets/error.jpg';
-        const altText = latestPost?.title || 'No posting';
+  labels.forEach(label => {
+    fetch(`https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/${label.sheet}`)
+      .then(res => res.json())
+      .then(data => {
+        const post = data[0]; // Ambil postingan terbaru
+        const thumb = post?.thumbnail || '/assets/error.jpg';
 
         const card = document.createElement('a');
+        card.href = label.url;
         card.className = 'category-card';
-        card.href = `html/d/${cat.name}-list.html`;
+        card.style.backgroundImage = `url('${thumb}')`;
 
         card.innerHTML = `
-          <img src="${thumbnail}" 
-               alt="${altText}" 
-               loading="lazy"
-               onerror="this.onerror=null;this.src='assets/error.jpg';">
-          <h3>${cat.title}</h3>
+          <div class="category-content">
+            <h3>${label.name}</h3>
+          </div>
         `;
 
-        categoryGrid.appendChild(card);
+        container.appendChild(card);
+      })
+      .catch(err => {
+        console.error(`Gagal mengambil thumbnail untuk ${label.name}`, err);
       });
-    })
-    .catch(err => {
-      console.error("Gagal load kategori:", err);
-      categoryGrid.innerHTML = `<p style="color:red;">Gagal memuat kategori.</p>`;
-    });
+  });
 }
 
-window.loadCategoriesForIndex = loadCategoriesForIndex;
+window.loadCategoryLabels = loadCategoryLabels;
