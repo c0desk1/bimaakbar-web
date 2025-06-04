@@ -1,5 +1,3 @@
-// firebase-stats.js
-
 // Inisialisasi Firebase (hanya jika belum diinisialisasi)
 const firebaseConfig = {
   apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
