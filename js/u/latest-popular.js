@@ -81,12 +81,7 @@ function loadLatestPosts() {
             if (typeof updateTimes === 'function') {
                 updateTimes(container);
             }
-            // Update waktu posting
-            if (typeof updateTimes === 'function') {
-                updateTimes();
-            } else {
-                console.warn('Fungsi updateTimes() tidak ditemukan.');
-            }
+          
         })
         .catch(err => {
             console.error('Gagal memuat latest posts:', err);
@@ -172,12 +167,6 @@ function loadPopularPosts() {
                     });
                 });
             });
-            // Update waktu posting
-            if (typeof updateTimes === 'function') {
-                updateTimes();
-            } else {
-                console.warn('Fungsi updateTimes() tidak ditemukan.');
-            }
         })
         .catch(err => {
             console.error('Gagal memuat popular posts:', err);
