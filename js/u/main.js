@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (typeof loadLatestPosts === 'function') loadLatestPosts();
   if (typeof loadPopularPosts === 'function') loadPopularPosts();
   if (typeof updateStats === 'function') updateStats();
+  if (typeof loadCategoryLabels === 'function') loadCategoryLabels();
 
   // Event listener untuk search (jika ada)
   const input = document.querySelector('.search-input-group input[type="text"]');
@@ -22,24 +23,19 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Deteksi halaman dari URL
   const path = window.location.pathname.toLowerCase();
 
-  // Pemetaan halaman ke fungsi
+  // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
   const pageMap = [
-    
-    { keyword: '/', func: loadCategoriesForIndex },
-    
-    { keyword: 'musik', func: loadPostsMusic },
+    { keyword: 'musik', func: loadPostsMusik },
     { keyword: 'tutorial', func: loadPostsTutorial },
     { keyword: 'tips', func: loadPostsTips },
-    { keyword: 'trik', func: loadPostsTips },
     { keyword: 'game', func: loadPostsGame },
     { keyword: 'shop', func: loadPostsShop }
   ];
 
   for (const page of pageMap) {
-    const isHome = path === '/' || path.includes('index');
-    const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
+    const isMatched = path.includes(page.keyword);
     if (isMatched && typeof page.func === 'function') {
-      console.log(`📦 Memuat konten: ${page.keyword}`);
+      console.log(`🎯 Memuat konten: ${page.keyword}`);
       page.func();
     }
   }
