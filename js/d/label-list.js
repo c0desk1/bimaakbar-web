@@ -50,3 +50,4 @@ cards.forEach((card) => {
     categoryGrid.appendChild(card);
   }
 });
+window.loadCategoriesForIndex = loadCategoriesForIndex;
