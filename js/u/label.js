@@ -18,6 +18,7 @@ function loadCategoriesForIndex() {
       categoryGrid.innerHTML = '';
 
       categories.forEach(cat => {
+filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
         const filtered = data.filter(item => item.label === cat.name);
         const latestPost = filtered[0];
 
