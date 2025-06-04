@@ -26,7 +26,7 @@ function renderAffiliateItems() {
                 img.loading = 'lazy';
                 img.onerror = function() {
                     this.onerror = null;
-                    this.src = 'https://via.placeholder.com/150?text=No+Image'; // Placeholder
+                    this.src = 'assets/logo.png';
                 };
 
                 card.appendChild(img);
