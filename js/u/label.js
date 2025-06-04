@@ -16,7 +16,7 @@ function loadCategoriesForIndex() {
       var categories = rows.map(row => ({
         name: row.c[0].v.toLowerCase(),
         title: row.c[1].v,
-        thumbnail: row.c[2] ? row.c[2].v : "assets/default-thumb.jpg" // Menambahkan gambar dari spreadsheet
+        thumbnail: row.c[2] ? row.c[2].v : "assets/error.jpg" // Menambahkan gambar dari spreadsheet
       }));
 
       categoryGrid.innerHTML = '';
@@ -27,7 +27,7 @@ function loadCategoriesForIndex() {
         card.innerHTML =
           `<img src="${cat.thumbnail}" 
             alt="${cat.title}" 
-            loading="lazy" onerror="this.onerror=null;this.src='assets/default-thumb.jpg';">
+            loading="lazy" onerror="this.onerror=null;this.src='assets/error.jpg';">
           <h3>${cat.title}</h3>`;
 
         categoryGrid.appendChild(card);
