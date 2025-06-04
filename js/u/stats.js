@@ -8,24 +8,30 @@ const firebaseConfig = {
   appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
 };
 
-if (!firebase.apps?.length) {
+// Inisialisasi Firebase
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-// Fungsi ambil statistik
-async function updateStats() {
+
+// Ambil statistik dari Firebase secara real-time
+function updateStats() {
   try {
-    const snapshot = await firebase.database().ref('posts').once('value');
-    const postsData = snapshot.val() || {};
-    const posts = Object.values(postsData);
-
-    const totalPosts = posts.length;
-    const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
-    const totalMembers = 187; // Bisa dibuat dinamis nanti
-
-    document.getElementById('total-posts').textContent = `${totalPosts} post`;
-    document.getElementById('total-views').textContent = `${totalViews.toLocaleString()} view`;
-    document.getElementById('total-members').textContent = `${totalMembers.toLocaleString()} member`;
+    firebase.database().ref('posts').on('value', (snapshot) => {
+      const postsData = snapshot.val() || {};
+      const posts = Object.values(postsData);
+  
+      const totalPosts = posts.length;
+      const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
+      const totalMembers = 187; // Bisa dibuat dinamis nanti
+  
+      document.getElementById('total-posts').textContent = `${totalPosts} post`;
+      document.getElementById('total-views').textContent = `${totalViews.toLocaleString()} view`;
+      document.getElementById('total-members').textContent = `${totalMembers.toLocaleString()} member`;
+    });
   } catch (err) {
     console.error("Gagal memuat data stats dari Firebase:", err);
   }
 }
+
+// Jalankan fungsi updateStats
+updateStats();
