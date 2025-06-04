@@ -26,7 +26,7 @@ function renderAffiliateItems() {
                 img.loading = 'lazy';
                 img.onerror = function() {
                     this.onerror = null;
-                    this.src = 'assets/error.png';
+                    this.src = 'assets/error.jpg';
                 };
 
                 card.appendChild(img);
