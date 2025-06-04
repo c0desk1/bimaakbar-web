@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   const pageMap = [
     
     { keyword: '/', func: loadCategoriesForIndex },
-    { keyword: 'index', func: loadCategoriesForIndex },
-    { keyword: 'musik', func: loadPostsMusik },
+    
+    { keyword: 'musik', func: loadPostsMusic },
     { keyword: 'tutorial', func: loadPostsTutorial },
     { keyword: 'tips', func: loadPostsTips },
     { keyword: 'trik', func: loadPostsTips },
