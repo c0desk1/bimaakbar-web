@@ -28,8 +28,13 @@ function loadPostsShop() {
         const hashtags = (product.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
         const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
 
+        // Elemen kartu
         const productEl = document.createElement('div');
         productEl.className = 'post-card';
+
+        // Spinner dan thumbnail wrapper
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
 
         const img = document.createElement('img');
         img.src = product.thumbnail;
@@ -39,33 +44,53 @@ function loadPostsShop() {
           this.onerror = null;
           this.src = '/assets/logo.png';
         };
-
-        const spinner = document.createElement('div');
-        spinner.className = 'loading-spinner';
+        img.onload = function () {
+          spinner.remove();
+        };
 
         const imgWrapper = document.createElement('div');
         imgWrapper.className = 'thumbnail-wrapper';
         imgWrapper.appendChild(spinner);
         imgWrapper.appendChild(img);
 
-        // Hapus spinner setelah gambar selesai dimuat
-        img.onload = function () {
-          spinner.remove();
-        };
+        // Buat elemen link dan isi lainnya
+        const link = document.createElement('a');
+        link.href = product.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.appendChild(imgWrapper);
 
-        productEl.innerHTML = `
-          <a href="${product.url}" target="_blank" rel="noopener noreferrer"></a>
-          <h3>${product.title}</h3>
-          <p class="post-description">${product.description}</p>
-          <p class="product-price">Harga: ${product.price}</p>
-          <div class="post-meta">
-            <div class="post-hashtags">${hashtagsHTML}</div>
-            <div class="post-time" data-timestamp="${product.timestamp || ''}"></div>
-          </div>
-        `;
+        const title = document.createElement('h3');
+        title.textContent = product.title;
 
-        const link = productEl.querySelector('a');
-        link.prepend(imgWrapper); // Masukkan gambar di atas h3
+        const desc = document.createElement('p');
+        desc.className = 'post-description';
+        desc.textContent = product.description;
+
+        const price = document.createElement('p');
+        price.className = 'product-price';
+        price.textContent = `Harga: ${product.price}`;
+
+        const meta = document.createElement('div');
+        meta.className = 'post-meta';
+
+        const tags = document.createElement('div');
+        tags.className = 'post-hashtags';
+        tags.innerHTML = hashtagsHTML;
+
+        const time = document.createElement('div');
+        time.className = 'post-time';
+        time.setAttribute('data-timestamp', product.timestamp || '');
+
+        meta.appendChild(tags);
+        meta.appendChild(time);
+
+        // Susun struktur elemen kartu
+        productEl.appendChild(link);
+        productEl.appendChild(title);
+        productEl.appendChild(desc);
+        productEl.appendChild(price);
+        productEl.appendChild(meta);
 
         container.appendChild(productEl);
 
@@ -74,6 +99,9 @@ function loadPostsShop() {
           requestAnimationFrame(() => tag.classList.add('show'));
         });
       });
+
+      // ✅ Setelah semua produk ditambahkan, update waktu
+      updateTimes();
     })
     .catch(err => {
       console.error('Gagal memuat produk toko:', err);
