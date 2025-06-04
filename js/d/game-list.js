@@ -29,7 +29,7 @@ function loadPostsGame() {
                 var post = data[i];
                 var hashtags = Array.isArray(post.hashtags) ? post.hashtags : [];
                 var hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
-                var labelHTML = post.label ? `<span class="post-label">#${post.label}</span>` : '';
+                var labelHTML = post.label ? '<span style="display:none;" class="post-label">' + post.label + '</span>' : '';
 
                 var postEl = document.createElement('div');
                 postEl.className = 'post-card';
