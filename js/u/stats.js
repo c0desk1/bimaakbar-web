@@ -1,4 +1,4 @@
-// Pastikan hanya dideklarasikan sekali di global scope
+// Cek dan inisialisasi Firebase hanya sekali di global scope
 if (!window.firebaseConfig) {
   window.firebaseConfig = {
     apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
@@ -12,20 +12,18 @@ if (!window.firebaseConfig) {
 
   if (!firebase.apps.length) {
     firebase.initializeApp(window.firebaseConfig);
+    console.log('✅ Firebase berhasil diinisialisasi.');
   }
 }
 
-// Ambil statistik dari Firebase secara real-time
 function updateStats() {
   try {
     const postsRef = firebase.database().ref('posts');
     const statsRef = firebase.database().ref('stats');
 
-    // Ambil statistik dari database
     postsRef.on('value', (snapshot) => {
       const postsData = snapshot.val() || {};
       const posts = Object.values(postsData);
-
       const totalPosts = posts.length;
       const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
 
@@ -33,7 +31,6 @@ function updateStats() {
       document.getElementById('total-views').textContent = `${totalViews.toLocaleString()} view`;
     });
 
-    // Ambil total members (followers) secara real-time
     statsRef.on('value', (snapshot) => {
       const statsData = snapshot.val();
       if (statsData) {
@@ -42,9 +39,13 @@ function updateStats() {
     });
 
   } catch (err) {
-    console.error("Gagal memuat data stats dari Firebase:", err);
+    console.error("❌ Gagal memuat data stats dari Firebase:", err);
   }
 }
 
-// Jalankan fungsi updateStats
-updateStats();
+// Jalankan hanya jika Firebase sudah diinisialisasi
+if (firebase.apps.length) {
+  updateStats();
+} else {
+  console.warn('⚠️ Firebase belum siap, updateStats dibatalkan.');
+}
