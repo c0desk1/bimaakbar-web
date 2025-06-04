@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
   const pageMap = [
-	  { keyword: '/', func: loadCategoriesForIndex },
+	  { keyword: '/', func: loadCategoryLabels },
 	  { keyword: 'musik', func: loadPostsMusik },
 	  { keyword: 'tutorial', func: loadPostsTutorial },
 	  { keyword: 'tips', func: loadPostsTips },
