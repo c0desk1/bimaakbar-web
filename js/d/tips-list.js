@@ -65,8 +65,8 @@ function loadPostsTips() {
 	  }
 	})
     .catch(function(error) {
-      console.error('Error saat memuat post musik:', error);
-      container.innerHTML = '<p style="color:red;">Gagal memuat postingan.</p>';
+      console.error('Error saat memuat post tips:', error);
+      container.innerHTML = '<p style="color:red;">Gagal memuat postingan tips.</p>';
     });
 }
 window.loadPostsTips = loadPostsTips;
