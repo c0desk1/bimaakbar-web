@@ -65,8 +65,8 @@ function loadPostsTutorial() {
 	  }
 	})
     .catch(function(error) {
-      console.error('Error saat memuat post:', error);
-      container.innerHTML = '<p style="color:red;">Gagal memuat postingan.</p>';
+      console.error('Error saat memuat post tutorial:', error);
+      container.innerHTML = '<p style="color:red;">Gagal memuat postingan tutorial.</p>';
     });
 }
 window.loadPostsTutorial = loadPostsTutorial;
