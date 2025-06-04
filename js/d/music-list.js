@@ -1,21 +1,17 @@
-function loadPostsMusik() {
-  var container = document.getElementById('post-list-musik');
-  if (!container) {
-    console.warn('Elemen #post-list-musik tidak ditemukan.');
-    return;
-  }
+function loadPostsMusic() {
+  var container = document.getElementById('post-list-music');
+  if (!container) return;
 
-  container.innerHTML = '<p>Loading posts...</p>';
-  fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/musik')
+  container.innerHTML = '<p>Loading musik posts...</p>';
+
+  fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/musik')    
     .then(function(res) {
-      if (!res.ok) throw new Error('Gagal fetch JSON: ' + res.status + ' ' + res.statusText);
+      if (!res.ok) throw new Error('Gagal fetch game.json');
       return res.json();
     })
-
     .then(function(data) {
-    	console.log(data);
       if (!data.posts || !data.posts.length) {
-        container.innerHTML = '<p>Belum ada postingan musik.</p>';
+        container.innerHTML = '<p>Belum ada konten game.</p>';
         return;
       }
 
@@ -26,22 +22,21 @@ function loadPostsMusik() {
 
       for (var i = 0; i < data.posts.length; i++) {
         var post = data.posts[i];
-
         var hashtags = Array.isArray(post.hashtags) ? post.hashtags : [];
         var hashtagsHTML = '';
         for (var j = 0; j < hashtags.length; j++) {
           hashtagsHTML += '<span class="post-hashtag">#' + hashtags[j] + '</span> ';
         }
 
-        // Tambah label (kategori) jika ada
         var labelHTML = post.label ? '<span class="post-label">#' + post.label + '</span> ' : '';
 
         var postEl = document.createElement('div');
         postEl.className = 'post-card';
+        postEl.style.marginBottom = '20px';
 
         postEl.innerHTML =
-          '<a href="' + (post.url) + '" target="_blank" rel="noopener noreferrer">' +
-            '<img src="' + post.thumbnail + '" alt="' + post.title + '" loading="lazy" ' +
+          '<a href="' + post.url + '">' +
+            '<img src="' + (post.thumbnail || post.url)+ '" alt="' + post.title + '" loading="lazy" ' +
                  'onerror="this.onerror=null;this.src=\'/assets/default-thumb.jpg\';">' +
             '<h3>' + post.title + '</h3>' +
             '<p class="post-description">' + post.description + '</p>' +
@@ -53,7 +48,6 @@ function loadPostsMusik() {
 
         container.appendChild(postEl);
 
-        // Animasi kelas show untuk hashtags & label
         var tags = postEl.querySelectorAll('.post-hashtag, .post-label');
         for (var k = 0; k < tags.length; k++) {
           (function(tag) {
@@ -64,10 +58,10 @@ function loadPostsMusik() {
         }
       }
     })
-    .catch(function(error) {
-      console.error('Error saat memuat post musik:', error);
-      container.innerHTML = '<p style="color:red;">Gagal memuat postingan musik.</p>';
+    .catch(function(err) {
+      console.error('Gagal memuat game:', err);
+      container.innerHTML = '<p style="color:red;">Gagal memuat data musik.</p>';
     });
 }
 
-window.loadPostsMusik = loadPostsMusik;
+window.loadPostsMusic = loadPostsMusic;
