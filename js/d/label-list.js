@@ -1,4 +1,4 @@
-function loadCategoriesForIndex() {
+async function loadCategoriesForIndex() {
   const categoryGrid = document.querySelector('.category-grid');
   if (!categoryGrid) return;
 
@@ -21,7 +21,6 @@ function loadCategoriesForIndex() {
 
       const posts = await res.json();
 
-      // Filter berdasarkan label kategori
       const filteredPosts = posts.filter(post => post.label?.toLowerCase() === name);
       const latestPost = filteredPosts[0] || null;
 
@@ -41,13 +40,15 @@ function loadCategoriesForIndex() {
       return null;
     }
   });
+
   const cards = await Promise.all(promises);
-console.log('Cards dibuat:', cards);
-categoryGrid.innerHTML = '';
-cards.forEach((card) => {
-  if (card) {
-    console.log('Tambah card:', card);
-    categoryGrid.appendChild(card);
-  }
-});
-window.loadCategoriesForIndex = loadCategoriesForIndex;
+  console.log('Cards dibuat:', cards);
+
+  categoryGrid.innerHTML = '';
+  cards.forEach((card) => {
+    if (card) {
+      console.log('Tambah card:', card);
+      categoryGrid.appendChild(card);
+    }
+  });
+}
