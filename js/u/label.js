@@ -46,6 +46,16 @@ function loadCategoriesForIndex() {
       if (card) categoryGrid.appendChild(card);
     });
   });
+  const res = await fetch(url);
+console.log('Status fetch:', res.status, res.statusText);
+
+const posts = await res.json();
+console.log('Data posts:', posts);
+
+posts.forEach(post => {
+  console.log('Label:', post.label, 'Thumbnail:', post.thumbnail);
+});
+
 }
 
 window.loadCategoriesForIndex = loadCategoriesForIndex;
