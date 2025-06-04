@@ -37,7 +37,7 @@ function loadPostsMusic() {
         postEl.innerHTML =
           '<a href="' + post.url + '">' +
             '<img src="' + (post.thumbnail || post.url)+ '" alt="' + post.title + '" loading="lazy" ' +
-                 'onerror="this.onerror=null;this.src=\'/assets/default-thumb.jpg\';">' +
+                 'onerror="this.onerror=null;this.src=\'/assets/error.jpg\';">' +
             '<h3>' + post.title + '</h3>' +
             '<p class="post-description">' + post.description + '</p>' +
           '</a>' +
