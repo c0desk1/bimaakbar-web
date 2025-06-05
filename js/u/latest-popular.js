@@ -28,78 +28,85 @@ function loadLatestPopularPost() {
   }
 
   function createPostElement(post) {
-  var el = document.createElement('div');
+  const el = document.createElement('div');
   el.className = 'post-card';
 
-  var link = document.createElement('a');
+  const link = document.createElement('a');
   link.href = post.url || post.link || '#';
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   link.className = 'post-link';
+  link.style.display = 'flex';
+  link.style.alignItems = 'stretch';
+  link.style.width = '100%';
 
-  // Thumbnail
-  var thumbDiv = document.createElement('div');
+  // === THUMBNAIL (kiri 1:1) ===
+  const thumbDiv = document.createElement('div');
   thumbDiv.className = 'post-thumb';
-  var img = document.createElement('img');
+  const img = document.createElement('img');
   img.src = post.thumbnail || '/assets/error.jpg';
   img.alt = post.title || '';
   img.loading = 'lazy';
-  img.onerror = function () {
-    img.src = '/assets/error.jpg';
-  };
+  img.onerror = () => (img.src = '/assets/error.jpg');
   thumbDiv.appendChild(img);
   link.appendChild(thumbDiv);
 
-  // Konten utama
-  var contentDiv = document.createElement('div');
+  // === MAIN CONTENT (tengah) ===
+  const contentDiv = document.createElement('div');
   contentDiv.className = 'post-content';
 
-  // Title
-  var title = document.createElement('h3');
+  const title = document.createElement('h3');
   title.className = 'post-title';
-  title.textContent = post.title || 'No Title';
+  title.textContent = post.title || 'Tanpa Judul';
   contentDiv.appendChild(title);
 
-  // Deskripsi
-  var desc = document.createElement('p');
+  const desc = document.createElement('p');
   desc.className = 'post-description';
   desc.textContent = post.description || '';
   contentDiv.appendChild(desc);
 
-  // Label dan Hashtag (dalam satu baris)
-  var metaRow = document.createElement('div');
+  const metaRow = document.createElement('div');
   metaRow.className = 'post-meta-row';
 
-  var label = document.createElement('div');
+  const label = document.createElement('div');
   label.className = 'post-label';
-  label.textContent = post.label || post.category || 'No Label';
-  metaRow.appendChild(label);
+  label.textContent = post.label || post.category || 'Tanpa Label';
 
-  var hashtagsDiv = document.createElement('div');
+  const hashtagsDiv = document.createElement('div');
   hashtagsDiv.className = 'post-hashtags';
-  var hashtags = (post.hashtags || '').split(',').map(t => t.trim()).filter(Boolean);
-  hashtagsDiv.innerHTML = hashtags.map(t => `<span class="post-hashtags">#${t}</span>`).join(' ');
+  const hashtags = (post.hashtags || '')
+    .split(',')
+    .map(t => t.trim())
+    .filter(Boolean);
+  hashtagsDiv.innerHTML = hashtags
+    .map(tag => `<span class="post-hashtag">#${tag}</span>`)
+    .join(' ');
+
+  metaRow.appendChild(label);
   metaRow.appendChild(hashtagsDiv);
-
   contentDiv.appendChild(metaRow);
-
-  // Views
-  var viewsDiv = document.createElement('div');
-  viewsDiv.className = 'post-views';
-  viewsDiv.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0} views`;
-  contentDiv.appendChild(viewsDiv);
-
-  // Time
-  var timeDiv = document.createElement('div');
-  timeDiv.className = 'post-time';
-  timeDiv.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
-  contentDiv.appendChild(timeDiv);
-
   link.appendChild(contentDiv);
-  el.appendChild(link);
 
+  // === RIGHT SIDE: views + time ===
+  const rightDiv = document.createElement('div');
+  rightDiv.className = 'post-right';
+
+  const views = document.createElement('div');
+  views.className = 'post-views';
+  views.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0}`;
+  rightDiv.appendChild(views);
+
+  const time = document.createElement('div');
+  time.className = 'post-time';
+  time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
+  rightDiv.appendChild(time);
+
+  link.appendChild(rightDiv);
+  el.appendChild(link);
   return el;
+
 }
+
   function renderPaginationButtons(type, totalPosts, currentPage) {
     var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
     var container = document.getElementById(containerId);
