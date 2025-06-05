@@ -1434,6 +1434,9 @@ main {
 }
 
 @media (max-width: 600px) {
+    .affiliate-scroll {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
