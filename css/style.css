@@ -597,6 +597,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .post-thumbnail img {
@@ -604,6 +605,16 @@ main {
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+}
+
+.post-thumbnail::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    background: linear-gradient(to right, transparent 0%, var(--card-background-dark) 100%);
 }
 
 .post-card img {
@@ -626,7 +637,7 @@ main {
 .post-title {
     font-size: 1.1em;
     font-weight: 600;
-    color: var(--text-lighter);
+    color: var(--primary-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
