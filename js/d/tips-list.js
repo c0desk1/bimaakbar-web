@@ -1,65 +1,125 @@
+function createtipsPostElement(post) {
+    const el = document.createElement('div');
+    el.className = 'post-grid';
+
+    const link = document.createElement('a');
+    link.href = post.url || '#';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'post-card';
+
+    // === Thumbnail ===
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'post-thumbnail';
+
+    const img = document.createElement('img');
+    img.src = post.thumbnail || '/assets/error.jpg';
+    img.alt = post.title || '';
+    img.loading = 'lazy';
+    img.onerror = () => (img.src = '/assets/error.jpg');
+
+    thumbnailDiv.appendChild(img);
+    link.appendChild(thumbnailDiv);
+
+    // === Konten Utama ===
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'post-content';
+    contentDiv.style.flex = '1';
+
+    const title = document.createElement('h3');
+    title.className = 'post-title';
+    title.textContent = post.title || 'Tanpa Judul';
+
+    const desc = document.createElement('p');
+    desc.className = 'post-description';
+    desc.textContent = post.description || '';
+
+    // === Hashtags ===
+    const hashtagsDiv = document.createElement('div');
+    hashtagsDiv.className = 'post-hashtags';
+    const hashtags = (post.hashtags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter((tag, index, self) => tag && self.indexOf(tag) === index)
+        .map(tag => `#${tag}`)
+        .join(' ');
+
+    hashtagsDiv.textContent = hashtags;
+
+    contentDiv.appendChild(hashtagsDiv);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(desc);
+    link.appendChild(contentDiv);
+
+    // === Meta Info ===
+    const rightDiv = document.createElement('div');
+    rightDiv.className = 'post-meta';
+
+    const label = document.createElement('div');
+    label.className = 'post-label';
+    label.textContent = post.label || '';
+
+    const time = document.createElement('div');
+    time.className = 'post-time';
+    time.setAttribute('data-timestamp', post.timestamp);
+    time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
+
+    rightDiv.appendChild(label);
+    rightDiv.appendChild(time);
+    link.appendChild(rightDiv);
+
+    el.appendChild(link);
+    return el;
+}
+
 function loadPostsTips() {
-    console.log('Element dipanggil');
+    console.log('Fungsi loadPostsTips() dipanggil.');
 
     const container = document.getElementById('post-list-tips');
     if (!container) {
-        console.warn('Elemen #post-list-tips tidak ditemukan.');
+        console.warn('Elemen #post-list-tips tidak ditemukan. Pastikan ada div dengan id="post-list-tips" di HTML Anda.');
         return;
     }
 
     container.innerHTML = '<div class="loading-spinner"></div>';
 
-    fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips')
+    fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/tips')
         .then(res => {
-            if (!res.ok) throw new Error('Gagal fetch Data: ' + res.status + ' ' + res.statusText);
+            if (!res.ok) {
+                return res.text().then(text => { throw new Error(`Gagal fetch data: ${res.status} ${res.statusText} - ${text}`); });
+            }
             return res.json();
         })
         .then(data => {
             container.innerHTML = '';
-            console.log('Data tips:', data);
+
             if (!data || !data.length) {
-                container.innerHTML = '<p>Belum ada postingan.</p>';
+                container.innerHTML = '<p>Belum ada postingan tips.</p>';
                 return;
             }
+
+            // --- Bagian PENTING: Urutkan data berdasarkan timestamp (terbaru ke terlama) ---
+            data.sort((a, b) => {
+                const timeA = new Date(a.timestamp).getTime();
+                const timeB = new Date(b.timestamp).getTime();
+                return timeB - timeA; // Urutkan menurun (terbaru di atas)
+            });
+            // -----------------------------------------------------------------------------
 
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
             }
 
             data.forEach(post => {
-                const hashtags = Array.isArray(post.hashtags) ?
-                    post.hashtags :
-                    (post.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
-                const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
-                const labelHTML = post.label ? `<span style="display:none;" class="post-label">${post.label}</span>` : '';
-                const postEl = document.createElement('div');
-                postEl.className = 'post-card';
-                postEl.innerHTML = `
-                    <a href="${post.url}" target="_blank" rel="noopener noreferrer">
-                        <img src="${post.thumbnail}" alt="${post.title}" loading="lazy"
-                             onerror="this.onerror=null;this.src='/assets/error.jpg';">
-                        <h3>${post.title}</h3>
-                        <p class="post-description">${post.description}</p>
-                    </a>
-                    <div class="post-meta">
-                        <div class="post-hashtags">${labelHTML} ${hashtagsHTML}</div>
-                        <div class="post-time" data-timestamp="${post.timestamp || ''}"></div>
-                    </div>`;
+                const postEl = createtipsPostElement(post);
                 container.appendChild(postEl);
-                postEl.querySelectorAll('.post-hashtag, .post-label').forEach(tag => {
-                    requestAnimationFrame(() => tag.classList.add('show'));
-                });
             });
 
-            if (typeof updateTimes === 'function') {
-                updateTimes();
-            } else {
-                console.warn('Fungsi updateTimes() tidak ditemukan.');
-            }
+            updateTimes();
         })
         .catch(error => {
-            console.error('❌ Error saat memuat postingan:', error);
-            container.innerHTML = '<p style="color:red;">Gagal memuat postingan.</p>';
+            console.error('❌ Error saat memuat post tips:', error);
+            container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan tips. Silakan coba lagi nanti.</p>';
         });
 }
 
