@@ -4,6 +4,7 @@ function loadCategoryLabels() {
     console.warn('Elemen #category-labels tidak ditemukan.');
     return;
   }
+  container.innerHTML = ''; // Kosongkan container dulu
 
   const labels = [
     { name: 'Musik', sheet: 'musik', url: 'html/d/musik.html' },
@@ -15,46 +16,53 @@ function loadCategoryLabels() {
 
   const sheetId = '10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk';
 
-  labels.forEach(label => {
+  const fetches = labels.map(label =>
     fetch(`https://opensheet.elk.sh/${sheetId}/${label.sheet}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`Fetch ${label.sheet} gagal: ${res.status}`);
+        return res.json();
+      })
       .then(data => {
-        if (!data || data.length === 0) {
-          console.warn(`Sheet ${label.sheet} kosong, gunakan fallback thumbnail`);
-          appendCategoryCard(label, '/assets/error.jpg');
-          return;
+        let latestPost = null;
+        if (Array.isArray(data) && data.length) {
+          latestPost = data.reduce((prev, curr) => {
+            const prevTime = Date.parse(prev.timestamp) || 0;
+            const currTime = Date.parse(curr.timestamp) || 0;
+            return currTime > prevTime ? curr : prev;
+          }, data[0]);
         }
-
-        // Cari postingan dengan timestamp terbesar
-        let latestPost = data.reduce((prev, curr) => {
-          const prevTime = Number(prev.timestamp) || 0;
-          const currTime = Number(curr.timestamp) || 0;
-          return currTime > prevTime ? curr : prev;
-        }, data[0]);
-
-        const thumb = latestPost.thumbnail || '/assets/error.jpg';
-
-        appendCategoryCard(label, thumb);
+        return {
+          label,
+          latestPost,
+        };
       })
       .catch(err => {
-        console.error(`Gagal mengambil thumbnail untuk ${label.name}`, err);
-        appendCategoryCard(label, '/assets/error.jpg');
-      });
+        console.error(`Gagal fetch sheet ${label.sheet}`, err);
+        return {
+          label,
+          latestPost: null,
+        };
+      })
+  );
+
+  Promise.all(fetches).then(results => {
+    results.forEach(({ label, latestPost }) => {
+      const thumb = latestPost?.thumbnail || '/assets/error.jpg';
+
+      const card = document.createElement('a');
+      card.href = label.url;
+      card.className = 'category-card';
+      card.style.backgroundImage = `url('${thumb}')`;
+
+      card.innerHTML = `
+        <div class="category-content">
+          <h3>${label.name}</h3>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
   });
-
-  function appendCategoryCard(label, thumb) {
-    const card = document.createElement('a');
-    card.href = label.url;
-    card.className = 'category-card';
-    card.style.backgroundImage = `url('${thumb}')`;
-
-    card.innerHTML = `
-      <div class="category-content">
-        <h3>${label.name}</h3>
-      </div>
-    `;
-
-    container.appendChild(card);
-  }
 }
+
 window.loadCategoryLabels = loadCategoryLabels;
