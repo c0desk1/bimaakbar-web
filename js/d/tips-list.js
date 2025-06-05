@@ -6,28 +6,30 @@ function loadPostsTips() {
         console.warn('Elemen #post-list-tips tidak ditemukan.');
         return;
     }
-    container.innerHTML = '<p>Loading posts...</p>';
-        fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips')
+
+    container.innerHTML = '<div class="loading-spinner"></div>';
+
+    fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips')
         .then(res => {
             if (!res.ok) throw new Error('Gagal fetch Data: ' + res.status + ' ' + res.statusText);
             return res.json();
         })
         .then(data => {
+            container.innerHTML = '';
             console.log('Data tips:', data);
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
             }
 
-            container.innerHTML = '';
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
             }
 
             data.forEach(post => {
-                const hashtags = Array.isArray(post.hashtags)
-                    ? post.hashtags
-                    : (post.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
+                const hashtags = Array.isArray(post.hashtags) ?
+                    post.hashtags :
+                    (post.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
                 const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
                 const labelHTML = post.label ? `<span style="display:none;" class="post-label">${post.label}</span>` : '';
                 const postEl = document.createElement('div');
