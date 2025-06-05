@@ -573,6 +573,9 @@ main {
     height: 200px;
     min-height: 180px;
     max-height: 400px;
+    width: 200px;
+    min-width: 180px;
+    max-width: 400px;
     flex-direction: row;
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
