@@ -1,5 +1,5 @@
 function loadPostsGame() {
-    console.log('🎮 loadPostsGame dipanggil');
+    console.log('Element dipanggil');
 
     const container = document.getElementById('post-list-game');
     if (!container) {
@@ -14,7 +14,7 @@ function loadPostsGame() {
             return res.json();
         })
         .then(data => {
-            console.log('🎮 Data game:', data);
+            console.log('Data game:', data);
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
@@ -29,10 +29,8 @@ function loadPostsGame() {
                 const hashtags = Array.isArray(post.hashtags)
                     ? post.hashtags
                     : (post.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
-
                 const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
                 const labelHTML = post.label ? `<span style="display:none;" class="post-label">${post.label}</span>` : '';
-
                 const postEl = document.createElement('div');
                 postEl.className = 'post-card';
                 postEl.innerHTML = `
