@@ -35,74 +35,71 @@ function loadLatestPopularPost() {
   link.href = post.url || post.link || '#';
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
-  link.className = 'post-link'; // gunakan flex di sini
+  link.className = 'post-link';
 
-  // THUMBNAIL DI KIRI
+  // Thumbnail
   var thumbDiv = document.createElement('div');
   thumbDiv.className = 'post-thumb';
   var img = document.createElement('img');
   img.src = post.thumbnail || '/assets/error.jpg';
   img.alt = post.title || '';
   img.loading = 'lazy';
-  img.onerror = function() {
+  img.onerror = function () {
     img.src = '/assets/error.jpg';
   };
   thumbDiv.appendChild(img);
+  link.appendChild(thumbDiv);
 
-  // KONTEN DI KANAN THUMBNAIL
+  // Konten utama
   var contentDiv = document.createElement('div');
-  contentDiv.className = 'post-content-wrapper';
+  contentDiv.className = 'post-content';
 
-  // LABEL (KANAN ATAS)
-  var label = document.createElement('div');
-  label.className = 'post-label';
-  label.textContent = post.label || post.category || 'No Label';
-  contentDiv.appendChild(label);
-
-  // TITLE
+  // Title
   var title = document.createElement('h3');
   title.className = 'post-title';
   title.textContent = post.title || 'No Title';
   contentDiv.appendChild(title);
 
-  // DESKRIPSI
+  // Deskripsi
   var desc = document.createElement('p');
   desc.className = 'post-description';
   desc.textContent = post.description || '';
   contentDiv.appendChild(desc);
 
-  // HASHTAGS + VIEWS
+  // Label dan Hashtag (dalam satu baris)
   var metaRow = document.createElement('div');
   metaRow.className = 'post-meta-row';
 
+  var label = document.createElement('div');
+  label.className = 'post-label';
+  label.textContent = post.label || post.category || 'No Label';
+  metaRow.appendChild(label);
+
   var hashtagsDiv = document.createElement('div');
   hashtagsDiv.className = 'post-hashtags';
-  var hashtags = (post.hashtags || '').split(',').map(function(t){ return t.trim(); }).filter(function(t){ return t; });
-  hashtagsDiv.innerHTML = hashtags.map(function(t){
-    return '<span class="post-hashtag">#' + t + '</span>';
-  }).join(' ');
+  var hashtags = (post.hashtags || '').split(',').map(t => t.trim()).filter(Boolean);
+  hashtagsDiv.innerHTML = hashtags.map(t => `<span class="post-hashtag">#${t}</span>`).join(' ');
   metaRow.appendChild(hashtagsDiv);
-
-  var viewsDiv = document.createElement('div');
-  viewsDiv.className = 'post-views';
-  viewsDiv.innerHTML = '<i class="fa fa-eye"></i> ' + (post.views ? post.views : '0') + ' views';
-  metaRow.appendChild(viewsDiv);
 
   contentDiv.appendChild(metaRow);
 
-  // TIME (KANAN BAWAH)
+  // Views
+  var viewsDiv = document.createElement('div');
+  viewsDiv.className = 'post-views';
+  viewsDiv.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0} views`;
+  contentDiv.appendChild(viewsDiv);
+
+  // Time
   var timeDiv = document.createElement('div');
   timeDiv.className = 'post-time';
-  timeDiv.innerHTML = '<i class="fa fa-clock-o"></i> ' + formatTime(post.timestamp);
+  timeDiv.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
   contentDiv.appendChild(timeDiv);
 
-  link.appendChild(thumbDiv);
   link.appendChild(contentDiv);
   el.appendChild(link);
 
   return el;
 }
-
   function renderPaginationButtons(type, totalPosts, currentPage) {
     var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
     var container = document.getElementById(containerId);
