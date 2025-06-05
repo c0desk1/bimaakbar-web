@@ -1,75 +1,147 @@
+function createShopPostElement(product) {
+    const el = document.createElement('div');
+    el.className = 'post-grid';
+
+    const link = document.createElement('a');
+    link.href = product.url || '#';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'post-card';
+
+    // === Thumbnail ===
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'post-thumbnail';
+
+    const img = document.createElement('img');
+    img.src = product.thumbnail || '/assets/error.jpg';
+    img.alt = product.title || '';
+    img.loading = 'lazy';
+    img.onerror = () => (img.src = '/assets/error.jpg');
+
+    thumbnailDiv.appendChild(img);
+    link.appendChild(thumbnailDiv);
+
+    // === Konten Utama ===
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'post-content';
+    contentDiv.style.flex = '1';
+
+    const title = document.createElement('h3');
+    title.className = 'post-title';
+    title.textContent = product.title || 'Tanpa Judul';
+
+    const desc = document.createElement('p');
+    desc.className = 'post-description';
+    desc.textContent = product.description || '';
+
+    const price = document.createElement('p');
+    price.className = 'post-price';
+    price.textContent = `Harga: ${product.price || 'N/A'}`;
+
+    // === Hashtags ===
+    const hashtagsDiv = document.createElement('div');
+    hashtagsDiv.className = 'post-hashtags';
+    const hashtags = (post.hashtags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter((tag, index, self) => tag && self.indexOf(tag) === index)
+        .map(tag => `#${tag}`)
+        .join(' ');
+
+    hashtagsDiv.textContent = hashtags;
+
+    contentDiv.appendChild(hashtagsDiv);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(desc);
+    contentDiv.appendChild(price);
+    link.appendChild(contentDiv);
+
+    // === Meta Info (untuk label dan waktu) ===
+    const rightDiv = document.createElement('div');
+    rightDiv.className = 'post-meta';
+
+    // Label, pastikan display none jika tidak ada teks
+    const label = document.createElement('div');
+    label.className = 'post-label';
+    if (product.label && product.label.toLowerCase() === 'shop') {
+        label.textContent = product.label;
+        // Jika Anda ingin menyembunyikan label 'shop' tapi tetap memfilternya
+        // Anda bisa menambahkan style display: none; di sini atau via CSS
+        // label.style.display = 'none';
+    } else {
+        label.style.display = 'none'; // Sembunyikan jika label bukan 'shop' atau kosong
+    }
+
+
+    const time = document.createElement('div');
+    time.className = 'post-time';
+    time.setAttribute('data-timestamp', product.timestamp || ''); // Simpan timestamp
+    time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(product.timestamp)}`; // Tampilkan waktu awal
+
+    rightDiv.appendChild(label);
+    rightDiv.appendChild(time);
+    link.appendChild(rightDiv);
+
+    el.appendChild(link);
+    return el;
+}
+
+// --- Fungsi loadPostsShop yang telah direstrukturisasi ---
 function loadPostsShop() {
-    console.log('Element dipanggil');
+    console.log('Fungsi loadPostsShop() dipanggil.');
 
     const container = document.getElementById('post-list-shop');
     if (!container) {
-        console.warn('Elemen #post-list-shop tidak ditemukan.');
+        console.warn('Elemen #post-list-shop tidak ditemukan. Pastikan ada div dengan id="post-list-shop" di HTML Anda.');
         return;
     }
 
-    container.innerHTML = '<div class="loading-spinner"></div>';
+    container.innerHTML = '<div class="loading-spinner"></div>'; // Tampilkan spinner loading
 
     fetch('https://opensheet.elk.sh/1B2qNWH-cyDuVYJ2m1mLITKJvU7bPmYQYVt1g4Sxh19A/shop')
         .then(res => {
-            if (!res.ok) throw new Error('Gagal fetch data: ' + res.status + ' ' + res.statusText);
+            if (!res.ok) {
+                return res.text().then(text => { throw new Error(`Gagal fetch data: ${res.status} ${res.statusText} - ${text}`); });
+            }
             return res.json();
         })
         .then(data => {
-            container.innerHTML = '';
-            console.log('Data produk toko:', data);
+            container.innerHTML = ''; // Hapus spinner loading setelah data diterima
 
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada produk di toko.</p>';
                 return;
             }
 
-            // Filter berdasarkan label (jika tetap dibutuhkan)
+            // Filter berdasarkan label "shop" (jika data dari opensheet sudah difilter di sisi sheet, ini bisa dihilangkan)
             const filtered = data.filter(item => (item.label || '').toLowerCase() === 'shop');
             if (!filtered.length) {
                 container.innerHTML = '<p>Tidak ada produk dengan label "shop".</p>';
                 return;
             }
 
-        
+            // --- Urutkan data berdasarkan timestamp (terbaru ke terlama) ---
+            filtered.sort((a, b) => {
+                const timeA = new Date(a.timestamp).getTime();
+                const timeB = new Date(b.timestamp).getTime();
+                // Tangani kasus timestamp tidak valid/kosong: tempatkan di akhir
+                if (isNaN(timeA) && isNaN(timeB)) return 0;
+                if (isNaN(timeA)) return 1;
+                if (isNaN(timeB)) return -1;
+                return timeB - timeA; // Urutkan menurun (terbaru di atas)
+            });
+            // -----------------------------------------------------------------------------
+
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
             }
 
-            for (let i = 0; i < filtered.length; i++) {
-                const product = filtered[i];
-
-                const hashtags = Array.isArray(product.hashtags) ?
-                    product.hashtags :
-                    (product.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
-                const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
-                const labelHTML = product.label ? '<span style="display:none;" class="post-label">' + product.label + '</span>' : '';
-                const productEl = document.createElement('div');
-                productEl.className = 'post-card';
-                productEl.innerHTML =
-                    '<a href="' + (product.url || '#') + '" target="_blank" rel="noopener noreferrer">' +
-                    '<img src="' + product.thumbnail + '" alt="' + product.title + '" loading="lazy" ' +
-                    'onerror="this.onerror=null;this.src=\'/assets/logo.png\';">' +
-                    '<h3>' + product.title + '</h3>' +
-                    '<p class="post-description">' + product.description + '</p>' +
-                    '<p class="post-price">Harga: ' + product.price + '</p>' +
-                    '</a>' +
-                    '<div class="post-meta">' +
-                    '<div class="post-hashtags">' + hashtagsHTML + '</div>' +
-                    '<div class="post-time" data-timestamp="' + (product.timestamp || '') + '"></div>' +
-                    '</div>';
-
+            filtered.forEach(product => {
+                const productEl = createShopPostElement(product);
                 container.appendChild(productEl);
+            });
 
-                // Animasi hashtag
-                const tags = productEl.querySelectorAll('.post-hashtag');
-                for (let k = 0; k < tags.length; k++) {
-                    requestAnimationFrame(() => {
-                        tags[k].classList.add('show');
-                    });
-                }
-            }
-
-            // ✅ Panggil updateTimes setelah semua elemen .post-time dirender
+            // ✅ Panggil updateTimes setelah semua elemen dirender
             if (typeof updateTimes === 'function') {
                 updateTimes();
             } else {
@@ -78,7 +150,7 @@ function loadPostsShop() {
         })
         .catch(error => {
             console.error('❌ Error saat memuat produk toko:', error);
-            container.innerHTML = '<p style="color:red;">Gagal memuat data toko.</p>';
+            container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat produk toko. Silakan coba lagi nanti.</p>';
         });
 }
 
