@@ -60,8 +60,8 @@ function createGamePostElement(post) {
     label.textContent = post.label || '';
 
     const time = document.createElement('div');
-	time.className = 'post-time';
-	time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
+    time.className = 'post-time';
+    time.textContent = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
 
     rightDiv.appendChild(label);
     rightDiv.appendChild(time);
@@ -114,3 +114,4 @@ function loadPostsGame() {
 }
 
 window.loadPostsGame = loadPostsGame;
+tsGame;
