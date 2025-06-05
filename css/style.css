@@ -680,6 +680,7 @@ main {
     color: var(--text-light);
     margin-top: 6px;
     flex-direction: row;
+    white-space: nowrap;
 }
 
 .post-hashtags:hover {
@@ -697,6 +698,8 @@ main {
     gap: 8px;
     opacity: 0.85;
     flex-direction: row;
+    white-space: nowrap;
+    max-width: 150px;
 }
 
 .post-time i {
