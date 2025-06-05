@@ -27,10 +27,10 @@ function loadPostsGame() {
 
             for (var i = 0; i < data.length; i++) {
                 var post = data[i];
-                var hashtags = Array.isArray(post.hashtags) ?
+                const hashtags = Array.isArray(post.hashtags) ?
                 	post.hashtags :
                 	(post.hashtags || '').split(',').map(tag =>tag.trim()).filter(Boolean);
-                var hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');       
+                const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');       
                 var labelHTML = post.label ? `<span style="display:none;" class="post-label">#${post.label}</span>` : '';
                 var postEl = document.createElement('div');
                 postEl.className = 'post-card';
