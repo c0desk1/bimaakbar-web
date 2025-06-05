@@ -570,9 +570,6 @@ main {
 .post-card {
     display: flex;
     align-items: stretch;
-    height: 200px;
-    min-height: 120px;
-    max-height: 200px;
     flex-direction: row;
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
@@ -619,8 +616,11 @@ main {
 .post-content {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    gap: 8px;
+    flex: 1;  
+    align-items: left;
+    margin-top: 6px;
+    heights:100%;
+    gap: 6px;
 }
 
 .post-title {
@@ -630,7 +630,7 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-direction: row;
+    flex-direction: flex;
 }
 
 .post-description {
@@ -640,7 +640,7 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex-direction: row;
+    flex-direction: flex;
 }
 
 .post-meta {
@@ -1257,12 +1257,10 @@ main {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    /* Semi-transparent dark background */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1002;
-    /* Di atas sidebar */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -1432,13 +1430,15 @@ main {
     	height: 100%;
         flex: 1;
         display: flex;
-        gap: 6px;
-    }
-    .post-meta-row {
-        margin-top: 6px;
+        align-items: left;
+        flex-direction: column;
     }
     .post-description {
         white-space: nowrap;
+        align-items: left;
+    }
+    .post-meta-row {
+        margin-top: 6px;
     }
     .newsletter-subscribe {
         padding: 50px 15px;
@@ -1506,8 +1506,15 @@ main {
 		width: 100%;
 	}
 	.post-content {
+    	height: 100%;
         flex: 1;
-        display: row;
+        display: flex;
+        align-items: left;
+        flex-direction: column;
+    }
+    .post-description {
+        white-space: nowrap;
+        align-items: left;
     }
 }
 
