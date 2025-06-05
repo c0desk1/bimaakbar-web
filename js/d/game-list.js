@@ -1,12 +1,6 @@
 function createGamePostElement(post) {
     const el = document.createElement('div');
     el.className = 'post-card';
-    
-    const link = document.createElement('a');
-    link.href = post.url || '#';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-
     // === Thumbnail ===
     const thumbnailDiv = document.createElement('div');
     thumbnailDiv.className = 'post-thumbnail';
@@ -18,7 +12,8 @@ function createGamePostElement(post) {
     img.onerror = () => (img.src = '/assets/error.jpg');
 
     thumbnailDiv.appendChild(img);
-    link.appendChild(thumbnailDiv);
+    el.appendChild(thumbnailDiv);
+
 
     // === Konten Utama ===
     const contentDiv = document.createElement('div');
@@ -48,7 +43,7 @@ function createGamePostElement(post) {
     contentDiv.appendChild(hashtagsDiv);
     contentDiv.appendChild(title);
     contentDiv.appendChild(desc);
-    link.appendChild(contentDiv);
+    el.appendChild(contentDiv);
 
     // === Meta Info ===
     const rightDiv = document.createElement('div');
@@ -64,7 +59,8 @@ function createGamePostElement(post) {
 
     rightDiv.appendChild(label);
     rightDiv.appendChild(time);
-    link.appendChild(rightDiv);
+    el.appendChild(rightDiv);
+
 
     el.appendChild(link);
     return el;
