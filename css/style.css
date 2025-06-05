@@ -575,7 +575,6 @@ main {
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
     overflow: hidden;
-    margin-bottom: 6px;
     border-radius: 12px;
     text-decoration: none;
     transition: transform 0.3s ease;
