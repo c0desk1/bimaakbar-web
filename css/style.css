@@ -563,7 +563,7 @@ main {
 .post-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    gap: 20px;
     overflow: hidden;
 }
 
@@ -571,8 +571,8 @@ main {
     display: flex;
     align-items: stretch;
     height: 200px;
-    min-height: 180px;
-    max-height: 400px;
+    min-height: 120px;
+    max-height: 200px;
     flex-direction: row;
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
@@ -619,8 +619,8 @@ main {
 .post-content {
     display: flex;
     flex-direction: column;
-    gap: 8px;
     flex: 1;
+    gap: 8px;
 }
 
 .post-title {
@@ -1415,15 +1415,24 @@ main {
     .post-card {
         flex-direction: column;
         align-items: flex-start;
+        height: 200px;
+	    min-height: 120px;
+	    max-height: 200px;
     }
     .post-card img {
         aspect-ratio: 1 / 1;
         border-radius: 8px;
         border-bottom: none;
     }
+    .post-thumbnail {
+		height: 100%;
+		width: 100%;
+	}
     .post-content {
+    	height: 100%;
         flex: 1;
-        padding: 0;
+        display: flex;
+        gap: 6px;
     }
     .post-meta-row {
         margin-top: 6px;
@@ -1443,6 +1452,16 @@ main {
     }
     .subscribe-form button {
         margin-bottom: 0;
+    }
+    .search-overlay .search-input-group {
+	    display: row;
+        border-radius: 30px;
+	}
+    .search-overlay .search-input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
     }
 }
 
@@ -1466,6 +1485,29 @@ main {
     }
     .stats-item {
         width: 100%;
+    }
+    .search-overlay .search-input-group {
+	    display: row;
+        border-radius: 30px;
+	}
+    .search-overlay .search-input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+    }
+    .post-card {
+	    height: 160px;
+	    min-height: 120px;
+	    max-height: 160px;
+	}
+	.post-thumbnail {
+		height: 100%;
+		width: 100%;
+	}
+	.post-content {
+        flex: 1;
+        display: row;
     }
 }
 
@@ -1497,4 +1539,19 @@ main {
     .search-icon-header {
         font-size: 1.3em;
     }
+    .search-overlay .search-input-group {
+	    display: flex;
+        border-radius: 30px;
+	}
+    .search-overlay .search-input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+    }
+    .post-card {
+	    height: 140px;
+	    min-height: 120px;
+	    max-height: 140px;
+	}
 }
