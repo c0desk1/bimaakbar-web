@@ -606,6 +606,7 @@ h2::after {
 
 .post-card {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
@@ -624,8 +625,8 @@ h2::after {
 }
 
 .post-card img {
-  width: 72px;       /* ukuran thumbnail tetap proporsional */
-  height: 72px;
+  width: 128px;
+  aspect-ratio: 16 / 9;
   border-radius: 12px;
   object-fit: cover;
   flex-shrink: 0;
@@ -635,7 +636,7 @@ h2::after {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* penting untuk ellipsis */
+  min-width: 0;
 }
 
 .post-card h3 {
@@ -668,6 +669,35 @@ h2::after {
   text-overflow: ellipsis;
 }
 
+/* Baris: Label + Hashtags */
+.post-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em;
+  margin-top: 4px;
+  gap: 8px;
+}
+
+.post-label {
+  color: var(--primary-color);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.post-hashtags {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  text-align: right;
+}
+
+.post-hashtag {
+  color: var(--text-light);
+  margin-left: 0.5em;
+}
+
 .post-bottom-row {
   display: flex;
   justify-content: space-between;
@@ -675,16 +705,10 @@ h2::after {
   color: var(--secondary-color);
   border-top: 1px solid var(--border-dark);
   padding-top: 8px;
-}
-
-.post-hashtags {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-top: 6px;
 }
 
 .post-views {
-  margin-left: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -694,7 +718,6 @@ h2::after {
   color: var(--primary-color);
 }
 
-/* Jika kamu ingin ikon jam untuk timestamp, gunakan */
 .post-time i {
   margin-right: 5px;
   color: var(--primary-color);
@@ -980,9 +1003,48 @@ h2::after {
         /* Single column on smaller screens */
         gap: 20px;
     }
-    .post-card img {
-        height: 180px;
-    }
+    .post-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+  }
+
+  .post-card img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .post-content {
+    margin-top: 10px;
+  }
+
+  .post-meta-row {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .post-hashtags {
+    text-align: right;
+  }
+
+  .post-bottom-row {
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+
+  .post-views {
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+
+  .post-time {
+    margin-top: 2px;
+    font-size: 0.7em;
+  }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
