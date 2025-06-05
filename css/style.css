@@ -693,32 +693,32 @@ h2::after {
 }
 
 .affiliate-card {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    border: 2px solid var(--primary-color);
-    background-color: var(--background-dark);
-    border-radius: 20px;   
-    box-shadow: 0 2px 8px var(--shadow-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px;
-    transition: transform 0.3s ease;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  background-color: var(--background-dark);
+  box-shadow: 0 2px 8px var(--shadow-dark);
+  overflow: hidden; /* ini penting agar img tidak keluar radius */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .affiliate-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* tidak perlu border-radius di sini karena sudah dibatasi oleh overflow parent */
 }
 
 .affiliate-card:hover {
-	border-color: var(--primary-color);
-    transform: scale(1.05);
+  transform: scale(1.05);
+  border-color: var(--primary-color);
 }
 
 
