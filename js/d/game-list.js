@@ -7,20 +7,23 @@ function loadPostsGame() {
         return;
     }
 
-    container.innerHTML = '<p>Loading posts...</p>';
+    // Tampilkan spinner saat loading
+    container.innerHTML = '<div class="loading-spinner"></div>';
+
     fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game')
         .then(res => {
             if (!res.ok) throw new Error('Gagal fetch Data: ' + res.status + ' ' + res.statusText);
             return res.json();
         })
         .then(data => {
-            console.log('Data game:', data);
+            // Hapus spinner sebelum render data
+            container.innerHTML = '';
+
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
             }
 
-            container.innerHTML = '';
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
             }
