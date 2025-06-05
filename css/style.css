@@ -644,9 +644,7 @@ main {
     right: 10px;
     display: flex;
     flex-direction: column;
-    /* Membuat tampilan vertikal */
     gap: 6px;
-    /* Memberikan jarak antar elemen */
 }
 
 .post-meta-row {
@@ -1415,13 +1413,10 @@ main {
         gap: 20px;
     }
     .post-card {
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
-        padding: 12px 16px;
+        flex-direction: column;
+        align-items: flex-start;
     }
     .post-card img {
-        width: 160px;
         aspect-ratio: 1 / 1;
         border-radius: 8px;
         border-bottom: none;
@@ -1429,9 +1424,6 @@ main {
     .post-content {
         flex: 1;
         padding: 0;
-    }
-    .post-title-row {
-        flex-direction: row;
     }
     .post-meta-row {
         margin-top: 6px;
