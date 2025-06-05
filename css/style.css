@@ -520,7 +520,6 @@ main {
 
 .affiliate-card {
     position: relative;
-    max-width: 160px;
     width: 100%;
     aspect-ratio: 1 / 1;
     border: 2px solid var(--primary-color);
