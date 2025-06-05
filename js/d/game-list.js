@@ -1,6 +1,6 @@
 function createGamePostElement(post) {
     const el = document.createElement('div');
-    el.className = 'post-link';
+    el.className = 'post-grid';
 
     const link = document.createElement('a');
     link.href = post.url || '#';
