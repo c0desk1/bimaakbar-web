@@ -705,6 +705,7 @@ h2::after {
     align-items: center;
     justify-content: center;
     padding: 6px;
+    border: 1px solid var(--primary-color);
 }
 
 .affiliate-card img {
@@ -959,5 +960,4 @@ h2::after {
         /* Ukuran thumbnail affiliate disesuaikan */
         height: 100px;
     }
-    /* Newsletter Responsive */
-    .newsletter-subscribe {
+    /* Newslette
