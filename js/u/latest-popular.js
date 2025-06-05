@@ -39,7 +39,7 @@ function loadLatestPopularPost() {
         link.style.display = 'flex';
         link.style.alignItems = 'flex-start';
         link.style.width = '100%';
-        link.style.gap = '16px'; // Menambahkan jarak antar elemen
+        link.style.gap = '16px';
 
         // === Thumbnail (Kiri) ===
         const thumbnailDiv = document.createElement('div');
@@ -78,12 +78,12 @@ function loadLatestPopularPost() {
         hashtagsDiv.className = 'post-hashtags';
         const hashtags = (post.hashtags || '')
             .split(',')
-            .map(tag => tag.trim()) // Hilangkan spasi ekstra
+            .map(tag => tag.trim())
             .filter((tag, index, self) => tag && self.indexOf(tag) === index) // Hilangkan duplikat
-            .map(tag => `#${tag}`) // Tambahkan # sebelum setiap tag
-            .join(' '); // Format dengan spasi
+            .map(tag => `#${tag}`)
+            .join(' ');
 
-        hashtagsDiv.textContent = hashtags; // Tampilkan sebagai teks biasa
+        hashtagsDiv.textContent = hashtags;
 
 
         metaRow.appendChild(label);
@@ -93,22 +93,17 @@ function loadLatestPopularPost() {
         contentDiv.appendChild(metaRow);
         link.appendChild(contentDiv);
 
+
         // === Meta Info (Kanan) ===
         const rightDiv = document.createElement('div');
         rightDiv.className = 'post-meta';
-
-        const views = document.createElement('div');
-        views.className = 'post-views';
-        views.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0}`;
-
         const time = document.createElement('div');
         time.className = 'post-time';
         time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
 
-        rightDiv.appendChild(views);
+
         rightDiv.appendChild(time);
         link.appendChild(rightDiv);
-
         el.appendChild(link);
         return el;
     }
@@ -119,7 +114,6 @@ function loadLatestPopularPost() {
         var container = document.getElementById(containerId);
         if (!container) return;
 
-        // Hapus tombol lama
         var oldPrev = container.querySelector('.load-prev-btn-' + type);
         if (oldPrev) oldPrev.parentNode.removeChild(oldPrev);
         var oldNext = container.querySelector('.load-next-btn-' + type);
