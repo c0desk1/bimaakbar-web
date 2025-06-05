@@ -1382,6 +1382,7 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
     .affiliate-scroll {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         padding-bottom: 10px;
     }
     .affiliate-item {
@@ -1464,6 +1465,9 @@ main {
     }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    .affiliate-scroll {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
     .post-card h3 {
         font-size: 1.3em;
