@@ -6,11 +6,11 @@ function loadCategoryLabels() {
     }
 
     const labels = [
-        { name: 'Musik', sheet: 'musik', url: 'html/d/musik.html', title: 'Musik' },
-        { name: 'Game', sheet: 'game', url: 'html/d/game.html', title: 'Game' },
-        { name: 'Tutorial', sheet: 'tutorial', url: 'html/d/tutorial.html', title: 'Tutorial' },
-        { name: 'Tips', sheet: 'tips', url: 'html/d/tips.html', title: 'Tips & Trik' },
-        { name: 'Shop', sheet: 'shop', url: 'html/d/shop.html', title: 'Shop' },
+        { name: 'musik', sheet: 'musik', url: 'html/d/musik.html', title: 'Musik' },
+        { name: 'game', sheet: 'game', url: 'html/d/game.html', title: 'Game' },
+        { name: 'tutorial', sheet: 'tutorial', url: 'html/d/tutorial.html', title: 'Tutorial' },
+        { name: 'tips', sheet: 'tips', url: 'html/d/tips.html', title: 'Tips & Trik' },
+        { name: 'shop', sheet: 'shop', url: 'html/d/shop.html', title: 'Shop' },
     ];
 
     labels.forEach(label => {
