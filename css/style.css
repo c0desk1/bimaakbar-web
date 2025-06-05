@@ -570,10 +570,10 @@ main {
     display: flex;
     flex-direction: column;
     background-color: var(--card-background-dark);
-    border-radius: 12px;
     box-shadow: 0 2px 5px var(--shadow-dark);
     overflow: hidden;
     margin-bottom: 12px;
+    border-radius: 12px;
     text-decoration: none;
     transition: transform 0.3s ease;
     cursor: pointer;
@@ -585,9 +585,9 @@ main {
 
 .post-card img {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 0px solid var(--border-dark);
 }
 
 .post-content {
@@ -1399,7 +1399,7 @@ main {
     }
     .post-card img {
         width: 160px;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
         border-radius: 8px;
         border-bottom: none;
     }
