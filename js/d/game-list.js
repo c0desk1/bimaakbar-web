@@ -1,3 +1,76 @@
+function createGamePostElement(post) {
+    const el = document.createElement('div');
+    el.className = 'post-card';
+
+    const link = document.createElement('a');
+    link.href = post.url || '#';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'post-link';
+
+    // === Thumbnail ===
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'post-thumbnail';
+
+    const img = document.createElement('img');
+    img.src = post.thumbnail || '/assets/error.jpg';
+    img.alt = post.title || '';
+    img.loading = 'lazy';
+    img.onerror = () => (img.src = '/assets/error.jpg');
+
+    thumbnailDiv.appendChild(img);
+    link.appendChild(thumbnailDiv);
+
+    // === Konten Utama ===
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'post-content';
+    contentDiv.style.flex = '1';
+
+    const title = document.createElement('h3');
+    title.className = 'post-title';
+    title.textContent = post.title || 'Tanpa Judul';
+
+    const desc = document.createElement('p');
+    desc.className = 'post-description';
+    desc.textContent = post.description || '';
+
+    // === Hashtags ===
+    const hashtagsDiv = document.createElement('div');
+    hashtagsDiv.className = 'post-hashtags';
+    const hashtags = (post.hashtags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter((tag, index, self) => tag && self.indexOf(tag) === index)
+        .map(tag => `#${tag}`)
+        .join(' ');
+
+    hashtagsDiv.textContent = hashtags;
+
+    contentDiv.appendChild(hashtagsDiv);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(desc);
+    link.appendChild(contentDiv);
+
+    // === Meta Info ===
+    const rightDiv = document.createElement('div');
+    rightDiv.className = 'post-meta';
+
+    const label = document.createElement('div');
+    label.className = 'post-label';
+    label.textContent = post.label || '';
+
+    const time = document.createElement('div');
+    time.className = 'post-time';
+    time.textContent = post.timestamp || 'Baru saja';
+
+    rightDiv.appendChild(label);
+    rightDiv.appendChild(time);
+    link.appendChild(rightDiv);
+
+    el.appendChild(link);
+    return el;
+}
+
 function loadPostsGame() {
     console.log('Element dipanggil');
 
@@ -7,7 +80,6 @@ function loadPostsGame() {
         return;
     }
 
-    // Tampilkan spinner saat loading
     container.innerHTML = '<div class="loading-spinner"></div>';
 
     fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game')
@@ -25,75 +97,7 @@ function loadPostsGame() {
             }
 
             data.forEach(post => {
-                const postEl = document.createElement('div');
-                postEl.className = 'post-card';
-
-                const link = document.createElement('a');
-                link.href = post.url || '#';
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.className = 'post-link';
-
-                // === Thumbnail ===
-                const thumbnailDiv = document.createElement('div');
-                thumbnailDiv.className = 'post-thumbnail';
-
-                const img = document.createElement('img');
-                img.src = post.thumbnail || '/assets/error.jpg';
-                img.alt = post.title || '';
-                img.loading = 'lazy';
-                img.onerror = () => (img.src = '/assets/error.jpg');
-
-                thumbnailDiv.appendChild(img);
-                link.appendChild(thumbnailDiv);
-
-                // === Konten Utama ===
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'post-content';
-                contentDiv.style.flex = '1';
-
-                const title = document.createElement('h3');
-                title.className = 'post-title';
-                title.textContent = post.title || 'Tanpa Judul';
-
-                const desc = document.createElement('p');
-                desc.className = 'post-description';
-                desc.textContent = post.description || '';
-
-                // === Hashtags ===
-                const hashtagsDiv = document.createElement('div');
-                hashtagsDiv.className = 'post-hashtags';
-                const hashtags = (post.hashtags || '')
-                    .split(',')
-                    .map(tag => tag.trim())
-                    .filter((tag, index, self) => tag && self.indexOf(tag) === index)
-                    .map(tag => `#${tag}`)
-                    .join(' ');
-
-                hashtagsDiv.textContent = hashtags;
-
-                contentDiv.appendChild(hashtagsDiv);
-                contentDiv.appendChild(title);
-                contentDiv.appendChild(desc);
-                link.appendChild(contentDiv);
-
-                // === Meta Info ===
-                const rightDiv = document.createElement('div');
-                rightDiv.className = 'post-meta';
-
-                const label = document.createElement('div');
-                label.className = 'post-label';
-                label.textContent = post.label || '';
-
-                const time = document.createElement('div');
-                time.className = 'post-time';
-                time.textContent = post.timestamp || 'Baru saja';
-
-                rightDiv.appendChild(label);
-                rightDiv.appendChild(time);
-                link.appendChild(rightDiv);
-
-                postEl.appendChild(link);
+                const postEl = createGamePostElement(post);
                 container.appendChild(postEl);
             });
 
