@@ -704,7 +704,7 @@ h2::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0px;
+    padding: 2px;
     transition: transform 0.3s ease;
 }
 
