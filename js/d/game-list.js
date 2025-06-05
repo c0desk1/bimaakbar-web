@@ -1,40 +1,3 @@
-// time.js (Pastikan file ini atau kode ini dimuat sebelum kode di bawah)
-
-function timeSince(dateString) {
-    const now = new Date();
-    const past = new Date(dateString);
-    const seconds = Math.floor((now - past) / 1000);
-
-    if (isNaN(seconds)) return ''; // Tanggal tidak valid
-    if (seconds < 60) return 'Baru saja';
-    if (seconds < 3600) return Math.floor(seconds / 60) + ' menit lalu';
-    if (seconds < 86400) return Math.floor(seconds / 3600) + ' jam lalu';
-    if (seconds < 604800) return Math.floor(seconds / 86400) + ' hari lalu';
-
-    return past.toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-    });
-}
-
-function updateTimes(scope = document) {
-    const timeElements = scope.querySelectorAll('.post-time');
-    timeElements.forEach(el => {
-        // Ambil timestamp dari atribut data-timestamp
-        const ts = el.getAttribute('data-timestamp');
-        if (ts) {
-            el.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(ts)}`;
-        }
-    });
-}
-
-// Buat global (penting agar fungsi ini bisa diakses dari mana saja)
-window.timeSince = timeSince;
-window.updateTimes = updateTimes;
-
-// --- Kode utama Anda ---
-
 function createGamePostElement(post) {
     const el = document.createElement('div');
     el.className = 'post-grid';
@@ -98,9 +61,7 @@ function createGamePostElement(post) {
 
     const time = document.createElement('div');
     time.className = 'post-time';
-    // Simpan timestamp asli di atribut data-timestamp
     time.setAttribute('data-timestamp', post.timestamp);
-    // Tampilkan waktu awal menggunakan timeSince
     time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
 
     rightDiv.appendChild(label);
@@ -120,7 +81,7 @@ function loadPostsGame() {
         return;
     }
 
-    container.innerHTML = '<div class="loading-spinner"></div>'; // Tampilkan spinner loading
+    container.innerHTML = '<div class="loading-spinner"></div>';
 
     fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game')
         .then(res => {
@@ -130,12 +91,20 @@ function loadPostsGame() {
             return res.json();
         })
         .then(data => {
-            container.innerHTML = ''; // Hapus spinner loading setelah data diterima
+            container.innerHTML = '';
 
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan game.</p>';
                 return;
             }
+
+            // --- Bagian PENTING: Urutkan data berdasarkan timestamp (terbaru ke terlama) ---
+            data.sort((a, b) => {
+                const timeA = new Date(a.timestamp).getTime();
+                const timeB = new Date(b.timestamp).getTime();
+                return timeB - timeA; // Urutkan menurun (terbaru di atas)
+            });
+            // -----------------------------------------------------------------------------
 
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
@@ -146,8 +115,6 @@ function loadPostsGame() {
                 container.appendChild(postEl);
             });
 
-            // Panggil updateTimes setelah semua postingan dimuat
-            // Ini akan memperbarui tampilan waktu ke format "X menit lalu", dll.
             updateTimes();
         })
         .catch(error => {
@@ -156,12 +123,4 @@ function loadPostsGame() {
         });
 }
 
-// Pastikan fungsi ini tersedia secara global jika Anda memanggilnya dari HTML
 window.loadPostsGame = loadPostsGame;
-
-// Panggil loadPostsGame ketika DOM sudah sepenuhnya dimuat
-document.addEventListener('DOMContentLoaded', () => {
-    loadPostsGame();
-    // Anda bisa memanggil updateTimes secara berkala jika ingin tampilan "X menit lalu" terus diperbarui
-    // setInterval(updateTimes, 60 * 1000); // Perbarui setiap menit
-});
