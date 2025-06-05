@@ -590,6 +590,7 @@ main {
 
 .post-thumbnail {
     height: 100%;
+    width: 100%;
     flex: 0 0 80px;
     display: flex;
     align-items: center;
@@ -627,6 +628,7 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-direction: row;
 }
 
 .post-description {
@@ -636,6 +638,7 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-direction: row;
 }
 
 .post-meta {
@@ -676,6 +679,7 @@ main {
     font-size: 0.85em;
     color: var(--text-light);
     margin-top: 6px;
+    flex-direction: row;
 }
 
 .post-hashtags:hover {
@@ -690,11 +694,15 @@ main {
     color: var(--secondary-color);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
     opacity: 0.85;
+    flex-direction: row;
 }
 
 .post-time i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--primary-color);
 }
 
