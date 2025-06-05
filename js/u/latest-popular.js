@@ -78,14 +78,16 @@ function loadLatestPopularPost() {
         hashtagsDiv.className = 'post-hashtags';
         const hashtags = (post.hashtags || '')
             .split(',')
-            .map(t => t.trim())
-            .filter(Boolean);
-        hashtagsDiv.innerHTML = hashtags
-            .map(tag => `<span class="post-hashtag">#${tag}</span>`)
-            .join(' ');
+            .map(tag => tag.trim()) // Hilangkan spasi ekstra
+            .filter((tag, index, self) => tag && self.indexOf(tag) === index) // Hilangkan duplikat
+            .map(tag => `#${tag}`) // Tambahkan # sebelum setiap tag
+            .join(' '); // Format dengan spasi
+
+        hashtagsDiv.textContent = hashtags; // Tampilkan sebagai teks biasa
+
 
         metaRow.appendChild(label);
-        metaRow.appendChild(hashtagsDiv);
+        contentDiv.appendChild(hashtagsDiv);
         contentDiv.appendChild(title);
         contentDiv.appendChild(desc);
         contentDiv.appendChild(metaRow);
