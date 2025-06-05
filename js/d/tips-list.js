@@ -1,5 +1,5 @@
 function loadPostsTips() {
-    console.log('🎮 loadPostsTips dipanggil');
+    console.log('Element dipanggil');
 
     const container = document.getElementById('post-list-tips');
     if (!container) {
@@ -13,7 +13,7 @@ function loadPostsTips() {
             return res.json();
         })
         .then(data => {
-            console.log('🎮 Data tips:', data);
+            console.log('Data tips:', data);
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
