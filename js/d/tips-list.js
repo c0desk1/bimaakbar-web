@@ -83,7 +83,7 @@ function loadPostsTips() {
 
     container.innerHTML = '<div class="loading-spinner"></div>';
 
-    fetch('https://opensheet.elk.sh/10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk/tips')
+    fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips')
         .then(res => {
             if (!res.ok) {
                 return res.text().then(text => { throw new Error(`Gagal fetch data: ${res.status} ${res.statusText} - ${text}`); });
