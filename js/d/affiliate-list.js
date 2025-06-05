@@ -13,7 +13,7 @@ function renderAffiliateItems() {
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
                 var card = document.createElement('a');
-                card.href = item.link || item.url;
+                card.href = item.url;
                 card.target = '_blank';
                 card.className = 'affiliate-card';
 
