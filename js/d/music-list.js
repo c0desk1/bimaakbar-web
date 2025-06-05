@@ -1,5 +1,5 @@
 function loadPostsMusik() {
-    console.log('🎮 loadPostsGame dipanggil');
+    console.log('Element dipanggil');
 
     const container = document.getElementById('post-list-musik');
     if (!container) {
@@ -13,7 +13,7 @@ function loadPostsMusik() {
             return res.json();
         })
         .then(data => {
-            console.log('🎮 Data musik:', data);
+            console.log('Data musik:', data);
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada postingan.</p>';
                 return;
@@ -43,9 +43,7 @@ function loadPostsMusik() {
                         <div class="post-hashtags">${labelHTML} ${hashtagsHTML}</div>
                         <div class="post-time" data-timestamp="${post.timestamp || ''}"></div>
                     </div>`;
-
                 container.appendChild(postEl);
-
                 postEl.querySelectorAll('.post-hashtag, .post-label').forEach(tag => {
                     requestAnimationFrame(() => tag.classList.add('show'));
                 });
