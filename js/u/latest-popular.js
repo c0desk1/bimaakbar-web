@@ -78,7 +78,7 @@ function loadLatestPopularPost() {
   var hashtagsDiv = document.createElement('div');
   hashtagsDiv.className = 'post-hashtags';
   var hashtags = (post.hashtags || '').split(',').map(t => t.trim()).filter(Boolean);
-  hashtagsDiv.innerHTML = hashtags.map(t => `<span class="post-hashtag">#${t}</span>`).join(' ');
+  hashtagsDiv.innerHTML = hashtags.map(t => `<span class="post-hashtags">#${t}</span>`).join(' ');
   metaRow.appendChild(hashtagsDiv);
 
   contentDiv.appendChild(metaRow);
