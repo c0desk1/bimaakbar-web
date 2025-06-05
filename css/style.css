@@ -563,16 +563,18 @@ main {
 .post-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    gap: 16px;
+    overflow: hidden;
 }
 
 .post-card {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     border-radius: 12px;
     text-decoration: none;
     transition: transform 0.3s ease;
@@ -583,24 +585,24 @@ main {
     transform: scale(1.03);
 }
 
+.post-thumbnail {
+    align-items: flex-start;
+}
+
 .post-card img {
-    width: 100%;
+    max-width: 80px;
+    height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-bottom: 0px solid var(--border-dark);
+    align-items: center;
 }
 
 .post-content {
-    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-}
-
-.post-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 16px;
+    gap: 16px;
 }
 
 .post-title {
@@ -610,7 +612,6 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    align-items: left;
 }
 
 .post-description {
@@ -620,35 +621,24 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    align-items: left;
-}
-
-.post-time {
-    font-size: 0.75em;
-    color: var(--secondary-color);
-    display: flex;
-    align-items: right;
-    gap: 4px;
-    opacity: 0.85;
-}
-
-.post-time i {
-    color: var(--primary-color);
 }
 
 .post-meta-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     flex-wrap: wrap;
+    align-items: center;
     font-size: 0.8em;
     color: var(--secondary-color);
 }
 
 .post-label {
     font-weight: 500;
-    color: var(--primary-color);
+    color: var(--text-light);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-hover));
     align-items: left;
+    text-overflow: ellipsis;
+    text-align: left;
 }
 
 .post-hashtags {
@@ -667,8 +657,7 @@ main {
 
 .post-hashtag {
     display: inline-block;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-hover));
-    color: #fff;
+    color: var(--text-light);
     border-radius: 20px;
     padding: 6px 14px;
     font-size: 0.8em;
@@ -688,6 +677,30 @@ main {
 
 .post-hashtag:hover {
     filter: brightness(1.1);
+}
+
+.post-views {
+    font-size: 0.75em;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: right;
+    text-align: right;
+    gap: 4px;
+    opacity: 0.85;
+}
+
+.post-time {
+    font-size: 0.75em;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: right;
+    text-align: right;
+    gap: 4px;
+    opacity: 0.85;
+}
+
+.post-time i {
+    color: var(--primary-color);
 }
 
 .post-price {
