@@ -1440,7 +1440,7 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
     .affiliate-card {
-        max-width: 90px;
+        max-width: 100px;
     }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1478,7 +1478,7 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
     .affiliate-card {
-        max-width: 60px;
+        max-width: 100px;
     }
     .post-card h3 {
         font-size: 1.3em;
