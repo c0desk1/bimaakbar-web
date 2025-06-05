@@ -1,5 +1,5 @@
 function loadPostsShop() {
-    console.log('🔍 loadPostsShop dipanggil');
+    console.log('Element dipanggil');
 
     const container = document.getElementById('post-list-shop');
     if (!container) {
@@ -15,7 +15,7 @@ function loadPostsShop() {
             return res.json();
         })
         .then(data => {
-            console.log('🛒 Data produk toko:', data);
+            console.log('Data produk toko:', data);
 
             if (!data || !data.length) {
                 container.innerHTML = '<p>Belum ada produk di toko.</p>';
@@ -40,13 +40,10 @@ function loadPostsShop() {
                 const hashtags = Array.isArray(product.hashtags) ?
                     product.hashtags :
                     (product.hashtags || '').split(',').map(tag => tag.trim()).filter(Boolean);
-
                 const hashtagsHTML = hashtags.map(tag => `<span class="post-hashtag">#${tag}</span>`).join(' ');
                 const labelHTML = product.label ? '<span style="display:none;" class="post-label">' + product.label + '</span>' : '';
-
                 const productEl = document.createElement('div');
                 productEl.className = 'post-card';
-
                 productEl.innerHTML =
                     '<a href="' + (product.url || '#') + '" target="_blank" rel="noopener noreferrer">' +
                     '<img src="' + product.thumbnail + '" alt="' + product.title + '" loading="lazy" ' +
