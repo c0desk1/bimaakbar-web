@@ -13,8 +13,7 @@ function loadCategoryLabels() {
     { name: 'Tips', sheet: 'tips', url: 'html/d/tips.html' },
     { name: 'Shop', sheet: 'shop', url: 'html/d/shop.html' },
   ];
-
-  const sheetId = '10fSdWnRM2rYLYfJufWl-IkBeul2CgZSoUmOaeneO8xk';
+  const sheetId = '1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA';
 
   const fetches = labels.map(label =>
     fetch(`https://opensheet.elk.sh/${sheetId}/${label.sheet}`)
