@@ -1442,21 +1442,23 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
     .search-overlay .search-input-group {
-    flex-direction: column;
-    border-radius: 20px;
-  }
+		flex-direction: column;
+		border-radius: 20px;
+		width: 100%;
+	}
+	
+	.search-overlay .search-input-group input,
+	.search-overlay .search-input-group button {
+		width: 100%;
+		border-radius: 30px;
+		font-size: 1em;
+		padding: 12px 16px;
+	}
 
-  .search-overlay .search-input-group input,
-  .search-overlay .search-input-group button {
-    width: 100%;
-    border-radius: 30px;
-    font-size: 1em;
-    padding: 12px 16px;
-  }
-
-  .search-overlay .search-input-group button {
-    margin-top: 10px;
-  }
+	.search-overlay .search-input-group button {
+		margin-top: 10px;
+	}
+	
     .newsletter-input-group {
         flex-direction: column;
         gap: 12px;
