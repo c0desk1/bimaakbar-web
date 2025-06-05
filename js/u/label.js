@@ -7,11 +7,11 @@ function loadCategoryLabels() {
   container.innerHTML = ''; // Kosongkan container dulu
 
   const labels = [
-    { name: 'Musik', sheet: 'musik', url: 'html/d/musik.html' },
-    { name: 'Game', sheet: 'game', url: 'html/d/game.html' },
-    { name: 'Tutorial', sheet: 'tutorial', url: 'html/d/tutorial.html' },
-    { name: 'Tips', sheet: 'tips', url: 'html/d/tips.html' },
-    { name: 'Shop', sheet: 'shop', url: 'html/d/shop.html' },
+    { name: 'musik', title: 'Musik', sheet: 'musik', url: 'html/d/musik.html' },
+    { name: 'game', title: 'Game', sheet: 'game', url: 'html/d/game.html' },
+    { name: 'tutorial', title: 'Tutorial',  sheet: 'tutorial', url: 'html/d/tutorial.html' },
+    { name: 'tips', title: 'Tips & Trik', sheet: 'tips', url: 'html/d/tips.html' },
+    { name: 'shop', title: 'Shop', sheet: 'shop', url: 'html/d/shop.html' },
   ];
   const sheetId = '1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA';
 
@@ -55,7 +55,7 @@ function loadCategoryLabels() {
 
       card.innerHTML = `
         <div class="category-content">
-          <h3>${label.name}</h3>
+          <h3>${label.title}</h3>
         </div>
       `;
 
