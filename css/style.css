@@ -1230,26 +1230,105 @@ main {
 /* ==================== */
 
 .search-overlay {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Semi-transparent dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+    /* Di atas sidebar */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .search-overlay.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
 }
 
 .search-overlay-content {
-    width: 95%;
-    padding: 20px;
+    background-color: var(--card-background-dark);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-medium-dark);
+    width: 90%;
+    max-width: 600px;
+    transform: translateY(-20px);
+    /* Initial slight lift */
+    transition: transform 0.3s ease;
+    position: relative;
+    /* For close button positioning */
+}
+
+.search-overlay.active .search-overlay-content {
+    transform: translateY(0);
 }
 
 .search-overlay-content h3 {
-    font-size: 1.5em;
+    color: var(--text-lighter);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.8em;
 }
 
-.search-overlay .search-input-group input,
+.search-overlay .search-input-group {
+    display: flex;
+    width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: var(--background-dark);
+    border: 1px solid var(--border-dark);
+}
+
+.search-overlay .search-input-group input {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: none;
+    background: none;
+    color: var(--text-light);
+    font-size: 1.1em;
+    outline: none;
+}
+
+.search-overlay .search-input-group input::placeholder {
+    color: var(--secondary-color);
+    opacity: 0.7;
+}
+
 .search-overlay .search-input-group button {
-    padding: 12px 15px;
-    font-size: 1em;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.2s ease;
+}
+
+.search-overlay .search-input-group button:hover {
+    background-color: #FF4D6B;
+}
+
+.close-search-overlay {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-search-overlay:hover {
+    color: var(--primary-color);
 }
 
 
@@ -1399,5 +1478,8 @@ main {
     }
     .newsletter-subscribe p {
         font-size: 0.9em;
+    }
+    .search-icon-header {
+        font-size: 1.3em;
     }
 }
