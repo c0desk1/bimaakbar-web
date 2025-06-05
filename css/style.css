@@ -520,6 +520,7 @@ main {
 
 .affiliate-card {
     position: relative;
+    max-width: 160px;
     width: 100%;
     aspect-ratio: 1 / 1;
     border: 2px solid var(--primary-color);
@@ -1384,9 +1385,6 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         padding-bottom: 10px;
     }
-    .affiliate-card {
-        max-width: 100px;
-    }
     .affiliate-item {
         width: 100px;
         height: 100px;
@@ -1437,10 +1435,7 @@ main {
 
 @media (max-width: 600px) {
     .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-    .affiliate-card {
-        max-width: 100px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1475,10 +1470,7 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
     .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-    .affiliate-card {
-        max-width: 100px;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
     .post-card h3 {
         font-size: 1.3em;
