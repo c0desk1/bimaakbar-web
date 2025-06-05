@@ -7,7 +7,7 @@ function loadPostsShop() {
         return;
     }
 
-    container.innerHTML = '<p>Loading produk toko...</p>';
+    container.innerHTML = '<div class="loading-spinner"></div>';
 
     fetch('https://opensheet.elk.sh/1B2qNWH-cyDuVYJ2m1mLITKJvU7bPmYQYVt1g4Sxh19A/shop')
         .then(res => {
@@ -15,6 +15,7 @@ function loadPostsShop() {
             return res.json();
         })
         .then(data => {
+            container.innerHTML = '';
             console.log('Data produk toko:', data);
 
             if (!data || !data.length) {
@@ -29,7 +30,7 @@ function loadPostsShop() {
                 return;
             }
 
-            container.innerHTML = '';
+        
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
             }
