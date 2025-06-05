@@ -88,8 +88,8 @@ h2 {
     /* Section/major headings */
     text-align: center;
     margin-top: 50px;
-    margin-bottom: 35px;
-    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-size: 2.0em;
     color: var(--text-lighter);
     position: relative;
     padding-bottom: 15px;
@@ -151,9 +151,9 @@ h2::after {
 }
 
 .section-header h2 {
-    font-size: 2.5em;
+    font-size: 1.5em;
     color: var(--text-lighter);
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     text-shadow: 2px 2px 6px var(--shadow-dark);
     position: relative;
 }
@@ -389,7 +389,7 @@ main {
 
 .hero-section {
     text-align: center;
-    padding: 60px 20px;
+    padding: 20px 20px;
     background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
     color: var(--text-lighter);
     border-radius: 15px;
@@ -497,17 +497,17 @@ main {
 /* ===================== */
 
 .affiliate-links {
-    padding: 20px;
+    padding: 20px 20px;
     text-align: center;
     background-color: var(--card-background-dark);
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-medium-dark);
-    margin-bottom: 40px;
+    margin-bottom: 0px;
 }
 
 .affiliate-links h2 {
     color: var(--text-lighter);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 1.6em;
 }
 
@@ -1463,6 +1463,13 @@ main {
         box-sizing: border-box;
         border-radius: 8px;
     }
+    .blog-title {
+		font-size: 3em;
+	}
+
+	.blog-description {
+		font-size: 1.0em;
+	}
 }
 
 @media (max-width: 600px) {
@@ -1516,6 +1523,13 @@ main {
         white-space: nowrap;
         align-items: left;
     }
+    .blog-title {
+		font-size: 2.5em;
+	}
+
+	.blog-description {
+		font-size: 0.9em;
+	}
 }
 
 @media (max-width: 480px) {
