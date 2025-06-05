@@ -1,75 +1,67 @@
 function createGamePostElement(post) {
-    const el = document.createElement('div');
-    el.className = 'post-card';
+    var link = document.createElement('a');
+        link.href = post.url || post.link || '#';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'post-card';
 
-    const link = document.createElement('a');
-    link.href = post.url || '#';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.className = 'post-link';
+        // Thumbnail
+        var img = document.createElement('img');
+        img.src = post.thumbnail || '/assets/error.jpg';
+        img.alt = post.title || '';
+        img.loading = 'lazy';
+        img.onerror = function() {
+            img.src = '/assets/error.jpg';
+        };
+        link.appendChild(img); // langsung di <a> agar tampil di atas
 
-    // === Thumbnail ===
-    const thumbnailDiv = document.createElement('div');
-    thumbnailDiv.className = 'post-thumbnail';
+        // Konten utama
+        var contentDiv = document.createElement('div');
+        contentDiv.className = 'post-content';
 
-    const img = document.createElement('img');
-    img.src = post.thumbnail || '/assets/error.jpg';
-    img.alt = post.title || '';
-    img.loading = 'lazy';
-    img.onerror = () => (img.src = '/assets/error.jpg');
+        // Baris 1: Title (kiri) + Time (kanan)
+        var titleRow = document.createElement('div');
+        titleRow.className = 'post-title-row';
 
-    thumbnailDiv.appendChild(img);
-    link.appendChild(thumbnailDiv);
+        var title = document.createElement('div');
+        title.className = 'post-title';
+        title.textContent = post.title || 'Tanpa Judul';
+        titleRow.appendChild(title);
 
-    // === Konten Utama ===
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'post-content';
-    contentDiv.style.flex = '1';
+        var timeDiv = document.createElement('div');
+        timeDiv.className = 'post-time';
+        timeDiv.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
+        titleRow.appendChild(timeDiv);
 
-    const title = document.createElement('h3');
-    title.className = 'post-title';
-    title.textContent = post.title || 'Tanpa Judul';
+        contentDiv.appendChild(titleRow);
 
-    const desc = document.createElement('p');
-    desc.className = 'post-description';
-    desc.textContent = post.description || '';
+        // Baris 2: Deskripsi
+        var desc = document.createElement('div');
+        desc.className = 'post-description';
+        desc.textContent = post.description || '';
+        contentDiv.appendChild(desc);
 
-    // === Hashtags ===
-    const hashtagsDiv = document.createElement('div');
-    hashtagsDiv.className = 'post-hashtags';
-    const hashtags = (post.hashtags || '')
-        .split(',')
-        .map(tag => tag.trim())
-        .filter((tag, index, self) => tag && self.indexOf(tag) === index)
-        .map(tag => `#${tag}`)
-        .join(' ');
+        // Baris 3: Label (kiri) + Hashtag (kanan)
+        var metaRow = document.createElement('div');
+        metaRow.className = 'post-meta-row';
 
-    hashtagsDiv.textContent = hashtags;
+        var label = document.createElement('div');
+        label.className = 'post-label';
+        label.textContent = post.label || post.category || 'Tanpa Label';
+        metaRow.appendChild(label);
 
-    contentDiv.appendChild(hashtagsDiv);
-    contentDiv.appendChild(title);
-    contentDiv.appendChild(desc);
-    link.appendChild(contentDiv);
+        var hashtagsDiv = document.createElement('div');
+        hashtagsDiv.className = 'post-hashtags';
+        var hashtags = (post.hashtags || '').split(',').map(t => t.trim()).filter(Boolean);
+        hashtagsDiv.textContent = hashtags.map(t => `#${t}`).join(' ');
+        metaRow.appendChild(hashtagsDiv);
 
-    // === Meta Info ===
-    const rightDiv = document.createElement('div');
-    rightDiv.className = 'post-meta';
+        contentDiv.appendChild(metaRow);
 
-    const label = document.createElement('div');
-    label.className = 'post-label';
-    label.textContent = post.label || '';
+        link.appendChild(contentDiv);
 
-    const time = document.createElement('div');
-    time.className = 'post-time';
-    time.textContent = post.timestamp || 'Baru saja';
-
-    rightDiv.appendChild(label);
-    rightDiv.appendChild(time);
-    link.appendChild(rightDiv);
-
-    el.appendChild(link);
-    return el;
-}
+        return link;
+    }
 
 function loadPostsGame() {
     console.log('Element dipanggil');
