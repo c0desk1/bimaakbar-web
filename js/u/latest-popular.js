@@ -1,217 +1,222 @@
 function loadLatestPopularPost() {
-  var SHEET_URL = 'https://opensheet.elk.sh/1SIruB6QAkFD35FeCcyY_lesfe5M7QuhKIyRT9o41UNk/post';
-  var postsPerPage = 5;
+    var SHEET_URL = 'https://opensheet.elk.sh/1SIruB6QAkFD35FeCcyY_lesfe5M7QuhKIyRT9o41UNk/post';
+    var postsPerPage = 5;
 
-  var allPosts = [];
-  var latestPosts = [];
-  var popularPosts = [];
-  var latestPage = 1;
-  var popularPage = 1;
+    var allPosts = [];
+    var latestPosts = [];
+    var popularPosts = [];
+    var latestPage = 1;
+    var popularPage = 1;
 
-  function formatTime(timestamp) {
-    if (!timestamp) return '';
-    var diff = Date.now() - new Date(timestamp).getTime();
-    if (diff < 0) return 'Baru saja';
+    function formatTime(timestamp) {
+        if (!timestamp) return '';
+        var diff = Date.now() - new Date(timestamp).getTime();
+        if (diff < 0) return 'Baru saja';
 
-    var seconds = Math.floor(diff / 1000);
-    var minutes = Math.floor(seconds / 60);
-    var hours = Math.floor(minutes / 60);
-    var days = Math.floor(hours / 24);
+        var seconds = Math.floor(diff / 1000);
+        var minutes = Math.floor(seconds / 60);
+        var hours = Math.floor(minutes / 60);
+        var days = Math.floor(hours / 24);
 
-    if (days > 1) return days + ' hari lalu';
-    if (days === 1) return '1 hari lalu';
-    if (hours > 1) return hours + ' jam lalu';
-    if (hours === 1) return '1 jam lalu';
-    if (minutes > 1) return minutes + ' menit lalu';
-    if (minutes === 1) return '1 menit lalu';
-    return 'Baru saja';
-  }
-
-  function createPostElement(post) {
-  const el = document.createElement('div');
-  el.className = 'post-card';
-
-  const link = document.createElement('a');
-  link.href = post.url || post.link || '#';
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.className = 'post-link';
-  link.style.display = 'flex';
-  link.style.alignItems = 'stretch';
-  link.style.width = '100%';
-
-  // === THUMBNAIL (kiri 1:1) ===
-  const thumbDiv = document.createElement('div');
-  thumbDiv.className = 'post-thumb';
-  const img = document.createElement('img');
-  img.src = post.thumbnail || '/assets/error.jpg';
-  img.alt = post.title || '';
-  img.loading = 'lazy';
-  img.onerror = () => (img.src = '/assets/error.jpg');
-  thumbDiv.appendChild(img);
-  link.appendChild(thumbDiv);
-
-  // === MAIN CONTENT (tengah) ===
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'post-content';
-
-  const title = document.createElement('h3');
-  title.className = 'post-title';
-  title.textContent = post.title || 'Tanpa Judul';
-  contentDiv.appendChild(title);
-
-  const desc = document.createElement('p');
-  desc.className = 'post-description';
-  desc.textContent = post.description || '';
-  contentDiv.appendChild(desc);
-
-  const metaRow = document.createElement('div');
-  metaRow.className = 'post-meta-row';
-
-  const label = document.createElement('div');
-  label.className = 'post-label';
-  label.textContent = post.label || post.category || 'Tanpa Label';
-
-  const hashtagsDiv = document.createElement('div');
-  hashtagsDiv.className = 'post-hashtags';
-  const hashtags = (post.hashtags || '')
-    .split(',')
-    .map(t => t.trim())
-    .filter(Boolean);
-  hashtagsDiv.innerHTML = hashtags
-    .map(tag => `<span class="post-hashtag">#${tag}</span>`)
-    .join(' ');
-
-  metaRow.appendChild(label);
-  metaRow.appendChild(hashtagsDiv);
-  contentDiv.appendChild(metaRow);
-  link.appendChild(contentDiv);
-
-  // === RIGHT SIDE: views + time ===
-  const rightDiv = document.createElement('div');
-  rightDiv.className = 'post-right';
-
-  const views = document.createElement('div');
-  views.className = 'post-views';
-  views.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0}`;
-  rightDiv.appendChild(views);
-
-  const time = document.createElement('div');
-  time.className = 'post-time';
-  time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
-  rightDiv.appendChild(time);
-
-  link.appendChild(rightDiv);
-  el.appendChild(link);
-  return el;
-
-}
-
-  function renderPaginationButtons(type, totalPosts, currentPage) {
-    var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
-    var container = document.getElementById(containerId);
-    if (!container) return;
-
-    // Hapus tombol lama
-    var oldPrev = container.querySelector('.load-prev-btn-' + type);
-    if (oldPrev) oldPrev.parentNode.removeChild(oldPrev);
-    var oldNext = container.querySelector('.load-next-btn-' + type);
-    if (oldNext) oldNext.parentNode.removeChild(oldNext);
-
-    var totalPages = Math.ceil(totalPosts / postsPerPage);
-
-    if (currentPage > 1) {
-      var btnPrev = document.createElement('button');
-      btnPrev.className = 'load-more-btn load-prev-btn-' + type;
-      btnPrev.textContent = 'Sebelumnya';
-      btnPrev.onclick = function() {
-        if (type === 'latest') {
-          latestPage--;
-          renderPosts('latest');
-        } else {
-          popularPage--;
-          renderPosts('popular');
-        }
-      };
-      container.appendChild(btnPrev);
+        if (days > 1) return days + ' hari lalu';
+        if (days === 1) return '1 hari lalu';
+        if (hours > 1) return hours + ' jam lalu';
+        if (hours === 1) return '1 jam lalu';
+        if (minutes > 1) return minutes + ' menit lalu';
+        if (minutes === 1) return '1 menit lalu';
+        return 'Baru saja';
     }
 
-    if (currentPage < totalPages) {
-      var btnNext = document.createElement('button');
-      btnNext.className = 'load-more-btn load-next-btn-' + type;
-      btnNext.textContent = 'Selanjutnya';
-      btnNext.onclick = function() {
-        if (type === 'latest') {
-          latestPage++;
-          renderPosts('latest');
-        } else {
-          popularPage++;
-          renderPosts('popular');
-        }
-      };
-      container.appendChild(btnNext);
+    function createPostElement(post) {
+        const el = document.createElement('div');
+        el.className = 'post-card';
+
+        const link = document.createElement('a');
+        link.href = post.url || post.link || '#';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'post-link';
+        link.style.display = 'flex';
+        link.style.alignItems = 'flex-start';
+        link.style.width = '100%';
+        link.style.gap = '16px'; // Menambahkan jarak antar elemen
+
+        // === Thumbnail (Kiri) ===
+        const thumbnailDiv = document.createElement('div');
+        thumbnailDiv.className = 'post-thumbnail';
+
+        const img = document.createElement('img');
+        img.src = post.thumbnail || '/assets/error.jpg';
+        img.alt = post.title || '';
+        img.loading = 'lazy';
+        img.onerror = () => (img.src = '/assets/error.jpg');
+
+        thumbnailDiv.appendChild(img);
+        link.appendChild(thumbnailDiv);
+
+        // === Konten Utama (Tengah) ===
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'post-content';
+        contentDiv.style.flex = '1'; // Mengisi ruang yang tersedia
+
+        const title = document.createElement('h3');
+        title.className = 'post-title';
+        title.textContent = post.title || 'Tanpa Judul';
+
+        const desc = document.createElement('p');
+        desc.className = 'post-description';
+        desc.textContent = post.description || '';
+
+        const metaRow = document.createElement('div');
+        metaRow.className = 'post-meta-row';
+
+        const label = document.createElement('div');
+        label.className = 'post-label';
+        label.textContent = post.label || post.category || 'Tanpa Label';
+
+        const hashtagsDiv = document.createElement('div');
+        hashtagsDiv.className = 'post-hashtags';
+        const hashtags = (post.hashtags || '')
+            .split(',')
+            .map(t => t.trim())
+            .filter(Boolean);
+        hashtagsDiv.innerHTML = hashtags
+            .map(tag => `<span class="post-hashtag">#${tag}</span>`)
+            .join(' ');
+
+        metaRow.appendChild(label);
+        metaRow.appendChild(hashtagsDiv);
+        contentDiv.appendChild(title);
+        contentDiv.appendChild(desc);
+        contentDiv.appendChild(metaRow);
+        link.appendChild(contentDiv);
+
+        // === Meta Info (Kanan) ===
+        const rightDiv = document.createElement('div');
+        rightDiv.className = 'post-meta';
+
+        const views = document.createElement('div');
+        views.className = 'post-views';
+        views.innerHTML = `<i class="fa fa-eye"></i> ${post.views || 0}`;
+
+        const time = document.createElement('div');
+        time.className = 'post-time';
+        time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
+
+        rightDiv.appendChild(views);
+        rightDiv.appendChild(time);
+        link.appendChild(rightDiv);
+
+        el.appendChild(link);
+        return el;
     }
-  }
 
-  function renderPosts(type) {
-    var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
-    var container = document.getElementById(containerId);
-    if (!container) return;
 
-    container.innerHTML = '';
+    function renderPaginationButtons(type, totalPosts, currentPage) {
+        var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
+        var container = document.getElementById(containerId);
+        if (!container) return;
 
-    var posts = type === 'latest' ? latestPosts : popularPosts;
-    var page = type === 'latest' ? latestPage : popularPage;
+        // Hapus tombol lama
+        var oldPrev = container.querySelector('.load-prev-btn-' + type);
+        if (oldPrev) oldPrev.parentNode.removeChild(oldPrev);
+        var oldNext = container.querySelector('.load-next-btn-' + type);
+        if (oldNext) oldNext.parentNode.removeChild(oldNext);
 
-    var start = (page - 1) * postsPerPage;
-    var end = start + postsPerPage;
-    var postsToShow = posts.slice(start, end);
+        var totalPages = Math.ceil(totalPosts / postsPerPage);
 
-    for (var i = 0; i < postsToShow.length; i++) {
-      var postEl = createPostElement(postsToShow[i]);
-      container.appendChild(postEl);
+        if (currentPage > 1) {
+            var btnPrev = document.createElement('button');
+            btnPrev.className = 'load-more-btn load-prev-btn-' + type;
+            btnPrev.textContent = 'Sebelumnya';
+            btnPrev.onclick = function() {
+                if (type === 'latest') {
+                    latestPage--;
+                    renderPosts('latest');
+                } else {
+                    popularPage--;
+                    renderPosts('popular');
+                }
+            };
+            container.appendChild(btnPrev);
+        }
+
+        if (currentPage < totalPages) {
+            var btnNext = document.createElement('button');
+            btnNext.className = 'load-more-btn load-next-btn-' + type;
+            btnNext.textContent = 'Selanjutnya';
+            btnNext.onclick = function() {
+                if (type === 'latest') {
+                    latestPage++;
+                    renderPosts('latest');
+                } else {
+                    popularPage++;
+                    renderPosts('popular');
+                }
+            };
+            container.appendChild(btnNext);
+        }
     }
 
-    renderPaginationButtons(type, posts.length, page);
-  }
+    function renderPosts(type) {
+        var containerId = type === 'latest' ? 'latest-posts' : 'popular-posts';
+        var container = document.getElementById(containerId);
+        if (!container) return;
 
-  function fetchAllPosts(callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', SHEET_URL, true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          try {
-            var posts = JSON.parse(xhr.responseText);
-            callback(posts);
-          } catch(e) {
-            console.error('Parse JSON gagal', e);
-            callback([]);
-          }
-        } else {
-          console.error('Fetch gagal status:', xhr.status);
-          callback([]);
+        container.innerHTML = '';
+
+        var posts = type === 'latest' ? latestPosts : popularPosts;
+        var page = type === 'latest' ? latestPage : popularPage;
+
+        var start = (page - 1) * postsPerPage;
+        var end = start + postsPerPage;
+        var postsToShow = posts.slice(start, end);
+
+        for (var i = 0; i < postsToShow.length; i++) {
+            var postEl = createPostElement(postsToShow[i]);
+            container.appendChild(postEl);
         }
-      }
-    };
-    xhr.send();
-  }
 
-  fetchAllPosts(function(posts) {
-    allPosts = posts || [];
+        renderPaginationButtons(type, posts.length, page);
+    }
 
-    latestPosts = allPosts
-      .filter(function(p){ return p.timestamp && !isNaN(Date.parse(p.timestamp)); })
-      .sort(function(a,b){ return new Date(b.timestamp) - new Date(a.timestamp); });
+    function fetchAllPosts(callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', SHEET_URL, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var posts = JSON.parse(xhr.responseText);
+                        callback(posts);
+                    } catch (e) {
+                        console.error('Parse JSON gagal', e);
+                        callback([]);
+                    }
+                } else {
+                    console.error('Fetch gagal status:', xhr.status);
+                    callback([]);
+                }
+            }
+        };
+        xhr.send();
+    }
 
-    popularPosts = allPosts
-      .filter(function(p){ return p.views && !isNaN(parseInt(p.views)); })
-      .sort(function(a,b){ return parseInt(b.views) - parseInt(a.views); });
+    fetchAllPosts(function(posts) {
+        allPosts = posts || [];
 
-    latestPage = 1;
-    popularPage = 1;
+        latestPosts = allPosts
+            .filter(function(p) { return p.timestamp && !isNaN(Date.parse(p.timestamp)); })
+            .sort(function(a, b) { return new Date(b.timestamp) - new Date(a.timestamp); });
 
-    renderPosts('latest');
-    renderPosts('popular');
-  });
+        popularPosts = allPosts
+            .filter(function(p) { return p.views && !isNaN(parseInt(p.views)); })
+            .sort(function(a, b) { return parseInt(b.views) - parseInt(a.views); });
+
+        latestPage = 1;
+        popularPage = 1;
+
+        renderPosts('latest');
+        renderPosts('popular');
+    });
 }
