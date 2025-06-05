@@ -1429,6 +1429,12 @@ main {
     .subscribe-form button {
         margin-bottom: 0;
     }
+	.blog-title {
+		font-size: 2.2em;
+	}
+	.blog-description {
+		font-size: 1em;
+	}
 }
 
 @media (max-width: 600px) {
@@ -1464,6 +1470,13 @@ main {
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
+    .post-card {
+		flex-direction: column;
+	}
+	.post-card img {
+		width: 100%;
+		border-radius: 12px;
+	}
     .post-card h3 {
         font-size: 1.3em;
     }
