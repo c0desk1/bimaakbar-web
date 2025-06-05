@@ -1,3 +1,40 @@
+// time.js (Pastikan file ini atau kode ini dimuat sebelum kode di bawah)
+
+function timeSince(dateString) {
+    const now = new Date();
+    const past = new Date(dateString);
+    const seconds = Math.floor((now - past) / 1000);
+
+    if (isNaN(seconds)) return ''; // Tanggal tidak valid
+    if (seconds < 60) return 'Baru saja';
+    if (seconds < 3600) return Math.floor(seconds / 60) + ' menit lalu';
+    if (seconds < 86400) return Math.floor(seconds / 3600) + ' jam lalu';
+    if (seconds < 604800) return Math.floor(seconds / 86400) + ' hari lalu';
+
+    return past.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+}
+
+function updateTimes(scope = document) {
+    const timeElements = scope.querySelectorAll('.post-time');
+    timeElements.forEach(el => {
+        // Ambil timestamp dari atribut data-timestamp
+        const ts = el.getAttribute('data-timestamp');
+        if (ts) {
+            el.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(ts)}`;
+        }
+    });
+}
+
+// Buat global (penting agar fungsi ini bisa diakses dari mana saja)
+window.timeSince = timeSince;
+window.updateTimes = updateTimes;
+
+// --- Kode utama Anda ---
+
 function createGamePostElement(post) {
     const el = document.createElement('div');
     el.className = 'post-grid';
@@ -61,7 +98,10 @@ function createGamePostElement(post) {
 
     const time = document.createElement('div');
     time.className = 'post-time';
-    time.textContent = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
+    // Simpan timestamp asli di atribut data-timestamp
+    time.setAttribute('data-timestamp', post.timestamp);
+    // Tampilkan waktu awal menggunakan timeSince
+    time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
 
     rightDiv.appendChild(label);
     rightDiv.appendChild(time);
@@ -72,23 +112,28 @@ function createGamePostElement(post) {
 }
 
 function loadPostsGame() {
-    console.log('Element dipanggil');
+    console.log('Fungsi loadPostsGame() dipanggil.');
 
     const container = document.getElementById('post-list-game');
     if (!container) {
-        console.warn('Elemen #post-list-game tidak ditemukan.');
+        console.warn('Elemen #post-list-game tidak ditemukan. Pastikan ada div dengan id="post-list-game" di HTML Anda.');
         return;
     }
 
-    container.innerHTML = '<div class="loading-spinner"></div>';
+    container.innerHTML = '<div class="loading-spinner"></div>'; // Tampilkan spinner loading
 
     fetch('https://opensheet.elk.sh/1_vWvMJK-mzsM38aPk6fXoPM_tjG9d3ibHtUhiJf_KW0/game')
-        .then(res => res.ok ? res.json() : Promise.reject('Gagal fetch data'))
+        .then(res => {
+            if (!res.ok) {
+                return res.text().then(text => { throw new Error(`Gagal fetch data: ${res.status} ${res.statusText} - ${text}`); });
+            }
+            return res.json();
+        })
         .then(data => {
-            container.innerHTML = '';
+            container.innerHTML = ''; // Hapus spinner loading setelah data diterima
 
             if (!data || !data.length) {
-                container.innerHTML = '<p>Belum ada postingan.</p>';
+                container.innerHTML = '<p>Belum ada postingan game.</p>';
                 return;
             }
 
@@ -101,17 +146,22 @@ function loadPostsGame() {
                 container.appendChild(postEl);
             });
 
-            if (typeof updateTimes === 'function') {
-                updateTimes();
-            } else {
-                console.warn('Fungsi updateTimes() tidak ditemukan.');
-            }
+            // Panggil updateTimes setelah semua postingan dimuat
+            // Ini akan memperbarui tampilan waktu ke format "X menit lalu", dll.
+            updateTimes();
         })
         .catch(error => {
             console.error('❌ Error saat memuat post game:', error);
-            container.innerHTML = '<p style="color:red;">Gagal memuat postingan game.</p>';
+            container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan game. Silakan coba lagi nanti.</p>';
         });
 }
 
+// Pastikan fungsi ini tersedia secara global jika Anda memanggilnya dari HTML
 window.loadPostsGame = loadPostsGame;
-tsGame;
+
+// Panggil loadPostsGame ketika DOM sudah sepenuhnya dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    loadPostsGame();
+    // Anda bisa memanggil updateTimes secara berkala jika ingin tampilan "X menit lalu" terus diperbarui
+    // setInterval(updateTimes, 60 * 1000); // Perbarui setiap menit
+});
