@@ -1,26 +1,47 @@
 /* ===================== */
+
+
 /* 1. CSS VARIABLES      */
+
+
 /* ===================== */
+
 :root {
     /* Color palette */
-    --primary-color: #FE2C55;              /* Accent (TikTok red/pink) */
-    --secondary-color: #8C8C8C;            /* Secondary text/glyphs */
-    --background-dark: #121212;             /* Main background */
-    --card-background-dark: #1A1A1A;        /* Card/element background */
-    --border-dark: #333333;                 /* Border, divider */
-    --text-light: #E0E0E0;                  /* General text */
-    --text-lighter: #F0F0F0;                /* Headings, emphasized text */
-
+    --primary-color: #FE2C55;
+    /* Accent (TikTok red/pink) */
+    --secondary-color: #8C8C8C;
+    /* Secondary text/glyphs */
+    --background-dark: #121212;
+    /* Main background */
+    --card-background-dark: #1A1A1A;
+    /* Card/element background */
+    --border-dark: #333333;
+    /* Border, divider */
+    --text-light: #E0E0E0;
+    /* General text */
+    --text-lighter: #F0F0F0;
+    /* Headings, emphasized text */
     /* Shadows & gradients */
-    --shadow-dark: rgba(0, 0, 0, 0.4);     /* Card/element shadow */
-    --shadow-medium-dark: rgba(0, 0, 0, 0.6); /* Stronger shadow */
-    --gradient-start: #2A2A2A;              /* Gradient start (for hero/section bg) */
-    --gradient-end: #3A3A3A;                /* Gradient end (for hero/section bg) */
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    /* Card/element shadow */
+    --shadow-medium-dark: rgba(0, 0, 0, 0.6);
+    /* Stronger shadow */
+    --gradient-start: #2A2A2A;
+    /* Gradient start (for hero/section bg) */
+    --gradient-end: #3A3A3A;
+    /* Gradient end (for hero/section bg) */
 }
 
+
 /* ===================== */
+
+
 /* 2. GLOBAL RESET       */
+
+
 /* ===================== */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -28,7 +49,8 @@
 }
 
 html {
-    scroll-behavior: smooth; /* Smooth scroll for anchor links */
+    scroll-behavior: smooth;
+    /* Smooth scroll for anchor links */
 }
 
 body {
@@ -40,17 +62,26 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+
 /* ===================== */
+
+
 /* 3. TYPOGRAPHY         */
+
+
 /* ===================== */
+
 a {
-    color: var(--primary-color);            /* All links primary color */
+    color: var(--primary-color);
+    /* All links primary color */
     text-decoration: none;
     transition: color 0.2s ease;
 }
+
 a:hover {
     text-decoration: underline;
-    color: var(--text-lighter);             /* Lighter on hover */
+    color: var(--text-lighter);
+    /* Lighter on hover */
 }
 
 h2 {
@@ -64,6 +95,7 @@ h2 {
     padding-bottom: 15px;
     letter-spacing: -0.5px;
 }
+
 h2::after {
     /* Underline accent for h2 */
     content: '';
@@ -108,13 +140,16 @@ h2::after {
     animation-fill-mode: forwards;
 }
 
+
 /* Section header with subtitle */
+
 .section-header {
     text-align: center;
     margin: 40px 0 30px;
     padding: 0 20px;
     color: var(--text-light);
 }
+
 .section-header h2 {
     font-size: 2.5em;
     color: var(--text-lighter);
@@ -122,6 +157,7 @@ h2::after {
     text-shadow: 2px 2px 6px var(--shadow-dark);
     position: relative;
 }
+
 .section-header h2::after {
     content: '';
     display: block;
@@ -131,6 +167,7 @@ h2::after {
     margin: 10px auto 0;
     border-radius: 5px;
 }
+
 .section-header p {
     font-size: 1.1em;
     color: var(--secondary-color);
@@ -139,33 +176,53 @@ h2::after {
     margin: 0 auto;
 }
 
+
 /* ===================== */
+
+
 /* 4. MEDIA & IMAGE      */
+
+
 /* ===================== */
+
 img {
     max-width: 100%;
     height: auto;
     display: block;
 }
 
+
 /* ===================== */
+
+
 /* 5. SCROLLBAR STYLES   */
+
+
 /* ===================== */
+
 ::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #FF4D6B;
 }
+
 .stats::-webkit-scrollbar-thumb {
     background-color: rgba(254, 44, 85, 0.5);
     border-radius: 10px;
 }
 
+
 /* ===================== */
+
+
 /* 6. HEADER & LOGO      */
+
+
 /* ===================== */
+
 .header {
     position: relative;
     display: flex;
@@ -176,9 +233,12 @@ img {
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 8px var(--shadow-dark);
 }
+
 #header-include {
-    display: contents; /* For server-side includes */
+    display: contents;
+    /* For server-side includes */
 }
+
 .logo {
     position: absolute;
     left: 50%;
@@ -190,6 +250,7 @@ img {
     text-align: center;
     font-size: 1.2rem;
 }
+
 .logo img {
     width: 60px;
     height: 60px;
@@ -198,10 +259,12 @@ img {
     filter: brightness(0.8) invert(1);
     display: block;
 }
+
 .header-icons {
     display: flex;
     gap: 8px;
 }
+
 .header-icons button {
     background: none;
     border: none;
@@ -212,18 +275,26 @@ img {
     border-radius: 8px;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
+
 .header-icons button:hover {
     background-color: rgba(255, 255, 255, 0.05);
     color: var(--primary-color);
 }
+
 .header-icons button:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--primary-color);
 }
 
+
 /* ===================== */
+
+
 /* 7. SIDEBAR            */
+
+
 /* ===================== */
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -237,12 +308,15 @@ img {
     display: flex;
     flex-direction: column;
 }
+
 .sidebar.open {
     right: 0;
 }
+
 .sidebar-open {
     overflow: hidden;
 }
+
 .sidebar-header {
     display: flex;
     justify-content: space-between;
@@ -251,11 +325,13 @@ img {
     background-color: var(--background-dark);
     border-bottom: 1px solid var(--border-dark);
 }
+
 .sidebar-header h3 {
     margin: 0;
     color: var(--text-lighter);
     font-size: 1.1em;
 }
+
 .sidebar-close {
     background: none;
     border: none;
@@ -264,14 +340,17 @@ img {
     color: var(--secondary-color);
     transition: color 0.2s ease, transform 0.2s ease;
 }
+
 .sidebar-close:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--primary-color);
 }
+
 .sidebar-close:hover {
     color: var(--primary-color);
     transform: scale(1.1);
 }
+
 .sidebar-content {
     padding-top: 10px;
     padding-left: 10px;
@@ -283,21 +362,31 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    scrollbar-width: none;         /* Firefox */
-    -ms-overflow-style: none;      /* IE 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
 }
+
 .sidebar-content::-webkit-scrollbar {
     display: none;
 }
 
+
 /* ===================== */
+
+
 /* 8. MAIN LAYOUT        */
+
+
 /* ===================== */
+
 main {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 20px;
 }
+
 .hero-section {
     text-align: center;
     padding: 60px 20px;
@@ -308,9 +397,15 @@ main {
     box-shadow: 0 8px 20px var(--shadow-medium-dark);
 }
 
+
 /* ===================== */
+
+
 /* 9. GRID CARDS         */
+
+
 /* ===================== */
+
 .category-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -319,6 +414,7 @@ main {
     margin-bottom: 50px;
     justify-items: center;
 }
+
 .category-card {
     width: 100%;
     max-width: 160px;
@@ -335,10 +431,12 @@ main {
     background-position: center;
     background-repeat: no-repeat;
 }
+
 .category-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 25px var(--shadow-medium-dark);
 }
+
 .category-card img {
     width: 100%;
     height: 100%;
@@ -346,6 +444,7 @@ main {
     border-bottom: none;
     display: block;
 }
+
 .category-card h3 {
     position: absolute;
     top: 50%;
@@ -361,6 +460,7 @@ main {
     -webkit-text-stroke: 1px var(--primary-color);
     text-shadow: 0 0 6px var(--primary-color);
 }
+
 .category-card::before {
     content: "";
     position: absolute;
@@ -369,24 +469,33 @@ main {
     z-index: 1;
     pointer-events: none;
 }
+
 .category-card p {
     font-size: 0.9em;
     color: var(--secondary-color);
     padding: 0 15px;
     flex-grow: 1;
 }
+
 .category-card a {
     display: block;
     text-decoration: none;
     color: inherit;
 }
+
 .category-card a:hover {
     text-decoration: none;
 }
 
+
 /* ===================== */
+
+
 /* 10. AFFILIATE CARDS   */
+
+
 /* ===================== */
+
 .affiliate-links {
     padding: 20px;
     text-align: center;
@@ -395,17 +504,20 @@ main {
     box-shadow: 0 4px 15px var(--shadow-medium-dark);
     margin-bottom: 40px;
 }
+
 .affiliate-links h2 {
     color: var(--text-lighter);
     margin-bottom: 15px;
     font-size: 1.6em;
 }
+
 .affiliate-scroll {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 16px;
     justify-content: center;
 }
+
 .affiliate-card {
     position: relative;
     width: 100%;
@@ -421,29 +533,39 @@ main {
     transition: transform 0.3s ease;
     box-sizing: border-box;
 }
+
 .affiliate-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
+
 .affiliate-card:hover {
     transform: scale(1.05);
     border-color: var(--primary-color);
 }
 
+
 /* ===================== */
+
+
 /* 11. POST GRID         */
+
+
 /* ===================== */
+
 .popular-posts,
 .latest-posts {
     margin: 20px 0;
 }
+
 .post-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
 }
+
 .post-card {
     display: flex;
     flex-direction: column;
@@ -456,26 +578,31 @@ main {
     transition: transform 0.3s ease;
     cursor: pointer;
 }
+
 .post-card:hover {
     transform: scale(1.03);
 }
+
 .post-card img {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border-bottom: 1px solid var(--border-dark);
 }
+
 .post-content {
     padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
+
 .post-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .post-title {
     font-size: 1.1em;
     font-weight: 600;
@@ -485,6 +612,7 @@ main {
     text-overflow: ellipsis;
     align-items: left;
 }
+
 .post-description {
     font-size: 0.9em;
     color: var(--text-light);
@@ -494,6 +622,7 @@ main {
     white-space: nowrap;
     align-items: left;
 }
+
 .post-time {
     font-size: 0.75em;
     color: var(--secondary-color);
@@ -502,9 +631,11 @@ main {
     gap: 4px;
     opacity: 0.85;
 }
+
 .post-time i {
     color: var(--primary-color);
 }
+
 .post-meta-row {
     display: flex;
     justify-content: space-between;
@@ -513,11 +644,13 @@ main {
     font-size: 0.8em;
     color: var(--secondary-color);
 }
+
 .post-label {
     font-weight: 500;
     color: var(--primary-color);
     align-items: left;
 }
+
 .post-hashtags {
     margin-top: 12px;
     display: flex;
@@ -531,6 +664,7 @@ main {
     flex: 1;
     align-items: right;
 }
+
 .post-hashtag {
     display: inline-block;
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-hover));
@@ -546,13 +680,16 @@ main {
     opacity: 0;
     transform: translateY(10px);
 }
+
 .post-hashtag.show {
     opacity: 1;
     transform: translateY(0);
 }
+
 .post-hashtag:hover {
     filter: brightness(1.1);
 }
+
 .post-price {
     font-size: 0.9em;
     color: var(--text-light);
@@ -563,9 +700,15 @@ main {
     opacity: 0.85;
 }
 
+
 /* ===================== */
+
+
 /* 12. POST MAIN ARTICLE */
+
+
 /* ===================== */
+
 .post-main {
     max-width: 800px;
     margin: 0 auto;
@@ -573,17 +716,20 @@ main {
     color: var(--text-light);
     background-color: var(--background-dark);
 }
+
 .post-main-article {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
+
 .post-main-title {
     font-size: 2rem;
     font-weight: bold;
     color: var(--primary-color);
     margin-bottom: 0.5rem;
 }
+
 .post-main-meta {
     font-size: 0.9rem;
     color: var(--text-muted);
@@ -591,35 +737,42 @@ main {
     flex-wrap: wrap;
     gap: 10px;
 }
+
 .post-main-labels,
 .post-main-hashtags {
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
+
 .post-main-labels span,
 .post-main-hashtags span {
     color: var(--primary-color);
 }
+
 .post-main-thumbnail {
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(254, 44, 85, 0.2);
 }
+
 .post-main-thumbnail img {
     width: 100%;
     height: auto;
     border-radius: 12px;
     display: block;
 }
+
 .post-main-content {
     line-height: 1.7;
     font-size: 1rem;
     color: var(--text-light);
 }
+
 .post-main-content p {
     margin-bottom: 1.2rem;
 }
+
 .post-main-content blockquote {
     border-left: 4px solid var(--primary-color);
     background-color: rgba(255, 255, 255, 0.03);
@@ -628,42 +781,54 @@ main {
     font-style: italic;
     color: var(--text-muted);
 }
+
 .post-main-navigation {
     display: flex;
     justify-content: space-between;
     gap: 10px;
     margin-top: 2rem;
 }
+
 .post-main-navigation a {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease;
 }
+
 .post-main-navigation a:hover {
     text-decoration: underline;
     color: var(--accent-color);
 }
+
 .post-main-share {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 1.5rem;
 }
+
 .post-main-comments {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-dark);
 }
+
 .post-main-comments h2 {
     font-size: 1.3rem;
     margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
+
 /* ===================== */
+
+
 /* 13. NEWSLETTER        */
+
+
 /* ===================== */
+
 .newsletter-subscribe {
     background-color: var(--card-background-dark);
     border: 2px solid var(--primary-color);
@@ -676,6 +841,7 @@ main {
     position: relative;
     overflow: hidden;
 }
+
 .newsletter-subscribe::before {
     content: '';
     position: absolute;
@@ -687,6 +853,7 @@ main {
     z-index: 0;
     pointer-events: none;
 }
+
 .newsletter-subscribe h2 {
     font-size: 2.8em;
     color: var(--text-lighter);
@@ -695,6 +862,7 @@ main {
     position: relative;
     z-index: 1;
 }
+
 .newsletter-subscribe h2::after {
     content: '';
     display: block;
@@ -704,6 +872,7 @@ main {
     margin: 12px auto 0;
     border-radius: 4px;
 }
+
 .newsletter-subscribe p {
     font-size: 1.15em;
     color: var(--secondary-color);
@@ -713,6 +882,7 @@ main {
     position: relative;
     z-index: 1;
 }
+
 .newsletter-input-group {
     display: flex;
     flex-direction: column;
@@ -722,10 +892,12 @@ main {
     gap: 12px;
     z-index: 1;
 }
+
 .newsletter-input-group input,
 .newsletter-input-group button {
     border-radius: 30px;
 }
+
 .newsletter-input-group input {
     width: 100%;
     padding: 14px 20px;
@@ -736,14 +908,17 @@ main {
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 .newsletter-input-group input::placeholder {
     color: var(--secondary-color);
     opacity: 0.7;
 }
+
 .newsletter-input-group input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 6px var(--primary-color);
 }
+
 .newsletter-input-group button {
     width: 100%;
     padding: 14px 20px;
@@ -757,14 +932,21 @@ main {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 .newsletter-input-group button:hover {
     background-color: #FF4D6B;
     transform: translateY(-2px);
 }
 
+
 /* ===================== */
+
+
 /* 14. STATS BAR         */
+
+
 /* ===================== */
+
 .stats {
     display: grid;
     grid-auto-flow: column;
@@ -775,13 +957,16 @@ main {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 }
+
 .stats::-webkit-scrollbar {
     height: 6px;
 }
+
 .stats::-webkit-scrollbar-track {
     background-color: var(--border-dark);
     border-radius: 10px;
 }
+
 .stats-item {
     background-color: var(--card-background-dark);
     padding: 16px;
@@ -797,29 +982,39 @@ main {
     flex-shrink: 0;
     min-width: 120px;
 }
+
 .stats-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 14px var(--shadow-medium-dark);
 }
+
 .stats-item i {
     font-size: 1.8em;
     color: var(--primary-color);
     margin-bottom: 6px;
 }
+
 .stats-item span:first-of-type {
     font-size: 0.85em;
     color: var(--secondary-color);
     margin-bottom: 4px;
 }
+
 .stats-item span:last-of-type {
     font-size: 1.3em;
     font-weight: 700;
     color: var(--text-lighter);
 }
 
+
 /* ===================== */
+
+
 /* 15. FOOTER            */
+
+
 /* ===================== */
+
 .footer {
     background-color: var(--card-background-dark);
     padding: 20px 16px;
@@ -828,6 +1023,7 @@ main {
     box-shadow: 0 -4px 12px var(--shadow-dark);
     margin-top: 40px;
 }
+
 .footer .copyright {
     font-size: 0.85em;
     color: var(--text-light);
@@ -835,14 +1031,21 @@ main {
     margin: 0;
 }
 
+
 /* ===================== */
+
+
 /* 16. SPINNER/LOADER    */
+
+
 /* ===================== */
+
 .spinner,
 .loading-spinner {
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
+
 .spinner {
     width: 40px;
     height: 40px;
@@ -850,6 +1053,7 @@ main {
     border-top: 4px solid var(--primary-color);
     margin: 20px auto;
 }
+
 .loading-spinner {
     text-align: center;
     padding: 1rem;
@@ -867,14 +1071,21 @@ main {
     pointer-events: none;
 }
 
+
 /* ===================== */
+
+
 /* 17. THUMBNAIL WRAPPER */
+
+
 /* ===================== */
+
 .thumbnail-wrapper {
     position: relative;
     display: block;
     overflow: hidden;
 }
+
 .thumbnail-wrapper .loading-spinner {
     position: absolute;
     top: 50%;
@@ -890,9 +1101,15 @@ main {
     pointer-events: none;
 }
 
+
 /* ===================== */
+
+
 /* 18. BUTTON AND ICONS  */
+
+
 /* ===================== */
+
 .back-button {
     background: none;
     border: none;
@@ -905,19 +1122,23 @@ main {
     align-items: center;
     justify-content: center;
 }
+
 .back-button i {
     font-size: 1.5rem;
     transition: color 0.3s ease;
 }
+
 .back-button:hover i,
 .back-button:focus i,
 .back-button:active i {
     color: var(--primary-color);
 }
+
 .back-button:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--primary-color);
 }
+
 .btn-share {
     background-color: transparent;
     color: var(--primary-color);
@@ -928,14 +1149,21 @@ main {
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
 .btn-share:hover {
     background-color: var(--primary-color);
     color: var(--background-dark);
 }
 
+
 /* ===================== */
+
+
 /* 19. AD & ABOUT WIDGET */
+
+
 /* ===================== */
+
 .ad-slot {
     text-align: center;
     margin-bottom: 0px;
@@ -945,6 +1173,7 @@ main {
     border: 1px solid var(--border-dark);
     width: auto;
 }
+
 .about-me {
     text-align: center;
     margin-bottom: 20px;
@@ -955,6 +1184,7 @@ main {
     box-shadow: 0 2px 10px var(--shadow-dark);
     width: 100%;
 }
+
 .about-me .profile-photo {
     width: 80px;
     height: 80px;
@@ -965,78 +1195,209 @@ main {
     padding: 2px;
     display: block;
 }
+
 .about-me h3 {
     margin-bottom: 8px;
     color: var(--text-lighter);
     font-size: 1.3em;
 }
+
 .about-me p {
     font-size: 0.8em;
     margin-bottom: 15px;
     color: var(--secondary-color);
 }
+
 .social-media a {
     font-size: 1.5em;
     margin: 0 5px;
     color: var(--secondary-color);
     transition: color 0.2s ease;
 }
+
 .social-media a:hover {
     color: var(--primary-color);
     text-decoration: none;
 }
 
-/* ===================== */
-/* 20. ANIMATION         */
-/* ===================== */
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-@keyframes fadeScale {
-    0% { opacity: 0; transform: scale(0.95);}
-    100% { opacity: 1; transform: scale(1);}
+
+/* ==================== */
+
+
+/* Search */
+
+
+/* ==================== */
+
+.search-overlay {
+    display: none;
 }
 
+.search-overlay.active {
+    display: flex;
+}
+
+.search-overlay-content {
+    width: 95%;
+    padding: 20px;
+}
+
+.search-overlay-content h3 {
+    font-size: 1.5em;
+}
+
+.search-overlay .search-input-group input,
+.search-overlay .search-input-group button {
+    padding: 12px 15px;
+    font-size: 1em;
+}
+
+
 /* ===================== */
+
+
+/* 20. ANIMATION         */
+
+
+/* ===================== */
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ===================== */
+
+
 /* 21. RESPONSIVE MEDIA  */
+
+
 /* ===================== */
+
 @media (max-width: 768px) {
-    .header { padding: 10px 15px; }
-    .header .logo img { height: 50px; }
-    .sidebar { width: 300px; right: -300px; }
-    .category-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-    .affiliate-scroll { padding-bottom: 10px; }
-    .affiliate-item { width: 100px; height: 100px; }
-    .post-grid { grid-template-columns: 1fr; gap: 20px; }
-    .post-card { flex-direction: row; align-items: center; gap: 16px; padding: 12px 16px; }
-    .post-card img { width: 160px; aspect-ratio: 16 / 9; border-radius: 8px; border-bottom: none; }
-    .post-content { flex: 1; padding: 0; }
-    .post-title-row { flex-direction: row; }
-    .post-meta-row { margin-top: 6px;}
-    .post-description { white-space: nowrap; }
-    .newsletter-subscribe { padding: 50px 15px; }
-    .newsletter-subscribe h2 { font-size: 2.2em; }
-    .newsletter-subscribe p { font-size: 1em; margin-bottom: 30px; }
-    .subscribe-form button { margin-bottom: 0;}
-    .search-overlay-content { width: 95%; padding: 20px; }
-    .search-overlay-content h3 { font-size: 1.5em; }
-    .search-overlay .search-input-group input,
-    .search-overlay .search-input-group button { padding: 12px 15px; font-size: 1em; }
+    .header {
+        padding: 10px 15px;
+    }
+    .header .logo img {
+        height: 50px;
+    }
+    .sidebar {
+        width: 300px;
+        right: -300px;
+    }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .affiliate-scroll {
+        padding-bottom: 10px;
+    }
+    .affiliate-item {
+        width: 100px;
+        height: 100px;
+    }
+    .post-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .post-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 16px;
+    }
+    .post-card img {
+        width: 160px;
+        aspect-ratio: 16 / 9;
+        border-radius: 8px;
+        border-bottom: none;
+    }
+    .post-content {
+        flex: 1;
+        padding: 0;
+    }
+    .post-title-row {
+        flex-direction: row;
+    }
+    .post-meta-row {
+        margin-top: 6px;
+    }
+    .post-description {
+        white-space: nowrap;
+    }
+    .newsletter-subscribe {
+        padding: 50px 15px;
+    }
+    .newsletter-subscribe h2 {
+        font-size: 2.2em;
+    }
+    .newsletter-subscribe p {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+    .subscribe-form button {
+        margin-bottom: 0;
+    }
 }
+
 @media (max-width: 600px) {
-    .category-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
-    .newsletter-input-group { flex-direction: column; gap: 12px; }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    .newsletter-input-group {
+        flex-direction: column;
+        gap: 12px;
+    }
     .newsletter-input-group input,
-    .newsletter-input-group button { border-radius: 30px; border-right: 0px solid var(--border-dark);}
-    .stats { grid-auto-flow: row; grid-auto-columns: 100%; overflow-x: hidden; }
-    .stats-item { width: 100%; }
+    .newsletter-input-group button {
+        border-radius: 30px;
+        border-right: 0px solid var(--border-dark);
+    }
+    .stats {
+        grid-auto-flow: row;
+        grid-auto-columns: 100%;
+        overflow-x: hidden;
+    }
+    .stats-item {
+        width: 100%;
+    }
 }
+
 @media (max-width: 480px) {
-    .header-icons { gap: 15px; }
-    .sidebar-toggle { font-size: 1.3em; }
-    .category-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
-    .post-card h3 { font-size: 1.3em;}
-    .post-card .post-meta { font-size: 0.8em; flex-direction: column; align-items: flex-start; gap: 5px;}
-    .newsletter-subscribe h2 { font-size: 1.8em;}
-    .newsletter-subscribe p { font-size: 0.9em;}
+    .header-icons {
+        gap: 15px;
+    }
+    .sidebar-toggle {
+        font-size: 1.3em;
+    }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    .post-card h3 {
+        font-size: 1.3em;
+    }
+    .post-card .post-meta {
+        font-size: 0.8em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .newsletter-subscribe h2 {
+        font-size: 1.8em;
+    }
+    .newsletter-subscribe p {
+        font-size: 0.9em;
+    }
 }
