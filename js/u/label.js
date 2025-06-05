@@ -7,7 +7,7 @@ async function loadCategoryLabels() {
   container.innerHTML = ''; // kosongkan dulu
 
   // URL sheet kategori yang berisi kolom name, title, sheetId, sheet, url
-  const categorySheetUrl = 'https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/categories';
+  const categorySheetUrl = 'https://opensheet.elk.sh/1ES0oKihVPw3LVwnFtlquFNltyIFvEImL-4gy-5fw2bA/label';
 
   try {
     const res = await fetch(categorySheetUrl);
