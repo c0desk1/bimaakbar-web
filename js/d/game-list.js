@@ -1,9 +1,11 @@
 function createGamePostElement(post) {
+    const el = document.createElement('div');
+    el.className = 'post-card';
+    
     const link = document.createElement('a');
     link.href = post.url || '#';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'post-card';
 
     // === Thumbnail ===
     const thumbnailDiv = document.createElement('div');
