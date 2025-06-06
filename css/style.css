@@ -637,6 +637,8 @@ main {
     justify-content: center;
     transition: transform 0.3s ease;
     box-sizing: border-box;
+    max-width: 100px;
+    max-height: 100px;
     /* Include padding and border in the element's total width and height */
 }
 
@@ -1588,6 +1590,11 @@ main {
         width: 90px;
     	height:90px;
     }
+    
+    .affiliate-card {
+    	max-width: 90px;
+    	max-height: 90px;
+	}
     .post-content {
     	flex: 1;
         padding-right: 80px;
