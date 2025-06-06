@@ -1716,7 +1716,6 @@ main {
     }
     .sidebar {
         width: 200px;
-        /* Even smaller sidebar for very small screens */
         right: -200px;
     }
     .sidebar-header h3 {
