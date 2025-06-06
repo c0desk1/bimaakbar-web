@@ -599,11 +599,13 @@ main {
 .affiliate-links {
     padding: var(--spacing-md);
     text-align: center;
+    align-items: center;
     background-color: var(--card-background-dark);
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-medium-dark);
     margin-bottom: 0;
-    /* Ensure no extra margin */
+    margin-top: 0;
+    padding: 8px;
 }
 
 .affiliate-links h2 {
@@ -619,8 +621,7 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: var(--spacing-sm);
     justify-content: center;
-    padding-bottom: 10px;
-    /* To prevent scrollbar from overlapping content */
+    margin-top: 8px;
 }
 
 .affiliate-card {
@@ -672,13 +673,11 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-md);
     overflow: hidden;
-    /* Prevents overflow issues */
 }
 
 .post-card {
     display: flex;
     flex-direction: row;
-    /* Default to row for larger screens */
     background-color: var(--card-background-dark);
     box-shadow: 0 2px 5px var(--shadow-dark);
     overflow: hidden;
@@ -687,13 +686,12 @@ main {
     transition: transform 0.3s ease;
     cursor: pointer;
     justify-content: flex-start;
-    /* Align content to start */
     position: relative;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs);
-    /* Added padding to the card itself */
     height: 120px;
-    /* Fixed height for consistent look */
+    flex-grow: 1;
+    flex-wrap: nowrap;
 }
 
 .post-card:hover {
@@ -702,10 +700,8 @@ main {
 
 .post-thumbnail {
     width: 100px;
-    /* Fixed width for thumbnail */
-    height: 100%;
+    height: 100px;
     flex-shrink: 0;
-    /* Prevent shrinking */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -715,36 +711,28 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    /* Slightly rounded corners for consistency */
-    /* Remove mask if not needed, it makes image fade */
-    /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 90%); */
-    /* -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 90%); */
 }
 
 .post-content {
+	flex: 1;
     display: flex;
     flex-direction: column;
-    flex: 1;
-    /* Allows content to take remaining space */
-    padding-right: 100px;
-    /* Space for meta info if it's positioned absolutely */
-    gap: 6px;
+    position: relative;
     overflow: hidden;
-    /* Hide overflowing text */
     justify-content: center;
-    /* Center content vertically */
+    align-items: flex-start;
+    flex-grow: 1;
+    flex-wrap: nowrap;
+    
 }
 
 .post-title {
     font-size: 1.1em;
-    font-weight: 600;
+    font-weight: bold;
     color: var(--primary-color);
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
-    /* Adjust line height for better appearance */
+    white-space: nowrap;
 }
 
 .post-description {
@@ -754,12 +742,7 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    /* For multiline ellipsis */
-    -webkit-line-clamp: 2;
-    /* Show maximum 2 lines */
-    -webkit-box-orient: vertical;
     white-space: normal;
-    /* Allow text to wrap naturally */
 }
 
 .post-meta {
@@ -770,33 +753,30 @@ main {
     flex-direction: column;
     gap: 6px;
     align-items: flex-end;
-    /* Align meta items to the right */
 }
 
 .post-meta-row {
+	gap: 6px;
+	font-size: 0.85em;
     display: flex;
     flex-direction: column;
-    /* Changed to column for better stacking on small screens */
-    align-items: flex-end;
-    font-size: 0.85em;
+    align-items: flex-end;  
     color: var(--secondary-color);
-    gap: 6px;
     white-space: nowrap;
-    /* Keep items in one line for small meta info */
 }
 
 .post-label {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 0px;
+    right: 0px;
+    padding: 2px;
     background: var(--primary-color);
-    /* Simplified background */
-    padding: 6px 12px;
-    border-radius: 6px;
+    border-radius: 4px;
     font-weight: 500;
     font-size: 0.85em;
     color: var(--text-light);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
 }
 
 .post-hashtags {
@@ -807,13 +787,10 @@ main {
     color: var(--text-light);
     margin-top: 6px;
     flex-direction: row;
-    /* Keep hashtags in a row */
 }
 
 .post-hashtags span {
-    /* Use span for individual hashtags */
     background-color: rgba(254, 44, 85, 0.2);
-    /* Light background for tags */
     padding: 4px 8px;
     border-radius: 4px;
     color: var(--primary-color);
@@ -833,11 +810,9 @@ main {
     display: flex;
     align-items: center;
     gap: 4px;
-    /* Reduced gap for better fit */
     opacity: 0.85;
     white-space: nowrap;
     max-width: 150px;
-    /* Constrain width to prevent overflow */
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -1585,14 +1560,13 @@ main {
 
 @media (max-width: 768px) {
     .header {
-        padding: 10px 15px;
+        padding: 10px;
     }
     .header .logo img {
-        height: 50px;
+        height: 40px;
     }
     .sidebar {
         width: 250px;
-        /* Slightly smaller sidebar for tablets */
         right: -250px;
     }
     .category-grid {
@@ -1606,28 +1580,25 @@ main {
     }
     .post-grid {
         grid-template-columns: 1fr;
-        /* Stack posts vertically */
         gap: var(--spacing-md);
     }
     .post-card {
         flex-direction: row;
-        /* Keep row layout for consistency */
-        height: 120px;
-        /* Maintain fixed height */
+        height: 200px;
         padding: var(--spacing-xs);
     }
     .post-thumbnail {
-        width: 100px;
-        height: 100%;
+        width: 90px;
+    	height:90px;
     }
     .post-content {
+    	flex: 1;
         padding-right: 80px;
-        /* Adjust for meta */
+        padding-left: 0px;
         justify-content: center;
     }
     .post-description {
-        -webkit-line-clamp: 2;
-        /* Ensure 2 lines on smaller screens */
+        -webkit-line-clamp: 4;
     }
     .post-meta {
         bottom: 8px;
@@ -1649,7 +1620,6 @@ main {
     }
     .search-overlay .search-input-group {
         flex-direction: row;
-        /* Keep search input in a row */
     }
     .search-overlay .search-input-group input {
         padding: 12px 15px;
@@ -1665,7 +1635,6 @@ main {
 @media (max-width: 600px) {
     main {
         padding: 0 var(--spacing-sm);
-        /* Reduce main padding */
     }
     .hero-section {
         padding: var(--spacing-sm);
@@ -1680,22 +1649,19 @@ main {
         gap: 10px;
     }
     .post-card {
-        height: 100px;
-        /* Even smaller fixed height for mobile */
+        height: 160px;
         padding: var(--spacing-xs);
         gap: var(--spacing-xs);
     }
-    .post-thumbnail {
-        width: 80px;
-        /* Smaller thumbnail */
-    }
+    	width: 100%;
+    	height:100%;
+    	aspect-ratio: 1 / 1;
+    
     .post-title {
         font-size: 1em;
-        /* Smaller title */
     }
     .post-description {
         font-size: 0.85em;
-        /* Smaller description */
         -webkit-line-clamp: 2;
     }
     .post-meta {
@@ -1719,7 +1685,6 @@ main {
     }
     .newsletter-input-group {
         flex-direction: column;
-        /* Stack input and button vertically */
     }
     .newsletter-input-group input,
     .newsletter-input-group button {
@@ -1772,13 +1737,15 @@ main {
     }
     .post-card {
         height: 90px;
-        /* Minimal height */
-        padding: 6px;
+        padding: 0px;
         gap: 6px;
     }
-    .post-thumbnail {
-        width: 70px;
+    .post-thumbnail img {
+    	width: 100%;
+    	height:100%;
+    	aspect-ratio: 1 / 1;
     }
+    
     .post-title {
         font-size: 0.9em;
     }
