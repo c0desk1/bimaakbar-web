@@ -17,8 +17,14 @@ function renderAffiliateItems() {
                 card.target = '_blank';
                 card.className = 'affiliate-card';
 
-                // Debug: cek url gambar
-                console.log('Gambar:', item.img);
+                // Tambahkan pembungkus gambar agar konsisten
+                var imgDiv = document.createElement('div');
+                imgDiv.className = 'affiliate-img';
+                imgDiv.style.width = "100%";
+                imgDiv.style.height = "100px";
+                imgDiv.style.overflow = "hidden";
+                imgDiv.style.borderRadius = "8px";
+                imgDiv.style.background = "#f4f4f4";
 
                 var img = document.createElement('img');
                 img.src = item.img;
@@ -28,8 +34,23 @@ function renderAffiliateItems() {
                     this.onerror = null;
                     this.src = 'assets/error.jpg';
                 };
+                // MODIFIKASI: Atur ukuran dan object-fit
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover";
+                img.style.display = "block";
 
-                card.appendChild(img);
+                imgDiv.appendChild(img);
+                card.appendChild(imgDiv);
+
+                // Tambah nama/teks jika ada
+                if(item.alt) {
+                    var label = document.createElement('div');
+                    label.className = 'affiliate-label';
+                    label.innerText = item.alt;
+                    card.appendChild(label);
+                }
+
                 affiliateList.appendChild(card);
             }
         })
@@ -38,5 +59,4 @@ function renderAffiliateItems() {
             affiliateList.innerHTML = '<p style="color:red;">Gagal memuat affiliate items.</p>';
         });
 }
-
 window.renderAffiliateItems = renderAffiliateItems;
