@@ -16,8 +16,10 @@ function renderAffiliateItems() {
                 card.href = item.url;
                 card.target = '_blank';
                 card.className = 'affiliate-card';
-                
-                var imgDiv = document.createElement('div');
+
+                // Debug: cek url gambar
+                console.log('Gambar:', item.img);
+
                 var img = document.createElement('img');
                 img.src = item.img;
                 img.alt = item.alt ? item.alt : 'Affiliate Item';
@@ -26,9 +28,8 @@ function renderAffiliateItems() {
                     this.onerror = null;
                     this.src = 'assets/error.jpg';
                 };
- 
-                imgDiv.appendChild(img);
-                card.appendChild(imgDiv);
+
+                card.appendChild(img);
                 affiliateList.appendChild(card);
             }
         })
@@ -37,4 +38,5 @@ function renderAffiliateItems() {
             affiliateList.innerHTML = '<p style="color:red;">Gagal memuat affiliate items.</p>';
         });
 }
+
 window.renderAffiliateItems = renderAffiliateItems;
