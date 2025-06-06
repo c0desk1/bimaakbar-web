@@ -597,50 +597,41 @@ main {
 /* ===================== */
 
 .affiliate-links {
-    padding: var(--spacing-md);
-    text-align: center;
-    align-items: center;
-    background-color: var(--card-background-dark);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px var(--shadow-medium-dark);
-    margin-bottom: 0;
-    margin-top: 0;
-    padding: 8px;
-}
-
-.affiliate-links h2 {
-    color: var(--text-lighter);
-    margin-bottom: var(--spacing-md);
-    font-size: 1.6em;
-    padding-bottom: 15px;
-}
-
-.affiliate-scroll {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: var(--spacing-sm);
-    justify-content: center;
-    margin-top: 8px;
-    flex-wrap: wrap;
-}
-
-.affiliate-card {
-    display: inline-block;
-	border-radius: 8px;
-	overflow: hidden;
-	transition: transform 0.3s;,
-}
-
-.affiliate-card img {
-    width: 100%;
-    height: auto;
-}
-
-.affiliate-card:hover {
-    transform: scale(1.05);
-    border-color: var(--primary-color-hover);
-    /* Use hover color */
-}
+		    padding: 20px;
+		    text-align: center;
+		    background-color: var(--card-background-dark);
+		    border-radius: 12px;
+		    box-shadow: 0 4px 15px var(--shadow-medium-dark);
+		}
+		
+		.affiliate-links h2 {
+		    color: var(--text-lighter);
+		    margin-bottom: 15px;
+		}
+		
+		.affiliate-scroll {
+			padding: 16px 0px;
+		    display: flex;
+		    justify-content: center;
+		    flex-wrap: wrap; /* Agar item affiliate dapat menyesuaikan lebar */
+		    gap: 10px; /* Ruang antar item */
+		}
+		
+		.affiliate-card {
+		    display: inline-block;
+		    border-radius: 8px;
+		    overflow: hidden;
+		    transition: transform 0.3s;
+		}
+		
+		.affiliate-card img {
+		    width: 100px; /* Sesuaikan ukuran gambar */
+		    height: 100px;
+		}
+		
+		.affiliate-card:hover {
+		    transform: scale(1.05); /* Efek zoom saat hover */
+		}
 
 
 /* ===================== */
@@ -1560,9 +1551,13 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
     .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 12px;
-    }
+                padding-bottom: 10px;
+            }
+
+            .affiliate-item {
+                width: 100px;
+                height: 100px;
+            }
     .post-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
@@ -1730,10 +1725,6 @@ main {
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         gap: 10px;
-    }
-    .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-        gap: 8px;
     }
     .post-card {
         height: 100px;
