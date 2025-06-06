@@ -37,10 +37,10 @@
     /* Gradient end (for hero/section bg) */
     /* General spacing */
     --spacing-xs: 8px;
-    --spacing-sm: 16px;
-    --spacing-md: 20px;
-    --spacing-lg: 40px;
-    --spacing-xl: 60px;
+    --spacing-sm: 20px;
+    --spacing-md: 40px;
+    --spacing-lg: 60px;
+    --spacing-xl: 80px;
 }
 
 
@@ -724,6 +724,7 @@ main {
     align-items: flex-start;
     flex-grow: 1;
     flex-wrap: nowrap;
+    margin-right: 40px;
     
 }
 
