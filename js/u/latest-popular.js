@@ -216,3 +216,4 @@ function loadLatestPopularPost() {
         renderPosts('popular');
     });
 }
+ if (typeof renderPosts === "function") { renderPosts('latest'); renderPosts('popular');}
