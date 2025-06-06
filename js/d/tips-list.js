@@ -17,6 +17,11 @@ function createtipsPostElement(post) {
     img.alt = post.title || '';
     img.loading = 'lazy';
     img.onerror = () => (img.src = '/assets/error.jpg');
+    img.style.width = "100%";
+    img.style.height = "180px";
+    img.style.objectFit = "cover";
+    img.style.display = "block";
+    img.style.borderRadius = "8px";
 
     thumbnailDiv.appendChild(img);
     link.appendChild(thumbnailDiv);
@@ -98,13 +103,11 @@ function loadPostsTips() {
                 return;
             }
 
-            // --- Bagian PENTING: Urutkan data berdasarkan timestamp (terbaru ke terlama) ---
             data.sort((a, b) => {
                 const timeA = new Date(a.timestamp).getTime();
                 const timeB = new Date(b.timestamp).getTime();
-                return timeB - timeA; // Urutkan menurun (terbaru di atas)
+                return timeB - timeA;
             });
-            // -----------------------------------------------------------------------------
 
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
@@ -122,5 +125,4 @@ function loadPostsTips() {
             container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan tips. Silakan coba lagi nanti.</p>';
         });
 }
-
 window.loadPostsTips = loadPostsTips;
