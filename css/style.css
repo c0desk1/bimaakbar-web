@@ -606,6 +606,7 @@ main {
     margin-bottom: 0;
     margin-top: 0;
     padding: 8px;
+    height: auto;
 }
 
 .affiliate-links h2 {
@@ -626,8 +627,6 @@ main {
 
 .affiliate-card {
     position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
     border: 2px solid var(--primary-color);
     border-radius: 16px;
     background-color: var(--background-dark);
@@ -773,7 +772,7 @@ main {
     background: var(--primary-color);
     border-radius: 4px;
     font-weight: 500;
-    font-size: 0.85em;
+    font-size: 0.75em;
     color: var(--text-light);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     text-transform: uppercase;
@@ -783,10 +782,11 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 0.85em;
+    font-size: 0.75em;
     color: var(--text-light);
     margin-top: 6px;
     flex-direction: row;
+    white-space: nowrap;
 }
 
 .post-hashtags span {
@@ -825,11 +825,8 @@ main {
 }
 
 .post-price {
-    font-size: 0.9em;
+    font-size: 0.75em;
     color: var(--text-light);
-    margin-top: 8px;
-    margin-left: 8px;
-    font-style: italic;
     display: block;
     opacity: 0.85;
 }
