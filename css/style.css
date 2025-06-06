@@ -635,8 +635,6 @@ main {
     justify-content: center;
     transition: transform 0.3s ease;
     box-sizing: border-box;
-    width: 100px;
-    height: 100px;
 }
 
 .affiliate-card img {
