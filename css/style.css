@@ -606,7 +606,6 @@ main {
     margin-bottom: 0;
     margin-top: 0;
     padding: 8px;
-    height: auto;
 }
 
 .affiliate-links h2 {
@@ -614,7 +613,6 @@ main {
     margin-bottom: var(--spacing-md);
     font-size: 1.6em;
     padding-bottom: 15px;
-    /* For the h2::after underline */
 }
 
 .affiliate-scroll {
@@ -637,9 +635,8 @@ main {
     justify-content: center;
     transition: transform 0.3s ease;
     box-sizing: border-box;
-    max-width: 100px;
-    max-height: 100px;
-    /* Include padding and border in the element's total width and height */
+    width: 100px;
+    height: 100px;
 }
 
 .affiliate-card img {
@@ -723,7 +720,6 @@ main {
     align-items: flex-start;
     flex-grow: 1;
     flex-wrap: nowrap;
-    margin-right: 40px;
     
 }
 
@@ -743,7 +739,7 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    white-space: normal;
+    white-space: nowrap;
 }
 
 .post-meta {
