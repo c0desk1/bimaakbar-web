@@ -1,25 +1,40 @@
 /* ===================== */
+
+
 /* 1. CSS VARIABLES      */
+
+
 /* ===================== */
 
 :root {
     /* Color palette */
-    --primary-color: #FE2C55;        /* Accent (TikTok red/pink) */
-    --primary-color-hover: #FF4D6B;  /* Lighter shade for hover states */
-    --secondary-color: #8C8C8C;      /* Secondary text/glyphs */
-    --background-dark: #121212;      /* Main background */
-    --card-background-dark: #1A1A1A; /* Card/element background */
-    --border-dark: #333333;          /* Border, divider */
-    --text-light: #E0E0E0;           /* General text */
-    --text-lighter: #F0F0F0;         /* Headings, emphasized text */
-    --text-muted: #B0B0B0;           /* Muted text for descriptions, meta info */
-
+    --primary-color: #FE2C55;
+    /* Accent (TikTok red/pink) */
+    --primary-color-hover: #FF4D6B;
+    /* Lighter shade for hover states */
+    --secondary-color: #8C8C8C;
+    /* Secondary text/glyphs */
+    --background-dark: #121212;
+    /* Main background */
+    --card-background-dark: #1A1A1A;
+    /* Card/element background */
+    --border-dark: #333333;
+    /* Border, divider */
+    --text-light: #E0E0E0;
+    /* General text */
+    --text-lighter: #F0F0F0;
+    /* Headings, emphasized text */
+    --text-muted: #B0B0B0;
+    /* Muted text for descriptions, meta info */
     /* Shadows & gradients */
-    --shadow-dark: rgba(0, 0, 0, 0.4);        /* Card/element shadow */
-    --shadow-medium-dark: rgba(0, 0, 0, 0.6); /* Stronger shadow */
-    --gradient-start: #2A2A2A;       /* Gradient start (for hero/section bg) */
-    --gradient-end: #3A3A3A;         /* Gradient end (for hero/section bg) */
-
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    /* Card/element shadow */
+    --shadow-medium-dark: rgba(0, 0, 0, 0.6);
+    /* Stronger shadow */
+    --gradient-start: #2A2A2A;
+    /* Gradient start (for hero/section bg) */
+    --gradient-end: #3A3A3A;
+    /* Gradient end (for hero/section bg) */
     /* General spacing */
     --spacing-xs: 8px;
     --spacing-sm: 16px;
@@ -28,8 +43,13 @@
     --spacing-xl: 60px;
 }
 
+
 /* ===================== */
+
+
 /* 2. GLOBAL RESET       */
+
+
 /* ===================== */
 
 * {
@@ -39,7 +59,8 @@
 }
 
 html {
-    scroll-behavior: smooth; /* Smooth scroll for anchor links */
+    scroll-behavior: smooth;
+    /* Smooth scroll for anchor links */
 }
 
 body {
@@ -47,12 +68,18 @@ body {
     line-height: 1.6;
     color: var(--text-light);
     background-color: var(--background-dark);
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+
 /* ===================== */
+
+
 /* 3. TYPOGRAPHY         */
+
+
 /* ===================== */
 
 a {
@@ -130,10 +157,12 @@ h2::after {
 .section-header h2 {
     font-size: 1.5em;
     color: var(--text-lighter);
-    margin-bottom: 0; /* Adjusted for better spacing with subtitle */
+    margin-bottom: 0;
+    /* Adjusted for better spacing with subtitle */
     text-shadow: 2px 2px 6px var(--shadow-dark);
     position: relative;
-    padding-bottom: 0; /* No underline on this specific h2 */
+    padding-bottom: 0;
+    /* No underline on this specific h2 */
 }
 
 .section-header h2::after {
@@ -144,8 +173,10 @@ h2::after {
     background: var(--primary-color);
     margin: 10px auto 0;
     border-radius: 5px;
-    position: static; /* Override h2 global after pseudo-element */
-    transform: none; /* Override h2 global after pseudo-element */
+    position: static;
+    /* Override h2 global after pseudo-element */
+    transform: none;
+    /* Override h2 global after pseudo-element */
 }
 
 .section-header p {
@@ -153,11 +184,17 @@ h2::after {
     color: var(--secondary-color);
     opacity: 0.85;
     max-width: 700px;
-    margin: var(--spacing-xs) auto 0; /* Add top margin */
+    margin: var(--spacing-xs) auto 0;
+    /* Add top margin */
 }
 
+
 /* ===================== */
+
+
 /* 4. MEDIA & IMAGE      */
+
+
 /* ===================== */
 
 img {
@@ -166,14 +203,23 @@ img {
     display: block;
 }
 
-/* ===================== */
-/* 5. SCROLLBAR STYLES   */
+
 /* ===================== */
 
+
+/* 5. SCROLLBAR STYLES   */
+
+
+/* ===================== */
+
+
 /* Global scrollbar for Webkit browsers */
+
 ::-webkit-scrollbar {
-    width: 8px; /* For vertical scrollbars */
-    height: 8px; /* For horizontal scrollbars */
+    width: 8px;
+    /* For vertical scrollbars */
+    height: 8px;
+    /* For horizontal scrollbars */
 }
 
 ::-webkit-scrollbar-track {
@@ -190,22 +236,36 @@ img {
     background: var(--primary-color-hover);
 }
 
+
 /* Specific scrollbar for .stats element */
+
 .stats::-webkit-scrollbar-thumb {
-    background-color: rgba(254, 44, 85, 0.5); /* Use rgba for transparency directly */
+    background-color: rgba(254, 44, 85, 0.5);
+    /* Use rgba for transparency directly */
 }
+
 
 /* Hide scrollbar for specific elements (Firefox, IE/Edge) */
+
 .sidebar-content {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
-.sidebar-content::-webkit-scrollbar {
-    display: none; /* Webkit */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
 }
 
+.sidebar-content::-webkit-scrollbar {
+    display: none;
+    /* Webkit */
+}
+
+
 /* ===================== */
+
+
 /* 6. HEADER & LOGO      */
+
+
 /* ===================== */
 
 .header {
@@ -220,7 +280,8 @@ img {
 }
 
 #header-include {
-    display: contents; /* Good for server-side includes, keeps children flow */
+    display: contents;
+    /* Good for server-side includes, keeps children flow */
 }
 
 .logo {
@@ -240,7 +301,8 @@ img {
     height: 60px;
     object-fit: contain;
     border-radius: 5px;
-    filter: brightness(0.8) invert(1); /* Invert for dark mode compatibility */
+    filter: brightness(0.8) invert(1);
+    /* Invert for dark mode compatibility */
     display: block;
 }
 
@@ -270,14 +332,20 @@ img {
     box-shadow: 0 0 0 2px var(--primary-color);
 }
 
+
 /* ===================== */
+
+
 /* 7. SIDEBAR            */
+
+
 /* ===================== */
 
 .sidebar {
     position: fixed;
     top: 0;
-    right: -300px; /* Hidden by default */
+    right: -300px;
+    /* Hidden by default */
     width: 300px;
     height: 100%;
     background-color: var(--card-background-dark);
@@ -289,10 +357,12 @@ img {
 }
 
 .sidebar.open {
-    right: 0; /* Slide in */
+    right: 0;
+    /* Slide in */
 }
 
-body.sidebar-open { /* Added to body to prevent scroll when sidebar is open */
+body.sidebar-open {
+    /* Added to body to prevent scroll when sidebar is open */
     overflow: hidden;
 }
 
@@ -335,15 +405,20 @@ body.sidebar-open { /* Added to body to prevent scroll when sidebar is open */
     padding-left: 10px;
     padding-right: 10px;
     max-width: 100%;
-    overflow-y: auto; /* Enable vertical scroll */
-    overflow-x: hidden; /* Hide horizontal scroll */
-    flex-grow: 1; /* Allows content to take available space */
+    overflow-y: auto;
+    /* Enable vertical scroll */
+    overflow-x: hidden;
+    /* Hide horizontal scroll */
+    flex-grow: 1;
+    /* Allows content to take available space */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+
 /* Sidebar navigation buttons */
+
 .sidebar-content .btn-sidebar {
     display: flex;
     align-items: center;
@@ -366,7 +441,8 @@ body.sidebar-open { /* Added to body to prevent scroll when sidebar is open */
 }
 
 .sidebar-content .btn-sidebar:hover {
-    background-color: rgba(254, 44, 85, 0.1); /* Explicit rgba for primary color */
+    background-color: rgba(254, 44, 85, 0.1);
+    /* Explicit rgba for primary color */
     color: var(--primary-color);
 }
 
@@ -386,7 +462,11 @@ body.sidebar-open { /* Added to body to prevent scroll when sidebar is open */
 
 
 /* ===================== */
+
+
 /* 8. MAIN LAYOUT        */
+
+
 /* ===================== */
 
 main {
@@ -407,14 +487,19 @@ main {
 
 
 /* ===================== */
+
+
 /* 9. CATEGORY GRID      */
+
+
 /* ===================== */
 
 .category-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: var(--spacing-md);
-    margin-top: 30px; /* Specific margin */
+    margin-top: 30px;
+    /* Specific margin */
     margin-bottom: var(--spacing-lg);
     justify-items: center;
 }
@@ -429,19 +514,23 @@ main {
     text-align: center;
     border: 1px solid var(--border-dark);
     position: relative;
-    aspect-ratio: 1 / 1; /* Enforce square aspect ratio */
+    aspect-ratio: 1 / 1;
+    /* Enforce square aspect ratio */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+
 /* Image inside category card (if used directly, otherwise background-image is used) */
+
 .category-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-bottom: none; /* No border for image */
+    border-bottom: none;
+    /* No border for image */
     display: block;
 }
 
@@ -460,7 +549,8 @@ main {
     font-size: 1.3em;
     font-weight: 700;
     white-space: nowrap;
-    pointer-events: none; /* Allows clicks to pass through to the link */
+    pointer-events: none;
+    /* Allows clicks to pass through to the link */
     z-index: 2;
     -webkit-text-stroke: 1px var(--primary-color);
     text-shadow: 0 0 6px var(--primary-color);
@@ -469,13 +559,16 @@ main {
 .category-card::before {
     content: "";
     position: absolute;
-    inset: 0; /* Shorthand for top, right, bottom, left: 0 */
+    inset: 0;
+    /* Shorthand for top, right, bottom, left: 0 */
     background: linear-gradient(to bottom, rgba(18, 18, 18, 0.1), rgba(26, 26, 26, 0.6));
     z-index: 1;
     pointer-events: none;
 }
 
+
 /* These paragraphs are not directly used within current category card structure but kept for completeness */
+
 .category-card p {
     font-size: 0.9em;
     color: var(--secondary-color);
@@ -484,7 +577,8 @@ main {
 }
 
 .category-card a {
-    display: block; /* Make the whole card clickable */
+    display: block;
+    /* Make the whole card clickable */
     text-decoration: none;
     color: inherit;
 }
@@ -493,14 +587,13 @@ main {
     text-decoration: none;
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  margin-bottom: 28px;
-}
+
 /* ===================== */
+
+
 /* 10. AFFILIATE CARDS   */
+
+
 /* ===================== */
 
 .affiliate-links {
@@ -509,14 +602,16 @@ main {
     background-color: var(--card-background-dark);
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-medium-dark);
-    margin-bottom: 0; /* Ensure no extra margin */
+    margin-bottom: 0;
+    /* Ensure no extra margin */
 }
 
 .affiliate-links h2 {
     color: var(--text-lighter);
     margin-bottom: var(--spacing-md);
     font-size: 1.6em;
-    padding-bottom: 15px; /* For the h2::after underline */
+    padding-bottom: 15px;
+    /* For the h2::after underline */
 }
 
 .affiliate-scroll {
@@ -524,22 +619,25 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: var(--spacing-sm);
     justify-content: center;
-    padding-bottom: 10px; /* To prevent scrollbar from overlapping content */
+    padding-bottom: 10px;
+    /* To prevent scrollbar from overlapping content */
 }
 
 .affiliate-card {
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     border: 2px solid var(--primary-color);
-    border-radius: 14px;
+    border-radius: 16px;
     background-color: var(--background-dark);
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px var(--shadow-dark);
     overflow: hidden;
-    transition: box-shadow 0.2s;
-    min-width: 220px;
-    max-width: 350px;
-    min-height: 340px;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
 }
 
 .affiliate-card img {
@@ -551,12 +649,17 @@ main {
 
 .affiliate-card:hover {
     transform: scale(1.05);
-    border-color: var(--primary-color-hover); /* Use hover color */
+    border-color: var(--primary-color-hover);
+    /* Use hover color */
 }
 
 
 /* ===================== */
+
+
 /* 11. POST GRID         */
+
+
 /* ===================== */
 
 .popular-posts,
@@ -568,37 +671,41 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-md);
-    overflow: hidden; /* Prevents overflow issues */
+    overflow: hidden;
+    /* Prevents overflow issues */
 }
 
 .post-card {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    /* Default to row for larger screens */
     background-color: var(--card-background-dark);
-    box-shadow: 0 2px 12px var(--shadow-dark);
+    box-shadow: 0 2px 5px var(--shadow-dark);
     overflow: hidden;
-    border-radius: 14px;
+    border-radius: 12px;
     text-decoration: none;
-    transition: box-shadow 0.2s;
+    transition: transform 0.3s ease;
     cursor: pointer;
-    justify-content: flex-start; /* Align content to start */
+    justify-content: flex-start;
+    /* Align content to start */
     position: relative;
     gap: var(--spacing-sm);
-    padding: var(--spacing-xs); /* Added padding to the card itself */
-    min-width: 220px;
-    max-width: 350px;
-    min-height: 340px;
-    margin: 0 auto;
+    padding: var(--spacing-xs);
+    /* Added padding to the card itself */
+    height: 120px;
+    /* Fixed height for consistent look */
 }
 
 .post-card:hover {
-    box-shadow: 0 6px 24px 0 rgba(0,0,0,0.11);
+    transform: scale(1.03);
 }
 
 .post-thumbnail {
-    width: 100px; /* Fixed width for thumbnail */
+    width: 100px;
+    /* Fixed width for thumbnail */
     height: 100%;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    /* Prevent shrinking */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -608,7 +715,8 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px; /* Slightly rounded corners for consistency */
+    border-radius: 8px;
+    /* Slightly rounded corners for consistency */
     /* Remove mask if not needed, it makes image fade */
     /* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 90%); */
     /* -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 90%); */
@@ -617,11 +725,15 @@ main {
 .post-content {
     display: flex;
     flex-direction: column;
-    flex: 1; /* Allows content to take remaining space */
-    padding-right: 100px; /* Space for meta info if it's positioned absolutely */
+    flex: 1;
+    /* Allows content to take remaining space */
+    padding-right: 100px;
+    /* Space for meta info if it's positioned absolutely */
     gap: 6px;
-    overflow: hidden; /* Hide overflowing text */
-    justify-content: center; /* Center content vertically */
+    overflow: hidden;
+    /* Hide overflowing text */
+    justify-content: center;
+    /* Center content vertically */
 }
 
 .post-title {
@@ -631,7 +743,8 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2; /* Adjust line height for better appearance */
+    line-height: 1.2;
+    /* Adjust line height for better appearance */
 }
 
 .post-description {
@@ -640,10 +753,13 @@ main {
     line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box; /* For multiline ellipsis */
-    -webkit-line-clamp: 2; /* Show maximum 2 lines */
+    display: -webkit-box;
+    /* For multiline ellipsis */
+    -webkit-line-clamp: 2;
+    /* Show maximum 2 lines */
     -webkit-box-orient: vertical;
-    white-space: normal; /* Allow text to wrap naturally */
+    white-space: normal;
+    /* Allow text to wrap naturally */
 }
 
 .post-meta {
@@ -653,24 +769,28 @@ main {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    align-items: flex-end; /* Align meta items to the right */
+    align-items: flex-end;
+    /* Align meta items to the right */
 }
 
 .post-meta-row {
     display: flex;
-    flex-direction: column; /* Changed to column for better stacking on small screens */
+    flex-direction: column;
+    /* Changed to column for better stacking on small screens */
     align-items: flex-end;
     font-size: 0.85em;
     color: var(--secondary-color);
     gap: 6px;
-    white-space: nowrap; /* Keep items in one line for small meta info */
+    white-space: nowrap;
+    /* Keep items in one line for small meta info */
 }
 
 .post-label {
     position: absolute;
     top: 6px;
     right: 6px;
-    background: var(--primary-color); /* Simplified background */
+    background: var(--primary-color);
+    /* Simplified background */
     padding: 6px 12px;
     border-radius: 6px;
     font-weight: 500;
@@ -686,11 +806,14 @@ main {
     font-size: 0.85em;
     color: var(--text-light);
     margin-top: 6px;
-    flex-direction: row; /* Keep hashtags in a row */
+    flex-direction: row;
+    /* Keep hashtags in a row */
 }
 
-.post-hashtags span { /* Use span for individual hashtags */
-    background-color: rgba(254, 44, 85, 0.2); /* Light background for tags */
+.post-hashtags span {
+    /* Use span for individual hashtags */
+    background-color: rgba(254, 44, 85, 0.2);
+    /* Light background for tags */
     padding: 4px 8px;
     border-radius: 4px;
     color: var(--primary-color);
@@ -709,10 +832,12 @@ main {
     color: var(--secondary-color);
     display: flex;
     align-items: center;
-    gap: 4px; /* Reduced gap for better fit */
+    gap: 4px;
+    /* Reduced gap for better fit */
     opacity: 0.85;
     white-space: nowrap;
-    max-width: 150px; /* Constrain width to prevent overflow */
+    max-width: 150px;
+    /* Constrain width to prevent overflow */
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -736,7 +861,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 12. POST MAIN ARTICLE */
+
+
 /* ===================== */
 
 .post-main {
@@ -744,7 +873,8 @@ main {
     margin: 0 auto;
     padding: 2rem 1rem;
     color: var(--text-light);
-    background-color: var(--background-dark); /* Should match body background */
+    background-color: var(--background-dark);
+    /* Should match body background */
 }
 
 .post-main-article {
@@ -831,7 +961,8 @@ main {
 
 .post-main-navigation a:hover {
     text-decoration: underline;
-    color: var(--primary-color-hover); /* Using existing hover color */
+    color: var(--primary-color-hover);
+    /* Using existing hover color */
 }
 
 .post-main-share {
@@ -851,17 +982,24 @@ main {
     font-size: 1.3rem;
     margin-bottom: 1rem;
     color: var(--primary-color);
-    text-align: left; /* Align h2 in comments to left */
-    padding-bottom: 0; /* No underline */
+    text-align: left;
+    /* Align h2 in comments to left */
+    padding-bottom: 0;
+    /* No underline */
 }
 
 .post-main-comments h2::after {
-    display: none; /* No underline for this h2 */
+    display: none;
+    /* No underline for this h2 */
 }
 
 
 /* ===================== */
+
+
 /* 13. NEWSLETTER        */
+
+
 /* ===================== */
 
 .newsletter-subscribe {
@@ -906,7 +1044,8 @@ main {
     background-color: var(--primary-color);
     margin: 12px auto 0;
     border-radius: 4px;
-    position: static; /* Override global h2 after */
+    position: static;
+    /* Override global h2 after */
     transform: none;
 }
 
@@ -922,12 +1061,14 @@ main {
 
 .newsletter-input-group {
     display: flex;
-    flex-direction: column; /* Default to column for small screens */
+    flex-direction: column;
+    /* Default to column for small screens */
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
     gap: 12px;
-    position: relative; /* For z-index */
+    position: relative;
+    /* For z-index */
     z-index: 1;
 }
 
@@ -978,22 +1119,33 @@ main {
 
 
 /* ===================== */
+
+
 /* 14. STATS BAR         */
+
+
 /* ===================== */
 
 .stats {
     display: grid;
-    grid-auto-flow: column; /* Arrange items in a row by default */
+    grid-auto-flow: column;
+    /* Arrange items in a row by default */
     grid-auto-columns: minmax(120px, 1fr);
     gap: var(--spacing-sm);
     padding: var(--spacing-md);
-    overflow-x: auto; /* Enable horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Snap to items on scroll */
-    -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
-    margin-bottom: var(--spacing-lg); /* Add margin below stats */
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory;
+    /* Snap to items on scroll */
+    -webkit-overflow-scrolling: touch;
+    /* Smoother scrolling on iOS */
+    margin-bottom: var(--spacing-lg);
+    /* Add margin below stats */
 }
 
+
 /* Scrollbar styles for stats (Webkit specific) */
+
 .stats::-webkit-scrollbar {
     height: 6px;
 }
@@ -1004,13 +1156,15 @@ main {
 }
 
 .stats::-webkit-scrollbar-thumb {
-    background-color: rgba(254, 44, 85, 0.5); /* Semi-transparent primary */
+    background-color: rgba(254, 44, 85, 0.5);
+    /* Semi-transparent primary */
     border-radius: 10px;
 }
-.stats::-webkit-scrollbar-thumb:hover {
-    background-color: var(--primary-color); /* Full primary on hover */
-}
 
+.stats::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
+    /* Full primary on hover */
+}
 
 .stats-item {
     background-color: var(--card-background-dark);
@@ -1022,9 +1176,11 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    scroll-snap-align: start; /* Snap to start of item */
+    scroll-snap-align: start;
+    /* Snap to start of item */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    flex-shrink: 0; /* Prevent items from shrinking */
+    flex-shrink: 0;
+    /* Prevent items from shrinking */
     min-width: 120px;
 }
 
@@ -1053,7 +1209,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 15. FOOTER            */
+
+
 /* ===================== */
 
 .footer {
@@ -1074,7 +1234,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 16. SPINNER/LOADER    */
+
+
 /* ===================== */
 
 .spinner {
@@ -1091,24 +1255,32 @@ main {
     text-align: center;
     padding: 1rem;
     font-size: 1rem;
-    color: #666; /* Adjust color for dark theme if needed */
+    color: #666;
+    /* Adjust color for dark theme if needed */
     position: absolute;
     top: 50%;
     left: 50%;
     width: 24px;
     height: 24px;
-    margin: -12px 0 0 -12px; /* Center with negative margin */
+    margin: -12px 0 0 -12px;
+    /* Center with negative margin */
     border: 3px solid rgba(255, 255, 255, 0.2);
     border-top: 3px solid var(--primary-color);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite; /* Slightly faster spin */
+    animation: spin 0.8s linear infinite;
+    /* Slightly faster spin */
     z-index: 2;
-    pointer-events: none; /* Allows clicks to pass through */
+    pointer-events: none;
+    /* Allows clicks to pass through */
 }
 
 
 /* ===================== */
+
+
 /* 17. THUMBNAIL WRAPPER */
+
+
 /* ===================== */
 
 .thumbnail-wrapper {
@@ -1117,7 +1289,9 @@ main {
     overflow: hidden;
 }
 
+
 /* Spinner for individual thumbnails */
+
 .thumbnail-wrapper .loading-spinner {
     position: absolute;
     top: 50%;
@@ -1135,7 +1309,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 18. BUTTON AND ICONS  */
+
+
 /* ===================== */
 
 .back-button {
@@ -1145,7 +1323,8 @@ main {
     border-radius: 50%;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
-    color: var(--secondary-color); /* Default color for back button */
+    color: var(--secondary-color);
+    /* Default color for back button */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1180,29 +1359,39 @@ main {
 
 .btn-share:hover {
     background-color: var(--primary-color);
-    color: var(--background-dark); /* Text becomes dark on hover */
+    color: var(--background-dark);
+    /* Text becomes dark on hover */
 }
 
 
 /* ===================== */
+
+
 /* 19. AD & ABOUT WIDGET */
+
+
 /* ===================== */
 
 .ad-slot {
     text-align: center;
-    margin-bottom: var(--spacing-md); /* Consistent margin */
-    padding: var(--spacing-sm); /* Add padding */
-    background-color: var(--background-dark); /* Should match body background */
+    margin-bottom: var(--spacing-md);
+    /* Consistent margin */
+    padding: var(--spacing-sm);
+    /* Add padding */
+    background-color: var(--background-dark);
+    /* Should match body background */
     border-radius: 8px;
     border: 1px solid var(--border-dark);
-    width: 100%; /* Ensure it takes full width */
+    width: 100%;
+    /* Ensure it takes full width */
 }
 
 .about-me {
     text-align: center;
     margin-bottom: var(--spacing-md);
     padding: 15px;
-    background-color: var(--card-background-dark); /* Should be card background */
+    background-color: var(--card-background-dark);
+    /* Should be card background */
     border: 1px solid var(--border-dark);
     border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow-dark);
@@ -1214,7 +1403,8 @@ main {
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 0 auto 10px; /* Center and add margin below */
+    margin: 0 auto 10px;
+    /* Center and add margin below */
     border: 2px solid var(--primary-color);
     padding: 2px;
     display: block;
@@ -1235,7 +1425,8 @@ main {
 .social-media {
     display: flex;
     justify-content: center;
-    gap: 15px; /* Add gap between icons */
+    gap: 15px;
+    /* Add gap between icons */
 }
 
 .social-media a {
@@ -1251,7 +1442,11 @@ main {
 
 
 /* ==================== */
+
+
 /* 20. SEARCH OVERLAY   */
+
+
 /* ==================== */
 
 .search-overlay {
@@ -1282,7 +1477,8 @@ main {
     box-shadow: 0 10px 30px var(--shadow-medium-dark);
     width: 90%;
     max-width: 600px;
-    transform: translateY(-20px); /* Initial slight lift */
+    transform: translateY(-20px);
+    /* Initial slight lift */
     transition: transform 0.3s ease;
     position: relative;
 }
@@ -1354,7 +1550,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 21. ANIMATION         */
+
+
 /* ===================== */
 
 @keyframes spin {
@@ -1376,7 +1576,11 @@ main {
 
 
 /* ===================== */
+
+
 /* 22. RESPONSIVE MEDIA  */
+
+
 /* ===================== */
 
 @media (max-width: 768px) {
@@ -1387,23 +1591,29 @@ main {
         height: 50px;
     }
     .sidebar {
-        width: 250px; /* Slightly smaller sidebar for tablets */
+        width: 250px;
+        /* Slightly smaller sidebar for tablets */
         right: -250px;
     }
     .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Smaller min-width for categories */
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        /* Smaller min-width for categories */
     }
     .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Smaller min-width for affiliates */
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        /* Smaller min-width for affiliates */
         gap: 12px;
     }
     .post-grid {
-        grid-template-columns: 1fr; /* Stack posts vertically */
+        grid-template-columns: 1fr;
+        /* Stack posts vertically */
         gap: var(--spacing-md);
     }
     .post-card {
-        flex-direction: row; /* Keep row layout for consistency */
-        height: 120px; /* Maintain fixed height */
+        flex-direction: row;
+        /* Keep row layout for consistency */
+        height: 120px;
+        /* Maintain fixed height */
         padding: var(--spacing-xs);
     }
     .post-thumbnail {
@@ -1411,11 +1621,13 @@ main {
         height: 100%;
     }
     .post-content {
-        padding-right: 80px; /* Adjust for meta */
+        padding-right: 80px;
+        /* Adjust for meta */
         justify-content: center;
     }
     .post-description {
-        -webkit-line-clamp: 2; /* Ensure 2 lines on smaller screens */
+        -webkit-line-clamp: 2;
+        /* Ensure 2 lines on smaller screens */
     }
     .post-meta {
         bottom: 8px;
@@ -1436,7 +1648,8 @@ main {
         margin-bottom: 30px;
     }
     .search-overlay .search-input-group {
-        flex-direction: row; /* Keep search input in a row */
+        flex-direction: row;
+        /* Keep search input in a row */
     }
     .search-overlay .search-input-group input {
         padding: 12px 15px;
@@ -1451,7 +1664,8 @@ main {
 
 @media (max-width: 600px) {
     main {
-        padding: 0 var(--spacing-sm); /* Reduce main padding */
+        padding: 0 var(--spacing-sm);
+        /* Reduce main padding */
     }
     .hero-section {
         padding: var(--spacing-sm);
@@ -1466,18 +1680,22 @@ main {
         gap: 10px;
     }
     .post-card {
-        height: 100px; /* Even smaller fixed height for mobile */
+        height: 100px;
+        /* Even smaller fixed height for mobile */
         padding: var(--spacing-xs);
         gap: var(--spacing-xs);
     }
     .post-thumbnail {
-        width: 80px; /* Smaller thumbnail */
+        width: 80px;
+        /* Smaller thumbnail */
     }
     .post-title {
-        font-size: 1em; /* Smaller title */
+        font-size: 1em;
+        /* Smaller title */
     }
     .post-description {
-        font-size: 0.85em; /* Smaller description */
+        font-size: 0.85em;
+        /* Smaller description */
         -webkit-line-clamp: 2;
     }
     .post-meta {
@@ -1500,21 +1718,25 @@ main {
         font-size: 0.9em;
     }
     .newsletter-input-group {
-        flex-direction: column; /* Stack input and button vertically */
+        flex-direction: column;
+        /* Stack input and button vertically */
     }
     .newsletter-input-group input,
     .newsletter-input-group button {
         border-radius: 30px;
     }
     .stats {
-        grid-auto-flow: row; /* Stack stats vertically */
+        grid-auto-flow: row;
+        /* Stack stats vertically */
         grid-auto-columns: 100%;
-        overflow-x: hidden; /* No horizontal scroll */
+        overflow-x: hidden;
+        /* No horizontal scroll */
         padding: var(--spacing-sm);
     }
     .stats-item {
         width: 100%;
-        min-width: unset; /* Remove min-width when stacked */
+        min-width: unset;
+        /* Remove min-width when stacked */
     }
     .blog-title {
         font-size: 2.5em;
@@ -1533,7 +1755,8 @@ main {
         padding: 6px;
     }
     .sidebar {
-        width: 200px; /* Even smaller sidebar for very small screens */
+        width: 200px;
+        /* Even smaller sidebar for very small screens */
         right: -200px;
     }
     .sidebar-header h3 {
@@ -1548,7 +1771,8 @@ main {
         gap: 8px;
     }
     .post-card {
-        height: 90px; /* Minimal height */
+        height: 90px;
+        /* Minimal height */
         padding: 6px;
         gap: 6px;
     }
@@ -1560,7 +1784,8 @@ main {
     }
     .post-description {
         font-size: 0.75em;
-        -webkit-line-clamp: 2; /* Still 2 lines */
+        -webkit-line-clamp: 2;
+        /* Still 2 lines */
     }
     .post-meta {
         font-size: 0.65em;
