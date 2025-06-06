@@ -17,7 +17,7 @@ function renderAffiliateItems() {
                 card.target = '_blank';
                 card.className = 'affiliate-card';
 
-                // Tambahkan pembungkus gambar agar konsisten
+                // Tambahan: Pembungkus gambar
                 var imgDiv = document.createElement('div');
                 imgDiv.className = 'affiliate-img';
                 imgDiv.style.width = "100%";
@@ -34,7 +34,6 @@ function renderAffiliateItems() {
                     this.onerror = null;
                     this.src = 'assets/error.jpg';
                 };
-                // MODIFIKASI: Atur ukuran dan object-fit
                 img.style.width = "100%";
                 img.style.height = "100%";
                 img.style.objectFit = "cover";
@@ -43,11 +42,14 @@ function renderAffiliateItems() {
                 imgDiv.appendChild(img);
                 card.appendChild(imgDiv);
 
-                // Tambah nama/teks jika ada
+                // Label affiliate (opsional)
                 if(item.alt) {
                     var label = document.createElement('div');
                     label.className = 'affiliate-label';
                     label.innerText = item.alt;
+                    label.style.textAlign = "center";
+                    label.style.fontSize = "14px";
+                    label.style.marginTop = "8px";
                     card.appendChild(label);
                 }
 
