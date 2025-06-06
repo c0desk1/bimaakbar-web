@@ -29,13 +29,13 @@ function loadLatestPopularPost() {
 
     function createPostElement(post) {
         const el = document.createElement('div');
-        el.className = 'post-card';
+        el.className = 'post-grid';
 
         const link = document.createElement('a');
         link.href = post.url || post.link || '#';
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.className = 'post-link';
+        link.className = 'post-card';
         link.style.display = 'flex';
         link.style.alignItems = 'flex-start';
         link.style.width = '100%';
