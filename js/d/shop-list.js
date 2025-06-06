@@ -17,6 +17,11 @@ function createShopPostElement(product) {
     img.alt = product.title || '';
     img.loading = 'lazy';
     img.onerror = () => (img.src = '/assets/error.jpg');
+    img.style.width = "100%";
+    img.style.height = "180px";
+    img.style.objectFit = "cover";
+    img.style.display = "block";
+    img.style.borderRadius = "8px";
 
     thumbnailDiv.appendChild(img);
     link.appendChild(thumbnailDiv);
