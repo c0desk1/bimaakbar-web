@@ -17,7 +17,6 @@ function createmusikPostElement(post) {
     img.alt = post.title || '';
     img.loading = 'lazy';
     img.onerror = () => (img.src = '/assets/error.jpg');
-    // MODIFIKASI: Atur ukuran dan object-fit
     img.style.width = "100%";
     img.style.height = "180px";
     img.style.objectFit = "cover";
@@ -27,7 +26,52 @@ function createmusikPostElement(post) {
     thumbnailDiv.appendChild(img);
     link.appendChild(thumbnailDiv);
 
-    // ...lanjutkan konten seperti sebelumnya...
+    // === Konten Utama ===
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'post-content';
+    contentDiv.style.flex = '1';
+
+    const title = document.createElement('h3');
+    title.className = 'post-title';
+    title.textContent = post.title || 'Tanpa Judul';
+
+    const desc = document.createElement('p');
+    desc.className = 'post-description';
+    desc.textContent = post.description || '';
+
+    // === Hashtags ===
+    const hashtagsDiv = document.createElement('div');
+    hashtagsDiv.className = 'post-hashtags';
+    const hashtags = (post.hashtags || '')
+        .split(',')
+        .map(tag => tag.trim())
+        .filter((tag, index, self) => tag && self.indexOf(tag) === index)
+        .map(tag => `#${tag}`)
+        .join(' ');
+
+    hashtagsDiv.textContent = hashtags;
+
+    contentDiv.appendChild(hashtagsDiv);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(desc);
+    link.appendChild(contentDiv);
+
+    // === Meta Info ===
+    const rightDiv = document.createElement('div');
+    rightDiv.className = 'post-meta';
+
+    const label = document.createElement('div');
+    label.className = 'post-label';
+    label.textContent = post.label || '';
+
+    const time = document.createElement('div');
+    time.className = 'post-time';
+    time.setAttribute('data-timestamp', post.timestamp);
+    time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
+
+    rightDiv.appendChild(label);
+    rightDiv.appendChild(time);
+    link.appendChild(rightDiv);
 
     el.appendChild(link);
     return el;
@@ -59,13 +103,11 @@ function loadPostsMusik() {
                 return;
             }
 
-            // --- Bagian PENTING: Urutkan data berdasarkan timestamp (terbaru ke terlama) ---
             data.sort((a, b) => {
                 const timeA = new Date(a.timestamp).getTime();
                 const timeB = new Date(b.timestamp).getTime();
-                return timeB - timeA; // Urutkan menurun (terbaru di atas)
+                return timeB - timeA;
             });
-            // -----------------------------------------------------------------------------
 
             if (!container.classList.contains('card-grid')) {
                 container.classList.add('card-grid');
@@ -83,5 +125,4 @@ function loadPostsMusik() {
             container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan musik. Silakan coba lagi nanti.</p>';
         });
 }
-
 window.loadPostsMusik = loadPostsMusik;
