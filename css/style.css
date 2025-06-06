@@ -635,6 +635,7 @@ main {
     justify-content: center;
     transition: transform 0.3s ease;
     box-sizing: border-box;
+    height: 100%;
 }
 
 .affiliate-card img {
@@ -1590,11 +1591,7 @@ main {
     	height:100%;
     	object-fit: cover;
     }    
-	.affiliate-card img {
-    	width: 100%;
-    	height: 100%;
-    	object-fit: cover;
-	}
+    
     .post-content {
     	flex: 1;
         padding-right: 80px;
@@ -1655,12 +1652,6 @@ main {
         grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
         gap: 10px;
     }
-    
-	.affiliate-card img {
-    	width: 100%;
-    	height: 100%;
-    	object-fit: cover;
-	}
 	
     .post-card {
         height: 180px;
