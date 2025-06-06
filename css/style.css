@@ -1581,6 +1581,7 @@ main {
     .post-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
+        padding: 8px;
     }
     .post-card {
         flex-direction: row;
@@ -1604,6 +1605,7 @@ main {
 	.affiliate-card img {
     	width: 100%;
     	height: 100%;
+    object-fit: cover;
 	}
     .post-content {
     	flex: 1;
@@ -1671,6 +1673,7 @@ main {
 	.affiliate-card img {
     	width: 100%;
     	height: 100%;
+    object-fit: cover;
 	}
 	
     .post-card {
