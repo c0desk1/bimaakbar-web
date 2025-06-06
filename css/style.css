@@ -493,7 +493,12 @@ main {
     text-decoration: none;
 }
 
-
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
 /* ===================== */
 /* 10. AFFILIATE CARDS   */
 /* ===================== */
@@ -523,19 +528,18 @@ main {
 }
 
 .affiliate-card {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border: 2px solid var(--primary-color);
-    border-radius: 16px;
-    background-color: var(--background-dark);
-    box-shadow: 0 2px 8px var(--shadow-dark);
-    overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    flex-direction: column;
+    border: 2px solid var(--primary-color);
+    border-radius: 14px;
+    background-color: var(--background-dark);
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    min-width: 220px;
+    max-width: 350px;
+    min-height: 340px;
+    margin: 0 auto;
 }
 
 .affiliate-card img {
@@ -569,23 +573,26 @@ main {
 
 .post-card {
     display: flex;
-    flex-direction: row; /* Default to row for larger screens */
+    flex-direction: column;
     background-color: var(--card-background-dark);
-    box-shadow: 0 2px 5px var(--shadow-dark);
+    box-shadow: 0 2px 12px var(--shadow-dark);
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 14px;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: box-shadow 0.2s;
     cursor: pointer;
     justify-content: flex-start; /* Align content to start */
     position: relative;
     gap: var(--spacing-sm);
     padding: var(--spacing-xs); /* Added padding to the card itself */
-    height: 120px; /* Fixed height for consistent look */
+    min-width: 220px;
+    max-width: 350px;
+    min-height: 340px;
+    margin: 0 auto;
 }
 
 .post-card:hover {
-    transform: scale(1.03);
+    box-shadow: 0 6px 24px 0 rgba(0,0,0,0.11);
 }
 
 .post-thumbnail {
