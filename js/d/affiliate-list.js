@@ -20,11 +20,6 @@ function renderAffiliateItems() {
                 // Tambahan: Pembungkus gambar
                 var imgDiv = document.createElement('div');
                 imgDiv.className = 'affiliate-img';
-                imgDiv.style.width = "100%";
-                imgDiv.style.height = "100px";
-                imgDiv.style.overflow = "hidden";
-                imgDiv.style.borderRadius = "8px";
-                imgDiv.style.background = "#f4f4f4";
 
                 var img = document.createElement('img');
                 img.src = item.img;
