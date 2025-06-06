@@ -720,7 +720,7 @@ main {
     align-items: flex-start;
     flex-grow: 1;
     flex-wrap: nowrap;
-    
+    width: 100%;   
 }
 
 .post-title {
@@ -750,6 +750,7 @@ main {
     flex-direction: column;
     gap: 6px;
     align-items: flex-end;
+    padding-left: 8px;
 }
 
 .post-meta-row {
@@ -783,7 +784,6 @@ main {
     gap: 6px;
     font-size: 0.75em;
     color: var(--text-light);
-    margin-top: 6px;
     flex-direction: row;
     white-space: nowrap;
 }
@@ -814,6 +814,7 @@ main {
     max-width: 150px;
     text-overflow: ellipsis;
     overflow: hidden;
+    padding-left: 8px;
 }
 
 .post-time i {
@@ -1476,7 +1477,7 @@ main {
 
 .search-overlay .search-input-group input {
     flex-grow: 1;
-    padding: 15px 20px;
+    padding: 15px 0px;
     border: none;
     background: none;
     color: var(--text-light);
@@ -1567,11 +1568,9 @@ main {
     }
     .category-grid {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        /* Smaller min-width for categories */
     }
     .affiliate-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-        /* Smaller min-width for affiliates */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         gap: 12px;
     }
     .post-grid {
@@ -1587,21 +1586,16 @@ main {
     .post-thumbnail {
         width: 100px;
     	height:100px;
-    }
-    
+    } 
     .post-thumbnail img {
         width: 100%;
     	height:100%;
-    }
-    
-    .affiliate-card {
-    	width: 100px;
-    	height: 100px;
-	}
+    	object-fit: cover;
+    }    
 	.affiliate-card img {
     	width: 100%;
     	height: 100%;
-    object-fit: cover;
+    	object-fit: cover;
 	}
     .post-content {
     	flex: 1;
@@ -1631,10 +1625,13 @@ main {
         margin-bottom: 30px;
     }
     .search-overlay .search-input-group {
-        flex-direction: row;
+        flex-direction: flex;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 20px;
     }
     .search-overlay .search-input-group input {
-        padding: 12px 15px;
+        padding: 10px 0px;
     }
     .blog-title {
         font-size: 3em;
@@ -1661,15 +1658,10 @@ main {
         gap: 10px;
     }
     
-    .affiliate-card {
-    	height: 90px;
-    	width: 90px;
-	}
-	
 	.affiliate-card img {
     	width: 100%;
     	height: 100%;
-    object-fit: cover;
+    	object-fit: cover;
 	}
 	
     .post-card {
@@ -1730,6 +1722,13 @@ main {
     .blog-description {
         font-size: 0.9em;
     }
+    
+    .search-overlay .search-input-group {
+        flex-direction: flex;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 16px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1764,7 +1763,6 @@ main {
     .post-thumbnail img {
     	width: 100%;
     	height:100%;
-    	aspect-ratio: 1 / 1;
     }
     
     .post-title {
@@ -1773,7 +1771,6 @@ main {
     .post-description {
         font-size: 0.75em;
         -webkit-line-clamp: 2;
-        /* Still 2 lines */
     }
     .post-meta {
         font-size: 0.65em;
@@ -1782,7 +1779,7 @@ main {
     }
     .post-label {
         font-size: 0.7em;
-        padding: 3px 6px;
+        padding: 6px 6px ;
     }
     .newsletter-subscribe {
         padding: var(--spacing-md) var(--spacing-xs);
@@ -1800,12 +1797,9 @@ main {
     .search-overlay-content h3 {
         font-size: 1.5em;
     }
-    .search-overlay .search-input-group input {
-        padding: 10px 12px;
-    }
     .search-overlay .search-input-group button {
-        padding: 10px 15px;
         font-size: 1em;
+        padding: 10px;
     }
     .close-search-overlay {
         font-size: 1.5em;
