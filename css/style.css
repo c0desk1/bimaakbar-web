@@ -1474,7 +1474,7 @@ main {
 
 .search-overlay .search-input-group input {
     flex-grow: 1;
-    padding: 15px 0px;
+    padding: 15px 20px;
     border: none;
     background: none;
     color: var(--text-light);
@@ -1621,14 +1621,13 @@ main {
         font-size: 1em;
         margin-bottom: 30px;
     }
-    .search-overlay .search-input-group {
-        flex-direction: flex;
-        width: 100%;
-        padding-left: 10px;
-        padding-right: 20px;
-    }
     .search-overlay .search-input-group input {
         padding: 10px 0px;
+        font-size: 1em;
+        margin-left: 10px;
+    }
+    .search-overlay .search-input-group button {
+    	padding: 10px 20px 10px 5px;
     }
     .blog-title {
         font-size: 3em;
@@ -1713,13 +1712,6 @@ main {
     .blog-description {
         font-size: 0.9em;
     }
-    
-    .search-overlay .search-input-group {
-        flex-direction: flex;
-        width: 100%;
-        padding-left: 10px;
-        padding-right: 16px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -1776,16 +1768,6 @@ main {
     .newsletter-subscribe p {
         font-size: 0.8em;
         margin-bottom: 20px;
-    }
-    .search-overlay-content {
-        padding: 20px;
-    }
-    .search-overlay-content h3 {
-        font-size: 1.5em;
-    }
-    .search-overlay .search-input-group button {
-        font-size: 1em;
-        padding: 10px;
     }
     .close-search-overlay {
         font-size: 1.5em;
