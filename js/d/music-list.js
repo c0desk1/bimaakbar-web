@@ -1,4 +1,4 @@
-function createMusikPostElement(post) {
+function createmusikPostElement(post) {
     const el = document.createElement('div');
     el.className = 'post-grid';
 
