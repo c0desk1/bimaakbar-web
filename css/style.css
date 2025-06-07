@@ -838,7 +838,7 @@ main {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    padding-right: 100px;
+    padding-right: 60px;
     gap: 6px;
 }
 
@@ -876,7 +876,7 @@ main {
     font-size: 0.85em;
     color: var(--primary-color);
     margin: 4px 0;
-    white-space: normal;
+    white-space: nowrap;
     word-break: break-word;
 }
 
