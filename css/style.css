@@ -667,13 +667,13 @@ main {
 #popular-posts .card-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: var(--spacing-xs);
 }
 
 .post-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    padding: var(--spacing-xs);
     overflow: hidden;
 }
 
@@ -685,7 +685,7 @@ main {
     border-radius: 12px;
     box-shadow: 0 2px 10px var(--shadow-dark);
     padding: var(--spacing-xs);
-    gap: var(--spacing-md);
+    gap: var(--spacing-xs);
     position: relative;
     transition: transform 0.2s ease;
     text-decoration: none;
@@ -1682,6 +1682,14 @@ main {
 
 /* ===================== */
 
+@media (max-width: 900px) {
+    .post-grid {
+        display: flex;
+        grid-template-columns: 1fr;
+        padding: 8px;
+    }
+}
+
 @media (max-width: 768px) {
     .header {
         padding: 10px;
@@ -1704,6 +1712,7 @@ main {
         height: 100px;
     }
     .post-grid {
+        display: flex;
         grid-template-columns: 1fr;
         padding: 8px;
     }
@@ -1770,7 +1779,7 @@ main {
     .post-grid {
         display: flex;
         grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
+        padding: var(--spacing-sm);
     }
     .post-card {
         display: flex;
@@ -1815,11 +1824,6 @@ main {
         position: absolute;
         right: var(--spacing-xs);
         bottom: var(--spacing-xs);
-    }
-    .post-meta-row {
-        position: absolute;
-        right: var(--spacing-xs);
-        top: var(--spacing-xs);
     }
     .post-meta-game {
         display: flex;
