@@ -1,9 +1,23 @@
+function initScrollProgressBar(progressBarId) {
+  var progressBar = document.getElementById(progressBarId || "scrollProgress");
+  if (!progressBar) return;
+
+  function updateProgressBar() {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrollPercent = (scrollTop / scrollHeight) * 100;
+    progressBar.style.width = scrollPercent + "%";
+  }
+
+  window.addEventListener("scroll", updateProgressBar);
+  window.addEventListener("resize", updateProgressBar);
+  updateProgressBar();
+}
 document.addEventListener('DOMContentLoaded', async function() {
     await includeHTML();
 
     console.log('Semua komponen HTML sudah dimuat');
 
-    // Fungsi global
     if (typeof updatePageTitle === 'function') updatePageTitle();
     if (typeof updatePostTitle === 'function') updatePostTitle();
     if (typeof initHeaderEvents === 'function') initHeaderEvents();
@@ -13,16 +27,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof updateStats === 'function') updateStats();
     if (typeof updateTimes === 'function') updateTimes();
 
-    // Event listener untuk search (jika ada)
-    const input = document.querySelector('.search-input-group input[type="text"]');
-    if (input && typeof handleSearchInput === 'function') {
-        input.addEventListener('input', handleSearchInput);
-    }
-
-    // Deteksi halaman dari URL
     const path = window.location.pathname.toLowerCase();
-
-    // Pemetaan halaman ke fungsi (tanpa loadCategoriesForIndex)
     const pageMap = [
         { keyword: '/', func: typeof loadCategoryLabels === 'function' ? loadCategoryLabels : null },
         { keyword: 'musik', func: typeof loadPostsMusik === 'function' ? loadPostsMusik : null },
@@ -36,8 +41,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         const isHome = path === '/' || path.includes('index');
         const isMatched = page.keyword === '/' ? isHome : path.includes(page.keyword);
         if (isMatched && typeof page.func === 'function') {
-            console.log(`ðŸ”Ž Memuat konten: ${page.keyword}`);
-            page.func(); // <- Ini harus terpanggil
+            console.log(`ðŸ—¿Memuat konten: ${page.keyword}`);
+            page.func();
         }
     }
 
@@ -48,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     ];
 
     SearchModule.init({ data: articles });
-
-    console.log('Ã¢Å“â€¦ Halaman siap!');
+    initScrollProgressBar();
+    
+    console.log('ðŸ—¿Halaman siap!');
 });
