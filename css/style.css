@@ -1414,7 +1414,7 @@
     .search-result-item {
         padding: 0.75rem 1rem;
         margin-bottom: 0.5rem;
-        background: rgba(255 255 255 / 0.1);
+        background: var(--card-background-dark);
         border-radius: 8px;
         transition: background-color 0.3s ease;
     }
