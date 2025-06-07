@@ -6,42 +6,37 @@ function createGamePostElement(post) {
     link.href = post.url || '#';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'post-card';
+    link.className = 'post-card-game';
 
     // === Thumbnail ===
     const thumbnailDiv = document.createElement('div');
-    thumbnailDiv.className = 'post-thumbnail';
+    thumbnailDiv.className = 'post-thumbnail-game';
 
     const img = document.createElement('img');
     img.src = post.thumbnail || '/assets/error.jpg';
     img.alt = post.title || '';
     img.loading = 'lazy';
     img.onerror = () => (img.src = '/assets/error.jpg');
-    img.style.width = "100%";
-    img.style.height = "180px";
-    img.style.objectFit = "cover";
-    img.style.display = "block";
-    img.style.borderRadius = "8px";
 
     thumbnailDiv.appendChild(img);
     link.appendChild(thumbnailDiv);
 
     // === Konten Utama ===
     const contentDiv = document.createElement('div');
-    contentDiv.className = 'post-content';
+    contentDiv.className = 'post-content-game';
     contentDiv.style.flex = '1';
 
     const title = document.createElement('h3');
-    title.className = 'post-title';
+    title.className = 'post-title-game';
     title.textContent = post.title || 'Tanpa Judul';
 
     const desc = document.createElement('p');
-    desc.className = 'post-description';
+    desc.className = 'post-description-game';
     desc.textContent = post.description || '';
 
     // === Hashtags ===
     const hashtagsDiv = document.createElement('div');
-    hashtagsDiv.className = 'post-hashtags';
+    hashtagsDiv.className = 'post-hashtags-game';
     const hashtags = (post.hashtags || '')
         .split(',')
         .map(tag => tag.trim())
@@ -58,14 +53,14 @@ function createGamePostElement(post) {
 
     // === Meta Info ===
     const rightDiv = document.createElement('div');
-    rightDiv.className = 'post-meta';
+    rightDiv.className = 'post-meta-game';
 
     const label = document.createElement('div');
-    label.className = 'post-label';
+    label.className = 'post-label-game';
     label.textContent = post.label || '';
 
     const time = document.createElement('div');
-    time.className = 'post-time';
+    time.className = 'post-time-game';
     time.setAttribute('data-timestamp', post.timestamp);
     time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
 
