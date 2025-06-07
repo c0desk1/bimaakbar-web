@@ -1,42 +1,38 @@
 function createShopPostElement(product) {
     const el = document.createElement('div');
-    el.className = 'post-grid';
+    el.className = 'post-grid-category';
 
     const link = document.createElement('a');
     link.href = product.url || '#';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'post-card';
+    link.className = 'post-card-category';
 
     // === Thumbnail ===
     const thumbnailDiv = document.createElement('div');
-    thumbnailDiv.className = 'post-thumbnail';
+    thumbnailDiv.className = 'post-thumbnail-category';
 
     const img = document.createElement('img');
     img.src = product.thumbnail || '/assets/error.jpg';
     img.alt = product.title || '';
     img.loading = 'lazy';
     img.onerror = () => (img.src = '/assets/error.jpg');
-    img.style.width = "100%";
-    img.style.height = "180px";
-    img.style.objectFit = "cover";
-    img.style.display = "block";
-    img.style.borderRadius = "8px";
+
 
     thumbnailDiv.appendChild(img);
     link.appendChild(thumbnailDiv);
 
     // === Konten Utama ===
     const contentDiv = document.createElement('div');
-    contentDiv.className = 'post-content';
+    contentDiv.className = 'post-content-category';
     contentDiv.style.flex = '1';
 
     const title = document.createElement('h3');
-    title.className = 'post-title';
+    title.className = 'post-title-category';
     title.textContent = product.title || 'Tanpa Judul';
 
     const desc = document.createElement('p');
-    desc.className = 'post-description';
+    desc.className = 'post-description-category';
     desc.textContent = product.description || '';
 
     const price = document.createElement('p');
@@ -45,24 +41,20 @@ function createShopPostElement(product) {
 
     // === Hashtags ===
     const hashtagsDiv = document.createElement('div');
-    hashtagsDiv.className = 'post-hashtags';
+    hashtagsDiv.className = 'post-hashtags-category';
 
     // FIX: Langsung proses string hashtags yang dipisahkan koma
-    const hashtagsString = product.hashtags || ''; // Dapatkan string hashtags
+    const hashtagsString = product.hashtags || '';
     const tags = hashtagsString
-        .split(',') // Pisahkan berdasarkan koma
-        .map(tag => tag.trim()) // Hapus spasi di awal/akhir setiap tag
-        .filter(tag => tag); // Hapus tag yang kosong setelah trim
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag);
 
     tags.forEach(tagText => {
         const span = document.createElement('span');
-        span.className = 'post-hashtag';
+        span.className = 'post-hashtags-category';
         span.textContent = `#${tagText}`;
         hashtagsDiv.appendChild(span);
-        // Jika Anda punya animasi hashtag, bisa di sini:
-        // requestAnimationFrame(() => {
-        //     span.classList.add('show');
-        // });
     });
 
 
@@ -74,10 +66,10 @@ function createShopPostElement(product) {
 
     // === Meta Info ===
     const rightDiv = document.createElement('div');
-    rightDiv.className = 'post-meta';
+    rightDiv.className = 'post-meta-category';
 
     const label = document.createElement('div');
-    label.className = 'post-label';
+    label.className = 'post-label-category';
     if (product.label && product.label.toLowerCase() === 'shop') {
         label.textContent = product.label;
     } else {
@@ -86,7 +78,7 @@ function createShopPostElement(product) {
 
 
     const time = document.createElement('div');
-    time.className = 'post-time';
+    time.className = 'post-time-category';
     time.setAttribute('data-timestamp', product.timestamp || '');
     time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(product.timestamp)}`;
 
