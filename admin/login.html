@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Admin</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background-color: var(--card-background-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow-dark);
+        }
+        
+        .login-container h2 {
+            text-align: center;
+            color: var(--text-lighter);
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-container input,
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .login-container input {
+            background-color: var(--background-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+        }
+        
+        .login-container input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 6px var(--primary-color);
+        }
+        
+        .login-container button {
+            background-color: var(--primary-color);
+            border: none;
+            color: var(--text-light);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-container button:hover {
+            background-color: var(--primary-color-hover);
+        }
+        
+        .error-message {
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="login-container">
+        <h2>Admin Login</h2>
+        <div id="errorMsg" class="error-message">Username atau password salah.</div>
+        <input type="text" id="username" placeholder="Username" autocomplete="off" />
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Masuk</button>
+    </main>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const error = document.getElementById('errorMsg');
+
+            // Kamu sebagai user satu-satunya
+            if (username === "admin" && password === "rahasia123") {
+                localStorage.setItem("adminLogin", "true");
+                window.location.href = "dashboard.html";
+            } else {
+                error.style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>
