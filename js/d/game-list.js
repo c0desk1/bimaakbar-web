@@ -6,11 +6,11 @@ function createGamePostElement(post) {
     link.href = post.url || '#';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'post-card-game';
+    link.className = 'post-card-category';
 
     // === Thumbnail ===
     const thumbnailDiv = document.createElement('div');
-    thumbnailDiv.className = 'post-thumbnail-game';
+    thumbnailDiv.className = 'post-thumbnail-category';
 
     const img = document.createElement('img');
     img.src = post.thumbnail || '/assets/error.jpg';
@@ -23,20 +23,20 @@ function createGamePostElement(post) {
 
     // === Konten Utama ===
     const contentDiv = document.createElement('div');
-    contentDiv.className = 'post-content-game';
+    contentDiv.className = 'post-content-category';
     contentDiv.style.flex = '1';
 
     const title = document.createElement('h3');
-    title.className = 'post-title-game';
+    title.className = 'post-title-category';
     title.textContent = post.title || 'Tanpa Judul';
 
     const desc = document.createElement('p');
-    desc.className = 'post-description-game';
+    desc.className = 'post-description-category';
     desc.textContent = post.description || '';
 
     // === Hashtags ===
     const hashtagsDiv = document.createElement('div');
-    hashtagsDiv.className = 'post-hashtags-game';
+    hashtagsDiv.className = 'post-hashtags-category';
     const hashtags = (post.hashtags || '')
         .split(',')
         .map(tag => tag.trim())
@@ -53,14 +53,14 @@ function createGamePostElement(post) {
 
     // === Meta Info ===
     const rightDiv = document.createElement('div');
-    rightDiv.className = 'post-meta-game';
+    rightDiv.className = 'post-meta-category';
 
     const label = document.createElement('div');
-    label.className = 'post-label-game';
+    label.className = 'post-label-category';
     label.textContent = post.label || '';
 
     const time = document.createElement('div');
-    time.className = 'post-time-game';
+    time.className = 'post-time-category';
     time.setAttribute('data-timestamp', post.timestamp);
     time.innerHTML = `<i class="fa fa-clock-o"></i> ${timeSince(post.timestamp)}`;
 
