@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (typeof initHeaderLogo === 'function') initHeaderLogo();
     if (typeof renderAffiliateItems === 'function') renderAffiliateItems();
     if (typeof loadLatestPopularPost === 'function') loadLatestPopularPost();
-    if (typeof updateStats === 'function') updateStats();   
-    if (typeof updateTimes=== 'function') updateTimes();
+    if (typeof updateStats === 'function') updateStats();
+    if (typeof updateTimes === 'function') updateTimes();
 
     // Event listener untuk search (jika ada)
     const input = document.querySelector('.search-input-group input[type="text"]');
@@ -40,6 +40,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             page.func(); // <- Ini harus terpanggil
         }
     }
+
+    var articles = [
+        { title: 'ambient', description: 'Belajar dasar JS', url: '/js' },
+        { title: 'CSS Grid Guide', description: 'Membuat layout grid', url: '/css-grid' },
+        { title: 'Cara SEO Blog', description: 'Optimasi blog agar ranking', url: '/seo-blog' },
+    ];
+
+    SearchModule.init({ data: articles });
 
     console.log('Ã¢Å“â€¦ Halaman siap!');
 });
