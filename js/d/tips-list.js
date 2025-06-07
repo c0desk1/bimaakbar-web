@@ -1,4 +1,4 @@
-function createtipsPostElement(post) {
+function createtutorialPostElement(post) {
     const el = document.createElement('div');
     el.className = 'post-grid';
 
@@ -72,18 +72,18 @@ function createtipsPostElement(post) {
     return el;
 }
 
-function loadPostsTips() {
-    console.log('Fungsi loadPostsTips() dipanggil.');
+function loadPostsTutorial() {
+    console.log('Fungsi loadPostsTutorial() dipanggil.');
 
-    const container = document.getElementById('post-list-tips');
+    const container = document.getElementById('post-list-tutorial');
     if (!container) {
-        console.warn('Elemen #post-list-tips tidak ditemukan. Pastikan ada div dengan id="post-list-tips" di HTML Anda.');
+        console.warn('Elemen #post-list-tutorial tidak ditemukan. Pastikan ada div dengan id="post-list-tutorial" di HTML Anda.');
         return;
     }
 
     container.innerHTML = '<div class="loading-spinner"></div>';
 
-    fetch('https://opensheet.elk.sh/1l7d-9BwbbH5I-jj_Uw0-eA2mkJEWV_yWyt9RquhM_XY/tips')
+    fetch('https://opensheet.elk.sh/10mlJVNqfUinj7gWlZ3_VcItX4EyBrRpWs3isOKXK5_M/tutorial')
         .then(res => {
             if (!res.ok) {
                 return res.text().then(text => { throw new Error(`Gagal fetch data: ${res.status} ${res.statusText} - ${text}`); });
@@ -94,7 +94,7 @@ function loadPostsTips() {
             container.innerHTML = '';
 
             if (!data || !data.length) {
-                container.innerHTML = '<p>Belum ada postingan tips.</p>';
+                container.innerHTML = '<p>Belum ada postingan tutorial.</p>';
                 return;
             }
 
@@ -109,15 +109,15 @@ function loadPostsTips() {
             }
 
             data.forEach(post => {
-                const postEl = createtipsPostElement(post);
+                const postEl = createtutorialPostElement(post);
                 container.appendChild(postEl);
             });
 
             updateTimes();
         })
         .catch(error => {
-            console.error('❌ Error saat memuat post tips:', error);
-            container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan tips. Silakan coba lagi nanti.</p>';
+            console.error('❌ Error saat memuat post tutorial:', error);
+            container.innerHTML = '<p style="color:red; text-align: center;">Gagal memuat postingan tutorial. Silakan coba lagi nanti.</p>';
         });
 }
-window.loadPostsTips = loadPostsTips;
+window.loadPostsTutorial = loadPostsTutorial;
