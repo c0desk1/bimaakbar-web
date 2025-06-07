@@ -1361,102 +1361,50 @@
     /* 20. SEARCH OVERLAY   */
     /* ==================== */
     
-    .search-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1002;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+    .search-section {
+        margin: 1.5rem auto;
+        padding: 0 1rem;
     }
     
-    .search-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    .search-overlay-content {
-        background-color: var(--card-background-dark);
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px var(--shadow-medium-dark);
-        width: 90%;
-        max-width: 600px;
-        transform: translateY(-20px);
-        transition: transform 0.3s ease;
-        position: relative;
-    }
-    
-    .search-overlay.active .search-overlay-content {
-        transform: translateY(0);
-    }
-    
-    .search-overlay-content h3 {
-        color: var(--text-lighter);
-        margin-bottom: 20px;
+    .search-section h3 {
         text-align: center;
-        font-size: 1.8em;
+        size: 3.0rem;
+        margin-bottom: 16px;
     }
     
-    .search-overlay .search-input-group {
+    .search-form {
         display: flex;
-        width: 100%;
+        align-items: center;
+        background: var(--background-dark);
         border-radius: 30px;
-        overflow: hidden;
-        background-color: var(--background-dark);
+        padding: 0.5rem 1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px var(--background-dark);
         border: 1px solid var(--border-dark);
+        transition: box-shadow 0.3s ease;
     }
     
-    .search-overlay .search-input-group input {
+    .search-form:focus-within {
+        box-shadow: 0 6px 25px var(--background-dark);
+    }
+    
+    .search-form input[type="text"] {
         flex-grow: 1;
-        padding: 15px 20px;
         border: none;
-        background: none;
-        color: var(--text-light);
-        font-size: 1.1em;
+        background: transparent;
+        color: var(--text-lighter);
+        font-size: 1.1rem;
         outline: none;
+        padding: 0.5rem;
     }
     
-    .search-overlay .search-input-group input::placeholder {
-        color: var(--secondary-color);
-        opacity: 0.7;
-    }
-    
-    .search-overlay .search-input-group button {
-        background-color: var(--primary-color);
-        color: var(--text-light);
-        border: none;
-        padding: 15px 25px;
-        cursor: pointer;
-        font-size: 1.1em;
-        transition: background-color 0.2s ease;
-    }
-    
-    .search-overlay .search-input-group button:hover {
-        background-color: var(--primary-color-hover);
-    }
-    
-    .close-search-overlay {
-        position: absolute;
-        top: 15px;
-        right: 20px;
+    .search-form button {
         background: none;
         border: none;
-        font-size: 2em;
-        color: var(--secondary-color);
+        color: var(--text-lighter);
         cursor: pointer;
-        transition: color 0.2s ease;
-    }
-    
-    .close-search-overlay:hover {
-        color: var(--primary-color);
+        font-size: 1.3rem;
+        padding: 0 0.5rem;
     }
     /* ===================== */
     /* 21. ANIMATION         */
@@ -1536,14 +1484,6 @@
         .newsletter-subscribe p {
             font-size: 1em;
             margin-bottom: 30px;
-        }
-        .search-overlay .search-input-group input {
-            padding: 10px 0px;
-            font-size: 1em;
-            margin-left: 10px;
-        }
-        .search-overlay .search-input-group button {
-            padding: 10px 20px 10px 5px;
         }
         .blog-title {
             font-size: 3em;
@@ -1686,9 +1626,9 @@
             font-size: 0.8em;
             margin-bottom: 20px;
         }
-        .close-search-overlay {
-            font-size: 1.5em;
-            top: 10px;
-            right: 15px;
+        .search-form {
+            display: flex;
+            align-items: center;
+            width: 100%;
         }
     }
