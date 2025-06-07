@@ -36,10 +36,6 @@ function loadLatestPopularPost() {
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.className = 'post-card';
-        link.style.display = 'flex';
-        link.style.alignItems = 'flex-start';
-        link.style.width = '100%';
-        link.style.gap = '16px';
 
         // === Thumbnail (Kiri) ===
         const thumbnailDiv = document.createElement('div');
@@ -57,7 +53,7 @@ function loadLatestPopularPost() {
         // === Konten Utama (Tengah) ===
         const contentDiv = document.createElement('div');
         contentDiv.className = 'post-content';
-        contentDiv.style.flex = '1'; // Mengisi ruang yang tersedia
+        contentDiv.style.flex = '1';
 
         const title = document.createElement('h3');
         title.className = 'post-title';
@@ -67,43 +63,40 @@ function loadLatestPopularPost() {
         desc.className = 'post-description';
         desc.textContent = post.description || '';
 
-        const metaRow = document.createElement('div');
-        metaRow.className = 'post-meta-row';
-
-        const label = document.createElement('div');
-        label.className = 'post-label';
-        label.textContent = post.label || post.category || 'Tanpa Label';
-
         const hashtagsDiv = document.createElement('div');
         hashtagsDiv.className = 'post-hashtags';
         const hashtags = (post.hashtags || '')
             .split(',')
             .map(tag => tag.trim())
-            .filter((tag, index, self) => tag && self.indexOf(tag) === index) // Hilangkan duplikat
+            .filter((tag, index, self) => tag && self.indexOf(tag) === index)
             .map(tag => `#${tag}`)
             .join(' ');
 
         hashtagsDiv.textContent = hashtags;
 
-
-        metaRow.appendChild(label);
         contentDiv.appendChild(hashtagsDiv);
         contentDiv.appendChild(title);
         contentDiv.appendChild(desc);
-        contentDiv.appendChild(metaRow);
         link.appendChild(contentDiv);
 
-
-        // === Meta Info (Kanan) ===
+        // === Meta Info ===
         const rightDiv = document.createElement('div');
         rightDiv.className = 'post-meta';
+
+
+        const label = document.createElement('div');
+        label.className = 'post-label';
+        label.textContent = post.label || '';
+
         const time = document.createElement('div');
         time.className = 'post-time';
+        time.setAttribute('data-timestamp', post.timestamp);
         time.innerHTML = `<i class="fa fa-clock-o"></i> ${formatTime(post.timestamp)}`;
 
-
+        rightDiv.appendChild(label);
         rightDiv.appendChild(time);
         link.appendChild(rightDiv);
+
         el.appendChild(link);
         return el;
     }
@@ -216,4 +209,7 @@ function loadLatestPopularPost() {
         renderPosts('popular');
     });
 }
- if (typeof renderPosts === "function") { renderPosts('latest'); renderPosts('popular');}
+if (typeof renderPosts === "function") {
+    renderPosts('latest');
+    renderPosts('popular');
+}
