@@ -18,16 +18,16 @@ var SearchModule = (function() {
         var searchInput = searchForm.querySelector(inputSelector);
         var searchResults = document.querySelector(resultsSelector);
 
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        searchInput.addEventListener('input', function() {
             var query = searchInput.value.trim().toLowerCase();
             if (!query) {
-                searchResults.innerHTML = '<p>Masukkan kata kunci pencarian.</p>';
+                searchResults.innerHTML = ''; // Bisa juga tampilkan pesan kosong
                 return;
             }
             performSearch(query, searchResults);
         });
     }
+
 
     function performSearch(query, resultsContainer) {
         var filtered = data.filter(function(item) {
