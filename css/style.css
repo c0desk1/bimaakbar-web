@@ -663,148 +663,134 @@ main {
     margin: var(--spacing-md) 0;
 }
 
-#latest-posts.card-grid,
-#popular-posts.card-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
-}
-
-#post-list-game.card-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
+#latest-posts .card-grid,
+#popular-posts .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
 }
 
 .post-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
     overflow: hidden;
 }
 
 .post-card {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  background-color: var(--card-background-dark);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px var(--shadow-dark);
-  padding: var(--spacing-xs);
-  gap: 16px;
-  text-decoration: none;
-  transition: transform 0.2s ease;
-  position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: var(--card-background-dark);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px var(--shadow-dark);
+    padding: var(--spacing-xs);
+    gap: var(--spacing-md);
+    position: relative;
+    transition: transform 0.2s ease;
+    text-decoration: none;
 }
 
 .post-card:hover {
-  transform: scale(1.015);
-}
-
-.post-card-game {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  background-color: var(--card-background-dark);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px var(--shadow-dark);
-  padding: var(--spacing-xs);
-  gap: var(--spacing-sm);
-  position: relative;
-  transition: transform 0.2s ease;
-  text-decoration: none;
-}
-
-.post-card-game:hover {
-  transform: scale(1.02);
+    transform: scale(1.015);
 }
 
 .post-thumbnail {
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.post-thumbnail img, .post-thumbnail-game img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: inherit;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .post-thumbnail-game {
-  width: 320px;
-  height: 180px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 8px;
+    width: 300px;
+    height: 180px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.post-thumbnail img,
+.post-thumbnail-game img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
 }
 
 .post-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding-right: 100px;
+    gap: 6px;
+    height: 100%;
 }
 
 .post-title {
-  font-size: 1.1em;
-  font-weight: 600;
-  color: var(--text-lighter);
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-lighter);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .post-description {
-  font-size: 0.95em;
-  color: var(--text-light);
-  line-height: 1.4;
-  margin: 6px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.post-meta-row {
-  display: flex;
-  gap: 8px;
-  font-size: 0.85em;
-  margin-top: 6px;
-  flex-wrap: wrap;
+    size: 0.95em;
+    color: var(--text-light);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .post-label {
-  background-color: var(--primary-color);
-  color: var(--background-dark);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: 600;
+    position: absolute;
+    display: flex;
+    color: rgba(254, 44, 85, 0.2);
+    font-size: 0.85em;
+    text-transform: uppercase;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .post-meta {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+    position: absolute;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+    bottom: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex: 1;
+    height: auto;
 }
 
 .post-time {
-  font-size: 0.75em;
-  color: var(--secondary-color);
-  opacity: 0.9;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+    position: absolute;
+    bottom: 0;
+    font-size: 0.75em;
+    color: var(--secondary-color);
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .post-time i {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .post-hashtags {
@@ -822,88 +808,126 @@ main {
     padding: 4px 8px;
     border-radius: 4px;
     color: var(--primary-color);
-    transition: background-color 0.2s ease;
+    transition: var(--background-dark) 0.2s ease;
 }
 
 .post-hashtags span:hover {
     background-color: rgba(254, 44, 85, 0.3);
 }
 
-.post-content-game {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  justify-content: center;
-  padding-right: 100px;
+#post-list-game .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
 }
+
+.post-card-game {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: var(--card-background-dark);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px var(--shadow-dark);
+    padding: var(--spacing-xs);
+    gap: var(--spacing-sm);
+    position: relative;
+    transition: transform 0.2s ease;
+    text-decoration: none;
+}
+
+.post-card-game:hover {
+    transform: scale(1.02);
+}
+
+.post-content-game {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding-right: 100px;
+    gap: 6px;
+}
+
 
 /* Title */
+
 .post-title-game {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: var(--text-lighter);
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-lighter);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 /* Description */
+
 .post-description-game {
-  font-size: 0.95em;
-  color: var(--text-light);
-  line-height: 1.5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    font-size: 0.95em;
+    color: var(--text-light);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
+
 
 /* Hashtags */
+
 .post-hashtags-game {
-  font-size: 0.85em;
-  color: var(--primary-color);
-  margin: 4px 0;
-  white-space: normal;
-  word-break: break-word;
+    font-size: 0.85em;
+    color: var(--primary-color);
+    margin: 4px 0;
+    white-space: normal;
+    word-break: break-word;
 }
 
+
 /* Kanan: label & waktu */
+
 .post-meta-game {
-  position: absolute;
-  top: var(--spacing-xs);
-  right: var(--spacing-xs);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-flex: 1;
+    position: absolute;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+    bottom: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex: 1;
+    height: auto;
 }
 
 .post-label-game {
-  background-color: var(--primary-color);
-  color: var(--background-dark);
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.85em;
-  white-space: nowrap;
+    position: absolute;
+    color: rgba(254, 44, 85, 0.2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85em;
+    white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .post-time-game {
-  font-size: 0.75em;
-  color: var(--secondary-color);
-  opacity: 0.85;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
+    position: absolute;
+    bottom: 0;
+    font-size: 0.75em;
+    color: var(--secondary-color);
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .post-time-game i {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .post-price {
@@ -1417,24 +1441,27 @@ flex: 1;
     /* Text becomes dark on hover */
 }
 
+
 /* Pagination Buttons */
+
 .load-more-btn {
-  display: inline-block;
-  padding: 10px 16px;
-  margin: 16px 6px 0;
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  border: none;
-  border-radius: 30px;
-  font-size: 0.95em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    display: inline-block;
+    padding: 10px 16px;
+    margin: 16px 6px 0;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 30px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .load-more-btn:hover {
-  background-color: var(--primary-color-hover);
+    background-color: var(--primary-color-hover);
 }
+
 
 /* ===================== */
 
@@ -1672,17 +1699,32 @@ flex: 1;
     .affiliate-scroll {
         padding-bottom: 10px;
     }
-
     .affiliate-item {
         width: 100px;
         height: 100px;
     }
     .post-grid {
         grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
         padding: 8px;
     }
-
+    .post-card {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-sizing: border-box;
+    }
+    .post-meta {
+        position: absolute;
+        right: var(--spacing-xs);
+        bottom: var(--spacing-xs);
+    }
+    .post-meta-row {
+        position: absolute;
+        right: var(--spacing-xs);
+        top: var(--spacing-xs);
+    }
     .newsletter-subscribe {
         padding: var(--spacing-lg) var(--spacing-sm);
     }
@@ -1699,7 +1741,7 @@ flex: 1;
         margin-left: 10px;
     }
     .search-overlay .search-input-group button {
-    	padding: 10px 20px 10px 5px;
+        padding: 10px 20px 10px 5px;
     }
     .blog-title {
         font-size: 3em;
@@ -1725,41 +1767,64 @@ flex: 1;
         grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
         gap: 10px;
     }
-	
-    .post-card {
-        flex-direction: column;
-		align-items: stretch;
+    .post-grid {
+        display: flex;
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
     }
-    
+    .post-card {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-sizing: border-box;
+    }
     .post-card-game {
-    flex-direction: column;
-    padding: 0;
-  }
-    
-    .post-thumbnail, .post-thumbnail-game {
-    	width: 100%;
-    	height: 180px;
-    	border-radius: 8px 8px 0 0;
-  	}
-  
-  .post-content-game {
-    padding: var(--spacing-sm);
-    padding-top: var(--spacing-xs);
-    padding-bottom: var(--spacing-xs);
-    padding-right: var(--spacing-sm);
-  }
-       
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-sizing: border-box;
+    }
+    .post-thumbnail {
+        width: 100%;
+        height: 100%;
+    }
+    .post-thumbnail-game {
+        width: 100%;
+        height: 180px;
+        border-radius: 8px 8px 0 0;
+    }
+    .post-content {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+    .post-content-game {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
     .post-meta {
-	    position: static;
-	    margin-top: var(--spacing-xs);
-	    text-align: right;
-	  }
-	.post-meta-game {
-    position: static;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: var(--spacing-xs) var(--spacing-sm) 0;
-  }
+        position: absolute;
+        right: var(--spacing-xs);
+        bottom: var(--spacing-xs);
+    }
+    .post-meta-row {
+        position: absolute;
+        right: var(--spacing-xs);
+        top: var(--spacing-xs);
+    }
+    .post-meta-game {
+        display: flex;
+        flex-direction: column;
+    }
     .newsletter-subscribe {
         padding: var(--spacing-md);
         margin: var(--spacing-lg) auto;
@@ -1817,7 +1882,6 @@ flex: 1;
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         gap: 10px;
     }
-    
     .newsletter-subscribe {
         padding: var(--spacing-md) var(--spacing-xs);
     }
