@@ -725,7 +725,7 @@ main {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    padding-right: 80px;
+    padding-right: 60px;
     gap: 6px;
 }
 
@@ -782,7 +782,7 @@ main {
 .post-hashtags {
     font-size: 0.85em;
     color: var(--primary-color);
-    white-space: normal;
+    white-space: nowrap;
     word-break: break-word;
 }
 
@@ -1413,6 +1413,8 @@ main {
 /* Pagination Buttons */
 
 .load-more-btn {
+	align-items: center;
+	text-align: center;
     display: inline-block;
     padding: 10px 16px;
     margin: 16px 6px 0;
@@ -1768,6 +1770,10 @@ main {
         display: flex;
         flex-direction: column;
     }
+    .post-label {
+    	top:0px;
+    	right:0px;
+}
     .post-meta-category {
         display: flex;
         flex-direction: column;
