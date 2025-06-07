@@ -670,6 +670,12 @@ main {
   gap: var(--spacing-md);
 }
 
+#post-list-game.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
 .post-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -695,6 +701,24 @@ main {
   transform: scale(1.015);
 }
 
+.post-card-game {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background-color: var(--card-background-dark);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px var(--shadow-dark);
+  padding: var(--spacing-xs);
+  gap: var(--spacing-sm);
+  position: relative;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+
+.post-card-game:hover {
+  transform: scale(1.02);
+}
+
 .post-thumbnail {
   width: 100px;
   height: 100px;
@@ -703,12 +727,20 @@ main {
   overflow: hidden;
 }
 
-.post-thumbnail img {
+.post-thumbnail img, .post-thumbnail-game img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   border-radius: inherit;
+}
+
+.post-thumbnail-game {
+  width: 320px;
+  height: 180px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .post-content {
@@ -795,6 +827,82 @@ main {
 
 .post-hashtags span:hover {
     background-color: rgba(254, 44, 85, 0.3);
+}
+
+.post-content-game {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  padding-right: 100px;
+}
+
+/* Title */
+.post-title-game {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--text-lighter);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Description */
+.post-description-game {
+  font-size: 0.95em;
+  color: var(--text-light);
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Hashtags */
+.post-hashtags-game {
+  font-size: 0.85em;
+  color: var(--primary-color);
+  margin: 4px 0;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Kanan: label & waktu */
+.post-meta-game {
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.post-label-game {
+  background-color: var(--primary-color);
+  color: var(--background-dark);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.post-time-game {
+  font-size: 0.75em;
+  color: var(--secondary-color);
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.post-time-game i {
+  color: var(--primary-color);
 }
 
 .post-price {
