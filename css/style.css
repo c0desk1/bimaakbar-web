@@ -1428,7 +1428,8 @@
 		  top: 0;
 		  left: 0;
 		  width: 0%;
-		  height: 6px;
+		  height: 4px;
+		  border-radius: 4px;
 		  background-color: var(--primary-color);
 		  z-index: 9999;
 		  transition: width 0.2s ease;
