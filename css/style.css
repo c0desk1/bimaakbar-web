@@ -801,8 +801,6 @@ main {
 .post-label {
     position: absolute;
     color: rgba(254, 44, 85, 0.2);
-    top: var(--spacing-xs);
-    right: var(--spacing-xs);
     font-size: 0.85em;
     white-space: nowrap;
     gap: 6px;
@@ -944,7 +942,6 @@ main {
     padding: 2rem 1rem;
     color: var(--text-light);
     background-color: var(--background-dark);
-    /* Should match body background */
 }
 
 .post-main-article {
