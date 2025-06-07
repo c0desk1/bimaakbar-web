@@ -628,7 +628,6 @@ main {
     background-color: var(--background-dark);
     box-shadow: 0 2px 8px var(--shadow-dark);
     overflow: hidden;
-    /* ini penting agar img tidak keluar radius */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -696,15 +695,14 @@ main {
 }
 
 .post-thumbnail {
-    display: flex;
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 180px;
     flex-shrink: 0;
     border-radius: 8px;
     overflow: hidden;
 }
 
-.post-thumbnail-game {
+.post-thumbnail-category {
     width: 300px;
     height: 180px;
     flex-shrink: 0;
@@ -713,7 +711,7 @@ main {
 }
 
 .post-thumbnail img,
-.post-thumbnail-game img {
+.post-thumbnail-category img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -729,7 +727,6 @@ main {
     overflow: hidden;
     padding-right: 100px;
     gap: 6px;
-    height: 100%;
 }
 
 .post-title {
@@ -743,7 +740,7 @@ main {
 }
 
 .post-description {
-    size: 0.95em;
+    font-size: 0.95em;
     color: var(--text-light);
     line-height: 1.5;
     overflow: hidden;
@@ -794,13 +791,11 @@ main {
 }
 
 .post-hashtags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 0.75em;
-    color: var(--text-light);
-    flex-direction: row;
-    white-space: nowrap;
+    font-size: 0.85em;
+    color: var(--primary-color);
+    margin: 4px 0;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .post-hashtags span {
@@ -815,13 +810,13 @@ main {
     background-color: rgba(254, 44, 85, 0.3);
 }
 
-#post-list-game .card-grid {
+#post-list-category .card-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
 }
 
-.post-card-game {
+.post-card-category {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -835,11 +830,11 @@ main {
     text-decoration: none;
 }
 
-.post-card-game:hover {
+.post-card-category:hover {
     transform: scale(1.02);
 }
 
-.post-content-game {
+.post-content-category {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -852,7 +847,7 @@ main {
 
 /* Title */
 
-.post-title-game {
+.post-title-category {
     font-size: 1.2em;
     font-weight: bold;
     color: var(--text-lighter);
@@ -865,7 +860,7 @@ main {
 
 /* Description */
 
-.post-description-game {
+.post-description-category {
     font-size: 0.95em;
     color: var(--text-light);
     line-height: 1.5;
@@ -879,7 +874,7 @@ main {
 
 /* Hashtags */
 
-.post-hashtags-game {
+.post-hashtags-category {
     font-size: 0.85em;
     color: var(--primary-color);
     margin: 4px 0;
@@ -890,7 +885,7 @@ main {
 
 /* Kanan: label & waktu */
 
-.post-meta-game {
+.post-meta-category {
     position: absolute;
     top: var(--spacing-xs);
     right: var(--spacing-xs);
@@ -903,7 +898,7 @@ main {
     height: auto;
 }
 
-.post-label-game {
+.post-label-category {
     position: absolute;
     color: rgba(254, 44, 85, 0.2);
     padding: 4px 10px;
@@ -914,7 +909,7 @@ main {
     text-transform: uppercase;
 }
 
-.post-time-game {
+.post-time-category {
     position: absolute;
     bottom: 0;
     font-size: 0.75em;
@@ -926,7 +921,7 @@ main {
     white-space: nowrap;
 }
 
-.post-time-game i {
+.post-time-category i {
     color: var(--primary-color);
 }
 
@@ -1334,22 +1329,18 @@ main {
     padding: 1rem;
     font-size: 1rem;
     color: #666;
-    /* Adjust color for dark theme if needed */
     position: absolute;
     top: 50%;
     left: 50%;
     width: 24px;
     height: 24px;
     margin: -12px 0 0 -12px;
-    /* Center with negative margin */
     border: 3px solid rgba(255, 255, 255, 0.2);
     border-top: 3px solid var(--primary-color);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    /* Slightly faster spin */
     z-index: 2;
     pointer-events: none;
-    /* Allows clicks to pass through */
 }
 
 
@@ -1366,9 +1357,6 @@ main {
     display: block;
     overflow: hidden;
 }
-
-
-/* Spinner for individual thumbnails */
 
 .thumbnail-wrapper .loading-spinner {
     position: absolute;
@@ -1402,7 +1390,6 @@ main {
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
     color: var(--secondary-color);
-    /* Default color for back button */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1438,7 +1425,6 @@ main {
 .btn-share:hover {
     background-color: var(--primary-color);
     color: var(--background-dark);
-    /* Text becomes dark on hover */
 }
 
 
@@ -1474,15 +1460,11 @@ main {
 .ad-slot {
     text-align: center;
     margin-bottom: var(--spacing-md);
-    /* Consistent margin */
     padding: var(--spacing-sm);
-    /* Add padding */
     background-color: var(--background-dark);
-    /* Should match body background */
     border-radius: 8px;
     border: 1px solid var(--border-dark);
     width: 100%;
-    /* Ensure it takes full width */
 }
 
 .about-me {
@@ -1490,7 +1472,6 @@ main {
     margin-bottom: var(--spacing-md);
     padding: 15px;
     background-color: var(--card-background-dark);
-    /* Should be card background */
     border: 1px solid var(--border-dark);
     border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow-dark);
@@ -1503,7 +1484,6 @@ main {
     border-radius: 50%;
     object-fit: cover;
     margin: 0 auto 10px;
-    /* Center and add margin below */
     border: 2px solid var(--primary-color);
     padding: 2px;
     display: block;
@@ -1525,7 +1505,6 @@ main {
     display: flex;
     justify-content: center;
     gap: 15px;
-    /* Add gap between icons */
 }
 
 .social-media a {
@@ -1577,7 +1556,6 @@ main {
     width: 90%;
     max-width: 600px;
     transform: translateY(-20px);
-    /* Initial slight lift */
     transition: transform 0.3s ease;
     position: relative;
 }
@@ -1674,13 +1652,7 @@ main {
 }
 
 
-/* ===================== */
-
-
 /* 22. RESPONSIVE MEDIA  */
-
-
-/* ===================== */
 
 @media (max-width: 900px) {
     .post-grid {
@@ -1728,11 +1700,6 @@ main {
         position: absolute;
         right: var(--spacing-xs);
         bottom: var(--spacing-xs);
-    }
-    .post-meta-row {
-        position: absolute;
-        right: var(--spacing-xs);
-        top: var(--spacing-xs);
     }
     .newsletter-subscribe {
         padding: var(--spacing-lg) var(--spacing-sm);
@@ -1791,7 +1758,7 @@ main {
         max-height: 100%;
         box-sizing: border-box;
     }
-    .post-card-game {
+    .post-card-category {
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -1805,7 +1772,7 @@ main {
         width: 100%;
         height: 100%;
     }
-    .post-thumbnail-game {
+    .post-thumbnail-category {
         width: 100%;
         height: 180px;
         border-radius: 8px 8px 0 0;
@@ -1815,7 +1782,7 @@ main {
         width: 100%;
         height: 100%;
     }
-    .post-content-game {
+    .post-content-category {
         display: flex;
         width: 100%;
         height: 100%;
@@ -1825,7 +1792,7 @@ main {
         right: var(--spacing-xs);
         bottom: var(--spacing-xs);
     }
-    .post-meta-game {
+    .post-meta-category {
         display: flex;
         flex-direction: column;
     }
@@ -1848,16 +1815,13 @@ main {
     }
     .stats {
         grid-auto-flow: row;
-        /* Stack stats vertically */
         grid-auto-columns: 100%;
         overflow-x: hidden;
-        /* No horizontal scroll */
         padding: var(--spacing-sm);
     }
     .stats-item {
         width: 100%;
         min-width: unset;
-        /* Remove min-width when stacked */
     }
     .blog-title {
         font-size: 2.5em;
