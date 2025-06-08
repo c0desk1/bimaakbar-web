@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard Blogger - Bima Akbar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        :root {
+            --background-dark: #121212;
+            --card-background-dark: #181818;
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --primary-color: #FE2C55;
+            --text-light: #E0E0E0;
+            --text-lighter: #F0F0F0;
+            --text-muted: #A0A0A0;
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --accent-color: #007bff;
+            --green-accent: #28a745;
+            --blue-accent: #007bff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background-color: var(--card-background-dark);
+            border-bottom: 1px solid var(--border-dark);
+            box-shadow: 0 2px 4px var(--shadow-dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: nowrap;
+        }
+
+        .header-left,
+        .header-center,
+        .header-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .header-left {
+            justify-content: flex-start;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-lighter);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-center {
+            justify-content: center;
+        }
+
+        .header-center img {
+            height: 32px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
+        .header-right {
+            justify-content: flex-end;
+        }
+
+        .logout-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff4d6b;
+        }
+
+        @media (max-width: 480px) {
+            .header-left {
+                font-size: 0.9rem;
+            }
+
+            .logout-btn {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .header-center img {
+                height: 28px;
+            }
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Greeting Section */
+        .greeting-section {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .greeting-content {
+            margin: 0;
+        }
+
+        .greeting-content h1 {
+            font-size: 1.8rem;
+            color: var(--text-lighter);
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+        }
+
+        .greeting-content .subtext {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            .greeting-content h1 {
+                font-size: 1.4rem;
+            }
+
+            .greeting-content .subtext {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Stat Grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-background-dark);
+            padding: 1.2rem;
+            border-radius: 0.8rem;
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 2px 8px var(--shadow-dark);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-lighter);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Quick Actions Section Styles - UPDATED */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Adjust min width for flexibility */
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Ensure 2 columns on larger mobile/tablet, 4 on desktop */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* On larger screens, force 4 columns if desired, or let auto-fit handle */
+        @media (min-width: 769px) {
+            .quick-actions-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+
+        .quick-action-card {
+            background-color: var(--card-background-dark);
+            padding: 1rem;
+            border-radius: 0.8rem;
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 2px 8px var(--shadow-dark);
+            text-align: center;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px; /* Added min-height for consistent card size */
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-2px);
+            background-color: rgba(24, 24, 24, 0.8);
+        }
+
+        .quick-action-card .icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-action-card .label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-lighter);
+        }
+
+        /* Info & List Sections */
+        .dashboard-section {
+            background-color: var(--card-background-dark);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px var(--shadow-dark);
+            border: 1px solid var(--border-dark);
+            margin-bottom: 25px;
+        }
+
+        .dashboard-section h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-dark);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .info-value {
+            color: var(--text-lighter);
+            font-weight: 600;
+        }
+
+        .data-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .data-list ul li {
+            background-color: var(--background-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .data-list ul li span {
+            flex: 1;
+            min-width: 150px;
+            color: var(--text-light);
+        }
+        .data-list ul li .item-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--text-lighter);
+        }
+        .data-list ul li .item-meta {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        .data-list ul li .actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .data-list ul li .actions button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: opacity 0.3s ease;
+        }
+        .data-list ul li .actions button:hover {
+            opacity: 0.8;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-dark);
+            display: flex;
+            flex-direction: column;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-item .log-time {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .activity-item .log-message {
+            font-size: 0.95em;
+            color: var(--text-light);
+        }
+
+        /* Top Posts List Specific Styles */
+        .top-posts-list ul li {
+            background-color: var(--background-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .top-posts-list .post-details {
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+        .top-posts-list .post-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--text-lighter);
+        }
+
+        .top-posts-list .post-meta {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .top-posts-list .post-stats {
+            margin-left: auto;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .top-posts-list .stat-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .top-posts-list .stat-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .flex-grow { flex-grow: 1; }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left" id="userNameDisplay">Halo, Admin</div>
+        <div class="header-center">
+            <img src="assets/logo.png" alt="Logo" />
+        </div>
+        <div class="header-right">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <div class="main-content">
+        <section class="greeting-section">
+            <div class="greeting-content">
+                <h1 id="greeting-text">Selamat Datang Kembali, Bima.</h1>
+                <p class="subtext">Semoga harimu produktif dalam mengelola blog!</p>
+            </div>
+        </section>
+        <section class="stat-grid">
+            <div class="stat-card">
+                <h2 class="stat-value" id="totalViews">0</h2>
+                <p class="stat-label">Total Views</p>
+            </div>
+            <div class="stat-card">
+                <h2 class="stat-value" id="totalPosts">0</h2>
+                <p class="stat-label">Jumlah Postingan</p>
+            </div>
+            <div class="stat-card">
+                <h2 class="stat-value" id="totalComments">0</h2>
+                <p class="stat-label">Total Komentar</p>
+            </div>
+            <div class="stat-card">
+                <h2 class="stat-value" id="totalCategories">0</h2>
+                <p class="stat-label">Kategori</p>
+            </div>
+        </section>
+        <section class="quick-actions-grid">
+            <div class="quick-action-card" onclick="alert('Navigasi ke halaman buat postingan baru')">
+                <i class="fas fa-plus-circle icon"></i>
+                <div class="label">Buat Postingan Baru</div>
+            </div>
+            <div class="quick-action-card" onclick="alert('Navigasi ke halaman statistik')">
+                <i class="fas fa-chart-bar icon"></i>
+                <div class="label">Statistik</div>
+            </div>
+            <div class="quick-action-card" onclick="alert('Navigasi ke halaman daftar postingan')">
+                <i class="fas fa-list-alt icon"></i>
+                <div class="label">Daftar Postingan</div>
+            </div>
+            <div class="quick-action-card" onclick="alert('Navigasi ke halaman pengaturan')">
+                <i class="fas fa-cog icon"></i>
+                <div class="label">Pengaturan</div>
+            </div>
+        </section>
+        <section class="dashboard-section">
+            <h2>Informasi Sistem & Statistik Lanjutan</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Versi Dashboard:</span>
+                    <span class="info-value">1.0.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Terakhir Diperbarui:</span>
+                    <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Total Pengguna Aktif (dummy):</span>
+                    <span class="info-value">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Sistem Operasi Server (dummy):</span>
+                    <span class="info-value">Linux (Ubuntu)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Waktu Server (WIB):</span>
+                    <span class="info-value" id="serverTime">Memuat...</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Firebase Project ID:</span>
+                    <span class="info-value">bima-akbar-web</span>
+                </div>
+            </div>
+        </section>
+        <section class="dashboard-section">
+            <h2>Postingan Teratas</h2>
+            <div class="data-list top-posts-list">
+                <ul id="topPostsList">
+                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
+                </ul>
+            </div>
+        </section>
+        <section class="dashboard-section">
+            <h2>Postingan Terbaru</h2>
+            <div class="data-list">
+                <ul id="latestPostsList">
+                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
+                </ul>
+            </div>
+        </section>
+        <section class="dashboard-section">
+            <h2>Aktivitas Login</h2>
+            <div class="data-list">
+                <ul id="loginActivityList">
+                    <li style="text-align: center; color: var(--text-muted);">Memuat aktivitas login...</li>
+                </ul>
+            </div>
+        </section>
+        </div>
+    <script>
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+            authDomain: "bima-akbar-web.firebaseapp.com",
+            databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bima-akbar-web",
+            storageBucket: "bima-akbar-web.appspot.com",
+            messagingSenderId: "521611265429",
+            appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        // --- End Firebase Configuration ---
+
+        // --- Header and Greeting Logic ---
+        function logout() {
+            alert("Fungsi logout akan diimplementasikan nanti!");
+            // TODO: Tambahkan logika Firebase Auth signOut() di sini
+        }
+
+        const username = "bimaakbar"; // TODO: Ganti dengan nama user yang sebenarnya dari Firebase Auth
+        document.getElementById("userNameDisplay").textContent = `Halo, ${username}`;
+        document.getElementById("greeting-text").textContent = `Selamat datang kembali, ${username} 👋`;
+
+        // Function to update server time (client-side time for demonstration)
+        function updateServerTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                timeZoneName: 'short', timeZone: 'Asia/Jakarta' // WIB for Pekanbaru, Riau, Indonesia
+            };
+            document.getElementById('serverTime').textContent = now.toLocaleString('id-ID', options);
+        }
+        updateServerTime(); // Call once immediately
+        setInterval(updateServerTime, 1000); // Update every second
+        // --- End Header and Greeting Logic ---
+
+        // --- Stat Grid Logic (Firebase Integration) ---
+        const totalViewsElement = document.getElementById('totalViews');
+        const totalPostsElement = document.getElementById('totalPosts');
+        const totalCommentsElement = document.getElementById('totalComments');
+        const totalCategoriesElement = document.getElementById('totalCategories');
+
+        // Fetch Total Posts and calculate total views
+        database.ref('posts').on('value', (snapshot) => {
+            const posts = snapshot.val();
+            let totalViews = 0;
+            let postCount = 0;
+            if (posts) {
+                postCount = Object.keys(posts).length;
+                Object.values(posts).forEach(post => {
+                    totalViews += (post.views || 0); // Asumsi ada field 'views' di setiap postingan
+                });
+            }
+            totalPostsElement.textContent = postCount;
+            totalViewsElement.textContent = totalViews.toLocaleString('id-ID'); // Format angka
+        });
+
+        // Fetch Total Comments
+        database.ref('comments').on('value', (snapshot) => {
+            const comments = snapshot.val();
+            totalCommentsElement.textContent = comments ? Object.keys(comments).length : 0;
+        });
+
+        // Fetch Total Categories
+        database.ref('categories').on('value', (snapshot) => {
+            const categories = snapshot.val();
+            totalCategoriesElement.textContent = categories ? Object.keys(categories).length : 0;
+        });
+        // --- End Stat Grid Logic ---
+
+        // --- Top Posts List (Firebase Integration) ---
+        const topPostsList = document.getElementById('topPostsList');
+
+        database.ref('posts').orderByChild('views').limitToLast(5).on('value', (snapshot) => {
+            const posts = snapshot.val();
+            topPostsList.innerHTML = ''; // Clear existing
+            if (posts) {
+                const postsArray = Object.keys(posts).map(key => ({
+                    id: key,
+                    ...posts[key]
+                }));
+                postsArray.sort((a, b) => b.views - a.views); // Sort by views in descending order
+
+                postsArray.forEach(post => {
+                    const li = document.createElement('li');
+                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                    li.innerHTML = `
+                        <div class="post-details">
+                            <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
+                            <div class="post-meta">
+                                <span>Kategori: ${post.category || 'Belum ada'}</span>
+                                <span>&bull; ${postDate}</span>
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="stat-value">${(post.views || 0).toLocaleString('id-ID')}</div>
+                            <div class="stat-label">Views</div>
+                        </div>
+                    `;
+                    topPostsList.appendChild(li);
+                });
+            } else {
+                topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
+            }
+        });
+        // --- End Top Posts List ---
+
+        // --- Latest Posts List (Firebase Integration) ---
+        const latestPostsList = document.getElementById('latestPostsList');
+        database.ref('posts').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+            const posts = snapshot.val();
+            latestPostsList.innerHTML = ''; // Clear existing
+            if (posts) {
+                const postsArray = Object.keys(posts).map(key => ({
+                    id: key,
+                    ...posts[key]
+                }));
+                postsArray.sort((a, b) => b.timestamp - a.timestamp); // Ensure newest first
+
+                postsArray.forEach(post => {
+                    const li = document.createElement('li');
+                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                    li.innerHTML = `
+                        <div>
+                            <span class="item-title">${post.title || 'Judul Tidak Ada'}</span>
+                            <div class="item-meta">
+                                <span>Kategori: ${post.category || 'Belum ada'}</span>
+                                <span>&bull; Status: ${post.status === 'published' ? 'Publikasi' : 'Draf'}</span>
+                                <span>&bull; ${postDate}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button onclick="alert('Aksi Edit Postingan: ${post.id}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button onclick="alert('Aksi Lihat Postingan: ${post.id}')"><i class="fas fa-eye"></i> Lihat</button>
+                        </div>
+                    `;
+                    latestPostsList.appendChild(li);
+                });
+            } else {
+                latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
+            }
+        });
+        // --- End Latest Posts List ---
+
+        // --- Login Activity (Firebase Integration - Assuming 'login_activities' node) ---
+        const loginActivityList = document.getElementById('loginActivityList');
+
+        database.ref('login_activities').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+            const activities = snapshot.val();
+            loginActivityList.innerHTML = ''; // Clear existing
+            if (activities) {
+                const activitiesArray = Object.keys(activities).map(key => ({
+                    id: key,
+                    ...activities[key]
+                }));
+                activitiesArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+                activitiesArray.forEach(activity => {
+                    const li = document.createElement('li');
+                    const activityDate = new Date(activity.timestamp).toLocaleString('id-ID', {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit', second: '2-digit',
+                        timeZoneName: 'short', timeZone: 'Asia/Jakarta'
+                    });
+                    li.innerHTML = `
+                        <span class="activity-item">
+                            <span class="log-time">${activityDate}</span>
+                            <span class="log-message">${activity.message || 'Aktivitas tidak diketahui'}</span>
+                        </span>
+                    `;
+                    loginActivityList.appendChild(li);
+                });
+            } else {
+                loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
+            }
+        });
+        // --- End Login Activity ---
+    </script>
+    </body>
+</html>
