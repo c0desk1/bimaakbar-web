@@ -30,11 +30,8 @@
             --warning-color: #ffc107;
             --info-color: #17a2b8;
             --blue-accent: #007bff;
-            /* Warna untuk gradien liquid pada H1 greeting */
             --gradient-start: #FE2C55;
-            /* Primary color */
             --gradient-end: #69C9D0;
-            /* Accent color */
         }
         
         * {
@@ -51,9 +48,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            /* Mencegah scroll horizontal */
         }
-        /* Header */
         
         header {
             display: flex;
@@ -132,7 +127,6 @@
                 font-size: 1.6rem;
             }
         }
-        /* Sidebar Navigation */
         
         #sidebarMenu {
             position: fixed;
@@ -215,7 +209,6 @@
             opacity: 1;
             visibility: visible;
         }
-        /* Main Content */
         
         .main-content {
             flex-grow: 1;
@@ -266,7 +259,6 @@
             border: 1px solid var(--border-dark);
             border-radius: 8px;
             color: var(--text-light);
-            /* Warna teks untuk select input */
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             -webkit-appearance: none;
@@ -283,28 +275,21 @@
             box-shadow: 0 0 0 3px rgba(254, 44, 85, 0.3);
             outline: none;
         }
-        /* Fix for category text in dropdown options */
         
         .form-group select option {
             color: #000;
-            /* Memaksa warna teks hitam untuk opsi dropdown */
             background-color: #fff;
-            /* Memaksa latar belakang putih untuk opsi dropdown */
         }
-        /* Quill Preview Area */
         
         .quill-preview-area {
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
             border-radius: 8px;
             min-height: 120px;
-            /* Cukup tinggi untuk pratinjau */
             padding: 12px 15px;
             margin-bottom: 10px;
             overflow: hidden;
-            /* Sembunyikan overflow */
             text-overflow: ellipsis;
-            /* Tampilkan elipsis untuk teks panjang */
             cursor: pointer;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
         }
@@ -318,7 +303,6 @@
             color: var(--text-muted);
             font-style: italic;
         }
-        /* Status & Schedule */
         
         .status-options {
             display: flex;
@@ -375,7 +359,6 @@
             display: none;
             margin-top: 15px;
         }
-        /* Button Group */
         
         .button-group {
             display: flex;
@@ -417,7 +400,6 @@
             background-color: rgba(24, 24, 24, 0.8);
             transform: translateY(-1px);
         }
-        /* --- Quill Modal Styles --- */
         
         .quill-modal {
             position: fixed;
@@ -426,12 +408,10 @@
             width: 100vw;
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.8);
-            /* Dark overlay */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            /* Always on top */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
@@ -447,16 +427,12 @@
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
             width: 95%;
-            /* Max width for content */
             max-width: 800px;
-            /* Typical desktop width */
             height: 95%;
             max-height: 700px;
-            /* Max height to allow scrolling if needed */
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            /* Hide internal scrollbars initially */
             transform: scale(0.95);
             transition: transform 0.3s ease-in-out;
         }
@@ -473,7 +449,6 @@
             border-bottom: 1px solid var(--border-dark);
             background-color: var(--background-dark);
             flex-shrink: 0;
-            /* Prevent header from shrinking */
         }
         
         .quill-modal-header h3 {
@@ -507,14 +482,11 @@
         
         .quill-editor-container {
             flex-grow: 1;
-            /* Take remaining space */
             background-color: var(--background-dark);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            /* Quill handles its own content overflow */
         }
-        /* Quill.js default styles within modal */
         
         #modalEditorContainer .ql-toolbar {
             border-top-left-radius: 0;
@@ -529,17 +501,14 @@
         #modalEditorContainer .ql-container {
             flex-grow: 1;
             overflow-y: hidden;
-            /* Container has hidden overflow, editor handles it */
             border: none !important;
         }
         
         #modalEditorContainer .ql-editor {
             flex-grow: 1;
             overflow-y: auto;
-            /* Editor content itself scrolls */
             padding: 15px;
             min-height: 100px;
-            /* Minimum height for editor */
             background-color: var(--background-dark);
             color: var(--text-light);
             line-height: 1.6;
@@ -552,7 +521,6 @@
             right: 15px;
             top: 15px;
         }
-        /* Quill icon and text colors */
         
         .ql-toolbar.ql-snow .ql-picker,
         .ql-toolbar.ql.snow .ql-stroke,
@@ -592,7 +560,6 @@
         .ql-toolbar.ql.snow .ql-formats {
             margin-right: 8px;
         }
-        /* Responsive for mobile (general adjustments) */
         
         @media (max-width: 768px) {
             .quill-modal-content {
@@ -632,11 +599,9 @@
                 flex-direction: column;
             }
         }
-        /* UTILITY CLASSES & SPINNER */
         
         body.loading-page {
             overflow: hidden;
-            /* Mencegah scroll saat loading */
         }
         
         body.loading-page>*:not(#loadingOverlay) {
@@ -655,7 +620,6 @@
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            /* Higher than modal */
             color: var(--text-muted);
             font-size: 1.2rem;
             opacity: 1;
@@ -766,52 +730,52 @@
 </head>
 
 <body class="loading-page">
-    <div id="loadingOverlay">
+    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--background-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; color: var(--text-muted); font-size: 1.2rem; opacity: 1; transition: opacity 0.3s ease-in-out;">
         <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div style="transform: rotate(0deg) translate(14px); animation-delay: -1.1s;"></div>
+            <div style="transform: rotate(45deg) translate(14px); animation-delay: -1s;"></div>
+            <div style="transform: rotate(90deg) translate(14px); animation-delay: -0.9s;"></div>
+            <div style="transform: rotate(135deg) translate(14px); animation-delay: -0.8s;"></div>
+            <div style="transform: rotate(180deg) translate(14px); animation-delay: -0.7s;"></div>
+            <div style="transform: rotate(225deg) translate(14px); animation-delay: -0.6s;"></div>
+            <div style="transform: rotate(270deg) translate(14px); animation-delay: -0.5s;"></div>
+            <div style="transform: rotate(315deg) translate(14px); animation-delay: -0.4s;"></div>
         </div>
         <p style="color: var(--text-muted); margin-top: 15px;">Memuat halaman...</p>
     </div>
 
-    <aside id="sidebarMenu">
-        <h3>Navigasi</h3>
-        <ul>
-            <li>
-                <a href="dashboard.html">
-                    <ion-icon name="grid-outline"></ion-icon> Dashboard
+    <aside id="sidebarMenu" style="position: fixed; top: 0; right: 0; width: 280px; max-width: 80vw; height: 100vh; background-color: var(--card-background-dark); box-shadow: -4px 0 15px var(--shadow-dark); transform: translateX(100%); transition: transform 0.3s ease-out; z-index: 1000; padding: 20px; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px;">
+        <h3 style="color: var(--primary-color); margin-bottom: 15px; font-size: 1.4rem; text-align: center;">Navigasi</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; flex-grow: 1;">
+            <li style="margin-bottom: 10px;">
+                <a href="dashboard.html" style="display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: var(--text-light); text-decoration: none; border-radius: 8px; transition: background-color 0.2s ease, color 0.2s ease; font-size: 1.1rem; font-weight: 500;">
+                    <ion-icon name="grid-outline" style="font-size: 1.5rem; color: var(--accent-color);"></ion-icon> Dashboard
                 </a>
             </li>
-            <li>
-                <a href="post-list.html">
-                    <ion-icon name="list-outline"></ion-icon> Daftar Postingan
+            <li style="margin-bottom: 10px;">
+                <a href="post-list.html" style="display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: var(--text-light); text-decoration: none; border-radius: 8px; transition: background-color 0.2s ease, color 0.2s ease; font-size: 1.1rem; font-weight: 500;">
+                    <ion-icon name="list-outline" style="font-size: 1.5rem; color: var(--accent-color);"></ion-icon> Daftar Postingan
                 </a>
             </li>
-            <li>
-                <a href="statistics.html">
-                    <ion-icon name="stats-chart-outline"></ion-icon> Statistik
+            <li style="margin-bottom: 10px;">
+                <a href="statistics.html" style="display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: var(--text-light); text-decoration: none; border-radius: 8px; transition: background-color 0.2s ease, color 0.2s ease; font-size: 1.1rem; font-weight: 500;">
+                    <ion-icon name="stats-chart-outline" style="font-size: 1.5rem; color: var(--accent-color);"></ion-icon> Statistik
                 </a>
             </li>
-            <li>
-                <a href="settings.html">
-                    <ion-icon name="settings-outline"></ion-icon> Pengaturan
+            <li style="margin-bottom: 10px;">
+                <a href="settings.html" style="display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: var(--text-light); text-decoration: none; border-radius: 8px; transition: background-color 0.2s ease, color 0.2s ease; font-size: 1.1rem; font-weight: 500;">
+                    <ion-icon name="settings-outline" style="font-size: 1.5rem; color: var(--accent-color);"></ion-icon> Pengaturan
                 </a>
             </li>
-            <li>
-                <a href="#" onclick="logout(); return false;">
-                    <ion-icon name="log-out-outline"></ion-icon> Logout
+            <li style="margin-bottom: 10px;">
+                <a href="#" onclick="logout(); return false;" style="display: flex; align-items: center; gap: 15px; padding: 12px 15px; color: var(--text-light); text-decoration: none; border-radius: 8px; transition: background-color 0.2s ease, color 0.2s ease; font-size: 1.1rem; font-weight: 500;">
+                    <ion-icon name="log-out-outline" style="font-size: 1.5rem; color: var(--accent-color);"></ion-icon> Logout
                 </a>
             </li>
         </ul>
     </aside>
 
-    <div id="sidebarOverlay"></div>
+    <div id="sidebarOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-out, visibility 0.3s ease-out;"></div>
 
     <header>
         <div class="header-left">
@@ -843,7 +807,7 @@
                 <div class="form-group">
                     <label for="postCategory">Kategori/Label:</label>
                     <select id="postCategory" required>
-                        <option value="">Pilih Kategori</option> 
+                        <option value="" style="color: #000; background-color: #fff;">Pilih Kategori</option> 
                     </select>
                 </div>
                 <div class="form-group">
@@ -854,7 +818,7 @@
                 <div class="form-group quill-editor-group">
                     <label for="quillContentPreview">Isi Artikel:</label>
                     <div id="quillContentPreview" class="quill-preview-area" data-content="">
-                        <p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>
+                        <p class="placeholder-text" style="color: var(--text-muted); font-style: italic;">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>
                     </div>
                     <button type="button" id="openQuillModalButton" class="btn-secondary" style="margin-top: 10px;">
                         <ion-icon name="create-outline"></ion-icon> Edit Artikel
@@ -928,6 +892,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
+        const storage = firebase.storage();
         // --- End Firebase Configuration ---
 
         // --- DOM Elements ---
@@ -981,7 +946,6 @@
                     ]
                 }
             });
-            // Ensure editor content area has scrolling
             const qlEditor = modalEditorContainer.querySelector('.ql-editor');
             if (qlEditor) {
                 qlEditor.style.overflowY = 'auto';
@@ -991,36 +955,32 @@
         // --- Quill Modal Handlers ---
         openQuillModalButton.addEventListener('click', () => {
             quillModal.classList.add('active');
-            body.style.overflow = 'hidden'; // Prevent body scrolling when modal is open
-            // Load existing content into Quill when modal opens
+            body.style.overflow = 'hidden';
             if (quillContentPreview.dataset.content) {
                 quill.root.innerHTML = quillContentPreview.dataset.content;
             } else {
                 quill.setContents([{
                     insert: '\n'
-                }]); // Clear for new input
+                }]);
             }
-            quill.focus(); // Focus the editor
+            quill.focus();
         });
 
         quillContentPreview.addEventListener('click', () => {
-            openQuillModalButton.click(); // Treat click on preview area as click on button
+            openQuillModalButton.click();
         });
 
         modalDoneButton.addEventListener('click', () => {
-            // Save content from Quill to the dataset attribute for later retrieval
             quillContentPreview.dataset.content = quill.root.innerHTML;
-
-            // Update the preview area
-            const contentText = quill.root.textContent.trim();
-            if (contentText === '') {
-                quillContentPreview.innerHTML = '<p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
+            const contentText = quill.getText().trim(); // Menggunakan getText() untuk pratinjau yang lebih bersih
+            if (contentText === '' || contentText === '\n') {
+                quillContentPreview.innerHTML = '<p class="placeholder-text" style="color: var(--text-muted); font-style: italic;">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
             } else {
-                quillContentPreview.innerHTML = `<p>${contentText.substring(0, 150)}${contentText.length > 150 ? '...' : ''}</p>`;
+                quillContentPreview.innerHTML = `<p style="margin: 0; color: var(--text-light);">${contentText.substring(0, 150)}${contentText.length > 150 ? '...' : ''}</p>`;
             }
 
             quillModal.classList.remove('active');
-            body.style.overflow = ''; // Restore body scrolling
+            body.style.overflow = '';
             alert('Isi artikel telah diperbarui.');
         });
 
@@ -1033,7 +993,7 @@
             } else {
                 console.log('User is signed in:', user.email);
                 pageTitleDisplay.textContent = document.title;
-                initializeQuill(); // Initialize Quill when user is authenticated
+                initializeQuill();
                 loadCategories().then(() => {
                     hideLoadingOverlay();
                 }).catch(error => {
@@ -1057,16 +1017,18 @@
 
         // --- Load Categories for Dropdown ---
         async function loadCategories() {
-            postCategorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
+            postCategorySelect.innerHTML = '<option value="" style="color: #000; background-color: #fff;">Pilih Kategori</option>';
             try {
                 const snapshot = await database.ref('categories').once('value');
                 const categories = snapshot.val();
-                console.log("Data kategori dari Firebase:", categories); // LOGGING DATA KATEGORI
+                console.log("Data kategori dari Firebase:", categories);
                 if (categories) {
                     Object.keys(categories).forEach(key => {
                         const option = document.createElement('option');
                         option.value = key;
                         option.textContent = categories[key].name;
+                        //  option.style.color = '#000'; // Inline style untuk opsi
+                        // option.style.backgroundColor = '#'; // Inline style untuk opsi
                         postCategorySelect.appendChild(option);
                     });
                 } else {
@@ -1074,6 +1036,8 @@
                     option.value = "";
                     option.textContent = "Belum ada kategori. Tambahkan di pengaturan.";
                     option.disabled = true;
+                    option.style.color = '#000'; // Inline style untuk opsi
+                    option.style.backgroundColor = '#fff'; // Inline style untuk opsi
                     postCategorySelect.appendChild(option);
                 }
             } catch (error) {
@@ -1083,6 +1047,8 @@
                 option.value = "";
                 option.textContent = "Error memuat kategori.";
                 option.disabled = true;
+                option.style.color = '#000'; // Inline style untuk opsi
+                option.style.backgroundColor = '#fff'; // Inline style untuk opsi
                 postCategorySelect.appendChild(option);
             }
         }
@@ -1119,7 +1085,7 @@
             const description = postDescriptionInput.value.trim();
             const category = postCategorySelect.value;
             const thumbnail = postThumbnailInput.value.trim();
-            const content = quill.root.innerHTML.trim(); // Get content directly from Quill instance
+            const content = quill.root.innerHTML.trim();
             const hashtags = postHashtagsInput.value.trim().toLowerCase().split(',').map(tag => tag.trim()).filter(tag => tag !== '');
             const status = document.querySelector('input[name="postStatus"]:checked').value;
             let scheduledAt = null;
@@ -1193,9 +1159,9 @@
             newPostForm.reset();
             quill.setContents([{
                 insert: '\n'
-            }]); // Clear Quill content
-            quillContentPreview.innerHTML = '<p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
-            quillContentPreview.dataset.content = ""; // Clear stored content
+            }]);
+            quillContentPreview.innerHTML = '<p class="placeholder-text" style="color: var(--text-muted); font-style: italic;">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
+            quillContentPreview.dataset.content = "";
             document.getElementById('statusDraft').checked = true;
             scheduleDateTimeGroup.style.display = 'none';
             scheduleDateTimeInput.removeAttribute('required');
