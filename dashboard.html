@@ -693,10 +693,6 @@
                     <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Sistem Operasi Server:</span>
-                    <span class="info-value" id="serverOS">Memuat...</span>
-                </div>
-                <div class="info-item">
                     <span class="info-label">Waktu Server (WIB):</span>
                     <span class="info-value" id="serverTime">Memuat...</span>
                 </div>
@@ -852,13 +848,6 @@
             const categories = snapshot.val();
             updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
         });
-
-        // --- Real Server OS (Mocked, browser cannot access real server OS) ---
-        function updateServerOS() {
-            // This is a mock. If you have a backend endpoint, fetch and display it here.
-            document.getElementById('serverOS').textContent = 'Linux (Ubuntu)';
-        }
-        updateServerOS();
 
         // --- Top Posts List (Firebase Integration) ---
         const topPostsList = document.getElementById('topPostsList');
