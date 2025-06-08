@@ -693,10 +693,6 @@
                     <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Total Pengguna Aktif:</span>
-                    <span class="info-value" id="totalActiveUsers">Memuat...</span>
-                </div>
-                <div class="info-item">
                     <span class="info-label">Sistem Operasi Server:</span>
                     <span class="info-value" id="serverOS">Memuat...</span>
                 </div>
@@ -793,7 +789,7 @@
             } else {
                 const userEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
                 document.getElementById("userNameDisplay").textContent = `${userEmailPart}`;
-                greetingH1.textContent = `Hello, ${userEmailPart}.`;
+                greetingH1.textContent = `Halo, ${userEmailPart}.`;
 
                 // Hide loading overlay with fade-out
                 loadingOverlay.classList.add('hidden');
@@ -856,26 +852,6 @@
             const categories = snapshot.val();
             updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
         });
-
-        // --- Real Total Active Users ---
-        function updateTotalActiveUsers() {
-            database.ref('users').once('value').then(snapshot => {
-                const users = snapshot.val();
-                let activeCount = 0;
-                if (users) {
-                    const now = Date.now();
-                    Object.values(users).forEach(user => {
-                        // Consider active if lastLogin < 7 hari
-                        if (user.lastLogin && now - user.lastLogin < 7 * 24 * 60 * 60 * 1000) {
-                            activeCount++;
-                        }
-                    });
-                }
-                document.getElementById('totalActiveUsers').textContent = activeCount.toLocaleString('id-ID');
-            });
-        }
-        setInterval(updateTotalActiveUsers, 30 * 1000);
-        updateTotalActiveUsers();
 
         // --- Real Server OS (Mocked, browser cannot access real server OS) ---
         function updateServerOS() {
