@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
-        :root {
+         :root {
             --background-dark: #121212;
             --card-background-dark: #181818;
             --border-dark: rgba(255, 255, 255, 0.1);
             --primary-color: #FE2C55;
             --primary-color-hover: #FF4D6B;
-            --accent-color: #69C9D0; 
+            --accent-color: #69C9D0;
             --text-light: #E0E0E0;
             --text-lighter: #F0F0F0;
             --text-muted: #A0A0A0;
@@ -25,19 +27,20 @@
             --success-color: #28a745;
             --warning-color: #ffc107;
             --info-color: #17a2b8;
-            --blue-accent: #007bff; 
-
+            --blue-accent: #007bff;
             /* Warna untuk gradien liquid pada H1 greeting */
-            --gradient-start: #FE2C55; /* Primary color */
-            --gradient-end: #69C9D0;   /* Accent color */
+            --gradient-start: #FE2C55;
+            /* Primary color */
+            --gradient-end: #69C9D0;
+            /* Accent color */
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--background-dark);
@@ -46,8 +49,8 @@
             display: flex;
             flex-direction: column;
         }
-
         /* Header */
+        
         header {
             display: flex;
             align-items: center;
@@ -61,7 +64,7 @@
             z-index: 100;
             flex-wrap: nowrap;
         }
-
+        
         .header-left,
         .header-center,
         .header-right {
@@ -70,7 +73,7 @@
             align-items: center;
             min-width: 0;
         }
-
+        
         .header-left {
             justify-content: flex-start;
             font-weight: 600;
@@ -80,64 +83,66 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
         .header-center {
             justify-content: center;
         }
-
+        
         .header-center img {
             height: 32px;
             object-fit: contain;
             max-width: 100%;
         }
-
+        
         .header-right {
             justify-content: flex-end;
         }
-
+        
         .logout-btn {
-            background-color: transparent; 
-            color: var(--primary-color); 
-            padding: 0.4rem; 
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 0.4rem;
             border: none;
             border-radius: 6px;
-            font-size: 1.8rem; /* Lebih besar */
+            font-size: 1.8rem;
+            /* Lebih besar */
             cursor: pointer;
-            transition: color 0.2s ease, background-color 0.2s ease; 
+            transition: color 0.2s ease, background-color 0.2s ease;
             white-space: nowrap;
-            display: flex; 
+            display: flex;
             align-items: center;
             justify-content: center;
         }
-
+        
         .logout-btn:hover {
-            color: var(--primary-color-hover); 
-            background-color: rgba(254, 44, 85, 0.1); 
+            color: var(--primary-color-hover);
+            background-color: rgba(254, 44, 85, 0.1);
         }
         
         .logout-btn ion-icon {
-            font-size: 1.8rem; /* Sesuaikan dengan tombol */
+            font-size: 1.8rem;
+            /* Sesuaikan dengan tombol */
         }
-
+        
         @media (max-width: 480px) {
             .header-left {
                 font-size: 0.9rem;
             }
-
             .logout-btn {
-                padding: 0.3rem; 
-                font-size: 1.6rem; /* Lebih kecil di mobile */
+                padding: 0.3rem;
+                font-size: 1.6rem;
+                /* Lebih kecil di mobile */
             }
             .logout-btn ion-icon {
-                font-size: 1.6rem; /* Sesuaikan */
+                font-size: 1.6rem;
+                /* Sesuaikan */
             }
-
             .header-center img {
                 height: 28px;
             }
         }
-
         /* Main Content Wrapper */
+        
         .main-content {
             flex-grow: 1;
             padding: 1.5rem;
@@ -145,64 +150,71 @@
             margin: 0 auto;
             width: 100%;
         }
-
         /* Greeting Section */
+        
         .greeting-section {
             padding: 2rem 0;
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
-            text-align: center; /* Memastikan h1 di tengah */
+            text-align: center;
+            /* Memastikan h1 di tengah */
         }
-
+        
         .greeting-content {
             margin: 0;
         }
-
         /* H1 Greeting Liquid Style & Responsive */
+        
         .greeting-content h1 {
-            font-size: clamp(1.8rem, 5vw, 2.8rem); /* Responsive font size */
-            margin-bottom: 0; 
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            /* Responsive font size */
+            margin-bottom: 0;
             line-height: 1.3;
-            text-align: center; /* Memastikan h1 di tengah */
-
+            text-align: center;
+            /* Memastikan h1 di tengah */
             /* Gradient effect */
             background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% 100%; 
-            animation: gradient-flow 3s linear infinite alternate; 
+            background-size: 200% 100%;
+            animation: gradient-flow 3s linear infinite alternate;
         }
+        
         @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
         }
-
-        .greeting-content .subtext { 
-            display: none; 
+        
+        .greeting-content .subtext {
+            display: none;
         }
-
         /* Stat Grid - UPDATED for Responsiveness */
+        
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
         }
-
+        
         @media (min-width: 481px) and (max-width: 768px) {
             .stat-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
+        
         @media (min-width: 769px) {
             .stat-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-
+        
         .stat-card {
             background-color: var(--card-background-dark);
             padding: 1.2rem;
@@ -211,52 +223,52 @@
             box-shadow: 0 2px 8px var(--shadow-dark);
             text-align: center;
             transition: transform 0.2s ease;
-            position: relative; 
-            min-height: 100px; 
+            position: relative;
+            min-height: 100px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-
+        
         .stat-card:hover {
             transform: translateY(-2px);
         }
-
+        
         .stat-value {
             font-size: 2rem;
             font-weight: 600;
             color: var(--text-lighter);
             margin-bottom: 0.3rem;
         }
-
+        
         .stat-label {
             font-size: 0.95rem;
             color: var(--text-muted);
         }
-
         /* Quick Actions Section Styles */
+        
         .quick-actions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
         }
-
+        
         @media (min-width: 481px) and (max-width: 768px) {
             .quick-actions-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
+        
         @media (min-width: 769px) {
             .quick-actions-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-
+        
         .quick-action-card {
             background-color: var(--card-background-dark);
             padding: 1rem;
@@ -270,28 +282,28 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100px; 
+            min-height: 100px;
         }
-
+        
         .quick-action-card:hover {
             transform: translateY(-2px);
             background-color: rgba(24, 24, 24, 0.8);
         }
-
         /* Ionicon styling for quick actions */
+        
         .quick-action-card ion-icon {
             font-size: 2rem;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
-
+        
         .quick-action-card .label {
             font-size: 0.95rem;
             font-weight: 500;
             color: var(--text-lighter);
         }
-
         /* Info & List Sections */
+        
         .dashboard-section {
             background-color: var(--card-background-dark);
             border-radius: 12px;
@@ -300,46 +312,46 @@
             border: 1px solid var(--border-dark);
             margin-bottom: 25px;
         }
-
+        
         .dashboard-section h2 {
             color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.5em;
         }
-
+        
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
         }
-
+        
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px dashed var(--border-dark);
         }
-
+        
         .info-item:last-child {
             border-bottom: none;
         }
-
+        
         .info-label {
             color: var(--text-muted);
             font-weight: 400;
         }
-
+        
         .info-value {
             color: var(--text-lighter);
             font-weight: 600;
         }
-
+        
         .data-list ul {
             list-style: none;
             padding: 0;
         }
-
+        
         .data-list ul li {
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
@@ -351,29 +363,33 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
+        
         .data-list ul li span {
             flex: 1;
             min-width: 150px;
             color: var(--text-light);
         }
+        
         .data-list ul li .item-title {
             font-weight: bold;
             font-size: 1.1em;
             color: var(--text-lighter);
         }
+        
         .data-list ul li .item-meta {
             font-size: 0.9em;
             color: var(--text-muted);
             margin-top: 5px;
         }
+        
         .data-list ul li .actions {
             display: flex;
             gap: 8px;
             margin-left: auto;
         }
+        
         .data-list ul li .actions button {
             background-color: var(--primary-color);
             color: white;
@@ -382,38 +398,42 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.8em;
-            transition: background-color 0.3s ease; 
+            transition: background-color 0.3s ease;
         }
+        
         .data-list ul li .actions button:hover {
-            background-color: var(--primary-color-hover); 
+            background-color: var(--primary-color-hover);
         }
         /* Style for ion-icon in buttons */
+        
         .data-list ul li .actions button ion-icon {
-            font-size: 1em; 
-            vertical-align: middle; 
+            font-size: 1em;
+            vertical-align: middle;
         }
-
-
+        
         .activity-item {
             padding: 12px 0;
             border-bottom: 1px dashed var(--border-dark);
             display: flex;
             flex-direction: column;
         }
+        
         .activity-item:last-child {
             border-bottom: none;
         }
+        
         .activity-item .log-time {
             font-size: 0.85em;
             color: var(--text-muted);
             margin-bottom: 4px;
         }
+        
         .activity-item .log-message {
             font-size: 0.95em;
             color: var(--text-light);
         }
-        
         /* Top Posts List Specific Styles */
+        
         .top-posts-list ul li {
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
@@ -425,53 +445,62 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
+        
         .top-posts-list .post-details {
             flex-grow: 1;
             min-width: 150px;
         }
-
+        
         .top-posts-list .post-title {
             font-weight: bold;
             font-size: 1.1em;
             color: var(--text-lighter);
         }
-
+        
         .top-posts-list .post-meta {
             font-size: 0.9em;
             color: var(--text-muted);
             margin-top: 5px;
         }
-
+        
         .top-posts-list .post-stats {
             margin-left: auto;
             text-align: right;
             white-space: nowrap;
         }
-
+        
         .top-posts-list .stat-value {
             font-size: 1.2em;
             font-weight: 600;
             color: var(--primary-color);
         }
+        
         .top-posts-list .stat-label {
             font-size: 0.8em;
             color: var(--text-muted);
         }
-
         /* Utility Classes */
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .flex-grow { flex-grow: 1; }
-
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .flex-grow {
+            flex-grow: 1;
+        }
         /* Styles for initial loading/hiding content */
-        body.loading-dashboard > *:not(#loadingOverlay) {
+        
+        body.loading-dashboard>*:not(#loadingOverlay) {
             display: none;
         }
-
         /* Spinner konsisten untuk overlay */
+        
         #loadingOverlay {
             position: fixed;
             top: 0;
@@ -486,77 +515,117 @@
             z-index: 9999;
             color: var(--text-muted);
             font-size: 1.2rem;
-            opacity: 1; 
+            opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
-
-        #loadingOverlay.hidden { 
+        
+        #loadingOverlay.hidden {
             opacity: 0;
-            pointer-events: none; 
+            pointer-events: none;
         }
-
         /* Base styles for the flower spinner */
+        
         .spinner-flower-base {
             position: relative;
-            display: inline-block; 
+            display: inline-block;
         }
-
+        
         .spinner-flower-base div {
             position: absolute;
-            border-radius: 2px; 
+            border-radius: 2px;
             opacity: 0.25;
             animation: flower-spin 1.2s linear infinite;
         }
-
         /* Keyframes for spinner animation */
+        
         @keyframes flower-spin {
-            0% { opacity: 0.25; }
-            50% { opacity: 1; }
+            0% {
+                opacity: 0.25;
+            }
+            50% {
+                opacity: 1;
+            }
         }
-
         /* Styles for the LARGE overlay spinner */
+        
         .spinner-flower-large {
-            width: 36px; 
+            width: 36px;
             height: 36px;
         }
-
+        
         .spinner-flower-large div {
-            width: 4px; 
-            height: 9px; 
-            background: var(--accent-color); 
-            transform-origin: 18px 18px; 
+            width: 4px;
+            height: 9px;
+            background: var(--accent-color);
+            transform-origin: 18px 18px;
         }
-
         /* Positioning for large spinner petals */
-        .spinner-flower-large div:nth-child(1) { transform: rotate(0deg) translate(14px);  animation-delay: -1.1s; }
-        .spinner-flower-large div:nth-child(2) { transform: rotate(45deg) translate(14px); animation-delay: -1s; }
-        .spinner-flower-large div:nth-child(3) { transform: rotate(90deg) translate(14px); animation-delay: -0.9s; }
-        .spinner-flower-large div:nth-child(4) { transform: rotate(135deg) translate(14px);animation-delay: -0.8s; }
-        .spinner-flower-large div:nth-child(5) { transform: rotate(180deg) translate(14px);animation-delay: -0.7s; }
-        .spinner-flower-large div:nth-child(6) { transform: rotate(225deg) translate(14px);animation-delay: -0.6s; }
-        .spinner-flower-large div:nth-child(7) { transform: rotate(270deg) translate(14px);animation-delay: -0.5s; }
-        .spinner-flower-large div:nth-child(8) { transform: rotate(315deg) translate(14px);animation-delay: -0.4s; }
-    
+        
+        .spinner-flower-large div:nth-child(1) {
+            transform: rotate(0deg) translate(14px);
+            animation-delay: -1.1s;
+        }
+        
+        .spinner-flower-large div:nth-child(2) {
+            transform: rotate(45deg) translate(14px);
+            animation-delay: -1s;
+        }
+        
+        .spinner-flower-large div:nth-child(3) {
+            transform: rotate(90deg) translate(14px);
+            animation-delay: -0.9s;
+        }
+        
+        .spinner-flower-large div:nth-child(4) {
+            transform: rotate(135deg) translate(14px);
+            animation-delay: -0.8s;
+        }
+        
+        .spinner-flower-large div:nth-child(5) {
+            transform: rotate(180deg) translate(14px);
+            animation-delay: -0.7s;
+        }
+        
+        .spinner-flower-large div:nth-child(6) {
+            transform: rotate(225deg) translate(14px);
+            animation-delay: -0.6s;
+        }
+        
+        .spinner-flower-large div:nth-child(7) {
+            transform: rotate(270deg) translate(14px);
+            animation-delay: -0.5s;
+        }
+        
+        .spinner-flower-large div:nth-child(8) {
+            transform: rotate(315deg) translate(14px);
+            animation-delay: -0.4s;
+        }
+        
         @media (max-width: 480px) {
             .spinner-flower-large {
-                width: 30px; 
+                width: 30px;
                 height: 30px;
             }
-
             .spinner-flower-large div {
                 width: 3.5px;
                 height: 8px;
-                transform-origin: 15px 15px; 
+                transform-origin: 15px 15px;
             }
         }
     </style>
 </head>
 
-<body class="loading-dashboard"> 
+<body class="loading-dashboard">
     <div id="loadingOverlay">
         <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
-            <div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </div>
 
@@ -573,37 +642,41 @@
     <div class="main-content">
         <section class="greeting-section">
             <div class="greeting-content">
-                <h1 id="greeting-text">Halo, Admin.</h1> 
+                <h1 id="greeting-text">Halo, Admin.</h1>
             </div>
         </section>
         <section class="stat-grid">
             <div class="stat-card" id="statCardViews">
-                <h2 class="stat-value">n/a</h2> <p class="stat-label">Total Views</p>
+                <h2 class="stat-value">n/a</h2>
+                <p class="stat-label">Total Views</p>
             </div>
             <div class="stat-card" id="statCardPosts">
-                <h2 class="stat-value">n/a</h2> <p class="stat-label">Jumlah Postingan</p>
+                <h2 class="stat-value">n/a</h2>
+                <p class="stat-label">Jumlah Postingan</p>
             </div>
             <div class="stat-card" id="statCardComments">
-                <h2 class="stat-value">n/a</h2> <p class="stat-label">Total Komentar</p>
+                <h2 class="stat-value">n/a</h2>
+                <p class="stat-label">Total Komentar</p>
             </div>
             <div class="stat-card" id="statCardCategories">
-                <h2 class="stat-value">n/a</h2> <p class="stat-label">Kategori</p>
+                <h2 class="stat-value">n/a</h2>
+                <p class="stat-label">Kategori</p>
             </div>
         </section>
         <section class="quick-actions-grid">
-            <div class="quick-action-card" onclick="alert('Navigasi ke halaman buat postingan baru')">
-                <ion-icon name="create"></ion-icon> 
+            <div class="quick-action-card" onclick="window.location.href='post-add.html'">
+                <ion-icon name="create"></ion-icon>
                 <div class="label">Buat Postingan Baru</div>
             </div>
-            <div class="quick-action-card" onclick="alert('Navigasi ke halaman statistik')">
+            <div class="quick-action-card" onclick="window.location.href='post-stats.html'">
                 <ion-icon name="stats-chart"></ion-icon>
                 <div class="label">Statistik</div>
             </div>
-            <div class="quick-action-card" onclick="alert('Navigasi ke halaman daftar postingan')">
+            <div class="quick-action-card" onclick="window.location.href='post-list.html'">
                 <ion-icon name="folder-open"></ion-icon>
                 <div class="label">Daftar Postingan</div>
             </div>
-            <div class="quick-action-card" onclick="alert('Navigasi ke halaman pengaturan')">
+            <div class="quick-action-card" onclick="window.location.href='settings.html'">
                 <ion-icon name="settings"></ion-icon>
                 <div class="label">Pengaturan</div>
             </div>
@@ -620,12 +693,12 @@
                     <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Total Pengguna Aktif (dummy):</span>
-                    <span class="info-value">1</span>
+                    <span class="info-label">Total Pengguna Aktif:</span>
+                    <span class="info-value" id="totalActiveUsers">Memuat...</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Sistem Operasi Server (dummy):</span>
-                    <span class="info-value">Linux (Ubuntu)</span>
+                    <span class="info-label">Sistem Operasi Server:</span>
+                    <span class="info-value" id="serverOS">Memuat...</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Waktu Server (WIB):</span>
@@ -655,7 +728,7 @@
         </section>
         <section class="dashboard-section">
             <h2>Aktivitas Login</h2>
-            <div class="data-list" id="loginActivityDataList"> 
+            <div class="data-list" id="loginActivityDataList">
                 <ul id="loginActivityList">
                     <li style="text-align: center; color: var(--text-muted);">Memuat aktivitas login...</li>
                 </ul>
@@ -676,17 +749,15 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(); 
+        const auth = firebase.auth();
         const database = firebase.database();
         // --- End Firebase Configuration ---
 
         // --- Header and Greeting Logic ---
         function logout() {
             firebase.auth().signOut().then(() => {
-                console.log('User signed out successfully.');
-                window.location.href = 'login.html'; 
+                window.location.href = 'login.html';
             }).catch((error) => {
-                console.error('Error signing out:', error);
                 alert('Gagal logout: ' + error.message);
             });
         }
@@ -695,14 +766,20 @@
         function updateServerTime() {
             const now = new Date();
             const options = {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit', second: '2-digit',
-                timeZoneName: 'short', timeZone: 'Asia/Jakarta' 
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short',
+                timeZone: 'Asia/Jakarta'
             };
             document.getElementById('serverTime').textContent = now.toLocaleString('id-ID', options);
         }
-        updateServerTime(); 
-        setInterval(updateServerTime, 1000); 
+        updateServerTime();
+        setInterval(updateServerTime, 1000);
         // --- End Header and Greeting Logic ---
 
         // --- Auth State Change Listener for Dashboard (PENTING UNTUK PROTEKSI) ---
@@ -712,25 +789,21 @@
 
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                console.log('No user signed in. Redirecting to login.');
                 window.location.href = 'login.html';
             } else {
-                const userEmailPart = user.email ? user.email.split('@')[0] : 'Admin'; 
+                const userEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
                 document.getElementById("userNameDisplay").textContent = `${userEmailPart}`;
-                
-                // Update H1 greeting with user email part, or "Admin" if not available
                 greetingH1.textContent = `Hello, ${userEmailPart}.`;
-
-                console.log('User is signed in:', user.email);
 
                 // Hide loading overlay with fade-out
                 loadingOverlay.classList.add('hidden');
                 loadingOverlay.addEventListener('transitionend', function handler() {
                     loadingOverlay.style.display = 'none';
-                    body.classList.remove('loading-dashboard'); 
+                    body.classList.remove('loading-dashboard');
                     loadingOverlay.removeEventListener('transitionend', handler);
-                }, { once: true });
-
+                }, {
+                    once: true
+                });
 
                 // Update last login time in database (optional, but good for tracking)
                 database.ref('users/' + user.uid).update({
@@ -748,15 +821,12 @@
         });
 
         // --- Stat Card Data Loading with 0 / N/A ---
-        // Get references to stat card value elements
         const statValueViews = document.getElementById('statCardViews').querySelector('.stat-value');
         const statValuePosts = document.getElementById('statCardPosts').querySelector('.stat-value');
         const statValueComments = document.getElementById('statCardComments').querySelector('.stat-value');
         const statValueCategories = document.getElementById('statCardCategories').querySelector('.stat-value');
-        
-        // Helper function to update stat card with data or 0
+
         function updateStatCard(valueElement, data) {
-            // Tampilkan 0 jika data null/undefined, jika tidak tampilkan data.toLocaleString
             valueElement.textContent = (data !== null && data !== undefined) ? data.toLocaleString('id-ID') : '0';
         }
 
@@ -768,7 +838,7 @@
             if (posts) {
                 postCount = Object.keys(posts).length;
                 Object.values(posts).forEach(post => {
-                    totalViews += (post.views || 0); 
+                    totalViews += (post.views || 0);
                 });
             }
             updateStatCard(statValueViews, totalViews);
@@ -786,24 +856,54 @@
             const categories = snapshot.val();
             updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
         });
-        // --- End Stat Card Data Loading ---
+
+        // --- Real Total Active Users ---
+        function updateTotalActiveUsers() {
+            database.ref('users').once('value').then(snapshot => {
+                const users = snapshot.val();
+                let activeCount = 0;
+                if (users) {
+                    const now = Date.now();
+                    Object.values(users).forEach(user => {
+                        // Consider active if lastLogin < 7 hari
+                        if (user.lastLogin && now - user.lastLogin < 7 * 24 * 60 * 60 * 1000) {
+                            activeCount++;
+                        }
+                    });
+                }
+                document.getElementById('totalActiveUsers').textContent = activeCount.toLocaleString('id-ID');
+            });
+        }
+        setInterval(updateTotalActiveUsers, 30 * 1000);
+        updateTotalActiveUsers();
+
+        // --- Real Server OS (Mocked, browser cannot access real server OS) ---
+        function updateServerOS() {
+            // This is a mock. If you have a backend endpoint, fetch and display it here.
+            document.getElementById('serverOS').textContent = 'Linux (Ubuntu)';
+        }
+        updateServerOS();
 
         // --- Top Posts List (Firebase Integration) ---
         const topPostsList = document.getElementById('topPostsList');
 
         database.ref('posts').orderByChild('views').limitToLast(5).on('value', (snapshot) => {
             const posts = snapshot.val();
-            topPostsList.innerHTML = ''; 
+            topPostsList.innerHTML = '';
             if (posts) {
                 const postsArray = Object.keys(posts).map(key => ({
                     id: key,
                     ...posts[key]
                 }));
-                postsArray.sort((a, b) => b.views - a.views); 
+                postsArray.sort((a, b) => b.views - a.views);
 
                 postsArray.forEach(post => {
                     const li = document.createElement('li');
-                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
                     li.innerHTML = `
                         <div class="post-details">
                             <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
@@ -823,23 +923,26 @@
                 topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
             }
         });
-        // --- End Top Posts List ---
 
         // --- Latest Posts List (Firebase Integration) ---
         const latestPostsList = document.getElementById('latestPostsList');
         database.ref('posts').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
             const posts = snapshot.val();
-            latestPostsList.innerHTML = ''; 
+            latestPostsList.innerHTML = '';
             if (posts) {
                 const postsArray = Object.keys(posts).map(key => ({
                     id: key,
                     ...posts[key]
                 }));
-                postsArray.sort((a, b) => b.timestamp - a.timestamp); 
+                postsArray.sort((a, b) => b.timestamp - a.timestamp);
 
                 postsArray.forEach(post => {
                     const li = document.createElement('li');
-                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
                     li.innerHTML = `
                         <div>
                             <span class="item-title">${post.title || 'Judul Tidak Ada'}</span>
@@ -850,8 +953,8 @@
                             </div>
                         </div>
                         <div class="actions">
-                            <button onclick="alert('Aksi Edit Postingan: ${post.id}')"><ion-icon name="create"></ion-icon> Edit</button>
-                            <button onclick="alert('Aksi Lihat Postingan: ${post.id}')"><ion-icon name="eye"></ion-icon> Lihat</button>
+                            <button onclick="window.location.href='edit-post.html?id=${post.id}'"><ion-icon name="create"></ion-icon> Edit</button>
+                            <button onclick="window.open('lihat-post.html?id=${post.id}','_blank')"><ion-icon name="eye"></ion-icon> Lihat</button>
                         </div>
                     `;
                     latestPostsList.appendChild(li);
@@ -860,27 +963,30 @@
                 latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
             }
         });
-        // --- End Latest Posts List ---
 
-        // --- Login Activity (Firebase Integration - Kembali ke Awal) ---
+        // --- Login Activity (Firebase Integration) ---
         const loginActivityList = document.getElementById('loginActivityList');
-
         database.ref('login_activities').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
             const activities = snapshot.val();
-            loginActivityList.innerHTML = ''; 
+            loginActivityList.innerHTML = '';
             if (activities) {
                 const activitiesArray = Object.keys(activities).map(key => ({
                     id: key,
                     ...activities[key]
                 }));
-                activitiesArray.sort((a, b) => b.timestamp - a.timestamp); 
+                activitiesArray.sort((a, b) => b.timestamp - a.timestamp);
 
                 activitiesArray.forEach(activity => {
                     const li = document.createElement('li');
                     const activityDate = new Date(activity.timestamp).toLocaleString('id-ID', {
-                        year: 'numeric', month: 'short', day: 'numeric',
-                        hour: '2-digit', minute: '2-digit', second: '2-digit',
-                        timeZoneName: 'short', timeZone: 'Asia/Jakarta'
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        timeZoneName: 'short',
+                        timeZone: 'Asia/Jakarta'
                     });
                     li.innerHTML = `
                         <span class="activity-item">
@@ -894,7 +1000,7 @@
                 loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
             }
         });
-        // --- End Login Activity ---
     </script>
 </body>
+
 </html>
