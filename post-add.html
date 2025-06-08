@@ -1027,8 +1027,8 @@
                         const option = document.createElement('option');
                         option.value = key;
                         option.textContent = categories[key].name;
-                        option.style.color = 'var (--text-muted)';
-                        option.style.backgroundColor = 'var (--background-dark)';
+                        option.style.color = '#fff'; // Inline style untuk opsi
+                        option.style.backgroundColor = '#000'; // Inline style untuk opsi
                         postCategorySelect.appendChild(option);
                     });
                 } else {
@@ -1036,8 +1036,8 @@
                     option.value = "";
                     option.textContent = "Belum ada kategori. Tambahkan di pengaturan.";
                     option.disabled = true;
-                    option.style.color = 'var (--text-muted)';
-                    option.style.backgroundColor = 'var (--background-dark)';
+                    option.style.color = '#fff'; // Inline style untuk opsi
+                    option.style.backgroundColor = '#000'; // Inline style untuk opsi
                     postCategorySelect.appendChild(option);
                 }
             } catch (error) {
@@ -1047,8 +1047,8 @@
                 option.value = "";
                 option.textContent = "Error memuat kategori.";
                 option.disabled = true;
-                option.style.color = 'var (--text-muted)';
-                option.style.backgroundColor = 'var (--background-dark)';
+                option.style.color = '#fff'; // Inline style untuk opsi
+                option.style.backgroundColor = '#000'; // Inline style untuk opsi
                 postCategorySelect.appendChild(option);
             }
         }
