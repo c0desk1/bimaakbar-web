@@ -67,8 +67,6 @@
             top: 0;
             z-index: 100;
             flex-wrap: nowrap;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            /* Untuk transisi saat sembunyi */
         }
         
         .header-left,
@@ -225,10 +223,7 @@
             max-width: 900px;
             margin: 0 auto;
             width: 100%;
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-            /* Untuk transisi saat sembunyi */
             z-index: 1;
-            /* Default z-index, di bawah fullscreen editor */
         }
         
         .form-section {
@@ -238,8 +233,6 @@
             box-shadow: 0 4px 15px var(--shadow-dark);
             border: 1px solid var(--border-dark);
             animation: fadeIn 0.5s ease-out;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            /* Untuk transisi saat sembunyi */
         }
         
         .form-section h1 {
@@ -252,8 +245,6 @@
         
         .form-group {
             margin-bottom: 20px;
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-            /* Untuk transisi saat sembunyi */
         }
         
         .form-group label {
@@ -275,6 +266,7 @@
             border: 1px solid var(--border-dark);
             border-radius: 8px;
             color: var(--text-light);
+            /* Warna teks untuk select input */
             font-size: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             -webkit-appearance: none;
@@ -291,108 +283,40 @@
             box-shadow: 0 0 0 3px rgba(254, 44, 85, 0.3);
             outline: none;
         }
-        /* QUILL EDITOR STYLES */
+        /* Fix for category text in dropdown options */
         
-        #editor-container {
-            height: 300px;
-            min-height: 25vh;
-            /* Minimum 25% of viewport height */
+        .form-group select option {
+            color: #000;
+            /* Memaksa warna teks hitam untuk opsi dropdown */
+            background-color: #fff;
+            /* Memaksa latar belakang putih untuk opsi dropdown */
+        }
+        /* Quill Preview Area */
+        
+        .quill-preview-area {
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            /* Untuk posisi tombol Selesai */
-            transition: all 0.3s ease-out;
-            /* Untuk transisi saat masuk/keluar fullscreen */
-            z-index: 1;
-            /* Default z-index */
-        }
-        
-        .ql-toolbar {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            background-color: var(--background-dark);
-            border-bottom: 1px solid var(--border-dark) !important;
-            padding: 8px 10px;
-            flex-shrink: 0;
-            z-index: 2;
-            /* Di atas editor konten */
-        }
-        /* Fix for Quill icons visibility and size */
-        
-        .ql-toolbar.ql-snow .ql-picker,
-        .ql-toolbar.ql.snow .ql-stroke,
-        .ql-toolbar.ql.snow .ql-fill {
-            color: var(--text-light) !important;
-            fill: var(--text-light) !important;
-            stroke: var(--text-light) !important;
-        }
-        
-        .ql-toolbar.ql.snow .ql-picker-label {
-            color: var(--text-light) !important;
-            font-size: 0.95rem;
-        }
-        
-        .ql-toolbar.ql.snow .ql-picker.ql-expanded .ql-picker-label,
-        .ql-toolbar.ql.snow .ql-picker.ql.expanded .ql-picker-options {
-            background-color: var(--card-background-dark);
-            border-color: var(--border-dark);
-            color: var(--text-light) !important;
-        }
-        
-        .ql-snow .ql-picker-options .ql-picker-item {
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-        
-        .ql-snow .ql-picker-options .ql-picker-item.ql-selected,
-        .ql-snow .ql-picker-options .ql-picker-item:hover {
-            background-color: rgba(254, 44, 85, 0.2);
-        }
-        /* Make individual toolbar buttons slightly larger */
-        
-        .ql-toolbar.ql.snow button {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .ql-toolbar.ql.snow .ql-formats {
-            margin-right: 8px;
-        }
-        
-        .ql-container {
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            font-size: 1rem;
-            color: var(--text-light);
-            line-height: 1.6;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: hidden;
-        }
-        
-        .ql-container.ql-snow {
-            border: none !important;
-        }
-        
-        .ql-editor {
-            flex-grow: 1;
-            overflow-y: auto;
+            min-height: 120px;
+            /* Cukup tinggi untuk pratinjau */
             padding: 12px 15px;
-            min-height: 100px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            /* Sembunyikan overflow */
+            text-overflow: ellipsis;
+            /* Tampilkan elipsis untuk teks panjang */
+            cursor: pointer;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
-        .ql-editor.ql-blank::before {
+        .quill-preview-area p {
+            margin: 0;
+            color: var(--text-light);
+        }
+        
+        .quill-preview-area .placeholder-text {
             color: var(--text-muted);
-            font-style: normal;
-            left: 15px;
-            right: 15px;
-            top: 12px;
+            font-style: italic;
         }
         /* Status & Schedule */
         
@@ -458,7 +382,6 @@
             gap: 15px;
             justify-content: flex-end;
             margin-top: 30px;
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
         
         .button-group button {
@@ -494,130 +417,202 @@
             background-color: rgba(24, 24, 24, 0.8);
             transform: translateY(-1px);
         }
-        /* Editor Fullscreen Mode for Mobile (and other small widths) */
+        /* --- Quill Modal Styles --- */
+        
+        .quill-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            /* Always on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        
+        .quill-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .quill-modal-content {
+            background-color: var(--card-background-dark);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+            width: 95%;
+            /* Max width for content */
+            max-width: 800px;
+            /* Typical desktop width */
+            height: 95%;
+            max-height: 700px;
+            /* Max height to allow scrolling if needed */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            /* Hide internal scrollbars initially */
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .quill-modal.active .quill-modal-content {
+            transform: scale(1);
+        }
+        
+        .quill-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-dark);
+            background-color: var(--background-dark);
+            flex-shrink: 0;
+            /* Prevent header from shrinking */
+        }
+        
+        .quill-modal-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .modal-close-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .modal-close-btn:hover {
+            background-color: var(--primary-color-hover);
+        }
+        
+        .modal-close-btn ion-icon {
+            font-size: 1.1rem;
+        }
+        
+        .quill-editor-container {
+            flex-grow: 1;
+            /* Take remaining space */
+            background-color: var(--background-dark);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            /* Quill handles its own content overflow */
+        }
+        /* Quill.js default styles within modal */
+        
+        #modalEditorContainer .ql-toolbar {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom: 1px solid var(--border-dark) !important;
+            background-color: var(--background-dark);
+            padding: 8px 10px;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+        
+        #modalEditorContainer .ql-container {
+            flex-grow: 1;
+            overflow-y: hidden;
+            /* Container has hidden overflow, editor handles it */
+            border: none !important;
+        }
+        
+        #modalEditorContainer .ql-editor {
+            flex-grow: 1;
+            overflow-y: auto;
+            /* Editor content itself scrolls */
+            padding: 15px;
+            min-height: 100px;
+            /* Minimum height for editor */
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        #modalEditorContainer .ql-editor.ql-blank::before {
+            color: var(--text-muted);
+            font-style: normal;
+            left: 15px;
+            right: 15px;
+            top: 15px;
+        }
+        /* Quill icon and text colors */
+        
+        .ql-toolbar.ql-snow .ql-picker,
+        .ql-toolbar.ql.snow .ql-stroke,
+        .ql-toolbar.ql.snow .ql-fill {
+            color: var(--text-light) !important;
+            fill: var(--text-light) !important;
+            stroke: var(--text-light) !important;
+        }
+        
+        .ql-toolbar.ql.snow .ql-picker-label {
+            color: var(--text-light) !important;
+            font-size: 0.95rem;
+        }
+        
+        .ql-toolbar.ql.snow .ql-picker.ql-expanded .ql-picker-label,
+        .ql-toolbar.ql.snow .ql-picker.ql.expanded .ql-picker-options {
+            background-color: var(--card-background-dark);
+            border-color: var(--border-dark);
+            color: var(--text-light) !important;
+        }
+        
+        .ql-snow .ql-picker-options .ql-picker-item {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .ql-snow .ql-picker-options .ql-picker-item.ql-selected,
+        .ql-snow .ql-picker-options .ql-picker-item:hover {
+            background-color: rgba(254, 44, 85, 0.2);
+        }
+        
+        .ql-toolbar.ql.snow button {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .ql-toolbar.ql.snow .ql-formats {
+            margin-right: 8px;
+        }
+        /* Responsive for mobile (general adjustments) */
         
         @media (max-width: 768px) {
-            body.editor-fullscreen-mobile {
-                overflow: hidden;
-                /* Mencegah scroll body saat fullscreen */
-            }
-            body.editor-fullscreen-mobile header {
-                opacity: 0;
-                pointer-events: none;
-                visibility: hidden;
-            }
-            body.editor-fullscreen-mobile .main-content {
-                opacity: 0;
-                /* Sembunyikan main-content saat fullscreen */
-                pointer-events: none;
-                /* Nonaktifkan interaksi */
-                visibility: hidden;
-            }
-            /* Make only the quill editor group fullscreen */
-            .form-group.quill-editor-group {
-                position: fixed;
-                top: 0;
-                left: 0;
+            .quill-modal-content {
                 width: 100vw;
                 height: 100vh;
-                z-index: 9999;
-                /* Pastikan di atas segalanya */
-                margin: 0;
-                /* Hapus margin */
-                padding: 0;
-                /* Hapus padding */
-                background-color: var(--card-background-dark);
-                /* Latar belakang untuk menutupi lainnya */
-                display: flex;
-                /* Aktifkan flexbox untuk tata letak internal */
-                flex-direction: column;
+                max-width: none;
+                max-height: none;
                 border-radius: 0;
-                /* Hilangkan border radius */
-                box-shadow: none;
-                /* Hilangkan shadow */
             }
-            /* Ensure editor container takes full space within its group */
-            .form-group.quill-editor-group #editor-container {
-                flex-grow: 1;
-                border-radius: 0;
-                border: none;
-                height: auto;
-                /* Biarkan flexbox yang menentukan tinggi */
-                min-height: auto;
-                /* Biarkan flexbox yang menentukan tinggi */
-                padding-bottom: 0;
-                /* Pastikan tidak ada padding di bawah */
-                display: flex;
-                /* Pastikan ini juga flex container */
-                flex-direction: column;
-                /* Toolbar di atas editor */
+            .header-center {
+                font-size: 1rem;
             }
-            .form-group.quill-editor-group .ql-toolbar {
-                position: fixed;
-                /* Berubah: dari sticky ke fixed */
-                top: 0;
-                left: 0;
-                width: 100%;
-                /* Pastikan mengisi lebar penuh */
-                background-color: var(--card-background-dark);
-                /* Warna solid agar tidak transparan */
-                z-index: 10000;
-                /* Di atas editor itu sendiri */
-                border-radius: 0;
-                flex-shrink: 0;
-                /* Pastikan tidak menciut */
-                min-height: 44px;
-                /* Memberi tinggi minimum agar tidak hilang */
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-                /* Tambahkan shadow tipis */
+            .header-btn {
+                padding: 0.3rem;
+                font-size: 1.6rem;
             }
-            /* Sesuaikan konten editor agar dimulai di bawah toolbar yang fixed */
-            .form-group.quill-editor-group .ql-container {
-                flex-grow: 1;
-                /* Konten editor mengisi sisa ruang */
-                overflow-y: hidden;
-                /* Pastikan container tidak scroll */
-                padding-top: 44px;
-                /* Tambahkan padding agar konten tidak tertutup toolbar */
-            }
-            .form-group.quill-editor-group .ql-editor {
-                flex-grow: 1;
-                overflow-y: auto;
-                /* Pastikan editor konten bisa di-scroll */
-                padding: 15px;
-                min-height: auto;
-            }
-            #editorDoneButton {
-                /* Tombol "Simpan & Kembali" untuk mode fullscreen */
-                display: block;
-                position: fixed;
-                /* Berubah: dari absolute ke fixed */
-                top: 10px;
-                /* Jarak dari atas */
-                right: 15px;
-                /* Jarak dari kanan */
-                background-color: var(--primary-color);
-                color: white;
-                border: none;
-                padding: 8px 15px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 0.9rem;
-                z-index: 10001;
-                /* Di atas toolbar */
-                transition: background-color 0.2s ease;
-            }
-            #editorDoneButton:hover {
-                background-color: var(--primary-color-hover);
+            .header-btn ion-icon {
+                font-size: 1.6rem;
             }
         }
-        /* Default hidden for desktop */
-        
-        #editorDoneButton {
-            display: none;
-        }
-        /* Responsive for mobile (general adjustments, less critical now due to fullscreen) */
         
         @media (max-width: 600px) {
             .main-content {
@@ -639,6 +634,11 @@
         }
         /* UTILITY CLASSES & SPINNER */
         
+        body.loading-page {
+            overflow: hidden;
+            /* Mencegah scroll saat loading */
+        }
+        
         body.loading-page>*:not(#loadingOverlay) {
             display: none;
         }
@@ -654,7 +654,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 99999;
+            /* Higher than modal */
             color: var(--text-muted);
             font-size: 1.2rem;
             opacity: 1;
@@ -849,10 +850,15 @@
                     <label for="postThumbnail">URL Thumbnail:</label>
                     <input type="url" id="postThumbnail" placeholder="Contoh: https://example.com/gambar.jpg" />
                 </div>
-                <div class="form-group quill-editor-group"> <label for="postContent">Isi Artikel:</label>
-                    <div id="editor-container">
-                        <button id="editorDoneButton">Simpan & Kembali</button>
+
+                <div class="form-group quill-editor-group">
+                    <label for="quillContentPreview">Isi Artikel:</label>
+                    <div id="quillContentPreview" class="quill-preview-area" data-content="">
+                        <p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>
                     </div>
+                    <button type="button" id="openQuillModalButton" class="btn-secondary" style="margin-top: 10px;">
+                        <ion-icon name="create-outline"></ion-icon> Edit Artikel
+                    </button>
                 </div>
                 <div class="form-group">
                     <label for="postHashtags">Hastags (pisahkan dengan koma):</label>
@@ -894,6 +900,17 @@
         </section>
     </div>
 
+    <div id="quillModal" class="quill-modal">
+        <div class="quill-modal-content">
+            <div class="quill-modal-header">
+                <h3>Edit Artikel</h3>
+                <button id="modalDoneButton" class="modal-close-btn">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon> Simpan & Tutup
+                </button>
+            </div>
+            <div id="modalEditorContainer" class="quill-editor-container"></div>
+        </div>
+    </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <script>
@@ -929,13 +946,19 @@
         const sidebarMenu = document.getElementById('sidebarMenu');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const pageTitleDisplay = document.getElementById('pageTitleDisplay');
-        const editorDoneButton = document.getElementById('editorDoneButton');
 
-        let quill;
+        // Quill Modal specific elements
+        const quillModal = document.getElementById('quillModal');
+        const modalDoneButton = document.getElementById('modalDoneButton');
+        const openQuillModalButton = document.getElementById('openQuillModalButton');
+        const quillContentPreview = document.getElementById('quillContentPreview');
+        const modalEditorContainer = document.getElementById('modalEditorContainer');
 
-        // --- Initialize Quill Editor ---
+        let quill; // Global Quill instance
+
+        // --- Initialize Quill Editor in Modal ---
         function initializeQuill() {
-            quill = new Quill('#editor-container', {
+            quill = new Quill(modalEditorContainer, {
                 theme: 'snow',
                 placeholder: 'Tulis isi artikel Anda di sini...',
                 modules: {
@@ -958,45 +981,49 @@
                     ]
                 }
             });
-            const qlEditor = document.querySelector('.ql-editor');
+            // Ensure editor content area has scrolling
+            const qlEditor = modalEditorContainer.querySelector('.ql-editor');
             if (qlEditor) {
-                qlEditor.style.padding = '12px 15px';
                 qlEditor.style.overflowY = 'auto';
             }
-
-            // --- Quill Fullscreen Mode Logic ---
-            quill.on('editor-focus', () => {
-                // Check if it's a mobile device (based on screen width)
-                if (window.innerWidth <= 768) {
-                    body.classList.add('editor-fullscreen-mobile');
-                    // Scroll to top of editor in fullscreen mode
-                    window.scrollTo(0, 0); // Pastikan editor berada di atas
-                }
-            });
-
-            editorDoneButton.addEventListener('click', () => {
-                quill.blur();
-                body.classList.remove('editor-fullscreen-mobile');
-                window.scrollTo(0, 0); // Kembali ke atas form
-                alert('Isi artikel disimpan sementara di editor dan akan disertakan saat Anda menyimpan Formulir Postingan.');
-            });
-
-            // If a form field other than Quill editor is focused, exit fullscreen (just in case)
-            document.querySelectorAll('input, select, textarea').forEach(input => {
-                if (input !== postTitleInput && input !== postDescriptionInput && input !== postThumbnailInput && input !== postHashtagsInput && input !== scheduleDateTimeInput) {
-                    // Exclude specific inputs, target others if they get focus
-                    // However, with display:none for non-editor fields, this might not be needed.
-                }
-                input.addEventListener('focus', () => {
-                    // If editor is in fullscreen mode and another input gets focus, exit fullscreen.
-                    if (body.classList.contains('editor-fullscreen-mobile')) {
-                        quill.blur(); // Blur Quill to ensure state is clean
-                        body.classList.remove('editor-fullscreen-mobile');
-                        window.scrollTo(0, 0); // Scroll back to top
-                    }
-                });
-            });
         }
+
+        // --- Quill Modal Handlers ---
+        openQuillModalButton.addEventListener('click', () => {
+            quillModal.classList.add('active');
+            body.style.overflow = 'hidden'; // Prevent body scrolling when modal is open
+            // Load existing content into Quill when modal opens
+            if (quillContentPreview.dataset.content) {
+                quill.root.innerHTML = quillContentPreview.dataset.content;
+            } else {
+                quill.setContents([{
+                    insert: '\n'
+                }]); // Clear for new input
+            }
+            quill.focus(); // Focus the editor
+        });
+
+        quillContentPreview.addEventListener('click', () => {
+            openQuillModalButton.click(); // Treat click on preview area as click on button
+        });
+
+        modalDoneButton.addEventListener('click', () => {
+            // Save content from Quill to the dataset attribute for later retrieval
+            quillContentPreview.dataset.content = quill.root.innerHTML;
+
+            // Update the preview area
+            const contentText = quill.root.textContent.trim();
+            if (contentText === '') {
+                quillContentPreview.innerHTML = '<p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
+            } else {
+                quillContentPreview.innerHTML = `<p>${contentText.substring(0, 150)}${contentText.length > 150 ? '...' : ''}</p>`;
+            }
+
+            quillModal.classList.remove('active');
+            body.style.overflow = ''; // Restore body scrolling
+            alert('Isi artikel telah diperbarui.');
+        });
+
 
         // --- Initial Load & Authentication Check ---
         auth.onAuthStateChanged((user) => {
@@ -1006,7 +1033,7 @@
             } else {
                 console.log('User is signed in:', user.email);
                 pageTitleDisplay.textContent = document.title;
-                initializeQuill();
+                initializeQuill(); // Initialize Quill when user is authenticated
                 loadCategories().then(() => {
                     hideLoadingOverlay();
                 }).catch(error => {
@@ -1034,6 +1061,7 @@
             try {
                 const snapshot = await database.ref('categories').once('value');
                 const categories = snapshot.val();
+                console.log("Data kategori dari Firebase:", categories); // LOGGING DATA KATEGORI
                 if (categories) {
                     Object.keys(categories).forEach(key => {
                         const option = document.createElement('option');
@@ -1091,7 +1119,7 @@
             const description = postDescriptionInput.value.trim();
             const category = postCategorySelect.value;
             const thumbnail = postThumbnailInput.value.trim();
-            const content = quill.root.innerHTML.trim();
+            const content = quill.root.innerHTML.trim(); // Get content directly from Quill instance
             const hashtags = postHashtagsInput.value.trim().toLowerCase().split(',').map(tag => tag.trim()).filter(tag => tag !== '');
             const status = document.querySelector('input[name="postStatus"]:checked').value;
             let scheduledAt = null;
@@ -1165,7 +1193,9 @@
             newPostForm.reset();
             quill.setContents([{
                 insert: '\n'
-            }]);
+            }]); // Clear Quill content
+            quillContentPreview.innerHTML = '<p class="placeholder-text">Klik atau gunakan tombol "Edit Artikel" untuk menulis isi artikel...</p>';
+            quillContentPreview.dataset.content = ""; // Clear stored content
             document.getElementById('statusDraft').checked = true;
             scheduleDateTimeGroup.style.display = 'none';
             scheduleDateTimeInput.removeAttribute('required');
