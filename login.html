@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Admin - Bima Akbar</title>
+  <style>
+    :root {
+      --background-dark: #121212;
+      --card-background-dark: #181818;
+      --border-dark: rgba(255, 255, 255, 0.1);
+      --primary-color: #FE2C55;
+      --primary-color-hover: #FF4D6B;
+      --accent-color: #69C9D0;
+      --accent-color-hover: #8AE7F3;
+      --text-light: #E0E0E0;
+      --text-lighter: #F0F0F0;
+      --text-muted: #A0A0A0;
+      --shadow-dark: rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background-dark);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 1rem;
+    }
+
+    .login-card {
+      background: var(--card-background-dark);
+      padding: 2rem;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 8px 24px var(--shadow-dark);
+      border: 1px solid var(--border-dark);
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1rem;
+      object-fit: contain;
+    }
+
+    h2 {
+      margin: 0 0 1.5rem;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 0.3rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1.2rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-dark);
+      background: #101010;
+      color: var(--text-lighter);
+      font-size: 1rem;
+    }
+
+    input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+
+    .btn-spinner-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--primary-color);
+      color: var(--text-lighter);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: var(--primary-color-hover);
+    }
+
+    .msg-box {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 0.6rem;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .msg-error {
+      background: rgba(255, 50, 50, 0.1);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 50, 50, 0.3);
+    }
+
+    .msg-success {
+      background: rgba(50, 255, 150, 0.1);
+      color: #66ffb2;
+      border: 1px solid rgba(50, 255, 150, 0.3);
+    }
+
+    #overlay-spinner {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0px;
+      left:0px;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner-ios-flower {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .spinner-ios-flower div {
+      position: absolute;
+      width: 3px;
+      height: 6px;
+      border-radius: 1.5px;
+      background: var(--accent-color);
+      opacity: 0.25;
+      transform-origin: 12px 12px;
+      animation: flower-spin 1.2s linear infinite;
+    }
+
+    .spinner-ios-flower div:nth-child(1) { transform: rotate(0deg) translate(9px);  animation-delay: -1.1s; }
+    .spinner-ios-flower div:nth-child(2) { transform: rotate(45deg) translate(9px); animation-delay: -1s; }
+    .spinner-ios-flower div:nth-child(3) { transform: rotate(90deg) translate(9px); animation-delay: -0.9s; }
+    .spinner-ios-flower div:nth-child(4) { transform: rotate(135deg) translate(9px);animation-delay: -0.8s; }
+    .spinner-ios-flower div:nth-child(5) { transform: rotate(180deg) translate(9px);animation-delay: -0.7s; }
+    .spinner-ios-flower div:nth-child(6) { transform: rotate(225deg) translate(9px);animation-delay: -0.6s; }
+    .spinner-ios-flower div:nth-child(7) { transform: rotate(270deg) translate(9px);animation-delay: -0.5s; }
+    .spinner-ios-flower div:nth-child(8) { transform: rotate(315deg) translate(9px);animation-delay: -0.4s; }
+
+    @keyframes flower-spin {
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 1.5rem 1rem;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+
+      .spinner-ios-flower {
+        width: 20px;
+        height: 20px;
+      }
+
+      .spinner-ios-flower div {
+        width: 2.5px;
+        height: 5px;:
+        transform-origin: 10px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card" role="main" aria-labelledby="login-title">
+    <img src="assets/logo.png" alt="Logo Bima Akbar" class="login-logo" />
+    <h2 id="login-title">Welcome Bima</h2>
+    <form id="login-form" novalidate>
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="email@domain.com" required autocomplete="email" autofocus />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+
+      <div class="btn-wrapper">
+        <button type="submit" aria-live="polite" aria-busy="false">Masuk</button>
+      </div>
+      
+      <div id="msg-box" class="msg-box" role="alert" aria-live="assertive"></div>
+    </form>
+  </div>
+
+  <div id="overlay-spinner" role="status" aria-label="Loading">
+    <div class="spinner-ios-flower" aria-hidden="true">
+      <div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+      authDomain: "bima-akbar-web.firebaseapp.com",
+      databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "bima-akbar-web",
+      storageBucket: "bima-akbar-web.appspot.com",
+      messagingSenderId: "521611265429",
+      appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const form = document.getElementById('login-form');
+    const msgBox = document.getElementById('msg-box');
+    const overlay = document.getElementById('overlay-spinner');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgBox.style.display = 'none';
+      overlay.style.display = 'flex';
+
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        msgBox.textContent = "Login berhasil! Mengalihkan...";
+        msgBox.className = "msg-box msg-success";
+        msgBox.style.display = 'block';
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } catch (err) {
+        msgBox.textContent = err.message;
+        msgBox.className = "msg-box msg-error";
+        msgBox.style.display = 'block';
+      } finally {
+        overlay.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
