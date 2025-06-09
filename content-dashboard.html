@@ -1,0 +1,80 @@
+<section class="greeting-section">
+    <div class="greeting-content">
+        <h1 id="greeting-text-dynamic">Halo, Admin.</h1>
+    </div>
+</section>
+<section class="stat-grid">
+    <div class="stat-card" id="statCardViews">
+        <h2 class="stat-value">n/a</h2>
+        <p class="stat-label">Total Views</p>
+    </div>
+    <div class="stat-card" id="statCardPosts">
+        <h2 class="stat-value">n/a</h2>
+        <p class="stat-label">Jumlah Postingan</p>
+    </div>
+    <div class="stat-card" id="statCardComments">
+        <h2 class="stat-value">n/a</h2>
+        <p class="stat-label">Total Komentar</p>
+    </div>
+    <div class="stat-card" id="statCardCategories">
+        <h2 class="stat-value">n/a</h2>
+        <p class="stat-label">Kategori</p>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <h2>Postingan Teratas</h2>
+    <div class="data-list top-posts-list">
+        <ul id="topPostsList">
+            <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
+        </ul>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <h2>Postingan Terbaru</h2>
+    <div class="data-list">
+        <ul id="latestPostsList">
+            <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
+        </ul>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <h2>Informasi Sistem & Statistik Lanjutan</h2>
+    <div class="info-grid">
+        <div class="info-item">
+            <span class="info-label">Versi Dashboard:</span>
+            <span class="info-value">1.0.0</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Terakhir Diperbarui:</span>
+            <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Waktu Server (WIB):</span>
+            <span class="info-value" id="serverTime">Memuat...</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Firebase Project ID:</span>
+            <span class="info-value">bima-akbar-web</span>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <h2>Aktivitas Login</h2>
+    <div class="data-list" id="loginActivityDataList">
+        <ul id="loginActivityList">
+            <li style="text-align: center; color: var(--text-muted);">Memuat aktivitas login...</li>
+        </ul>
+    </div>
+</section>
+
+<script>
+    // PENTING: Script ini harus diulang untuk setiap konten yang dimuat
+    // Atau lebih baik lagi, buat fungsi initDashboardContent() di dashboard.html
+    // dan panggil di sini setelah konten dimuat.
+    // Untuk demo singkat, saya akan membuat fungsi-fungsi ini di dalam script di dashboard.html
+    // yang akan dipanggil setelah konten dimuat.
+</script>
