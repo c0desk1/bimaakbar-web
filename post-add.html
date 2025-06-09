@@ -11,43 +11,48 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
-    <script src="https://cdn.tiny.cloud/1/7y6kn9usa4s5ftv5lp12b0cpozwjx8t02zc8mttwpphkprs2/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <style>
         /* Define your custom color palette using CSS variables */
         
          :root {
-            --background-dark: #121212;
-            --card-background-dark: #181818;
-            --border-dark: rgba(255, 255, 255, 0.08);
-            --primary-color: #FE2C55;
-            /* TikTok Red */
-            --primary-color-hover: #FF4D6B;
-            --accent-color: #5856D6;
-            /* macOS Purple Blue */
-            --accent-color-hover: #6F6CE8;
+            --background-dark: #1C1C1E;
+            /* Almost black, subtle dark grey - INI WARNA GELAP ASLI */
+            --card-background-dark: rgba(28, 28, 30, 0.75);
+            /* Slightly more opaque for better legibility */
+            --border-dark: rgba(255, 255, 255, 0.1);
+            /* Slightly more visible border */
+            --primary-color: #0A84FF;
+            /* Vivid macOS blue */
+            --primary-color-hover: #3399FF;
+            /* Lighter blue on hover */
+            --accent-color: #007AFF;
+            /* Another shade of blue for accents */
+            --accent-color-hover: #3399FF;
+            /* Lighter blue on hover for accents */
             --text-light: #E0E0E0;
-            --text-lighter: #F0F0F0;
-            --text-muted: #A0A0A0;
-            --shadow-dark: rgba(0, 0, 0, 0.6);
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --info-color: #17a2b8;
-            --blue-accent: #007bff;
+            /* Light grey text */
+            --text-lighter: #FFFFFF;
+            /* Pure white text for emphasis */
+            --text-muted: #8E8E93;
+            /* Softer grey text for secondary info */
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            /* More pronounced but soft shadow */
             --frosted-bg-opacity: 0.7;
-            --frosted-blur-intensity: 20px;
-            --primary-color-rgb: 254, 44, 85;
-            --accent-color-rgb: 88, 86, 214;
-            --card-background-dark-rgb: 24, 24, 24;
-            --background-dark-rgb: 18, 18, 18;
-            --text-muted-rgb: 160, 160, 160;
+            --frosted-blur-intensity: 30px;
+            /* Increased blur for stronger frosted effect */
+            --primary-color-rgb: 10, 132, 255;
+            --accent-color-rgb: 0, 122, 255;
+            --card-background-dark-rgb: 28, 28, 30;
+            --background-dark-rgb: 28, 28, 30;
+            --text-muted-rgb: 142, 142, 147;
             --bottom-header-height: 80px;
-            /* NEW: Gemini Text Gradient Colors (Liquid Style) */
-            --gradient-start: #FE2C55;
-            /* Primary color */
-            --gradient-end: #69C9D0;
-            /* Aqua/Teal color */
+            /* Gemini Text Gradient Colors (Liquid Style) - Adjusted to macOS Blue */
+            --gradient-start: #007AFF;
+            --gradient-end: #5AC8FA;
         }
         /* Base Dark Mode & macOS Sequoia Styles */
         
@@ -212,7 +217,8 @@
             max-width: 950px;
             margin: 40px auto;
             width: 100%;
-            background-color: var(--card-background-dark) !important;
+            background-color: rgba(var(--card-background-dark-rgb), 1) !important;
+            /* Ensure full opacity here */
             border-radius: 24px;
             box-shadow: 0 12px 40px var(--shadow-dark) !important;
             border: 1px solid var(--border-dark);
@@ -288,6 +294,7 @@
             display: block;
             margin-bottom: 10px;
             color: var(--text-lighter);
+            /* Dipastikan berwarna terang */
             font-weight: 600;
             font-size: 1rem;
         }
@@ -295,8 +302,7 @@
         
         .form-group input[type="text"],
         .form-group input[type="url"],
-        .form-group input[type="datetime-local"],
-        .form-group textarea {
+        .form-group input[type="datetime-local"] {
             width: 100%;
             padding: 14px 18px;
             background-color: var(--background-dark);
@@ -313,19 +319,13 @@
             box-sizing: border-box;
         }
         
-        .form-group textarea {
-            resize: vertical;
-        }
-        
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
+        .form-group input::placeholder {
             color: var(--text-muted) !important;
         }
         
         .form-group input[type="text"]:focus,
         .form-group input[type="url"]:focus,
-        .form-group input[type="datetime-local"]:focus,
-        .form-group textarea:focus {
+        .form-group input[type="datetime-local"]:focus {
             border-color: var(--accent-color);
             box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.3);
             outline: none;
@@ -337,80 +337,68 @@
             margin-top: 5px;
             display: block;
         }
-        /* Category Radio Buttons (Segmented Control Style) - Fixed Height Bug */
+        /* Category Input with Tags */
         
-        .category-container {
+        .category-input-wrapper {
             display: flex;
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
-        }
-        
-        .category-options {
-            flex-grow: 1;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
             border-radius: 12px;
             padding: 8px;
-            /* Padding for the container */
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
             min-height: 52px;
-            /* Ensure consistent height even if few categories */
-            align-items: center;
-            /* Vertically center items */
-        }
-        
-        .category-option {
-            /* flex: 1 1 auto; */
-            /* Let label control size, but allow wrapping */
-            flex-shrink: 0;
-            /* Prevent shrinking below content size */
-        }
-        
-        .category-option input[type="radio"] {
-            display: none;
-        }
-        
-        .category-option label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 18px;
-            /* Padding for the actual label */
-            border-radius: 10px;
-            background-color: transparent;
-            color: var(--text-light);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            height: 36px;
-            /* Explicit height for consistency */
             box-sizing: border-box;
-            /* Include padding in height calculation */
         }
+        /* Container for the selected category tags */
         
-        .category-option input[type="radio"]:checked+label {
+        .category-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex-grow: 1;
+            min-height: 36px;
+            /* Ensure it takes up space even with no tags */
+            align-items: center;
+        }
+        /* Individual category tag */
+        
+        .category-tag {
+            display: inline-flex;
+            align-items: center;
             background-color: var(--accent-color);
             color: var(--text-lighter);
-            box-shadow: 0 2px 8px rgba(var(--accent-color-rgb), 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            white-space: nowrap;
         }
         
-        .category-option input[type="radio"]:hover+label {
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-            color: var(--accent-color);
-        }
-        
-        .category-option input[type="radio"]:checked:hover+label {
-            background-color: var(--accent-color-hover);
+        .category-tag .remove-tag-btn {
+            background: none;
+            border: none;
             color: var(--text-lighter);
+            margin-left: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: color 0.2s ease;
         }
+        
+        .category-tag .remove-tag-btn:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        /* Add Category Button - Icon Only */
         
         .add-category-button {
-            padding: 10px 18px;
+            width: 52px;
+            /* Set fixed width for icon button */
+            height: 52px;
+            /* Set fixed height for icon button */
+            padding: 0;
+            /* Remove padding */
             background-color: var(--background-dark);
             color: var(--accent-color);
             border: 1px solid var(--border-dark);
@@ -419,12 +407,13 @@
             transition: background-color 0.2s ease, border-color 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            /* Center the icon */
             font-weight: 600;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-            height: 52px;
-            /* Match category-options height */
             box-sizing: border-box;
+            flex-shrink: 0;
+            /* Prevent shrinking */
         }
         
         .add-category-button:hover {
@@ -433,74 +422,185 @@
         }
         
         .add-category-button ion-icon {
-            font-size: 1.2em;
+            font-size: 1.8em;
+            /* Adjust icon size */
         }
-        /* TinyMCE specific styles */
+        /* Quill.js specific styles */
         
-        .tox .tox-editor-container {
-            border-radius: 12px !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        .quill-container {
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-dark);
         }
         
-        .tox .tox-editor-header {
-            background-color: var(--card-background-dark) !important;
+        .ql-toolbar {
+            background-color: var(--card-background-dark);
+            border: none !important;
             border-bottom: 1px solid var(--border-dark) !important;
             padding: 10px 15px !important;
             box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.05);
-            border-radius: 12px 12px 0 0 !important;
+            border-radius: 12px 12px 0 0;
         }
         
-        .tox .tox-toolbar-overlord,
-        .tox .tox-menubar {
-            background-color: var(--card-background-dark) !important;
-        }
-        
-        .tox .tox-toolbar,
-        .tox .tox-toolbar__group,
-        .tox .tox-collection__item {
-            background-color: var(--card-background-dark) !important;
-        }
-        
-        .tox .tox-toolbar-group {
-            background-color: var(--card-background-dark) !important;
-            border-radius: 8px;
-            padding: 5px;
-            margin: 0 5px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .tox .tox-tbtn {
-            color: var(--text-muted) !important;
-            background-color: transparent !important;
-            border-radius: 6px !important;
-        }
-        
-        .tox .tox-tbtn:hover,
-        .tox .tox-tbtn--enabled {
-            color: var(--accent-color) !important;
-            background-color: rgba(var(--accent-color-rgb), 0.1) !important;
-        }
-        
-        .tox .tox-edit-area__iframe {
-            background-color: var(--card-background-dark) !important;
-            color: var(--text-light) !important;
-            border-radius: 0 0 12px 12px !important;
+        .ql-container {
+            background-color: var(--card-background-dark);
+            color: var(--text-light);
+            border: none !important;
+            border-radius: 0 0 12px 12px;
             min-height: 400px;
         }
         
-        .tox .tox-statusbar {
-            background-color: var(--card-background-dark) !important;
-            border-top: 1px solid var(--border-dark) !important;
-            color: var(--text-muted) !important;
-            border-radius: 0 0 12px 12px !important;
-            padding: 5px 15px !important;
-        }
-        /* Style the content within the editor iframe */
-        
-        .tox-tinymce {
+        .ql-editor {
+            min-height: 400px;
             color: var(--text-light);
-            /* Fallback */
+            line-height: 1.6;
+            font-size: 1.05rem;
+            padding: 20px;
+        }
+        /* Custom styles for Quill buttons/selects */
+        
+        .ql-snow .ql-stroke {
+            stroke: var(--text-muted);
+        }
+        
+        .ql-snow .ql-fill {
+            fill: var(--text-muted);
+        }
+        
+        .ql-snow .ql-picker-label {
+            color: var(--text-muted);
+        }
+        
+        .ql-snow .ql-active .ql-stroke,
+        .ql-snow .ql-active .ql-fill,
+        .ql-snow .ql-picker-label.ql-active .ql-stroke,
+        .ql-snow .ql-picker-label.ql-active .ql-fill,
+        .ql-snow .ql-active .ql-picker-label {
+            color: var(--accent-color);
+            stroke: var(--accent-color);
+            fill: var(--accent-color);
+        }
+        
+        .ql-snow .ql-toolbar button:hover .ql-stroke,
+        .ql-snow .ql-toolbar button:hover .ql-fill,
+        .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+        .ql-snow .ql-toolbar button.ql-active .ql-fill {
+            stroke: var(--accent-color);
+            fill: var(--accent-color);
+        }
+        
+        .ql-snow.ql-toolbar button:hover,
+        .ql-snow .ql-toolbar button.ql-active {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            border-radius: 6px;
+        }
+        
+        .ql-snow .ql-tooltip {
+            background-color: var(--card-background-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .ql-snow .ql-tooltip a {
+            color: var(--accent-color);
+        }
+        
+        .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+            background-color: var(--card-background-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ql-snow .ql-picker-options .ql-picker-item:hover {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
+        }
+        
+        .ql-snow .ql-picker-options .ql-picker-item {
+            color: var(--text-light);
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+        /* Custom Quill Fullscreen */
+        
+        body.quill-fullscreen-active {
+            overflow: hidden;
+            /* Prevent body scroll when editor is fullscreen */
+        }
+        
+        .quill-fullscreen .ql-toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            /* Higher than modal */
+            border-radius: 0 !important;
+            padding: 15px 20px !important;
+        }
+        
+        .quill-fullscreen .ql-container {
+            position: fixed;
+            top: 70px;
+            /* Adjust based on toolbar height */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            border-radius: 0 !important;
+            overflow-y: auto;
+        }
+        
+        .quill-fullscreen #fullscreenEditorBtn {
+            display: none !important;
+            /* Hide original button when fullscreen */
+        }
+        /* Fullscreen Exit Button for Quill (hidden by default) */
+        
+        .quill-fullscreen-exit-button {
+            display: flex !important;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 2001;
+            background-color: rgba(var(--card-background-dark-rgb), 0.8);
+            color: var(--text-muted);
+            border: 1px solid var(--border-dark);
+            border-radius: 50%;
+            /* Make it round */
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            /* Initially hidden */
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .quill-fullscreen-exit-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .quill-fullscreen-exit-button:hover {
+            background-color: var(--background-dark);
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        
+        .quill-fullscreen-exit-button ion-icon {
+            font-size: 1.4em;
+            /* Adjust icon size within the button */
         }
         /* Scrollbar styles for dark mode */
         
@@ -531,16 +631,13 @@
             border: 1px solid var(--border-dark);
             border-radius: 12px;
             padding: 8px;
-            /* Padding for the container */
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
             gap: 8px;
             align-items: center;
-            /* Align items vertically */
         }
         
         .status-option {
             flex: 1;
-            /* Make each option take equal space */
             text-align: center;
         }
         
@@ -550,21 +647,25 @@
         
         .status-option label {
             display: flex;
-            /* Use flex for content centering */
+            /* Use flexbox for centering content */
             align-items: center;
+            /* Vertically center content */
             justify-content: center;
+            /* Horizontally center content */
             padding: 10px 15px;
-            /* Padding for the actual label */
+            /* Adjust padding here */
             border-radius: 10px;
             color: var(--text-light);
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
             background-color: transparent;
-            height: 36px;
+            min-height: 36px;
             /* Explicit height for consistency */
             box-sizing: border-box;
             /* Include padding in height calculation */
+            line-height: 1.2;
+            /* Ensure text fits well */
         }
         
         .status-option input[type="radio"]:checked+label {
@@ -835,22 +936,49 @@
                 transform: translateY(0);
             }
         }
+        /* Global Close Button Styling - UPDATED */
         
         .close-button {
-            color: var(--text-muted);
             position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 32px;
-            font-weight: bold;
+            top: 15px;
+            /* Adjust as needed */
+            right: 15px;
+            /* Adjust as needed */
+            width: 36px;
+            /* Fixed width */
+            height: 36px;
+            /* Fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Translucent black background */
+            border-radius: 50%;
+            /* Make it round */
+            color: var(--text-muted);
+            /* Color of the 'x' icon */
+            font-size: 24px;
+            /* Size of the 'x' icon */
             cursor: pointer;
-            transition: color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            /* Subtle shadow */
+            z-index: 10;
+            /* Ensure it's above other content in modal if needed */
         }
         
         .close-button:hover,
         .close-button:focus {
-            color: var(--primary-color);
-            transform: scale(1.15);
+            background-color: rgba(var(--primary-color-rgb), 0.8);
+            /* Highlight on hover */
+            color: var(--text-lighter);
+            transform: scale(1.1);
+        }
+        
+        .close-button ion-icon {
+            /* Ensure the icon itself is styled */
+            font-size: 1.1em;
+            /* Make icon fit the button */
         }
         
         .preview-title {
@@ -990,9 +1118,12 @@
         }
         
         .confirmation-modal-content {
-            background-color: var(--card-background-dark);
+            background-color: rgba(var(--card-background-dark-rgb), var(--frosted-bg-opacity));
+            /* Use frosted background */
             padding: 30px;
             border-radius: 18px;
+            border: 1px solid var(--border-dark);
+            /* Add border */
             box-shadow: 0 10px 30px var(--shadow-dark);
             width: 90%;
             max-width: 450px;
@@ -1013,6 +1144,8 @@
             gap: 15px;
             justify-content: center;
             margin-top: 20px;
+            align-items: center;
+            /* Ensure vertical alignment */
         }
         
         .confirmation-modal-content .button-group-modal .mac-button {
@@ -1039,7 +1172,7 @@
             border: 1px solid var(--border-dark);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
-        /* NEW: Add Category Modal */
+        /* Add Category Modal (Modified for category selection & add) */
         
         #addCategoryModal {
             display: none;
@@ -1060,15 +1193,19 @@
         #addCategoryModal .modal-content {
             padding: 30px;
             border-radius: 18px;
-            max-width: 400px;
-            text-align: center;
+            max-width: 550px;
+            /* Increased max-width for category list */
+            text-align: left;
+            /* Changed to left for list alignment */
             animation: slideInUp 0.4s ease-out forwards;
+            box-sizing: border-box;
         }
         
         #addCategoryModal .modal-content h3 {
             margin-bottom: 25px;
             font-size: 1.5em;
             color: var(--text-lighter);
+            text-align: center;
         }
         
         #addCategoryModal input[type="text"] {
@@ -1079,12 +1216,116 @@
             display: flex;
             gap: 15px;
             justify-content: center;
+            margin-top: 25px;
+            align-items: center;
+            /* Ensure vertical alignment */
         }
         
         #addCategoryModal .button-group-modal .mac-button {
             flex: 1;
             padding: 12px 18px;
             font-size: 1em;
+        }
+        /* Styles for category list inside modal */
+        
+        #categoryListInModal {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 15px;
+            background-color: var(--background-dark);
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-item-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            min-height: 24px;
+            /* Ensure a minimum height for the row */
+        }
+        
+        .category-item-checkbox:last-child {
+            margin-bottom: 0;
+        }
+        
+        .category-item-checkbox input[type="checkbox"] {
+            display: none;
+            /* Hide default checkbox */
+        }
+        
+        .category-item-checkbox label {
+            position: relative;
+            padding-left: 30px;
+            /* Space for custom checkbox, adjusted from 35px */
+            cursor: pointer;
+            color: var(--text-light);
+            /* Default text color */
+            font-weight: 500;
+            font-size: 1rem;
+            display: flex;
+            /* Ensure label content is aligned */
+            align-items: center;
+            /* Vertically center the text with the checkbox */
+            flex-grow: 1;
+            /* Allow label to take available space */
+            word-break: break-word;
+            /* Allow text to wrap if too long */
+            min-height: 20px;
+            /* Minimum height for label text to prevent squishing */
+            box-sizing: border-box;
+            /* Include padding in height calculation */
+            line-height: 1.2;
+            /* Ensure text fits well */
+        }
+        
+        .category-item-checkbox label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-dark);
+            background-color: var(--card-background-dark);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            /* Prevent the pseudo-element from shrinking */
+        }
+        
+        .category-item-checkbox input[type="checkbox"]:checked+label::before {
+            background-color: var(--accent-color);
+            /* macOS Blue when checked */
+            border-color: var(--accent-color);
+        }
+        /* REMOVED CHECKMARK ICON */
+        
+        .category-item-checkbox label::after {
+            /* content: '\2713'; */
+            /* Removed checkmark character */
+            display: none;
+            /* Hide the checkmark */
+        }
+        
+        .category-item-checkbox:hover label::before {
+            border-color: var(--accent-color);
+        }
+        
+        .category-item-checkbox input[type="checkbox"]:checked+label {
+            color: var(--text-lighter);
+            /* Text becomes lighter when checked */
+        }
+        
+        #categoryListInModal .no-categories-message {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 10px;
+            font-style: italic;
         }
         /* UTILITY CLASSES & SPINNER */
         
@@ -1232,8 +1473,7 @@
                 font-size: 1.4em;
             }
             .form-group input,
-            .form-group select,
-            .form-group textarea {
+            .form-group select {
                 padding: 12px 15px;
                 font-size: 1rem;
                 border-radius: 10px;
@@ -1244,23 +1484,30 @@
             .form-group small {
                 font-size: 0.85rem;
             }
-            /* TinyMCE adjustments for tablets */
-            .tox .tox-editor-container {
-                border-radius: 10px !important;
+            /* Quill adjustments for tablets */
+            .quill-container {
+                border-radius: 10px;
             }
-            .tox .tox-editor-header {
-                border-radius: 10px 10px 0 0 !important;
+            .ql-toolbar {
+                border-radius: 10px 10px 0 0;
                 padding: 8px 12px !important;
             }
-            .tox .tox-edit-area__iframe {
-                min-height: 350px !important;
+            .ql-editor {
+                min-height: 350px;
+                padding: 15px;
             }
-            .tox .tox-toolbar-group {
-                padding: 3px;
-                margin: 0 3px;
+            .quill-fullscreen .ql-toolbar {
+                top: 0;
+                padding: 10px 15px !important;
             }
-            .tox .tox-tbtn {
-                padding: 6px;
+            .quill-fullscreen .ql-container {
+                top: 60px;
+                /* Adjust based on new toolbar height */
+            }
+            .quill-fullscreen-exit-button {
+                width: 36px;
+                height: 36px;
+                font-size: 1.6em;
             }
             #featuredImageArea {
                 min-height: 180px;
@@ -1299,27 +1546,32 @@
             .status-options {
                 gap: 10px;
             }
-            .category-container {
-                flex-direction: column;
-                gap: 10px;
+            .status-option label {
+                /* Tablet adjustments */
+                padding: 9px 12px;
+                /* Slightly reduce padding */
+                min-height: 34px;
+                /* Adjusted height */
             }
-            .category-options {
-                width: 100%;
-                gap: 6px;
+            /* Category Input with Tags (Tablet) */
+            .category-input-wrapper {
                 padding: 6px;
-                min-height: auto;
-            }
-            .category-option {
-                flex: 1 1 45%;
-            }
-            .category-option label {
-                padding: 8px 15px;
-                height: auto;
+                min-height: 48px;
             }
             .add-category-button {
-                width: 100%;
-                height: auto;
-                padding: 10px 18px;
+                width: 48px;
+                height: 48px;
+                padding: 0;
+            }
+            .add-category-button ion-icon {
+                font-size: 1.6em;
+            }
+            .category-tag {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+            .category-tag .remove-tag-btn {
+                font-size: 1em;
             }
             .modal-content {
                 width: 92%;
@@ -1327,6 +1579,12 @@
                 padding: 30px;
                 border-radius: 18px;
                 max-width: 90vw;
+            }
+            .close-button {
+                width: 32px;
+                height: 32px;
+                font-size: 20px;
+                /* Adjust font size for icon */
             }
             .preview-title {
                 font-size: 2.2em;
@@ -1356,6 +1614,23 @@
             #addCategoryModal .button-group-modal .mac-button {
                 padding: 10px 15px;
             }
+            #categoryListInModal {
+                padding: 12px;
+            }
+            .category-item-checkbox {
+                margin-bottom: 10px;
+            }
+            .category-item-checkbox label {
+                font-size: 0.95rem;
+                padding-left: 28px;
+                /* Adjusted padding for checkbox */
+            }
+            .category-item-checkbox label::before {
+                width: 18px;
+                height: 18px;
+                border-radius: 5px;
+            }
+            /* Checkmark is hidden, no need for specific sizing here */
         }
         /* Mobile Devices */
         
@@ -1405,8 +1680,7 @@
                 margin-bottom: 18px;
             }
             .form-group input,
-            .form-group select,
-            .form-group textarea {
+            .form-group select {
                 padding: 10px 12px;
                 font-size: 0.95rem;
                 border-radius: 8px;
@@ -1418,23 +1692,30 @@
             .form-group small {
                 font-size: 0.8rem;
             }
-            /* TinyMCE adjustments for mobile */
-            .tox .tox-editor-container {
-                border-radius: 8px !important;
+            /* Quill adjustments for mobile */
+            .quill-container {
+                border-radius: 8px;
             }
-            .tox .tox-editor-header {
-                border-radius: 8px 8px 0 0 !important;
+            .ql-toolbar {
+                border-radius: 8px 8px 0 0;
                 padding: 6px 8px !important;
             }
-            .tox .tox-edit-area__iframe {
-                min-height: 300px !important;
+            .ql-editor {
+                min-height: 300px;
+                padding: 10px;
             }
-            .tox .tox-toolbar-group {
-                padding: 2px;
-                margin: 0 2px;
+            .quill-fullscreen .ql-toolbar {
+                top: 0;
+                padding: 8px 10px !important;
             }
-            .tox .tox-tbtn {
-                padding: 4px;
+            .quill-fullscreen .ql-container {
+                top: 50px;
+                /* Adjust based on new toolbar height */
+            }
+            .quill-fullscreen-exit-button {
+                width: 32px;
+                height: 32px;
+                font-size: 1.4em;
             }
             #featuredImageArea {
                 min-height: 150px;
@@ -1476,26 +1757,31 @@
                 gap: 6px;
             }
             .status-option label {
-                padding: 8px 12px;
-                font-size: 0.95rem;
+                /* Mobile adjustments */
+                padding: 8px 10px;
+                /* Further reduce padding */
+                min-height: 32px;
+                /* Adjusted height */
             }
-            .category-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .category-options {
-                gap: 4px;
+            /* Category Input with Tags (Mobile) */
+            .category-input-wrapper {
                 padding: 4px;
-            }
-            .category-option {
-                flex: 1 1 100%;
-            }
-            .category-option label {
-                padding: 8px 12px;
-                font-size: 0.9rem;
+                min-height: 44px;
             }
             .add-category-button {
-                padding: 8px 12px;
+                width: 44px;
+                height: 44px;
+                padding: 0;
+            }
+            .add-category-button ion-icon {
+                font-size: 1.4em;
+            }
+            .category-tag {
+                padding: 5px 8px;
+                font-size: 0.8em;
+            }
+            .category-tag .remove-tag-btn {
+                font-size: 0.9em;
             }
             .modal-content {
                 width: 95%;
@@ -1503,6 +1789,14 @@
                 padding: 20px;
                 border-radius: 16px;
                 max-width: 95vw;
+            }
+            .close-button {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+                /* Adjust font size for icon */
+                top: 10px;
+                right: 10px;
             }
             .preview-title {
                 font-size: 1.8em;
@@ -1532,6 +1826,23 @@
             #addCategoryModal .button-group-modal .mac-button {
                 padding: 8px 12px;
             }
+            #categoryListInModal {
+                padding: 10px;
+            }
+            .category-item-checkbox {
+                margin-bottom: 8px;
+            }
+            .category-item-checkbox label {
+                font-size: 0.9rem;
+                padding-left: 25px;
+                /* Further adjusted padding */
+            }
+            .category-item-checkbox label::before {
+                width: 16px;
+                height: 16px;
+                border-radius: 4px;
+            }
+            /* Checkmark is hidden, no need for specific sizing here */
         }
     </style>
 </head>
@@ -1581,11 +1892,12 @@
 
                 <div class="form-group">
                     <label>Kategori:</label>
-                    <div class="category-container">
-                        <div class="category-options" id="postCategoryRadios">
+                    <div class="category-input-wrapper">
+                        <div class="category-tags-container" id="selectedCategoriesDisplay">
+                            <span class="no-category-message" style="color: var(--text-muted); font-size: 0.95em;">Pilih kategori...</span>
                         </div>
-                        <button type="button" class="add-category-button mac-button" id="addCategoryBtn">
-                            <ion-icon name="add-circle-outline"></ion-icon> Tambah
+                        <button type="button" class="add-category-button mac-button" id="openCategoryModalBtn" title="Pilih atau Tambah Kategori">
+                            <ion-icon name="add-circle-outline"></ion-icon> 
                         </button>
                     </div>
                 </div>
@@ -1611,10 +1923,7 @@
 
                 <div class="form-group">
                     <label for="postContentEditor">Isi Artikel:</label>
-                    <button type="button" class="mac-button btn-secondary" id="fullscreenEditorBtn" style="float: right; margin-bottom: 10px; display: none;">
-                        <ion-icon name="expand-outline"></ion-icon> Editor Fullscreen
-                    </button>
-                    <textarea id="postContentEditor"></textarea>
+                    <div id="postContentEditor" class="quill-container"></div>
                 </div>
                 <div class="form-group">
                     <label for="postHashtags">Hastags (pisahkan dengan koma):</label>
@@ -1670,7 +1979,9 @@
 
     <div id="previewModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeModalBtn">&times;</span>
+            <button class="close-button" id="closeModalBtn" title="Tutup">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
             <h2 id="modalPreviewTitle" class="preview-title"></h2>
             <img id="modalPreviewImage" src="" alt="Featured Image" class="preview-image" style="display: none;">
             <div id="modalPreviewContent" class="preview-content"></div>
@@ -1679,7 +1990,9 @@
 
     <div id="saveConfirmationModal" class="confirmation-modal">
         <div class="confirmation-modal-content">
-            <span class="close-button" id="closeConfirmationModalBtn">&times;</span>
+            <button class="close-button" id="closeConfirmationModalBtn" title="Tutup">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
             <h3>Bagaimana Anda ingin menyimpan artikel ini?</h3>
             <div class="button-group-modal">
                 <button id="confirmPublishBtn" class="btn-primary mac-button">Publikasikan Sekarang</button>
@@ -1690,17 +2003,29 @@
 
     <div id="addCategoryModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="closeAddCategoryModalBtn">&times;</span>
-            <h3>Tambah Kategori Baru</h3>
-            <div class="form-group">
-                <input type="text" id="newCategoryNameInput" placeholder="Nama kategori (contoh: Teknologi)" />
+            <button class="close-button" id="closeAddCategoryModalBtn" title="Tutup">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
+            <h3>Pilih Kategori</h3>
+            <div id="categoryListInModal">
+            </div>
+            <hr style="border-color: var(--border-dark); margin: 25px 0;">
+            <h3 style="margin-top: 0; margin-bottom: 20px; text-align: center; border-bottom: none; padding-bottom: 0;">Tambah Kategori Baru</h3>
+            <div class="form-group" style="margin-bottom: 0;">
+                <input type="text" id="newCategoryNameInput" placeholder="Nama kategori baru (contoh: Bisnis)" />
             </div>
             <div class="button-group-modal">
-                <button class="btn-primary mac-button" id="saveNewCategoryBtn">Simpan Kategori</button>
-                <button class="btn-secondary mac-button" id="cancelNewCategoryBtn">Batal</button>
+                <button class="btn-primary mac-button" id="saveNewCategoryBtn">Tambah Kategori</button>
+                <button class="btn-secondary mac-button" id="cancelAddCategoryBtn">Selesai Memilih</button>
             </div>
         </div>
     </div>
+
+    <button class="mac-button quill-fullscreen-exit-button" id="quillFullscreenExitBtn" title="Keluar Mode Fullscreen">
+        <ion-icon name="contract-outline"></ion-icon>
+    </button>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <script>
         // --- Firebase Configuration ---
@@ -1717,6 +2042,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
+        const storage = firebase.storage(); // Initialize Firebase Storage
         // --- End Firebase Configuration ---
 
         // --- DOM Elements ---
@@ -1725,8 +2051,9 @@
         const newPostForm = document.getElementById('newPostForm');
         const postTitleInput = document.getElementById('postTitle');
         const postDescriptionInput = document.getElementById('postDescription');
-        const postCategoryRadiosContainer = document.getElementById('postCategoryRadios');
-        const addCategoryBtn = document.getElementById('addCategoryBtn');
+        // const postCategoryRadiosContainer = document.getElementById('postCategoryRadios'); // NO LONGER USED AS RADIO
+        const selectedCategoriesDisplay = document.getElementById('selectedCategoriesDisplay'); // NEW: For displaying tags
+        const openCategoryModalBtn = document.getElementById('openCategoryModalBtn'); // Changed ID from addCategoryBtn
         const featuredImageInput = document.getElementById('featuredImageInput');
         const postHashtagsInput = document.getElementById('postHashtags');
         const statusRadios = document.querySelectorAll('input[name="postStatus"]');
@@ -1751,78 +2078,158 @@
         const modalPreviewContent = document.getElementById('modalPreviewContent');
         const modalPreviewImage = document.getElementById('modalPreviewImage');
         const browseFilesText = document.querySelector('.browse-files-text');
-        const fullscreenEditorBtn = document.getElementById('fullscreenEditorBtn'); // New button for editor
 
-        // New Category Modal Elements
+        // Category Modal Elements (renamed/modified)
         const addCategoryModal = document.getElementById('addCategoryModal');
         const closeAddCategoryModalBtn = document.getElementById('closeAddCategoryModalBtn');
         const newCategoryNameInput = document.getElementById('newCategoryNameInput');
         const saveNewCategoryBtn = document.getElementById('saveNewCategoryBtn');
-        const cancelNewCategoryBtn = document.getElementById('cancelNewCategoryBtn');
+        const cancelAddCategoryBtn = document.getElementById('cancelAddCategoryBtn'); // Changed from cancelNewCategoryBtn
+        const categoryListInModal = document.getElementById('categoryListInModal');
 
-        let editorInstance; // For TinyMCE
+        // Quill-specific elements
+        const quillFullscreenExitBtn = document.getElementById('quillFullscreenExitBtn');
 
-        // --- Initialize TinyMCE Editor ---
-        function initializeEditor() {
-            tinymce.init({
-                selector: '#postContentEditor',
-                skin: 'oxide-dark',
-                content_css: 'dark',
-                height: 400,
-                plugins: [
-                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', // Added 'fullscreen'
-                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
-                ],
-                toolbar: 'undo redo | blocks | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | image link code fullscreen preview | help', // Added 'fullscreen' to toolbar
+        let quill; // For Quill editor instance
+        let allCategories = {}; // To store all categories from Firebase (key: {name: "Category Name"})
+        let selectedCategories = []; // To store selected category keys
 
-                images_upload_url: '/upload_image',
-                file_picker_callback: function(cb, value, meta) {
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.setAttribute('accept', 'image/*');
+        // --- Initialize Quill Editor ---
+        function initializeQuill() {
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                ['blockquote', 'code-block'],
 
-                    input.onchange = function() {
-                        const file = this.files[0];
-                        const reader = new FileReader();
-                        reader.onload = function() {
-                            const id = 'blobid' + (new Date()).getTime();
-                            const blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                            const base64 = reader.result.split(',')[1];
-                            const blobInfo = blobCache.create(id, file, base64);
-                            blobCache.add(blobInfo);
+                [{
+                    'header': 1
+                }, {
+                    'header': 2
+                }], // custom button values
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }],
+                [{
+                    'script': 'sub'
+                }, {
+                    'script': 'super'
+                }], // superscript/subscript
+                [{
+                    'indent': '-1'
+                }, {
+                    'indent': '+1'
+                }], // outdent/indent
+                [{
+                    'direction': 'rtl'
+                }], // text direction
 
-                            cb(blobInfo.url(), {
-                                title: file.name
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    };
-                    input.click();
+                [{
+                    'size': ['small', false, 'large', 'huge']
+                }], // custom dropdown
+                [{
+                    'header': [1, 2, 3, 4, 5, 6, false]
+                }],
+
+                [{
+                    'color': []
+                }, {
+                    'background': []
+                }], // dropdown with defaults from theme
+                [{
+                    'font': []
+                }],
+                [{
+                    'align': []
+                }],
+
+                ['link', 'image', 'video'],
+                ['clean'] // remove formatting button
+            ];
+
+            quill = new Quill('#postContentEditor', {
+                modules: {
+                    toolbar: {
+                        container: toolbarOptions,
+                        handlers: {
+                            'image': () => {
+                                selectLocalImage();
+                            }
+                        }
+                    }
                 },
-                setup: function(editor) {
-                    editor.on('init', function() {
-                        editorInstance = editor;
-                        console.log('TinyMCE Editor initialized successfully!');
+                theme: 'snow'
+            });
 
-                        // Show fullscreen button only on smaller screens
-                        if (window.innerWidth <= 768) {
-                            fullscreenEditorBtn.style.display = 'block';
-                        }
-                    });
+            // Add an additional button to the Quill toolbar for fullscreen
+            // Get the Quill toolbar element
+            const quillToolbar = document.querySelector('.ql-toolbar');
+            if (quillToolbar) {
+                const fullscreenButton = document.createElement('button');
+                fullscreenButton.classList.add('ql-fullscreen', 'mac-button'); // Add a class for styling
+                fullscreenButton.innerHTML = '<ion-icon name="expand-outline"></ion-icon>'; // Fullscreen icon
+                fullscreenButton.title = 'Mode Layar Penuh';
+                fullscreenButton.onclick = toggleQuillFullscreen;
+                quillToolbar.appendChild(fullscreenButton);
+            }
 
-                    // Handle fullscreen button click
-                    fullscreenEditorBtn.addEventListener('click', () => {
-                        if (editorInstance && !editorInstance.isFullscreen()) {
-                            editorInstance.execCommand('mceFullScreen');
-                        }
-                    });
+
+            quillFullscreenExitBtn.addEventListener('click', toggleQuillFullscreen);
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 768 && !body.classList.contains('quill-fullscreen-active')) {
+                    // No internal button, so no need to hide/show
                 }
             });
+
+            console.log('Quill Editor initialized successfully!');
         }
+
+        // --- Quill Image Upload to Firebase Storage ---
+        function selectLocalImage() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async() => {
+                const file = input.files[0];
+                if (file) {
+                    const range = quill.getSelection(true);
+                    const uniqueFileName = `${Date.now()}-${file.name}`;
+                    const storageRef = storage.ref(`article_images/${uniqueFileName}`);
+
+                    showLoadingOverlay("Mengunggah gambar ke editor...");
+                    try {
+                        const snapshot = await storageRef.put(file);
+                        const downloadURL = await snapshot.ref.getDownloadURL();
+
+                        quill.insertEmbed(range.index, 'image', downloadURL);
+                        quill.setSelection(range.index + 1); // Move cursor past the image
+                        alert('Gambar berhasil diunggah dan disisipkan!');
+                    } catch (error) {
+                        console.error("Error uploading image to Firebase Storage:", error);
+                        alert("Gagal mengunggah gambar: " + error.message);
+                    } finally {
+                        hideLoadingOverlay();
+                    }
+                }
+            };
+        }
+
+        // --- Quill Fullscreen Toggle ---
+        function toggleQuillFullscreen() {
+            const editorWrapper = document.getElementById('postContentEditor');
+            editorWrapper.classList.toggle('quill-fullscreen');
+            body.classList.toggle('quill-fullscreen-active');
+
+            if (editorWrapper.classList.contains('quill-fullscreen')) {
+                quillFullscreenExitBtn.classList.add('active'); // Use active class
+            } else {
+                quillFullscreenExitBtn.classList.remove('active'); // Remove active class
+            }
+        }
+
 
         // --- Initial Load & Authentication Check ---
         auth.onAuthStateChanged((user) => {
@@ -1831,7 +2238,7 @@
                 window.location.href = 'login.html';
             } else {
                 console.log('User is signed in:', user.email);
-                initializeEditor();
+                initializeQuill();
                 loadCategories().then(() => {
                     hideLoadingOverlay();
                 }).catch(error => {
@@ -1842,56 +2249,100 @@
             }
         });
 
-        // --- Load Categories for Radio Buttons ---
+        // --- Load Categories for Checkboxes in Modal ---
         async function loadCategories() {
-            postCategoryRadiosContainer.innerHTML = '';
+            categoryListInModal.innerHTML = ''; // Clear previous categories
+            allCategories = {}; // Reset allCategories
             try {
                 const snapshot = await database.ref('categories').once('value');
                 const categories = snapshot.val();
                 if (categories) {
-                    let first = true;
                     Object.keys(categories).forEach(key => {
+                        allCategories[key] = categories[key].name; // Store all categories
                         const categoryDiv = document.createElement('div');
-                        categoryDiv.classList.add('category-option');
+                        categoryDiv.classList.add('category-item-checkbox');
 
                         const input = document.createElement('input');
-                        input.type = 'radio';
-                        input.id = `cat-${key}`;
-                        input.name = 'postCategory';
+                        input.type = 'checkbox';
+                        input.id = `cat-modal-${key}`;
                         input.value = key;
-                        if (first) {
+                        // Check if this category is already selected
+                        if (selectedCategories.includes(key)) {
                             input.checked = true;
-                            first = false;
                         }
+                        input.addEventListener('change', (event) => {
+                            if (event.target.checked) {
+                                if (!selectedCategories.includes(key)) {
+                                    selectedCategories.push(key);
+                                }
+                            } else {
+                                selectedCategories = selectedCategories.filter(catKey => catKey !== key);
+                            }
+                            renderSelectedCategories(); // Update tags on form
+                        });
 
                         const label = document.createElement('label');
-                        label.htmlFor = `cat-${key}`;
+                        label.htmlFor = `cat-modal-${key}`;
                         label.textContent = categories[key].name;
 
                         categoryDiv.appendChild(input);
                         categoryDiv.appendChild(label);
-                        postCategoryRadiosContainer.appendChild(categoryDiv);
+                        categoryListInModal.appendChild(categoryDiv);
                     });
                 } else {
                     const noCategoryDiv = document.createElement('div');
-                    noCategoryDiv.textContent = "Belum ada kategori. Tambahkan di sini.";
-                    noCategoryDiv.style.color = 'var(--text-muted)';
-                    noCategoryDiv.style.padding = '10px';
-                    postCategoryRadiosContainer.appendChild(noCategoryDiv);
+                    noCategoryDiv.classList.add('no-categories-message');
+                    noCategoryDiv.textContent = "Belum ada kategori. Tambahkan di bawah.";
+                    categoryListInModal.appendChild(noCategoryDiv);
                 }
+                renderSelectedCategories(); // Ensure tags are rendered after categories load
             } catch (error) {
                 console.error("Failed to load categories:", error);
                 alert("Gagal memuat kategori: " + error.message);
                 const errorDiv = document.createElement('div');
+                errorDiv.classList.add('no-categories-message');
                 errorDiv.textContent = "Error memuat kategori.";
                 errorDiv.style.color = 'var(--primary-color)';
-                errorDiv.style.padding = '10px';
-                postCategoryRadiosContainer.appendChild(errorDiv);
+                categoryListInModal.appendChild(errorDiv);
             }
         }
 
+        // --- Render Selected Categories as Tags on Main Form ---
+        function renderSelectedCategories() {
+            selectedCategoriesDisplay.innerHTML = ''; // Clear current tags
+            if (selectedCategories.length === 0) {
+                selectedCategoriesDisplay.innerHTML = `<span class="no-category-message" style="color: var(--text-muted); font-size: 0.95em;">Pilih kategori...</span>`;
+            } else {
+                selectedCategories.forEach(key => {
+                    const categoryName = allCategories[key] || key; // Fallback to key if name not found
+                    const tag = document.createElement('span');
+                    tag.classList.add('category-tag');
+                    tag.textContent = categoryName;
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.classList.add('remove-tag-btn');
+                    removeBtn.innerHTML = '&times;'; // 'x' symbol
+                    removeBtn.title = `Hapus kategori ${categoryName}`;
+                    removeBtn.addEventListener('click', () => {
+                        selectedCategories = selectedCategories.filter(catKey => catKey !== key);
+                        renderSelectedCategories();
+                        // Uncheck the corresponding checkbox in the modal if it's open
+                        const checkbox = document.getElementById(`cat-modal-${key}`);
+                        if (checkbox) {
+                            checkbox.checked = false;
+                        }
+                    });
+                    tag.appendChild(removeBtn);
+                    selectedCategoriesDisplay.appendChild(tag);
+                });
+            }
+        }
+
+
         // --- Add Category Modal Logic ---
-        addCategoryBtn.addEventListener('click', () => {
+        openCategoryModalBtn.addEventListener('click', () => {
+            // Reload categories in modal to ensure latest state and check selected ones
+            loadCategories();
             addCategoryModal.style.display = 'flex';
             newCategoryNameInput.value = '';
             newCategoryNameInput.focus();
@@ -1901,7 +2352,7 @@
             addCategoryModal.style.display = 'none';
         });
 
-        cancelNewCategoryBtn.addEventListener('click', () => {
+        cancelAddCategoryBtn.addEventListener('click', () => {
             addCategoryModal.style.display = 'none';
         });
 
@@ -1912,9 +2363,9 @@
                 return;
             }
 
-            showLoadingOverlay("Menyimpan kategori...");
+            showLoadingOverlay("Menambah kategori...");
             try {
-                const categoryKey = categoryName.toLowerCase().replace(/\s+/g, '-');
+                const categoryKey = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''); // Sanitize key
                 const categoryRef = database.ref('categories').child(categoryKey);
 
                 const snapshot = await categoryRef.once('value');
@@ -1928,12 +2379,14 @@
                     name: categoryName
                 });
                 alert('Kategori "' + categoryName + '" berhasil ditambahkan!');
-                addCategoryModal.style.display = 'none';
-                await loadCategories();
-                const newCategoryRadio = document.getElementById(`cat-${categoryKey}`);
-                if (newCategoryRadio) {
-                    newCategoryRadio.checked = true;
+
+                // Automatically select the newly added category
+                if (!selectedCategories.includes(categoryKey)) {
+                    selectedCategories.push(categoryKey);
                 }
+                newCategoryNameInput.value = ''; // Clear input field
+                await loadCategories(); // Reload categories in modal to show new one and update checkboxes
+                renderSelectedCategories(); // Update tags on main form
             } catch (error) {
                 console.error('Error saving new category:', error);
                 alert('Gagal menambahkan kategori: ' + error.message);
@@ -1973,11 +2426,10 @@
 
             const title = postTitleInput.value.trim();
             const description = postDescriptionInput.value.trim();
-            const selectedCategoryRadio = document.querySelector('input[name="postCategory"]:checked');
-            const category = selectedCategoryRadio ? selectedCategoryRadio.value : '';
+            const categories = selectedCategories; // Get selected categories as an array
 
             const thumbnail = featuredImagePreview.src && !featuredImagePreviewContainer.classList.contains('hidden') ? featuredImagePreview.src : '';
-            const content = editorInstance ? editorInstance.getContent().trim() : '';
+            const content = quill ? quill.root.innerHTML.trim() : '';
             const hashtags = postHashtagsInput.value.trim().toLowerCase().split(',').map(tag => tag.trim()).filter(tag => tag !== '');
             const status = document.querySelector('input[name="postStatus"]:checked').value;
             const focusKeyword = document.getElementById('focusKeyword').value.trim();
@@ -1997,7 +2449,9 @@
                 }
             }
 
-            if (!title || !description || !category || !content || content === '<p></p>' || content === '<p><br data-mce-bogus="1"></p>') {
+            // Basic validation for Quill content (check if it's empty or just whitespace)
+            const quillText = quill.getText().trim();
+            if (!title || !description || categories.length === 0 || !quillText) {
                 alert('Judul, Deskripsi Singkat, Kategori, dan Isi Artikel harus diisi!');
                 hideLoadingOverlay();
                 return;
@@ -2008,7 +2462,7 @@
                 await newPostRef.set({
                     title: title,
                     description: description,
-                    category: category,
+                    categories: categories, // Changed from single category to array
                     thumbnail: thumbnail,
                     content: content,
                     hashtags: hashtags,
@@ -2051,16 +2505,17 @@
         // --- Reset Form Function ---
         function resetForm() {
             newPostForm.reset();
-            if (editorInstance) {
-                editorInstance.setContent('');
+            if (quill) {
+                quill.setContents([{
+                    insert: '\n'
+                }]); // Reset Quill content
             }
             document.getElementById('statusDraft').checked = true;
             scheduleDateTimeGroup.style.display = 'none';
             scheduleDateTimeInput.removeAttribute('required');
-            const firstCategoryRadio = document.querySelector('.category-options input[type="radio"]');
-            if (firstCategoryRadio) {
-                firstCategoryRadio.checked = true;
-            }
+
+            selectedCategories = []; // Clear selected categories
+            renderSelectedCategories(); // Update category tags display
 
             featuredImageInput.value = '';
             featuredImagePreview.src = '';
@@ -2070,58 +2525,62 @@
         }
 
         // --- Featured Image Drag & Drop and Preview Logic ---
-        function simulateUpload(file) {
-            progressBarContainer.style.display = 'block';
-            let progress = 0;
-            uploadProgressBar.style.width = '0%';
-            const interval = setInterval(() => {
-                progress += 5;
-                if (progress <= 100) {
-                    uploadProgressBar.style.width = progress + '%';
-                }
+        // This function will eventually upload to Firebase Storage, for now it's a simulated progress.
+        async function handleFeaturedImageUpload(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Silakan unggah file gambar.');
+                return;
+            }
 
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
+            progressBarContainer.style.display = 'block';
+            uploadProgressBar.style.width = '0%';
+
+            const uniqueFileName = `${Date.now()}-${file.name}`;
+            const storageRef = storage.ref(`featured_images/${uniqueFileName}`);
+            const uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    uploadProgressBar.style.width = progress + '%';
+                },
+                (error) => {
+                    console.error("Error uploading featured image:", error);
+                    alert("Gagal mengunggah gambar unggulan: " + error.message);
+                    progressBarContainer.style.display = 'none';
+                    featuredImageInput.value = '';
+                },
+                () => {
+                    // Upload completed successfully, get the download URL
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        featuredImagePreview.src = downloadURL;
+                        featuredImagePreviewContainer.classList.remove('hidden');
                         progressBarContainer.style.display = 'none';
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            featuredImagePreview.src = e.target.result;
-                            featuredImagePreviewContainer.classList.remove('hidden');
-                        };
-                        reader.readAsDataURL(file);
-                    }, 500);
+                    });
                 }
-            }, 50);
+            );
         }
 
         featuredImageInput.addEventListener('change', function(event) {
-            handleFile(event.target.files[0]);
+            handleFeaturedImageUpload(event.target.files[0]);
         });
 
         browseFilesText.addEventListener('click', () => {
             featuredImageInput.click();
         });
 
-        function handleFile(file) {
-            if (file && file.type.startsWith('image/')) {
-                simulateUpload(file);
-            } else {
-                alert('Silakan unggah file gambar.');
-            }
-        }
-
         featuredImageArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             featuredImageArea.classList.add('dragging');
         });
         featuredImageArea.addEventListener('dragleave', () => {
+            e.preventDefault(); // Added this to prevent the "return to original" animation
             featuredImageArea.classList.remove('dragging');
         });
         featuredImageArea.addEventListener('drop', (e) => {
             e.preventDefault();
             featuredImageArea.classList.remove('dragging');
-            handleFile(e.dataTransfer.files[0]);
+            handleFeaturedImageUpload(e.dataTransfer.files[0]);
         });
 
         removeImageBtn.addEventListener('click', () => {
@@ -2135,7 +2594,7 @@
         // --- Preview Modal Logic ---
         previewArticleBtn.addEventListener('click', () => {
             modalPreviewTitle.textContent = postTitleInput.value || 'Artikel Tanpa Judul';
-            modalPreviewContent.innerHTML = editorInstance ? editorInstance.getContent() : '';
+            modalPreviewContent.innerHTML = quill ? quill.root.innerHTML : '';
 
             if (featuredImagePreview.src && !featuredImagePreviewContainer.classList.contains('hidden')) {
                 modalPreviewImage.src = featuredImagePreview.src;
@@ -2153,9 +2612,10 @@
         });
 
         window.addEventListener('click', (event) => {
-            if (event.target == previewModal || event.target == addCategoryModal) {
-                previewModal.style.display = 'none';
-                addCategoryModal.style.display = 'none';
+            if (event.target == previewModal || event.target == addCategoryModal || event.target == saveConfirmationModal) {
+                if (event.target == previewModal) previewModal.style.display = 'none';
+                if (event.target == addCategoryModal) addCategoryModal.style.display = 'none';
+                if (event.target == saveConfirmationModal) saveConfirmationModal.style.display = 'none';
             }
         });
 
