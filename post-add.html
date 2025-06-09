@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Tambah Konten</title> <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Konten</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    
+    <script src="https://cdn.tiny.cloud/1/7y6kn9usa4s5ftv5lp12b0cpozwjx8t02zc8mttwpphkprs2/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
     <style>
         /* Define your custom color palette using CSS variables */
-        :root {
+        
+         :root {
             --background-dark: #121212;
             --card-background-dark: #181818;
-            --border-dark: rgba(255, 255, 255, 0.08); 
-            --primary-color: #FE2C55; /* TikTok Red */
+            --border-dark: rgba(255, 255, 255, 0.08);
+            --primary-color: #FE2C55;
+            /* TikTok Red */
             --primary-color-hover: #FF4D6B;
-            --accent-color: #5856D6; /* macOS Purple Blue */
-            --accent-color-hover: #6F6CE8; 
+            --accent-color: #5856D6;
+            /* macOS Purple Blue */
+            --accent-color-hover: #6F6CE8;
             --text-light: #E0E0E0;
             --text-lighter: #F0F0F0;
             --text-muted: #A0A0A0;
@@ -30,75 +34,85 @@
             --success-color: #28a745;
             --warning-color: #ffc107;
             --info-color: #17a2b8;
-            --blue-accent: #007bff; 
-
-            --frosted-bg-opacity: 0.7; 
-            --frosted-blur-intensity: 20px; 
-
+            --blue-accent: #007bff;
+            --frosted-bg-opacity: 0.7;
+            --frosted-blur-intensity: 20px;
             --primary-color-rgb: 254, 44, 85;
-            --accent-color-rgb: 88, 86, 214; 
+            --accent-color-rgb: 88, 86, 214;
             --card-background-dark-rgb: 24, 24, 24;
             --background-dark-rgb: 18, 18, 18;
             --text-muted-rgb: 160, 160, 160;
-
-            /* NEW: Variable for header height at bottom */
-            --bottom-header-height: 80px; /* Default height */
+            --bottom-header-height: 80px;
+            /* NEW: Gemini Text Gradient Colors (Liquid Style) */
+            --gradient-start: #FE2C55;
+            /* Primary color */
+            --gradient-end: #69C9D0;
+            /* Aqua/Teal color */
         }
-
         /* Base Dark Mode & macOS Sequoia Styles */
+        
         body {
             background-color: var(--background-dark) !important;
             color: var(--text-light) !important;
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
             transition: background-color 0.4s ease, color 0.4s ease;
             margin: 0;
-            padding: 0 20px; 
+            padding: 0 20px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden; 
-            box-sizing: border-box; 
-            /* NEW: Add padding to the bottom of the body to make space for the fixed header */
-            padding-bottom: var(--bottom-header-height); 
+            overflow-x: hidden;
+            box-sizing: border-box;
+            padding-bottom: var(--bottom-header-height);
         }
-
         /* Header Styles with Frosted Glass */
+        
         header {
             background-color: rgba(var(--card-background-dark-rgb), var(--frosted-bg-opacity));
             backdrop-filter: blur(var(--frosted-blur-intensity));
             -webkit-backdrop-filter: blur(var(--frosted-blur-intensity));
-            border-top: 1px solid var(--border-dark); /* Back to border-top */
-            box-shadow: 0 -6px 20px var(--shadow-dark); /* Shadow pointing upwards */
+            border-top: 1px solid var(--border-dark);
+            box-shadow: 0 -6px 20px var(--shadow-dark);
             padding: 18px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed; /* Changed to fixed */
-            bottom: 0; /* Position at the bottom */
-            left: 0; /* Ensure it starts from left edge */
+            position: fixed;
+            bottom: 0;
+            left: 0;
             z-index: 1000;
-            border-radius: 20px 20px 0 0; /* Rounded top corners, straight bottom */
-            animation: fadeInUp 0.6s ease-out forwards; 
-            
-            /* Fix for full width despite body padding */
+            border-radius: 20px 20px 0 0;
+            animation: fadeInUp 0.6s ease-out forwards;
             width: 100vw;
             margin-left: calc(50% - 50vw);
-            box-sizing: border-box; /* Include padding in width */
-            height: var(--bottom-header-height); /* Set explicit height */
+            box-sizing: border-box;
+            height: var(--bottom-header-height);
         }
-        /* NEW: Animation for header coming from bottom */
+        
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        .header-left, .header-center, .header-right {
+        
+        .header-left,
+        .header-center,
+        .header-right {
             flex: 1;
             display: flex;
             align-items: center;
-            min-width: 0; /* Allow shrinking */
+            min-width: 0;
         }
-        .header-left { justify-content: flex-start; }
+        
+        .header-left {
+            justify-content: flex-start;
+        }
+        
         .header-center {
             justify-content: center;
             font-weight: 700;
@@ -108,123 +122,155 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .header-right { justify-content: flex-end; }
-
+        
+        .header-right {
+            justify-content: flex-end;
+        }
         /* macOS-like button styles */
+        
         .mac-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 18px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 10px; 
+            padding: 10px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             font-family: inherit;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05); 
-            -webkit-appearance: none; 
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            text-decoration: none; 
+            text-decoration: none;
         }
-
+        
         .mac-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
-
+        
         .mac-button:active {
             transform: translateY(0);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 0 rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(0, 0, 0, 0.1);
         }
-
         /* Header specific buttons */
-        .header-btn { 
+        
+        .header-btn {
             background-color: transparent;
-            color: var(--text-muted); 
+            color: var(--text-muted);
             padding: 0.4rem;
-            border: none; 
-            border-radius: 10px; 
+            border: none;
+            border-radius: 10px;
             font-size: 1.8rem;
-            width: 40px; 
+            width: 40px;
             height: 40px;
-            box-shadow: none; 
-        }
-        .header-btn:hover {
-            color: var(--accent-color); 
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-            transform: none; 
             box-shadow: none;
         }
+        
+        .header-btn:hover {
+            color: var(--accent-color);
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            transform: none;
+            box-shadow: none;
+        }
+        
         .header-btn:active {
             background-color: rgba(var(--accent-color-rgb), 0.2);
             transform: none;
             box-shadow: none;
         }
+        
         .header-btn ion-icon {
             font-size: 1.8rem;
         }
-
+        
         .header-save-button {
             background-color: var(--primary-color) !important;
             color: var(--text-lighter) !important;
-            border-color: rgba(var(--primary-color-rgb), 0.5); 
-            box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-            padding: 10px 20px; 
+            border-color: rgba(var(--primary-color-rgb), 0.5);
+            box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
         }
+        
         .header-save-button:hover {
             background-color: var(--primary-color-hover) !important;
-            box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+            box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
+        
         .header-save-button:active {
             background-color: var(--primary-color) !important;
-            box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3), inset 0 1px 0 rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3), inset 0 1px 0 rgba(0, 0, 0, 0.1);
         }
-
-        /* Main Content */
+        /* Main Content - HERO SECTION */
+        
         .main-content {
             flex-grow: 1;
-            padding: 30px; 
-            max-width: 950px; 
-            margin: 40px auto; 
+            padding: 30px;
+            max-width: 950px;
+            margin: 40px auto;
             width: 100%;
             background-color: var(--card-background-dark) !important;
-            border-radius: 24px; 
-            box-shadow: 0 12px 40px var(--shadow-dark) !important; 
+            border-radius: 24px;
+            box-shadow: 0 12px 40px var(--shadow-dark) !important;
             border: 1px solid var(--border-dark);
             animation: fadeInScale 0.7s ease-out forwards;
             display: flex;
             flex-direction: column;
-            gap: 30px; 
-            box-sizing: border-box; 
-            /* NEW: Adjust margin-bottom to account for fixed header at the bottom */
-            margin-bottom: calc(40px + var(--bottom-header-height)); 
+            gap: 30px;
+            box-sizing: border-box;
+            margin-bottom: calc(40px + var(--bottom-header-height));
         }
+        
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
-
+        
         .form-section {
-            background-color: transparent; 
+            background-color: transparent;
             border-radius: 0;
             padding: 0;
             box-shadow: none;
             border: none;
-            animation: none; 
+            animation: none;
         }
-
+        /* H1 Greeting Liquid Style & Responsive */
+        
         .form-section h1 {
-            color: var(--text-lighter); 
-            margin-top: 0;
-            margin-bottom: 25px;
-            font-size: clamp(1.8rem, 4.5vw, 2.5rem); 
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 0;
+            line-height: 1.3;
             text-align: center;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%;
+            /* Make gradient wider than text */
+            animation: gradient-flow 3s linear infinite alternate;
+            /* Smooth, flowing animation */
             font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
-        .form-section h3 { 
+        
+        @keyframes gradient-flow {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: 100% center;
+            }
+        }
+        
+        .form-section h3 {
             color: var(--text-lighter);
             font-size: 1.6em;
             font-weight: 600;
@@ -233,323 +279,371 @@
             border-bottom: 1px solid var(--border-dark);
             text-align: left;
         }
-
+        
         .form-group {
-            margin-bottom: 25px; 
+            margin-bottom: 25px;
         }
-
+        
         .form-group label {
             display: block;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             color: var(--text-lighter);
             font-weight: 600;
             font-size: 1rem;
         }
-
         /* Styling umum untuk input teks, select, datetime, textarea */
+        
         .form-group input[type="text"],
         .form-group input[type="url"],
         .form-group input[type="datetime-local"],
-        .form-group select,
-        .form-group textarea { 
+        .form-group textarea {
             width: 100%;
-            padding: 14px 18px; 
+            padding: 14px 18px;
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 12px; 
+            border-radius: 12px;
             color: var(--text-light);
-            font-size: 1.05rem; 
+            font-size: 1.05rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
             outline: none;
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
+        
         .form-group textarea {
-            resize: vertical; 
+            resize: vertical;
         }
+        
         .form-group input::placeholder,
         .form-group textarea::placeholder {
             color: var(--text-muted) !important;
         }
-
+        
         .form-group input[type="text"]:focus,
         .form-group input[type="url"]:focus,
         .form-group input[type="datetime-local"]:focus,
-        .form-group select:focus,
         .form-group textarea:focus {
-            border-color: var(--accent-color); 
-            box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.3); 
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.3);
             outline: none;
         }
+        
         .form-group small {
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-top: 5px;
             display: block;
         }
+        /* Category Radio Buttons (Segmented Control Style) - Fixed Height Bug */
         
-        /* Quill.js specific styles */
-        .ql-toolbar {
-            background-color: var(--card-background-dark) !important;
-            border-radius: 14px 14px 0 0; 
-            border: 1px solid var(--border-dark) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            position: sticky; 
-            top: 0; /* Remove top offset for Quill toolbar when header is at bottom */
-            z-index: 20; 
-            box-sizing: border-box;
-            width: 100%; 
-            padding: 10px 15px; 
-        }
-
-        .ql-container {
-            background-color: var(--card-background-dark) !important;
-            border-radius: 0 0 14px 14px; 
-            border: 1px solid var(--border-dark) !important;
-            border-top: none !important; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            color: var(--text-light);
-            min-height: 400px; 
-            box-sizing: border-box;
-            padding: 20px;
-        }
-
-        .ql-editor {
-            min-height: 360px; 
-        }
-
-        /* Quill theme specific overrides for dark mode */
-        .ql-snow .ql-stroke {
-            stroke: var(--text-light);
-        }
-        .ql-snow .ql-fill {
-            fill: var(--text-light);
-        }
-        .ql-snow .ql-picker {
-            color: var(--text-light);
-        }
-        .ql-snow .ql-picker-label {
-            border: 1px solid transparent;
-            color: var(--text-light);
-        }
-        .ql-snow .ql-picker-label:hover {
-            color: var(--accent-color);
-            border-color: transparent;
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-        .ql-snow .ql-picker-item {
-            color: var(--text-light);
-        }
-        .ql-snow .ql-picker-item:hover {
-            color: var(--accent-color);
-            background-color: rgba(var(--accent-color-rgb), 0.1);
-        }
-
-        .ql-snow.ql-toolbar button,
-        .ql-snow .ql-stroke,
-        .ql-snow .ql-fill {
-            color: var(--text-muted); 
-            stroke: var(--text-muted);
-            fill: var(--text-muted);
-        }
-        .ql-snow.ql-toolbar button:hover,
-        .ql-snow.ql-toolbar button.ql-active,
-        .ql-snow .ql-toolbar .ql-picker-label:hover,
-        .ql-snow .ql-toolbar .ql-picker-label.ql-active,
-        .ql-snow .ql-toolbar .ql-picker-item:hover,
-        .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-            color: var(--accent-color);
-            stroke: var(--accent-color);
-            fill: var(--accent-color);
-        }
-        .ql-snow.ql-toolbar button:hover .ql-stroke,
-        .ql-snow.ql-toolbar button:hover .ql-fill {
-             stroke: var(--accent-color);
-             fill: var(--accent-color);
-        }
-        .ql-snow.ql-toolbar button.ql-active .ql-stroke,
-        .ql-snow.ql-toolbar button.ql-active .ql-fill {
-             stroke: var(--accent-color);
-             fill: var(--accent-color);
-        }
-
-        .ql-snow .ql-editor.ql-blank::before {
-            color: var(--text-muted);
-            font-style: normal; 
-            left: 20px; 
-            right: 20px; 
-        }
-        .ql-snow .ql-tooltip {
-            background-color: var(--card-background-dark);
-            border: 1px solid var(--border-dark);
-            color: var(--text-light);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        .ql-snow .ql-tooltip input[type=text] {
-            background-color: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            color: var(--text-light);
-            border-radius: 6px;
-            padding: 8px 10px;
-        }
-        .ql-snow .ql-tooltip a.ql-action,
-        .ql-snow .ql-tooltip a.ql-remove {
-            color: var(--accent-color);
-        }
-        .ql-snow .ql-tooltip a.ql-action:hover,
-        .ql-snow .ql-tooltip a.ql-remove:hover {
-            color: var(--accent-color-hover);
-        }
-
-        /* Scrollbar styles for dark mode */
-        /* For WebKit browsers (Chrome, Safari) */
-        .ql-editor::-webkit-scrollbar,
-        .preview-content::-webkit-scrollbar,
-        body::-webkit-scrollbar {
-            width: 8px; 
-            height: 8px; 
-        }
-        .ql-editor::-webkit-scrollbar-track,
-        .preview-content::-webkit-scrollbar-track,
-        body::-webkit-scrollbar-track {
-            background: var(--background-dark); 
-            border-radius: 10px;
-        }
-        .ql-editor::-webkit-scrollbar-thumb,
-        .preview-content::-webkit-scrollbar-thumb,
-        body::-webkit-scrollbar-thumb {
-            background-color: rgba(var(--text-muted-rgb), 0.3); 
-            border-radius: 10px;
-            border: 2px solid var(--background-dark); 
-        }
-        .ql-editor::-webkit-scrollbar-thumb:hover,
-        .preview-content::-webkit-scrollbar-thumb:hover,
-        body::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(var(--accent-color-rgb), 0.5); 
-        }
-        
-        /* Status & Schedule */
-        .status-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; 
-            margin-bottom: 20px;
-        }
-
-        .status-option {
+        .category-container {
             display: flex;
             align-items: center;
-            gap: 10px; 
-            cursor: pointer;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-
-        .status-option input[type="radio"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 22px; 
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid var(--border-dark); 
+        
+        .category-options {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
             background-color: var(--background-dark);
-            transition: all 0.2s ease-in-out;
-            position: relative;
-            flex-shrink: 0; 
-        }
-
-        .status-option input[type="radio"]:checked {
-            border-color: var(--accent-color); 
-            background-color: var(--accent-color);
-        }
-
-        .status-option input[type="radio"]:checked::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px; 
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--text-lighter); 
-        }
-        .status-option input[type="radio"]:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.3); 
-        }
-
-        .status-option label {
-            margin-bottom: 0;
-            font-weight: 500;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 1.05rem;
-        }
-
-        #scheduleDateTimeGroup {
-            display: none; 
-            margin-top: 15px;
-            background-color: var(--background-dark);
-            padding: 20px;
-            border-radius: 12px;
             border: 1px solid var(--border-dark);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 8px;
+            /* Padding for the container */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            min-height: 52px;
+            /* Ensure consistent height even if few categories */
+            align-items: center;
+            /* Vertically center items */
         }
-
+        
+        .category-option {
+            /* flex: 1 1 auto; */
+            /* Let label control size, but allow wrapping */
+            flex-shrink: 0;
+            /* Prevent shrinking below content size */
+        }
+        
+        .category-option input[type="radio"] {
+            display: none;
+        }
+        
+        .category-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            /* Padding for the actual label */
+            border-radius: 10px;
+            background-color: transparent;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            height: 36px;
+            /* Explicit height for consistency */
+            box-sizing: border-box;
+            /* Include padding in height calculation */
+        }
+        
+        .category-option input[type="radio"]:checked+label {
+            background-color: var(--accent-color);
+            color: var(--text-lighter);
+            box-shadow: 0 2px 8px rgba(var(--accent-color-rgb), 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .category-option input[type="radio"]:hover+label {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
+        }
+        
+        .category-option input[type="radio"]:checked:hover+label {
+            background-color: var(--accent-color-hover);
+            color: var(--text-lighter);
+        }
+        
+        .add-category-button {
+            padding: 10px 18px;
+            background-color: var(--background-dark);
+            color: var(--accent-color);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            height: 52px;
+            /* Match category-options height */
+            box-sizing: border-box;
+        }
+        
+        .add-category-button:hover {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .add-category-button ion-icon {
+            font-size: 1.2em;
+        }
+        /* TinyMCE specific styles */
+        
+        .tox .tox-editor-container {
+            border-radius: 12px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+            overflow: hidden;
+        }
+        
+        .tox .tox-editor-header {
+            background-color: var(--card-background-dark) !important;
+            border-bottom: 1px solid var(--border-dark) !important;
+            padding: 10px 15px !important;
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+            border-radius: 12px 12px 0 0 !important;
+        }
+        
+        .tox .tox-toolbar-overlord,
+        .tox .tox-menubar {
+            background-color: var(--card-background-dark) !important;
+        }
+        
+        .tox .tox-toolbar,
+        .tox .tox-toolbar__group,
+        .tox .tox-collection__item {
+            background-color: var(--card-background-dark) !important;
+        }
+        
+        .tox .tox-toolbar-group {
+            background-color: var(--card-background-dark) !important;
+            border-radius: 8px;
+            padding: 5px;
+            margin: 0 5px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .tox .tox-tbtn {
+            color: var(--text-muted) !important;
+            background-color: transparent !important;
+            border-radius: 6px !important;
+        }
+        
+        .tox .tox-tbtn:hover,
+        .tox .tox-tbtn--enabled {
+            color: var(--accent-color) !important;
+            background-color: rgba(var(--accent-color-rgb), 0.1) !important;
+        }
+        
+        .tox .tox-edit-area__iframe {
+            background-color: var(--card-background-dark) !important;
+            color: var(--text-light) !important;
+            border-radius: 0 0 12px 12px !important;
+            min-height: 400px;
+        }
+        
+        .tox .tox-statusbar {
+            background-color: var(--card-background-dark) !important;
+            border-top: 1px solid var(--border-dark) !important;
+            color: var(--text-muted) !important;
+            border-radius: 0 0 12px 12px !important;
+            padding: 5px 15px !important;
+        }
+        /* Style the content within the editor iframe */
+        
+        .tox-tinymce {
+            color: var(--text-light);
+            /* Fallback */
+        }
+        /* Scrollbar styles for dark mode */
+        
+        body::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        body::-webkit-scrollbar-track {
+            background: var(--background-dark);
+            border-radius: 10px;
+        }
+        
+        body::-webkit-scrollbar-thumb {
+            background-color: rgba(var(--text-muted-rgb), 0.3);
+            border-radius: 10px;
+            border: 2px solid var(--background-dark);
+        }
+        
+        body::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(var(--accent-color-rgb), 0.5);
+        }
+        /* Status & Schedule (Segmented Control Style) - Fixed Height Bug */
+        
+        .status-options {
+            display: flex;
+            background-color: var(--background-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 8px;
+            /* Padding for the container */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            gap: 8px;
+            align-items: center;
+            /* Align items vertically */
+        }
+        
+        .status-option {
+            flex: 1;
+            /* Make each option take equal space */
+            text-align: center;
+        }
+        
+        .status-option input[type="radio"] {
+            display: none;
+        }
+        
+        .status-option label {
+            display: flex;
+            /* Use flex for content centering */
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            /* Padding for the actual label */
+            border-radius: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: transparent;
+            height: 36px;
+            /* Explicit height for consistency */
+            box-sizing: border-box;
+            /* Include padding in height calculation */
+        }
+        
+        .status-option input[type="radio"]:checked+label {
+            background-color: var(--accent-color);
+            color: var(--text-lighter);
+            box-shadow: 0 2px 8px rgba(var(--accent-color-rgb), 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-option input[type="radio"]:hover+label {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
+        }
+        
+        .status-option input[type="radio"]:checked:hover+label {
+            background-color: var(--accent-color-hover);
+            color: var(--text-lighter);
+        }
+        
+        #scheduleDateTimeGroup {
+            display: none;
+            margin-top: 15px;
+            padding: 0;
+            border: none;
+        }
         /* Button Group */
+        
         .button-group {
             display: flex;
             gap: 15px;
             justify-content: flex-end;
             margin-top: 30px;
         }
-
+        
         .button-group .mac-button {
-            padding: 12px 25px; 
-            font-size: 1.05rem; 
+            padding: 12px 25px;
+            font-size: 1.05rem;
         }
         
         .btn-primary {
             background-color: var(--primary-color) !important;
             color: white !important;
             border-color: rgba(var(--primary-color-rgb), 0.5);
-            box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
+        
         .btn-primary:hover {
             background-color: var(--primary-color-hover) !important;
-            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+            box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
+        
         .btn-primary:active {
             background-color: var(--primary-color) !important;
-            box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3), inset 0 1px 0 rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3), inset 0 1px 0 rgba(0, 0, 0, 0.1);
         }
-
+        
         .btn-secondary {
             background-color: var(--background-dark) !important;
             color: var(--text-light) !important;
             border-color: var(--border-dark);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
+        
         .btn-secondary:hover {
             background-color: rgba(var(--card-background-dark-rgb), 0.8) !important;
-            border-color: rgba(var(--accent-color-rgb), 0.5); 
-            color: var(--accent-color); 
+            border-color: rgba(var(--accent-color-rgb), 0.5);
+            color: var(--accent-color);
         }
+        
         .btn-secondary:active {
             background-color: rgba(var(--background-dark-rgb), 0.9) !important;
             border-color: rgba(var(--accent-color-rgb), 0.3);
             color: var(--accent-color);
         }
-        
         /* Featured Image Area */
+        
         #featuredImageArea {
             background-color: var(--background-dark) !important;
             border: 2px dashed var(--border-dark) !important;
-            border-radius: 16px; 
+            border-radius: 16px;
             padding: 30px;
             text-align: center;
             cursor: pointer;
@@ -559,15 +653,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 200px; 
+            min-height: 200px;
             position: relative;
-            overflow: hidden; 
+            overflow: hidden;
+            gap: 10px;
         }
+        
         #featuredImageArea.dragging {
             border-color: var(--accent-color) !important;
             box-shadow: 0 0 0 5px rgba(var(--accent-color-rgb), 0.2);
             background-color: rgba(var(--background-dark-rgb), 0.8) !important;
         }
+        
         #featuredImageArea input[type="file"] {
             position: absolute;
             top: 0;
@@ -576,37 +673,43 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
-            z-index: 10; 
+            z-index: 10;
         }
+        
         #featuredImageArea .upload-icon {
-            font-size: 3.5em; 
+            font-size: 3.5em;
             color: var(--text-muted);
-            margin-bottom: 15px;
+            margin-bottom: 0px;
             transition: color 0.3s ease;
         }
+        
         #featuredImageArea:hover .upload-icon {
             color: var(--accent-color);
         }
+        
         #featuredImageArea .upload-text {
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 0px;
             font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        /* New styling for integrated "Browse Files" text */
-        #featuredImageArea .browse-files-text {
+        
+        .browse-files-text {
             font-weight: 600;
-            color: var(--accent-color); 
+            color: var(--accent-color);
             transition: color 0.2s ease;
-            cursor: pointer; 
-            display: inline-block; 
-            padding: 5px 0; 
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 0;
         }
-        #featuredImageArea .browse-files-text:hover {
-            color: var(--accent-color-hover); 
+        
+        .browse-files-text:hover {
+            color: var(--accent-color-hover);
             text-decoration: underline;
         }
-
-
+        
         #featuredImageArea .progress-bar-container {
             width: 80%;
             height: 8px;
@@ -614,16 +717,17 @@
             border-radius: 4px;
             overflow: hidden;
             margin-top: 15px;
-            display: none; 
+            display: none;
         }
+        
         #featuredImageArea .progress-bar {
             height: 100%;
             width: 0%;
-            background-color: var(--accent-color); 
+            background-color: var(--accent-color);
             border-radius: 4px;
             transition: width 0.3s ease;
         }
-
+        
         .featured-image-preview-container {
             margin-top: 20px;
             width: 100%;
@@ -631,46 +735,57 @@
             justify-content: center;
             position: relative;
         }
+        
         .featured-image-preview-container.hidden {
             display: none;
         }
+        
         #featuredImagePreview {
             max-width: 100%;
             height: auto;
-            max-height: 300px; 
-            object-fit: contain; 
-            border-radius: 18px; 
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4); 
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease-out;
-            display: block; 
+            display: block;
         }
+        
         #featuredImagePreview:hover {
-            transform: scale(1.02); 
+            transform: scale(1.02);
         }
+        
         .remove-image-button {
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: rgba(var(--primary-color-rgb), 0.8);
-            color: white;
-            border: none;
+            background-color: rgba(var(--card-background-dark-rgb), 0.8);
+            color: var(--text-muted);
+            border: 1px solid var(--border-dark);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
+            font-size: 1.5em;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 100;
         }
+        
         .remove-image-button:hover {
-            background-color: var(--primary-color);
+            background-color: var(--background-dark);
+            color: var(--primary-color);
             transform: scale(1.1);
         }
-
+        
+        .remove-image-button ion-icon {
+            font-size: 1.5em;
+        }
         /* Preview Modal */
+        
         .modal {
             display: none;
             position: fixed;
@@ -680,16 +795,21 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(var(--frosted-blur-intensity));
             -webkit-backdrop-filter: blur(var(--frosted-blur-intensity));
             animation: fadeIn 0.4s forwards;
         }
+        
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
-
+        
         .modal-content {
             background-color: rgba(var(--card-background-dark-rgb), var(--frosted-bg-opacity));
             margin: 4% auto;
@@ -702,12 +822,20 @@
             color: var(--text-light);
             position: relative;
             animation: slideInUp 0.5s ease-out forwards;
+            box-sizing: border-box;
         }
+        
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
+        
         .close-button {
             color: var(--text-muted);
             position: absolute;
@@ -718,11 +846,13 @@
             cursor: pointer;
             transition: color 0.3s ease, transform 0.2s ease;
         }
-        .close-button:hover, .close-button:focus {
+        
+        .close-button:hover,
+        .close-button:focus {
             color: var(--primary-color);
             transform: scale(1.15);
         }
-
+        
         .preview-title {
             font-size: 2.5em;
             font-weight: 700;
@@ -730,16 +860,16 @@
             margin-bottom: 25px;
             line-height: 1.2;
         }
-
+        
         .preview-image {
             max-width: 100%;
             height: auto;
             border-radius: 16px;
             margin-bottom: 25px;
             display: block;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
-
+        
         .preview-content {
             line-height: 1.9;
             font-size: 1.15em;
@@ -749,62 +879,76 @@
             -moz-osx-font-smoothing: grayscale;
         }
         /* Custom styles for elements within the preview content */
-        .preview-content h1, .preview-content h2, .preview-content h3,
-        .preview-content h4, .preview-content h5, .preview-content h6 {
+        
+        .preview-content h1,
+        .preview-content h2,
+        .preview-content h3,
+        .preview-content h4,
+        .preview-content h5,
+        .preview-content h6 {
             color: var(--text-lighter) !important;
             margin-top: 1.5em;
             margin-bottom: 0.8em;
             font-weight: 600;
         }
+        
         .preview-content p {
             margin-bottom: 1em;
         }
+        
         .preview-content a {
-            color: var(--accent-color) !important; 
+            color: var(--accent-color) !important;
             text-decoration: none;
             transition: color 0.2s ease;
         }
+        
         .preview-content a:hover {
-            color: var(--accent-color-hover) !important; 
+            color: var(--accent-color-hover) !important;
             text-decoration: underline;
         }
+        
         .preview-content img {
             max-width: 100%;
             height: auto;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin: 1.5em 0;
             display: block;
         }
+        
         .preview-content blockquote {
-            border-left: 4px solid var(--accent-color); 
+            border-left: 4px solid var(--accent-color);
             padding-left: 15px;
             margin: 1.5em 0;
             color: var(--text-muted);
             font-style: italic;
         }
+        
         .preview-content code {
-            background-color: rgba(var(--accent-color-rgb), 0.1); 
-            color: var(--accent-color); 
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
             padding: 3px 6px;
             border-radius: 6px;
             font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
             font-size: 0.9em;
         }
+        
         .preview-content pre {
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-dark);
             border-radius: 8px;
             padding: 1em;
             overflow-x: auto;
             margin: 1.5em 0;
         }
+        
         .preview-content pre code {
             background: none;
             color: var(--text-light);
             padding: 0;
             font-size: 1em;
         }
+        
         .preview-content table {
             width: 100%;
             border-collapse: collapse;
@@ -813,35 +957,38 @@
             border-radius: 8px;
             overflow: hidden;
         }
-        .preview-content th, .preview-content td {
+        
+        .preview-content th,
+        .preview-content td {
             border: 1px solid var(--border-dark);
             padding: 10px;
             text-align: left;
             color: var(--text-light);
         }
+        
         .preview-content th {
-            background-color: rgba(var(--accent-color-rgb), 0.1); 
-            color: var(--accent-color); 
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
             font-weight: 600;
         }
-        
         /* Publish/Draft Confirmation Modal */
+        
         .confirmation-modal {
             display: none;
             position: fixed;
-            z-index: 10001; 
+            z-index: 10001;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             animation: fadeIn 0.3s forwards;
             justify-content: center;
             align-items: center;
         }
-
+        
         .confirmation-modal-content {
             background-color: var(--card-background-dark);
             padding: 30px;
@@ -854,46 +1001,97 @@
             position: relative;
             animation: slideInUp 0.4s ease-out forwards;
         }
-
+        
         .confirmation-modal-content h3 {
             margin-bottom: 25px;
             font-size: 1.5em;
             color: var(--text-lighter);
         }
-
-        .confirmation-modal-content .button-group-modal { 
+        
+        .confirmation-modal-content .button-group-modal {
             display: flex;
             gap: 15px;
             justify-content: center;
             margin-top: 20px;
         }
-        .confirmation-modal-content .button-group-modal .mac-button { 
+        
+        .confirmation-modal-content .button-group-modal .mac-button {
             flex: 1;
             padding: 15px 20px;
             font-size: 1.1em;
         }
+        
         .confirmation-modal-content .button-group-modal .btn-primary {
             background-color: var(--primary-color) !important;
             color: var(--text-lighter) !important;
             border-color: rgba(var(--primary-color-rgb), 0.5);
         }
-        .confirmation-modal-content .button-group-modal .btn-secondary { 
-            background-color: var(--accent-color) !important; 
+        
+        .confirmation-modal-content .button-group-modal .btn-secondary {
+            background-color: var(--accent-color) !important;
             color: var(--text-lighter) !important;
             border-color: rgba(var(--accent-color-rgb), 0.5);
         }
-        .confirmation-modal-content .button-group-modal .btn-cancel { 
+        
+        .confirmation-modal-content .button-group-modal .btn-cancel {
             background-color: var(--background-dark) !important;
             color: var(--text-muted) !important;
             border: 1px solid var(--border-dark);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
-
+        /* NEW: Add Category Modal */
+        
+        #addCategoryModal {
+            display: none;
+            position: fixed;
+            z-index: 10002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s forwards;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #addCategoryModal .modal-content {
+            padding: 30px;
+            border-radius: 18px;
+            max-width: 400px;
+            text-align: center;
+            animation: slideInUp 0.4s ease-out forwards;
+        }
+        
+        #addCategoryModal .modal-content h3 {
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            color: var(--text-lighter);
+        }
+        
+        #addCategoryModal input[type="text"] {
+            margin-bottom: 20px;
+        }
+        
+        #addCategoryModal .button-group-modal {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        #addCategoryModal .button-group-modal .mac-button {
+            flex: 1;
+            padding: 12px 18px;
+            font-size: 1em;
+        }
         /* UTILITY CLASSES & SPINNER */
-        body.loading-page > *:not(#loadingOverlay) {
+        
+        body.loading-page>*:not(#loadingOverlay) {
             display: none;
         }
-
+        
         #loadingOverlay {
             position: fixed;
             top: 0;
@@ -906,204 +1104,449 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            color: var(--text-muted); 
+            color: var(--text-muted);
             font-size: 1.2rem;
-            opacity: 1; 
+            opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
-
-        #loadingOverlay.hidden { 
+        
+        #loadingOverlay.hidden {
             opacity: 0;
-            pointer-events: none; 
+            pointer-events: none;
         }
-
+        
         .spinner-flower-base {
             position: relative;
-            display: inline-block; 
+            display: inline-block;
         }
-
+        
         .spinner-flower-base div {
             position: absolute;
-            border-radius: 2px; 
+            border-radius: 2px;
             opacity: 0.25;
             animation: flower-spin 1.2s linear infinite;
         }
-
+        
         @keyframes flower-spin {
-            0% { opacity: 0.25; }
-            50% { opacity: 1; }
+            0% {
+                opacity: 0.25;
+            }
+            50% {
+                opacity: 1;
+            }
         }
-
+        
         .spinner-flower-large {
-            width: 36px; 
+            width: 36px;
             height: 36px;
         }
-
+        
         .spinner-flower-large div {
-            width: 4px; 
-            height: 9px; 
-            background: var(--accent-color); 
-            transform-origin: 18px 18px; 
+            width: 4px;
+            height: 9px;
+            background: var(--accent-color);
+            transform-origin: 18px 18px;
         }
-
-        .spinner-flower-large div:nth-child(1) { transform: rotate(0deg) translate(14px);  animation-delay: -1.1s; }
-        .spinner-flower-large div:nth-child(2) { transform: rotate(45deg) translate(14px); animation-delay: -1s; }
-        .spinner-flower-large div:nth-child(3) { transform: rotate(90deg) translate(14px); animation-delay: -0.9s; }
-        .spinner-flower-large div:nth-child(4) { transform: rotate(135deg) translate(14px);animation-delay: -0.8s; }
-        .spinner-flower-large div:nth-child(5) { transform: rotate(180deg) translate(14px);animation-delay: -0.7s; }
-        .spinner-flower-large div:nth-child(6) { transform: rotate(225deg) translate(14px);animation-delay: -0.6s; }
-        .spinner-flower-large div:nth-child(7) { transform: rotate(270deg) translate(14px);animation-delay: -0.5s; }
-        .spinner-flower-large div:nth-child(8) { transform: rotate(315deg) translate(14px);animation-delay: -0.4s; }
-    
+        
+        .spinner-flower-large div:nth-child(1) {
+            transform: rotate(0deg) translate(14px);
+            animation-delay: -1.1s;
+        }
+        
+        .spinner-flower-large div:nth-child(2) {
+            transform: rotate(45deg) translate(14px);
+            animation-delay: -1s;
+        }
+        
+        .spinner-flower-large div:nth-child(3) {
+            transform: rotate(90deg) translate(14px);
+            animation-delay: -0.9s;
+        }
+        
+        .spinner-flower-large div:nth-child(4) {
+            transform: rotate(135deg) translate(14px);
+            animation-delay: -0.8s;
+        }
+        
+        .spinner-flower-large div:nth-child(5) {
+            transform: rotate(180deg) translate(14px);
+            animation-delay: -0.7s;
+        }
+        
+        .spinner-flower-large div:nth-child(6) {
+            transform: rotate(225deg) translate(14px);
+            animation-delay: -0.6s;
+        }
+        
+        .spinner-flower-large div:nth-child(7) {
+            transform: rotate(270deg) translate(14px);
+            animation-delay: -0.5s;
+        }
+        
+        .spinner-flower-large div:nth-child(8) {
+            transform: rotate(315deg) translate(14px);
+            animation-delay: -0.4s;
+        }
         /* Responsive Design */
         /* Tablet & Smaller Desktops */
+        
         @media (max-width: 768px) {
-            :root {
-                --bottom-header-height: 70px; /* Adjust header height for tablet */
+             :root {
+                --bottom-header-height: 70px;
             }
             body {
-                padding: 0 15px; 
-                padding-bottom: var(--bottom-header-height); 
+                padding: 0 15px;
+                padding-bottom: var(--bottom-header-height);
             }
             header {
                 padding: 15px 20px;
-                border-radius: 16px 16px 0 0; 
+                border-radius: 16px 16px 0 0;
             }
-            .header-center { font-size: 1.2em; }
-            .header-btn { width: 36px; height: 36px; font-size: 1.6rem; }
-            .header-btn ion-icon { font-size: 1.6rem; }
-            .header-save-button { padding: 8px 15px; font-size: 1em; border-radius: 10px; }
-
+            .header-center {
+                font-size: 1.2em;
+            }
+            .header-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1.6rem;
+            }
+            .header-btn ion-icon {
+                font-size: 1.6rem;
+            }
+            .header-save-button {
+                padding: 8px 15px;
+                font-size: 1em;
+                border-radius: 10px;
+            }
             .main-content {
                 padding: 20px;
                 margin: 25px auto;
                 border-radius: 18px;
                 gap: 25px;
-                margin-bottom: calc(25px + var(--bottom-header-height)); 
+                margin-bottom: calc(25px + var(--bottom-header-height));
             }
-            .form-section h1 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
-            .form-section h3 { font-size: 1.4em; }
-
-            .form-group input, .form-group select, .form-group textarea {
+            .form-section h1 {
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+            }
+            .form-section h3 {
+                font-size: 1.4em;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
                 padding: 12px 15px;
                 font-size: 1rem;
                 border-radius: 10px;
             }
-            .form-group label { font-size: 0.95rem; } 
-            .form-group small { font-size: 0.85rem; }
-
-            /* Quill.js adjustments for tablets */
-            .ql-toolbar {
-                /* No specific top offset needed if header is at bottom */
-                top: 0; 
+            .form-group label {
+                font-size: 0.95rem;
             }
-
+            .form-group small {
+                font-size: 0.85rem;
+            }
+            /* TinyMCE adjustments for tablets */
+            .tox .tox-editor-container {
+                border-radius: 10px !important;
+            }
+            .tox .tox-editor-header {
+                border-radius: 10px 10px 0 0 !important;
+                padding: 8px 12px !important;
+            }
+            .tox .tox-edit-area__iframe {
+                min-height: 350px !important;
+            }
+            .tox .tox-toolbar-group {
+                padding: 3px;
+                margin: 0 3px;
+            }
+            .tox .tox-tbtn {
+                padding: 6px;
+            }
             #featuredImageArea {
                 min-height: 180px;
                 padding: 25px;
                 border-radius: 14px;
             }
-            #featuredImageArea .upload-icon { font-size: 3em; margin-bottom: 10px;}
-            #featuredImageArea .upload-text { font-size: 1em; margin-bottom: 15px;}
-            #featuredImagePreview { max-height: 250px; border-radius: 16px; }
-
+            #featuredImageArea .upload-icon {
+                font-size: 3em;
+                margin-bottom: 0px;
+            }
+            #featuredImageArea .upload-text {
+                font-size: 1em;
+                margin-bottom: 0px;
+            }
+            #featuredImagePreview {
+                max-height: 250px;
+                border-radius: 16px;
+            }
+            .remove-image-button {
+                width: 32px;
+                height: 32px;
+                font-size: 1.3em;
+            }
+            .remove-image-button ion-icon {
+                font-size: 1.3em;
+            }
             .button-group {
-                flex-direction: column; 
+                flex-direction: column;
                 gap: 12px;
             }
             .button-group .mac-button {
-                width: 100%; 
+                width: 100%;
                 padding: 12px 20px;
                 font-size: 1rem;
             }
             .status-options {
-                gap: 15px;
-                flex-direction: column; 
+                gap: 10px;
             }
-
-            .modal-content { width: 92%; margin: 6% auto; padding: 30px; border-radius: 18px; }
-            .preview-title { font-size: 2.2em; margin-bottom: 20px; }
-            .preview-content { font-size: 1.1em; line-height: 1.8; }
-
-            .confirmation-modal-content { padding: 25px; border-radius: 16px; }
-            .confirmation-modal-content h3 { font-size: 1.3em; margin-bottom: 20px; }
-            .confirmation-modal-content .button-group-modal .mac-button { padding: 12px 15px; font-size: 1em; border-radius: 10px; }
+            .category-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .category-options {
+                width: 100%;
+                gap: 6px;
+                padding: 6px;
+                min-height: auto;
+            }
+            .category-option {
+                flex: 1 1 45%;
+            }
+            .category-option label {
+                padding: 8px 15px;
+                height: auto;
+            }
+            .add-category-button {
+                width: 100%;
+                height: auto;
+                padding: 10px 18px;
+            }
+            .modal-content {
+                width: 92%;
+                margin: 6% auto;
+                padding: 30px;
+                border-radius: 18px;
+                max-width: 90vw;
+            }
+            .preview-title {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+            }
+            .preview-content {
+                font-size: 1.1em;
+                line-height: 1.8;
+            }
+            .confirmation-modal-content {
+                padding: 25px;
+                border-radius: 16px;
+            }
+            .confirmation-modal-content h3 {
+                font-size: 1.3em;
+                margin-bottom: 20px;
+            }
+            .confirmation-modal-content .button-group-modal .mac-button {
+                padding: 12px 15px;
+                font-size: 1em;
+                border-radius: 10px;
+            }
+            #addCategoryModal .modal-content {
+                max-width: 90vw;
+                padding: 25px;
+            }
+            #addCategoryModal .button-group-modal .mac-button {
+                padding: 10px 15px;
+            }
         }
-
         /* Mobile Devices */
+        
         @media (max-width: 480px) {
-            :root {
-                --bottom-header-height: 60px; /* Adjust header height for mobile */
+             :root {
+                --bottom-header-height: 60px;
             }
             body {
-                padding: 0 10px; 
-                padding-bottom: var(--bottom-header-height); 
+                padding: 0 10px;
+                padding-bottom: var(--bottom-header-height);
             }
-            header { padding: 10px 15px; border-radius: 12px 12px 0 0; } 
-            .header-center { font-size: 1em; }
-            .header-btn { width: 32px; height: 32px; font-size: 1.4rem; }
-            .header-btn ion-icon { font-size: 1.4rem; }
-            .header-save-button { padding: 7px 12px; font-size: 0.9em; border-radius: 8px; }
-
+            header {
+                padding: 10px 15px;
+                border-radius: 12px 12px 0 0;
+            }
+            .header-center {
+                font-size: 1em;
+            }
+            .header-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 1.4rem;
+            }
+            .header-btn ion-icon {
+                font-size: 1.4rem;
+            }
+            .header-save-button {
+                padding: 7px 12px;
+                font-size: 0.9em;
+                border-radius: 8px;
+            }
             .main-content {
                 padding: 15px;
                 margin: 15px auto;
                 border-radius: 16px;
                 gap: 20px;
-                margin-bottom: calc(15px + var(--bottom-header-height)); 
+                margin-bottom: calc(15px + var(--bottom-header-height));
             }
-            .form-section h1 { font-size: clamp(1.4rem, 8vw, 2rem); }
-            .form-section h3 { font-size: 1.2em; margin-bottom: 15px;}
-
-            .form-group { margin-bottom: 18px; }
-            .form-group input, .form-group select, .form-group textarea {
+            .form-section h1 {
+                font-size: clamp(1.6rem, 8vw, 2.2rem);
+            }
+            .form-section h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            .form-group {
+                margin-bottom: 18px;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
                 padding: 10px 12px;
                 font-size: 0.95rem;
                 border-radius: 8px;
             }
-            .form-group label { margin-bottom: 6px; font-size: 0.9rem; }
-            .form-group small { font-size: 0.8rem; }
-
-            /* Quill.js adjustments for mobile */
-            .ql-toolbar {
-                /* No specific top offset needed if header is at bottom */
-                top: 0; 
+            .form-group label {
+                margin-bottom: 6px;
+                font-size: 0.9rem;
             }
-
+            .form-group small {
+                font-size: 0.8rem;
+            }
+            /* TinyMCE adjustments for mobile */
+            .tox .tox-editor-container {
+                border-radius: 8px !important;
+            }
+            .tox .tox-editor-header {
+                border-radius: 8px 8px 0 0 !important;
+                padding: 6px 8px !important;
+            }
+            .tox .tox-edit-area__iframe {
+                min-height: 300px !important;
+            }
+            .tox .tox-toolbar-group {
+                padding: 2px;
+                margin: 0 2px;
+            }
+            .tox .tox-tbtn {
+                padding: 4px;
+            }
             #featuredImageArea {
                 min-height: 150px;
                 padding: 20px;
                 border-radius: 12px;
             }
-            #featuredImageArea .upload-icon { font-size: 2.5em; margin-bottom: 8px;}
-            #featuredImageArea .upload-text { font-size: 0.9em; margin-bottom: 12px;}
-            #featuredImageArea .progress-bar-container { width: 90%; }
-            #featuredImagePreview { max-height: 200px; border-radius: 14px; }
-            .remove-image-button { width: 26px; height: 26px; font-size: 1em; }
-
-            .button-group { gap: 10px; }
-            .button-group .mac-button { padding: 10px 15px; font-size: 0.95rem; border-radius: 10px; }
-            .status-option { gap: 8px; }
-            .status-option input[type="radio"] { width: 18px; height: 18px; }
-            .status-option input[type="radio"]:checked::before { width: 7px; height: 7px; }
-            .status-option label { font-size: 0.95rem; }
-
-            .modal-content { width: 95%; margin: 4% auto; padding: 20px; border-radius: 16px; }
-            .preview-title { font-size: 1.8em; margin-bottom: 15px; }
-            .preview-content { font-size: 1em; line-height: 1.6; }
-
-            .confirmation-modal-content { padding: 20px; border-radius: 14px; }
-            .confirmation-modal-content h3 { font-size: 1.2em; margin-bottom: 15px; }
-            .confirmation-modal-content .button-group-modal .mac-button { padding: 10px 12px; font-size: 0.95em; border-radius: 8px; }
+            #featuredImageArea .upload-icon {
+                font-size: 2.5em;
+                margin-bottom: 0px;
+            }
+            #featuredImageArea .upload-text {
+                font-size: 0.9em;
+                margin-bottom: 0px;
+            }
+            #featuredImageArea .progress-bar-container {
+                width: 90%;
+            }
+            #featuredImagePreview {
+                max-height: 200px;
+                border-radius: 14px;
+            }
+            .remove-image-button {
+                width: 30px;
+                height: 30px;
+                font-size: 1.2em;
+            }
+            .remove-image-button ion-icon {
+                font-size: 1.2em;
+            }
+            .button-group {
+                gap: 10px;
+            }
+            .button-group .mac-button {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+                border-radius: 10px;
+            }
+            .status-options {
+                gap: 6px;
+            }
+            .status-option label {
+                padding: 8px 12px;
+                font-size: 0.95rem;
+            }
+            .category-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .category-options {
+                gap: 4px;
+                padding: 4px;
+            }
+            .category-option {
+                flex: 1 1 100%;
+            }
+            .category-option label {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            .add-category-button {
+                padding: 8px 12px;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 4% auto;
+                padding: 20px;
+                border-radius: 16px;
+                max-width: 95vw;
+            }
+            .preview-title {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            .preview-content {
+                font-size: 1em;
+                line-height: 1.6;
+            }
+            .confirmation-modal-content {
+                padding: 20px;
+                border-radius: 14px;
+            }
+            .confirmation-modal-content h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            .confirmation-modal-content .button-group-modal .mac-button {
+                padding: 10px 12px;
+                font-size: 0.95em;
+                border-radius: 8px;
+            }
+            #addCategoryModal .modal-content {
+                max-width: 95vw;
+                padding: 20px;
+            }
+            #addCategoryModal .button-group-modal .mac-button {
+                padding: 8px 12px;
+            }
         }
     </style>
 </head>
 
-<body class="loading-page"> 
+<body class="loading-page">
     <div id="loadingOverlay">
         <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
-            <div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
         <p style="color: var(--text-muted); margin-top: 15px;">Memuat halaman...</p>
     </div>
@@ -1115,7 +1558,8 @@
             </button>
         </div>
         <div class="header-center">
-            <span id="pageTitleDisplay">Tambah Konten</span> </div>
+            <span id="pageTitleDisplay">Tambah Konten</span>
+        </div>
         <div class="header-right" style="gap: 15px;">
             <button class="header-save-button mac-button" id="saveHeaderBtn">Simpan</button>
         </div>
@@ -1127,18 +1571,23 @@
             <form id="newPostForm">
                 <div class="form-group">
                     <label for="postTitle">Judul Postingan:</label>
-                    <input type="text" id="postTitle" required placeholder="Masukkan judul postingan Anda"/>
+                    <input type="text" id="postTitle" required placeholder="Masukkan judul postingan Anda" />
                 </div>
                 <div class="form-group">
                     <label for="postDescription">SEO Meta Description:</label>
-                    <input type="text" id="postDescription" required maxlength="160" placeholder="Isi meta description untuk SEO (maks 160 karakter)"/>
+                    <input type="text" id="postDescription" required maxlength="160" placeholder="Isi meta description untuk SEO (maks 160 karakter)" />
                     <small>Deskripsi singkat yang muncul di hasil pencarian.</small>
                 </div>
+
                 <div class="form-group">
-                    <label for="postCategory">Kategori:</label>
-                    <select id="postCategory" required>
-                        <option value="">Pilih Kategori</option> 
-                    </select>
+                    <label>Kategori:</label>
+                    <div class="category-container">
+                        <div class="category-options" id="postCategoryRadios">
+                        </div>
+                        <button type="button" class="add-category-button mac-button" id="addCategoryBtn">
+                            <ion-icon name="add-circle-outline"></ion-icon> Tambah
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -1153,21 +1602,26 @@
                     </div>
                     <div class="featured-image-preview-container hidden" id="featuredImagePreviewContainer">
                         <img id="featuredImagePreview" src="" alt="Featured Image Preview">
-                        <button class="remove-image-button mac-button" id="removeImageBtn" title="Hapus Gambar">&times;</button>
+                        <button class="remove-image-button mac-button" id="removeImageBtn" title="Hapus Gambar">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </button>
                     </div>
                     <small>Pilih gambar yang menarik sebagai thumbnail artikel Anda.</small>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="postContentEditor">Isi Artikel:</label>
-                    <div id="postContentEditor" style="min-height: 400px;"></div>
+                    <button type="button" class="mac-button btn-secondary" id="fullscreenEditorBtn" style="float: right; margin-bottom: 10px; display: none;">
+                        <ion-icon name="expand-outline"></ion-icon> Editor Fullscreen
+                    </button>
+                    <textarea id="postContentEditor"></textarea>
                 </div>
-	            <div class="form-group">
-	                <label for="postHashtags">Hastags (pisahkan dengan koma):</label>
-	                <input type="text" id="postHashtags" placeholder="Contoh: teknologi, webdev, firebase"/>
+                <div class="form-group">
+                    <label for="postHashtags">Hastags (pisahkan dengan koma):</label>
+                    <input type="text" id="postHashtags" placeholder="Contoh: teknologi, webdev, firebase" />
                     <small>Gunakan koma untuk memisahkan setiap hashtag.</small>
-	            </div>
-                
+                </div>
+
                 <div class="form-group">
                     <h3>Opsi Publikasi</h3>
                     <label>Status Postingan:</label>
@@ -1189,7 +1643,7 @@
 
                 <div class="form-group" id="scheduleDateTimeGroup">
                     <label for="scheduleDateTime">Jadwalkan untuk Tanggal & Waktu:</label>
-                    <input type="datetime-local" id="scheduleDateTime"/>
+                    <input type="datetime-local" id="scheduleDateTime" />
                     <small>Atur tanggal dan waktu postingan akan otomatis terbit.</small>
                 </div>
 
@@ -1197,7 +1651,7 @@
                     <h3>Pengaturan SEO</h3>
                     <div>
                         <label for="focusKeyword">Kata Kunci Fokus:</label>
-                        <input type="text" id="focusKeyword" placeholder="Contoh: tips menulis artikel"/>
+                        <input type="text" id="focusKeyword" placeholder="Contoh: tips menulis artikel" />
                         <small>Kata kunci utama yang ingin Anda targetkan untuk artikel ini.</small>
                     </div>
                 </div>
@@ -1208,9 +1662,6 @@
                     </button>
                     <button type="button" class="btn-secondary mac-button" onclick="resetForm()">
                         Reset
-                    </button>
-                    <button type="submit" class="btn-primary mac-button">
-                        Simpan Postingan (di bawah)
                     </button>
                 </div>
             </form>
@@ -1237,6 +1688,20 @@
         </div>
     </div>
 
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeAddCategoryModalBtn">&times;</span>
+            <h3>Tambah Kategori Baru</h3>
+            <div class="form-group">
+                <input type="text" id="newCategoryNameInput" placeholder="Nama kategori (contoh: Teknologi)" />
+            </div>
+            <div class="button-group-modal">
+                <button class="btn-primary mac-button" id="saveNewCategoryBtn">Simpan Kategori</button>
+                <button class="btn-secondary mac-button" id="cancelNewCategoryBtn">Batal</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- Firebase Configuration ---
         const firebaseConfig = {
@@ -1250,7 +1715,7 @@
         };
 
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(); 
+        const auth = firebase.auth();
         const database = firebase.database();
         // --- End Firebase Configuration ---
 
@@ -1260,7 +1725,8 @@
         const newPostForm = document.getElementById('newPostForm');
         const postTitleInput = document.getElementById('postTitle');
         const postDescriptionInput = document.getElementById('postDescription');
-        const postCategorySelect = document.getElementById('postCategory');
+        const postCategoryRadiosContainer = document.getElementById('postCategoryRadios');
+        const addCategoryBtn = document.getElementById('addCategoryBtn');
         const featuredImageInput = document.getElementById('featuredImageInput');
         const postHashtagsInput = document.getElementById('postHashtags');
         const statusRadios = document.querySelectorAll('input[name="postStatus"]');
@@ -1285,77 +1751,197 @@
         const modalPreviewContent = document.getElementById('modalPreviewContent');
         const modalPreviewImage = document.getElementById('modalPreviewImage');
         const browseFilesText = document.querySelector('.browse-files-text');
+        const fullscreenEditorBtn = document.getElementById('fullscreenEditorBtn'); // New button for editor
 
-        let quill; // To hold the Quill.js instance
+        // New Category Modal Elements
+        const addCategoryModal = document.getElementById('addCategoryModal');
+        const closeAddCategoryModalBtn = document.getElementById('closeAddCategoryModalBtn');
+        const newCategoryNameInput = document.getElementById('newCategoryNameInput');
+        const saveNewCategoryBtn = document.getElementById('saveNewCategoryBtn');
+        const cancelNewCategoryBtn = document.getElementById('cancelNewCategoryBtn');
 
-        // --- Initialize Quill.js Editor ---
+        let editorInstance; // For TinyMCE
+
+        // --- Initialize TinyMCE Editor ---
         function initializeEditor() {
-            const editorDiv = document.getElementById('postContentEditor');
-            quill = new Quill(editorDiv, {
-                theme: 'snow',
-                placeholder: 'Tulis isi artikel Anda di sini...',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        ['blockquote', 'code-block'],
-                        ['link'],
-                        ['clean'] // remove formatting button
-                    ]
+            tinymce.init({
+                selector: '#postContentEditor',
+                skin: 'oxide-dark',
+                content_css: 'dark',
+                height: 400,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', // Added 'fullscreen'
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | image link code fullscreen preview | help', // Added 'fullscreen' to toolbar
+
+                images_upload_url: '/upload_image',
+                file_picker_callback: function(cb, value, meta) {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+
+                    input.onchange = function() {
+                        const file = this.files[0];
+                        const reader = new FileReader();
+                        reader.onload = function() {
+                            const id = 'blobid' + (new Date()).getTime();
+                            const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                            const base64 = reader.result.split(',')[1];
+                            const blobInfo = blobCache.create(id, file, base64);
+                            blobCache.add(blobInfo);
+
+                            cb(blobInfo.url(), {
+                                title: file.name
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    };
+                    input.click();
+                },
+                setup: function(editor) {
+                    editor.on('init', function() {
+                        editorInstance = editor;
+                        console.log('TinyMCE Editor initialized successfully!');
+
+                        // Show fullscreen button only on smaller screens
+                        if (window.innerWidth <= 768) {
+                            fullscreenEditorBtn.style.display = 'block';
+                        }
+                    });
+
+                    // Handle fullscreen button click
+                    fullscreenEditorBtn.addEventListener('click', () => {
+                        if (editorInstance && !editorInstance.isFullscreen()) {
+                            editorInstance.execCommand('mceFullScreen');
+                        }
+                    });
                 }
             });
-            console.log('Quill.js initialized successfully!');
         }
 
         // --- Initial Load & Authentication Check ---
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 console.log('No user signed in. Redirecting to login.');
-                window.location.href = 'login.html'; 
+                window.location.href = 'login.html';
             } else {
                 console.log('User is signed in:', user.email);
-                initializeEditor(); // Initialize Quill.js
+                initializeEditor();
                 loadCategories().then(() => {
-                    hideLoadingOverlay(); 
+                    hideLoadingOverlay();
                 }).catch(error => {
                     console.error("Error loading categories:", error);
                     alert("Gagal memuat kategori. Silakan coba lagi.");
-                    hideLoadingOverlay(); 
+                    hideLoadingOverlay();
                 });
             }
         });
 
-        // --- Load Categories for Dropdown ---
+        // --- Load Categories for Radio Buttons ---
         async function loadCategories() {
-            postCategorySelect.innerHTML = '<option value="">Pilih Kategori</option>'; 
+            postCategoryRadiosContainer.innerHTML = '';
             try {
                 const snapshot = await database.ref('categories').once('value');
                 const categories = snapshot.val();
                 if (categories) {
+                    let first = true;
                     Object.keys(categories).forEach(key => {
-                        const option = document.createElement('option');
-                        option.value = key; 
-                        option.textContent = categories[key].name; 
-                        postCategorySelect.appendChild(option);
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.classList.add('category-option');
+
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.id = `cat-${key}`;
+                        input.name = 'postCategory';
+                        input.value = key;
+                        if (first) {
+                            input.checked = true;
+                            first = false;
+                        }
+
+                        const label = document.createElement('label');
+                        label.htmlFor = `cat-${key}`;
+                        label.textContent = categories[key].name;
+
+                        categoryDiv.appendChild(input);
+                        categoryDiv.appendChild(label);
+                        postCategoryRadiosContainer.appendChild(categoryDiv);
                     });
                 } else {
-                    const option = document.createElement('option');
-                    option.value = "";
-                    option.textContent = "Belum ada kategori. Tambahkan di pengaturan.";
-                    option.disabled = true;
-                    postCategorySelect.appendChild(option);
+                    const noCategoryDiv = document.createElement('div');
+                    noCategoryDiv.textContent = "Belum ada kategori. Tambahkan di sini.";
+                    noCategoryDiv.style.color = 'var(--text-muted)';
+                    noCategoryDiv.style.padding = '10px';
+                    postCategoryRadiosContainer.appendChild(noCategoryDiv);
                 }
             } catch (error) {
                 console.error("Failed to load categories:", error);
                 alert("Gagal memuat kategori: " + error.message);
-                const option = document.createElement('option');
-                option.value = "";
-                option.textContent = "Error memuat kategori.";
-                option.disabled = true;
-                postCategorySelect.appendChild(option);
+                const errorDiv = document.createElement('div');
+                errorDiv.textContent = "Error memuat kategori.";
+                errorDiv.style.color = 'var(--primary-color)';
+                errorDiv.style.padding = '10px';
+                postCategoryRadiosContainer.appendChild(errorDiv);
             }
         }
+
+        // --- Add Category Modal Logic ---
+        addCategoryBtn.addEventListener('click', () => {
+            addCategoryModal.style.display = 'flex';
+            newCategoryNameInput.value = '';
+            newCategoryNameInput.focus();
+        });
+
+        closeAddCategoryModalBtn.addEventListener('click', () => {
+            addCategoryModal.style.display = 'none';
+        });
+
+        cancelNewCategoryBtn.addEventListener('click', () => {
+            addCategoryModal.style.display = 'none';
+        });
+
+        saveNewCategoryBtn.addEventListener('click', async() => {
+            const categoryName = newCategoryNameInput.value.trim();
+            if (!categoryName) {
+                alert('Nama kategori tidak boleh kosong!');
+                return;
+            }
+
+            showLoadingOverlay("Menyimpan kategori...");
+            try {
+                const categoryKey = categoryName.toLowerCase().replace(/\s+/g, '-');
+                const categoryRef = database.ref('categories').child(categoryKey);
+
+                const snapshot = await categoryRef.once('value');
+                if (snapshot.exists()) {
+                    alert('Kategori dengan nama ini sudah ada!');
+                    hideLoadingOverlay();
+                    return;
+                }
+
+                await categoryRef.set({
+                    name: categoryName
+                });
+                alert('Kategori "' + categoryName + '" berhasil ditambahkan!');
+                addCategoryModal.style.display = 'none';
+                await loadCategories();
+                const newCategoryRadio = document.getElementById(`cat-${categoryKey}`);
+                if (newCategoryRadio) {
+                    newCategoryRadio.checked = true;
+                }
+            } catch (error) {
+                console.error('Error saving new category:', error);
+                alert('Gagal menambahkan kategori: ' + error.message);
+            } finally {
+                hideLoadingOverlay();
+            }
+        });
+
 
         // --- Handle Status Radio Buttons & Schedule Input ---
         statusRadios.forEach(radio => {
@@ -1364,8 +1950,8 @@
                     scheduleDateTimeGroup.style.display = 'block';
                     scheduleDateTimeInput.setAttribute('required', 'required');
                     const now = new Date();
-                    now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); 
-                    scheduleDateTimeInput.min = now.toISOString().slice(0,16); 
+                    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                    scheduleDateTimeInput.min = now.toISOString().slice(0, 16);
                 } else {
                     scheduleDateTimeGroup.style.display = 'none';
                     scheduleDateTimeInput.removeAttribute('required');
@@ -1374,22 +1960,24 @@
         });
 
         if (document.getElementById('statusScheduled').checked) {
-             const now = new Date();
-             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-             scheduleDateTimeInput.min = now.toISOString().slice(0,16);
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            scheduleDateTimeInput.min = now.toISOString().slice(0, 16);
         }
 
         // --- Form Submission Handler ---
-        newPostForm.addEventListener('submit', async (e) => {
+        newPostForm.addEventListener('submit', async(e) => {
             e.preventDefault();
 
             showLoadingOverlay("Menyimpan postingan...");
 
             const title = postTitleInput.value.trim();
             const description = postDescriptionInput.value.trim();
-            const category = postCategorySelect.value;
+            const selectedCategoryRadio = document.querySelector('input[name="postCategory"]:checked');
+            const category = selectedCategoryRadio ? selectedCategoryRadio.value : '';
+
             const thumbnail = featuredImagePreview.src && !featuredImagePreviewContainer.classList.contains('hidden') ? featuredImagePreview.src : '';
-            const content = quill ? quill.root.innerHTML.trim() : ''; 
+            const content = editorInstance ? editorInstance.getContent().trim() : '';
             const hashtags = postHashtagsInput.value.trim().toLowerCase().split(',').map(tag => tag.trim()).filter(tag => tag !== '');
             const status = document.querySelector('input[name="postStatus"]:checked').value;
             const focusKeyword = document.getElementById('focusKeyword').value.trim();
@@ -1401,7 +1989,7 @@
                     hideLoadingOverlay();
                     return;
                 }
-                scheduledAt = new Date(scheduleDateTimeInput.value).getTime(); 
+                scheduledAt = new Date(scheduleDateTimeInput.value).getTime();
                 if (scheduledAt <= Date.now()) {
                     alert('Waktu penjadwalan harus di masa depan!');
                     hideLoadingOverlay();
@@ -1409,14 +1997,14 @@
                 }
             }
 
-            if (!title || !description || !category || content === '<p><br></p>' || content === '') { 
+            if (!title || !description || !category || !content || content === '<p></p>' || content === '<p><br data-mce-bogus="1"></p>') {
                 alert('Judul, Deskripsi Singkat, Kategori, dan Isi Artikel harus diisi!');
                 hideLoadingOverlay();
                 return;
             }
 
             try {
-                const newPostRef = database.ref('posts').push(); 
+                const newPostRef = database.ref('posts').push();
                 await newPostRef.set({
                     title: title,
                     description: description,
@@ -1425,8 +2013,8 @@
                     content: content,
                     hashtags: hashtags,
                     status: status,
-                    views: 0, 
-                    timestamp: firebase.database.ServerValue.TIMESTAMP, 
+                    views: 0,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
                     scheduledAt: scheduledAt,
                     focusKeyword: focusKeyword
                 });
@@ -1455,56 +2043,66 @@
                 loadingOverlay.style.display = 'none';
                 body.classList.remove('loading-page');
                 loadingOverlay.removeEventListener('transitionend', handler);
-            }, { once: true });
+            }, {
+                once: true
+            });
         }
 
         // --- Reset Form Function ---
         function resetForm() {
             newPostForm.reset();
-            if (quill) {
-                quill.setContents([{ insert: '\n' }]); 
+            if (editorInstance) {
+                editorInstance.setContent('');
             }
-            document.getElementById('statusDraft').checked = true; 
-            scheduleDateTimeGroup.style.display = 'none'; 
-            scheduleDateTimeInput.removeAttribute('required'); 
-            postCategorySelect.value = ""; 
-            // Reset featured image
-            featuredImageInput.value = ''; 
+            document.getElementById('statusDraft').checked = true;
+            scheduleDateTimeGroup.style.display = 'none';
+            scheduleDateTimeInput.removeAttribute('required');
+            const firstCategoryRadio = document.querySelector('.category-options input[type="radio"]');
+            if (firstCategoryRadio) {
+                firstCategoryRadio.checked = true;
+            }
+
+            featuredImageInput.value = '';
             featuredImagePreview.src = '';
             featuredImagePreviewContainer.classList.add('hidden');
-            uploadProgressBar.style.width = '0%'; 
-            progressBarContainer.style.display = 'none'; 
+            uploadProgressBar.style.width = '0%';
+            progressBarContainer.style.display = 'none';
         }
 
         // --- Featured Image Drag & Drop and Preview Logic ---
-        // Simulate upload progress (No actual upload here, just UI simulation)
         function simulateUpload(file) {
             progressBarContainer.style.display = 'block';
             let progress = 0;
-            uploadProgressBar.style.width = '0%'; 
+            uploadProgressBar.style.width = '0%';
             const interval = setInterval(() => {
                 progress += 5;
-                if (progress <= 100) { 
+                if (progress <= 100) {
                     uploadProgressBar.style.width = progress + '%';
                 }
-                
+
                 if (progress >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
                         progressBarContainer.style.display = 'none';
-                        // Show image preview after "upload" animation completes
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             featuredImagePreview.src = e.target.result;
                             featuredImagePreviewContainer.classList.remove('hidden');
                         };
                         reader.readAsDataURL(file);
-                    }, 500); 
+                    }, 500);
                 }
-            }, 50); 
+            }, 50);
         }
 
-        // Handle file selection (via click or drop)
+        featuredImageInput.addEventListener('change', function(event) {
+            handleFile(event.target.files[0]);
+        });
+
+        browseFilesText.addEventListener('click', () => {
+            featuredImageInput.click();
+        });
+
         function handleFile(file) {
             if (file && file.type.startsWith('image/')) {
                 simulateUpload(file);
@@ -1513,18 +2111,6 @@
             }
         }
 
-        // Event listener for file input change (when browsed)
-        featuredImageInput.addEventListener('change', function(event) {
-            handleFile(event.target.files[0]);
-        });
-
-        // Event listener for "Pilih File" text click
-        browseFilesText.addEventListener('click', () => {
-            featuredImageInput.click();
-        });
-
-
-        // Drag and drop events
         featuredImageArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             featuredImageArea.classList.add('dragging');
@@ -1538,21 +2124,19 @@
             handleFile(e.dataTransfer.files[0]);
         });
 
-        // Remove image button
         removeImageBtn.addEventListener('click', () => {
-            featuredImageInput.value = ''; 
+            featuredImageInput.value = '';
             featuredImagePreview.src = '';
             featuredImagePreviewContainer.classList.add('hidden');
-            uploadProgressBar.style.width = '0%'; 
-            progressBarContainer.style.display = 'none'; 
+            uploadProgressBar.style.width = '0%';
+            progressBarContainer.style.display = 'none';
         });
 
         // --- Preview Modal Logic ---
         previewArticleBtn.addEventListener('click', () => {
             modalPreviewTitle.textContent = postTitleInput.value || 'Artikel Tanpa Judul';
-            modalPreviewContent.innerHTML = quill ? quill.root.innerHTML : ''; 
+            modalPreviewContent.innerHTML = editorInstance ? editorInstance.getContent() : '';
 
-            // Handle featured image for preview from current source
             if (featuredImagePreview.src && !featuredImagePreviewContainer.classList.contains('hidden')) {
                 modalPreviewImage.src = featuredImagePreview.src;
                 modalPreviewImage.style.display = 'block';
@@ -1568,16 +2152,16 @@
             previewModal.style.display = 'none';
         });
 
-        // Close the modal if user clicks outside of it
         window.addEventListener('click', (event) => {
-            if (event.target == previewModal) {
+            if (event.target == previewModal || event.target == addCategoryModal) {
                 previewModal.style.display = 'none';
+                addCategoryModal.style.display = 'none';
             }
         });
 
         // --- Save Confirmation Modal Logic ---
         saveHeaderBtn.addEventListener('click', () => {
-            saveConfirmationModal.style.display = 'flex'; 
+            saveConfirmationModal.style.display = 'flex';
         });
 
         closeConfirmationModalBtn.addEventListener('click', () => {
@@ -1585,16 +2169,21 @@
         });
 
         confirmPublishBtn.addEventListener('click', () => {
-            document.getElementById('statusPublished').checked = true; 
-            newPostForm.dispatchEvent(new Event('submit', { cancelable: true })); 
+            document.getElementById('statusPublished').checked = true;
+            newPostForm.dispatchEvent(new Event('submit', {
+                cancelable: true
+            }));
             saveConfirmationModal.style.display = 'none';
         });
 
         confirmSaveDraftBtn.addEventListener('click', () => {
-            document.getElementById('statusDraft').checked = true; 
-            newPostForm.dispatchEvent(new Event('submit', { cancelable: true })); 
+            document.getElementById('statusDraft').checked = true;
+            newPostForm.dispatchEvent(new Event('submit', {
+                cancelable: true
+            }));
             saveConfirmationModal.style.display = 'none';
         });
     </script>
 </body>
+
 </html>
