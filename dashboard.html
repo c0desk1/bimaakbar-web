@@ -4,41 +4,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Dashboard Admin</title>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <style>
          :root {
             /* macOS Sonoma-like color palette */
             --background-dark: #1C1C1E;
-            /* Almost black, subtle dark grey - INI WARNA GELAP ASLI */
             --card-background-dark: rgba(28, 28, 30, 0.75);
-            /* Slightly more opaque for better legibility */
             --border-dark: rgba(255, 255, 255, 0.1);
-            /* Slightly more visible border */
             --primary-color: #0A84FF;
-            /* Vivid macOS blue */
             --primary-color-hover: #3399FF;
-            /* Lighter blue on hover */
             --accent-color: #007AFF;
-            /* Another shade of blue for accents */
             --text-light: #E0E0E0;
-            /* Light grey text */
             --text-lighter: #FFFFFF;
-            /* Pure white text for emphasis */
             --text-muted: #8E8E93;
-            /* Softer grey text for secondary info */
             --shadow-dark: rgba(0, 0, 0, 0.4);
-            /* More pronounced but soft shadow */
             --glass-blur: 30px;
-            /* Increased blur for stronger frosted effect */
-            /* Colors for liquid gradient (not used for background now) */
             --gradient-start: #007AFF;
             --gradient-end: #5AC8FA;
+            /* Sidebar specific */
+            --sidebar-width: 250px;
+            --sidebar-header-height: 56px;
+            /* Tinggi header yang sudah ada */
         }
         /* General Styles */
         
@@ -51,16 +44,19 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
             background-color: var(--background-dark);
-            /* Mengembalikan warna gelap asli */
             color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-top: 56px;
+            /* Space for fixed top header on mobile */
             padding-bottom: 56px;
-            /* Space for fixed bottom header */
+            /* Space for fixed bottom nav on mobile */
             position: relative;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
-        /* Header (Fixed at bottom - untuk pas di bawah) */
+        /* Header (Fixed at top for mobile/all) */
         
         header {
             display: flex;
@@ -70,23 +66,16 @@
             background-color: var(--card-background-dark);
             backdrop-filter: blur(var(--glass-blur));
             -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-top: 1px solid var(--border-dark);
-            /* Border on top */
-            box-shadow: 0 -4px 15px var(--shadow-dark);
-            /* Shadow on top */
+            border-bottom: 1px solid var(--border-dark);
+            box-shadow: 0 4px 15px var(--shadow-dark);
             position: fixed;
-            /* Mengubah dari sticky ke fixed */
-            bottom: 0;
-            /* Stick to bottom */
+            top: 0;
             left: 0;
             right: 0;
             z-index: 100;
             width: 100%;
-            border-top-left-radius: 18px;
-            /* Rounding bagian kiri atas */
-            border-top-right-radius: 18px;
-            /* Rounding bagian kanan atas */
-            /* Pastikan tidak ada border-bottom-radius */
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
         }
         
         .header-left,
@@ -114,19 +103,9 @@
         
         .header-center img {
             height: 32px;
-            /* Slightly larger logo */
             object-fit: contain;
             max-width: 100%;
             opacity: 0.9;
-            /* More visible */
-            cursor: pointer;
-            /* Make logo clickable */
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-        
-        .header-center img:hover {
-            transform: scale(1.05);
-            opacity: 1;
         }
         
         .header-right {
@@ -151,7 +130,6 @@
         .logout-btn:hover {
             color: var(--primary-color-hover);
             background-color: rgba(10, 132, 255, 0.15);
-            /* Slightly more opaque hover */
         }
         
         .logout-btn ion-icon {
@@ -159,11 +137,19 @@
         }
         /* Main Content Wrapper */
         
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            /* For mobile, main content takes full width below header */
+        }
+        
         .main-content {
             flex-grow: 1;
             padding: 1.5rem;
-            /* Slightly more padding */
-            max-width: 1200px;
+            max-width: 100%;
+            /* Default for mobile */
             margin: 0 auto;
             width: 100%;
         }
@@ -171,10 +157,8 @@
         
         .greeting-section {
             padding: 2rem 0;
-            /* More vertical padding */
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
-            /* More bottom margin */
             text-align: center;
         }
         
@@ -184,7 +168,6 @@
         
         .greeting-content h1 {
             font-size: clamp(1.8rem, 8vw, 3rem);
-            /* Larger heading */
             margin-bottom: 0;
             line-height: 1.3;
             text-align: center;
@@ -209,9 +192,7 @@
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            /* Slightly larger min-width */
             gap: 1rem;
-            /* More gap */
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
@@ -220,17 +201,13 @@
         .stat-card {
             background-color: var(--card-background-dark);
             padding: 1.2rem;
-            /* More padding */
             border-radius: 14px;
-            /* More rounded */
             border: 1px solid var(--border-dark);
             box-shadow: 0 6px 20px var(--shadow-dark);
-            /* Stronger shadow */
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
             min-height: 100px;
-            /* Taller cards */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -238,78 +215,57 @@
             backdrop-filter: blur(calc(var(--glass-blur) / 2));
             -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
             overflow: hidden;
-            /* Ensures blur doesn't bleed */
             color: var(--text-light);
-            /* Pastikan teks di card memiliki warna dasar terang */
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            /* More pronounced lift */
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            /* Even stronger shadow on hover */
         }
         
         .stat-card .stat-value {
-            /* Lebih spesifik untuk memastikan warna */
             font-size: 2rem;
-            /* Larger value */
             font-weight: 600;
             color: var(--text-lighter);
-            /* Pastikan nilai statistik berwarna terang */
             margin-bottom: 0.4rem;
-            /* More space */
         }
         
         .stat-card .stat-label {
-            /* Lebih spesifik untuk memastikan warna */
             font-size: 0.9rem;
-            /* Slightly larger label */
             color: var(--text-muted);
-            /* Pastikan label berwarna muted */
         }
         /* Info & List Sections */
         
         .dashboard-section {
             background-color: var(--card-background-dark);
             border-radius: 14px;
-            /* More rounded */
             padding: 25px;
-            /* More padding */
             box-shadow: 0 6px 20px var(--shadow-dark);
-            /* Stronger shadow */
             border: 1px solid var(--border-dark);
             margin-bottom: 25px;
-            /* More bottom margin */
             backdrop-filter: blur(var(--glass-blur));
             -webkit-backdrop-filter: blur(var(--glass-blur));
             overflow: hidden;
-            /* Ensures blur doesn't bleed */
         }
         
         .dashboard-section h2 {
             color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 20px;
-            /* More margin */
             font-size: 1.4em;
-            /* Slightly larger title */
             font-weight: 600;
         }
         
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            /* Slightly wider min-width */
             gap: 15px;
-            /* More gap */
         }
         
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            /* More padding */
             border-bottom: 1px dashed var(--border-dark);
         }
         
@@ -321,14 +277,12 @@
             color: var(--text-muted);
             font-weight: 400;
             font-size: 0.95em;
-            /* Slightly larger */
         }
         
         .info-value {
             color: var(--text-lighter);
             font-weight: 500;
             font-size: 1em;
-            /* Slightly larger */
         }
         
         .data-list ul {
@@ -342,43 +296,35 @@
             border-radius: 10px;
             padding: 12px;
             margin-bottom: 10px;
-            /* More margin */
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            /* More gap */
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-            /* Stronger shadow */
         }
         
         .data-list ul li span {
             flex: 1;
             min-width: 150px;
-            /* Slightly wider min-width */
             color: var(--text-light);
         }
         
         .data-list ul li .item-title {
             font-weight: 600;
             font-size: 1.05em;
-            /* Slightly larger */
             color: var(--text-lighter);
         }
         
         .data-list ul li .item-meta {
             font-size: 0.88em;
-            /* Slightly larger */
             color: var(--text-muted);
             margin-top: 4px;
-            /* More margin */
         }
         
         .data-list ul li .actions {
             display: flex;
             gap: 8px;
-            /* More gap */
             margin-left: auto;
         }
         
@@ -387,17 +333,13 @@
             color: white;
             border: none;
             padding: 7px 12px;
-            /* More padding */
             border-radius: 8px;
-            /* More rounded */
             cursor: pointer;
             font-size: 0.85em;
-            /* Slightly larger */
             transition: background-color 0.3s ease;
             display: flex;
             align-items: center;
             gap: 6px;
-            /* More gap */
         }
         
         .data-list ul li .actions button:hover {
@@ -406,13 +348,11 @@
         
         .data-list ul li .actions button ion-icon {
             font-size: 1em;
-            /* Slightly larger */
             vertical-align: middle;
         }
         
         .activity-item {
             padding: 12px 0;
-            /* More padding */
             border-bottom: 1px dashed var(--border-dark);
             display: flex;
             flex-direction: column;
@@ -424,15 +364,12 @@
         
         .activity-item .log-time {
             font-size: 0.85em;
-            /* Slightly larger */
             color: var(--text-muted);
             margin-bottom: 5px;
-            /* More margin */
         }
         
         .activity-item .log-message {
             font-size: 0.95em;
-            /* Slightly larger */
             color: var(--text-light);
         }
         /* Top Posts List Specific Styles */
@@ -462,14 +399,12 @@
         
         .top-posts-list .stat-value {
             font-size: 1.2em;
-            /* Larger */
             font-weight: 600;
             color: var(--primary-color);
         }
         
         .top-posts-list .stat-label {
             font-size: 0.8em;
-            /* Slightly larger */
             color: var(--text-muted);
         }
         /* Utility Classes */
@@ -487,7 +422,7 @@
         }
         /* Styles for initial loading/hiding content */
         
-        body.loading-dashboard>*:not(#loadingOverlay) {
+        body.loading-dashboard>* :not(#loadingOverlay) {
             display: none;
         }
         
@@ -590,168 +525,201 @@
             transform: rotate(315deg) translate(12px);
             animation-delay: -0.4s;
         }
-        /* --- New/Modified Styles for Overlay Navigation --- */
+        /* --- Bottom Navigation Bar (MOBILE ONLY) --- */
         
-        .overlay-nav {
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: var(--card-background-dark);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-top: 1px solid var(--border-dark);
+            box-shadow: 0 -4px 15px var(--shadow-dark);
+            z-index: 100;
+            display: flex;
+            /* Always visible on mobile */
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+        
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            padding: 0.3rem 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        
+        .bottom-nav-item ion-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .bottom-nav-item.active,
+        .bottom-nav-item:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .bottom-nav-item.active {
+            font-weight: 600;
+        }
+        /* --- Sidebar Navigation (DESKTOP ONLY) --- */
+        
+        .sidebar {
+            display: none;
+            /* Hidden by default on mobile */
+            flex-direction: column;
+            width: var(--sidebar-width);
+            background-color: var(--card-background-dark);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--border-dark);
+            box-shadow: 4px 0 15px var(--shadow-dark);
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
             height: 100%;
-            background-color: rgba(28, 28, 30, 0.95);
-            /* More opaque for full-screen feel */
+            z-index: 90;
+            /* Lower than header, higher than content */
+            padding-top: var(--sidebar-header-height);
+            /* Space for desktop header/logo */
+            border-top-right-radius: 18px;
+            border-bottom-right-radius: 18px;
+            overflow-y: auto;
+            /* Enable scrolling for many menu items */
+            padding-bottom: 1rem;
+            /* Padding at bottom of sidebar */
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: var(--sidebar-header-height);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 1rem;
+            border-bottom: 1px solid var(--border-dark);
+            background-color: var(--card-background-dark);
+            /* Ensure it stays opaque */
             backdrop-filter: blur(var(--glass-blur));
             -webkit-backdrop-filter: blur(var(--glass-blur));
-            z-index: 200;
-            /* Above header */
+            z-index: 101;
+            /* Above general sidebar content */
+            border-top-right-radius: 18px;
+            /* Match sidebar's top right */
+        }
+        
+        .sidebar-header img {
+            height: 38px;
+            opacity: 0.95;
+        }
+        
+        .sidebar-nav-list {
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .sidebar-nav-item {
+            display: block;
+            margin: 0.5rem 0.8rem;
+        }
+        
+        .sidebar-nav-item a {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        }
-        
-        .overlay-nav.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        /* Tombol Close di dalam/sangat dekat card */
-        
-        .overlay-nav-close {
-            position: absolute;
-            /* Tetap absolute */
-            top: 15px;
-            /* Jarak dari atas card */
-            right: 15px;
-            /* Jarak dari kanan card */
-            background-color: transparent;
-            border: none;
+            padding: 0.8rem 1rem;
             color: var(--text-muted);
-            /* Softer color for close button */
-            font-size: 2.2rem;
-            /* Slightly smaller for elegance */
-            cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
-            z-index: 201;
-            /* Pastikan di atas konten card */
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
         
-        .overlay-nav-close:hover {
+        .sidebar-nav-item a:hover {
+            background-color: rgba(10, 132, 255, 0.15);
+            color: var(--primary-color-hover);
+        }
+        
+        .sidebar-nav-item a.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--gradient-end));
             color: var(--text-lighter);
-            transform: rotate(90deg);
-            /* Subtle rotate effect */
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .overlay-nav-content {
-            text-align: center;
-            width: 90%;
-            /* Wider on mobile */
-            max-width: 450px;
-            /* Increased max-width on larger screens */
-            padding: 30px;
-            /* More padding */
-            border-radius: 18px;
-            /* More rounded for macOS feel */
-            background-color: var(--card-background-dark);
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 8px 30px var(--shadow-dark);
-            /* Stronger shadow */
-            position: relative;
-            /* Sangat penting agar tombol close bisa di-posisi absolute di dalamnya */
-            margin-top: 0;
-            /* Hapus margin-top sebelumnya */
+        .sidebar-nav-item a ion-icon {
+            font-size: 1.3rem;
+            margin-right: 0.8rem;
+            min-width: 24px;
+            /* Ensure icon alignment */
         }
         
-        .overlay-nav-content h2 {
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            /* More margin */
-            font-size: 1.8rem;
-            /* Larger title */
-            font-weight: 700;
-        }
-        /* Removed .overlay-nav-list completely */
-        /* Quick Actions within Overlay - Adjusted for prominence */
-        
-        .overlay-quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            /* Larger min-width for items */
-            gap: 15px;
-            /* More gap */
-            padding-top: 0;
-            /* No top padding */
-            border-top: none;
-            /* No top border */
-            margin-top: 0;
-            /* No top margin */
+        .sidebar-nav-item a.logout-link {
+            color: #FF453A;
+            /* Red for logout */
+            margin-top: 1.5rem;
         }
         
-        .overlay-quick-action-item {
-            background-color: rgba(0, 0, 0, 0.2);
-            /* Darker, slightly transparent */
-            padding: 20px;
-            /* More padding */
-            border-radius: 14px;
-            /* More rounded */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            /* Slightly clearer border */
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100px;
-            /* Taller items */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            /* Subtle shadow for items */
-        }
-        
-        .overlay-quick-action-item:hover {
-            transform: translateY(-3px);
-            background-color: rgba(0, 0, 0, 0.35);
-            /* Darker on hover */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .overlay-quick-action-item ion-icon {
-            font-size: 2.5rem;
-            /* Larger icon */
-            color: var(--primary-color);
-            margin-bottom: 0.8rem;
-            /* More margin */
-        }
-        
-        .overlay-quick-action-item .label {
-            font-size: 0.95rem;
-            /* Slightly larger label */
-            font-weight: 500;
-            color: var(--text-lighter);
+        .sidebar-nav-item a.logout-link:hover {
+            background-color: rgba(255, 69, 58, 0.15);
+            color: #FF665C;
         }
         /* Media Queries */
         
         @media (min-width: 768px) {
             body {
-                padding-bottom: 60px;
-                /* Adjust padding for larger header on desktop */
+                padding-top: 0;
+                /* No top padding for desktop, header is part of desktop layout */
+                padding-bottom: 0;
+                /* No bottom padding on desktop */
+                flex-direction: row;
+                /* Sidebar and content side-by-side */
             }
             header {
-                padding: 0.8rem 1.5rem;
-                /* Larger padding for desktop header */
+                display: none;
+                /* Hide the mobile header on desktop */
             }
-            .header-center img {
-                height: 38px;
-                /* Even larger logo on desktop */
+            .bottom-nav {
+                display: none;
+                /* Hide bottom nav on desktop */
+            }
+            .sidebar {
+                display: flex;
+                /* Show sidebar on desktop */
+            }
+            .content-wrapper {
+                margin-left: var(--sidebar-width);
+                /* Make space for sidebar */
+                flex-direction: column;
+                /* Ensure content stacks vertically within its area */
+                width: calc(100% - var(--sidebar-width));
+                /* Occupy remaining width */
+            }
+            .main-content {
+                max-width: 1000px;
+                /* Optional: max width for content inside wrapper */
             }
         }
     </style>
+
 </head>
 
 <body class="loading-dashboard">
+
     <div id="loadingOverlay">
         <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
             <div></div>
@@ -765,85 +733,10 @@
         </div>
     </div>
 
-    <div class="main-content">
-        <section class="greeting-section">
-            <div class="greeting-content">
-                <h1 id="greeting-text">Halo, Admin.</h1>
-            </div>
-        </section>
-        <section class="stat-grid">
-            <div class="stat-card" id="statCardViews">
-                <h2 class="stat-value">n/a</h2>
-                <p class="stat-label">Total Views</p>
-            </div>
-            <div class="stat-card" id="statCardPosts">
-                <h2 class="stat-value">n/a</h2>
-                <p class="stat-label">Jumlah Postingan</p>
-            </div>
-            <div class="stat-card" id="statCardComments">
-                <h2 class="stat-value">n/a</h2>
-                <p class="stat-label">Total Komentar</p>
-            </div>
-            <div class="stat-card" id="statCardCategories">
-                <h2 class="stat-value">n/a</h2>
-                <p class="stat-label">Kategori</p>
-            </div>
-        </section>
-
-        <section class="dashboard-section">
-            <h2>Postingan Teratas</h2>
-            <div class="data-list top-posts-list">
-                <ul id="topPostsList">
-                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="dashboard-section">
-            <h2>Postingan Terbaru</h2>
-            <div class="data-list">
-                <ul id="latestPostsList">
-                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="dashboard-section">
-            <h2>Informasi Sistem & Statistik Lanjutan</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">Versi Dashboard:</span>
-                    <span class="info-value">1.0.0</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Terakhir Diperbarui:</span>
-                    <span class="info-value" id="lastUpdatedDashboard">2025-06-08</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Waktu Server (WIB):</span>
-                    <span class="info-value" id="serverTime">Memuat...</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Firebase Project ID:</span>
-                    <span class="info-value">bima-akbar-web</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="dashboard-section">
-            <h2>Aktivitas Login</h2>
-            <div class="data-list" id="loginActivityDataList">
-                <ul id="loginActivityList">
-                    <li style="text-align: center; color: var(--text-muted);">Memuat aktivitas login...</li>
-                </ul>
-            </div>
-        </section>
-    </div>
-
     <header>
-        <div class="header-left" id="userNameDisplay">Admin</div>
+        <div class="header-left" id="userNameDisplayMobile"></div>
         <div class="header-center">
-            <img src="assets/logo.png" alt="Logo" id="logoButton" />
+            <img src="assets/logo.png" alt="Logo" />
         </div>
         <div class="header-right">
             <button class="logout-btn" onclick="logout()">
@@ -852,37 +745,78 @@
         </div>
     </header>
 
-    <div class="overlay-nav" id="overlayNav">
-        <div class="overlay-nav-content">
-            <button class="overlay-nav-close" id="closeOverlayNav">
-                <ion-icon name="close-outline"></ion-icon>
-            </button>
-            <h2>Aksi Cepat</h2>
-            <div class="overlay-quick-actions">
-                <div class="overlay-quick-action-item" onclick="window.location.href='post-add.html'">
-                    <ion-icon name="create"></ion-icon>
-                    <div class="label">Buat Postingan Baru</div>
-                </div>
-                <div class="overlay-quick-action-item" onclick="window.location.href='post-stats.html'">
-                    <ion-icon name="stats-chart"></ion-icon>
-                    <div class="label">Statistik</div>
-                </div>
-                <div class="overlay-quick-action-item" onclick="window.location.href='post-list.html'">
-                    <ion-icon name="folder-open"></ion-icon>
-                    <div class="label">Daftar Postingan</div>
-                </div>
-                <div class="overlay-quick-action-item" onclick="window.location.href='settings.html'">
-                    <ion-icon name="settings"></ion-icon>
-                    <div class="label">Pengaturan</div>
-                </div>
-                <div class="overlay-quick-action-item" onclick="logout()">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="Logo" />
+        </div>
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item">
+                <a href="#" class="nav-link active" data-path="content-dashboard.html">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="nav-link" data-path="content-post-stats.html">
+                    <ion-icon name="stats-chart-outline"></ion-icon>
+                    <span>Statistik Postingan</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="nav-link" data-path="content-post-add.html">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    <span>Buat Postingan Baru</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="nav-link" data-path="content-post-list.html">
+                    <ion-icon name="folder-open-outline"></ion-icon>
+                    <span>Daftar Postingan</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="nav-link" data-path="content-settings.html">
+                    <ion-icon name="settings-outline"></ion-icon>
+                    <span>Pengaturan</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="logout-link" onclick="logout()">
                     <ion-icon name="log-out-outline"></ion-icon>
-                    <div class="label">Logout</div>
-                </div>
-            </div>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="content-wrapper">
+        <div class="main-content" id="mainContent">
+            <div style="text-align: center; padding: 50px; color: var(--text-muted);">Memuat konten dashboard...</div>
         </div>
     </div>
 
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item nav-link active" data-path="content-dashboard.html">
+            <ion-icon name="home-outline"></ion-icon>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="bottom-nav-item nav-link" data-path="content-post-stats.html">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+            <span>Statistik</span>
+        </a>
+        <a href="#" class="bottom-nav-item nav-link" data-path="content-post-add.html">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            <span>Buat Baru</span>
+        </a>
+        <a href="#" class="bottom-nav-item nav-link" data-path="content-post-list.html">
+            <ion-icon name="folder-open-outline"></ion-icon>
+            <span>Postingan</span>
+        </a>
+        <a href="#" class="bottom-nav-item nav-link" data-path="content-settings.html">
+            <ion-icon name="settings-outline"></ion-icon>
+            <span>Pengaturan</span>
+        </a>
+    </nav>
 
     <script>
         // --- Firebase Configuration ---
@@ -902,17 +836,26 @@
         const database = firebase.database();
         // --- End Firebase Configuration ---
 
-        // --- Header and Greeting Logic ---
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                alert('Gagal logout: ' + error.message);
-            });
-        }
+        // --- Global Elements ---
+        const mainContent = document.getElementById('mainContent');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const body = document.body;
+        const userNameDisplayMobile = document.getElementById("userNameDisplayMobile");
+        let activeUserEmailPart = 'Admin'; // To store user email part for dynamic greeting
+
+        // --- Logout Function ---
+        const logout = () => {
+            auth.signOut()
+                .then(() => {
+                    window.location.href = 'login.html';
+                })
+                .catch((error) => {
+                    alert(`Gagal logout: ${error.message}`);
+                });
+        };
 
         // Function to update server time (client-side time for demonstration)
-        function updateServerTime() {
+        const updateServerTime = () => {
             const now = new Date();
             const options = {
                 weekday: 'long',
@@ -925,24 +868,26 @@
                 timeZoneName: 'short',
                 timeZone: 'Asia/Jakarta'
             };
-            document.getElementById('serverTime').textContent = now.toLocaleString('id-ID', options);
-        }
-        updateServerTime();
-        setInterval(updateServerTime, 1000);
-        // --- End Header and Greeting Logic ---
+            const serverTimeElement = document.getElementById('serverTime');
+            if (serverTimeElement) { // Check if element exists in current loaded content
+                serverTimeElement.textContent = now.toLocaleString('id-ID', options);
+            }
+        };
+        // No initial call or interval here; moved to initDynamicContent
 
         // --- Auth State Change Listener for Dashboard (PENTING UNTUK PROTEKSI) ---
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const body = document.body;
-        const greetingH1 = document.getElementById("greeting-text");
-
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 window.location.href = 'login.html';
             } else {
-                const userEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
-                document.getElementById("userNameDisplay").textContent = `${userEmailPart}`;
-                greetingH1.textContent = `Halo, ${userEmailPart}.`;
+                activeUserEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
+                userNameDisplayMobile.textContent = `Hai, ${activeUserEmailPart}`; // Set for mobile header
+
+                // Initial load of dashboard content
+                const urlParams = new URLSearchParams(window.location.search);
+                const initialPage = urlParams.get('page') || 'dashboard'; // Default to 'dashboard'
+                const initialPath = `content-${initialPage}.html`;
+                loadContent(initialPath);
 
                 // Hide loading overlay with fade-out
                 loadingOverlay.classList.add('hidden');
@@ -955,7 +900,7 @@
                 });
 
                 // Update last login time in database (optional, but good for tracking)
-                database.ref('users/' + user.uid).update({
+                database.ref(`users/${user.uid}`).update({
                     lastLogin: firebase.database.ServerValue.TIMESTAMP
                 });
 
@@ -969,178 +914,282 @@
             }
         });
 
-        // --- Stat Card Data Loading with 0 / N/A ---
-        const statValueViews = document.getElementById('statCardViews').querySelector('.stat-value');
-        const statValuePosts = document.getElementById('statCardPosts').querySelector('.stat-value');
-        const statValueComments = document.getElementById('statCardComments').querySelector('.stat-value');
-        const statValueCategories = document.getElementById('statCardCategories').querySelector('.stat-value');
+        // --- Dynamic Content Loading Logic ---
+        const navLinks = document.querySelectorAll('.nav-link'); // Select all links with class .nav-link
 
-        function updateStatCard(valueElement, data) {
-            valueElement.textContent = (data !== null && data !== undefined) ? data.toLocaleString('id-ID') : '0';
+        async function loadContent(path) {
+            mainContent.classList.add('loading'); // Add loading state
+            try {
+                const response = await fetch(path);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const html = await response.text();
+                mainContent.innerHTML = html;
+
+                // Re-initialize dynamic elements after new content is loaded
+                initDynamicContent();
+
+                // Update active class for all navigation elements
+                navLinks.forEach(item => item.classList.remove('active'));
+                const currentLink = document.querySelector(`.nav-link[data-path="${path}"]`);
+                if (currentLink) {
+                    currentLink.classList.add('active');
+                }
+
+            } catch (error) {
+                console.error('Failed to load content:', error);
+                mainContent.innerHTML = `<div style="text-align: center; padding: 50px; color: #FF453A;">Gagal memuat konten. Coba lagi nanti.</div>`;
+            } finally {
+                mainContent.classList.remove('loading'); // Remove loading state
+            }
         }
 
-        // Fetch Total Posts and calculate total views
-        database.ref('posts').on('value', (snapshot) => {
-            const posts = snapshot.val();
-            let totalViews = 0;
-            let postCount = 0;
-            if (posts) {
-                postCount = Object.keys(posts).length;
-                Object.values(posts).forEach(post => {
-                    totalViews += (post.views || 0);
+        // Function to initialize dynamic elements/data in the loaded content
+        function initDynamicContent() {
+            // Update greeting for the dynamically loaded dashboard content
+            const dynamicGreetingH1 = document.getElementById("greeting-text-dynamic");
+            if (dynamicGreetingH1) {
+                dynamicGreetingH1.textContent = `Halo, ${activeUserEmailPart}.`;
+            }
+
+            // Update server time (if the element exists in the loaded content)
+            updateServerTime();
+            // Clear any existing interval to prevent multiple intervals running
+            if (window.serverTimeInterval) {
+                clearInterval(window.serverTimeInterval);
+            }
+            window.serverTimeInterval = setInterval(updateServerTime, 1000); // Start new interval
+
+            // Update "Last Updated" timestamp
+            const lastUpdatedDashboard = document.getElementById('lastUpdatedDashboard');
+            if (lastUpdatedDashboard) {
+                const now = new Date();
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                lastUpdatedDashboard.textContent = now.toLocaleString('id-ID', options);
+            }
+
+            // Update Firebase Project ID
+            const firebaseProjectIdElement = document.getElementById('firebaseProjectId');
+            if (firebaseProjectIdElement) {
+                firebaseProjectIdElement.textContent = firebaseConfig.projectId;
+            }
+
+
+            // Initialize Firebase data listeners for dashboard content
+            // These should only run if the dashboard content is actually loaded
+            const statValueViews = document.getElementById('statCardViews')?.querySelector('.stat-value');
+            const statValuePosts = document.getElementById('statCardPosts')?.querySelector('.stat-value');
+            const statValueComments = document.getElementById('statCardComments')?.querySelector('.stat-value');
+            const statValueCategories = document.getElementById('statCardCategories')?.querySelector('.stat-value');
+            const topPostsList = document.getElementById('topPostsList');
+            const latestPostsList = document.getElementById('latestPostsList');
+            const loginActivityList = document.getElementById('loginActivityList');
+
+            const updateStatCard = (valueElement, data) => {
+                if (valueElement) { // Only update if element exists
+                    valueElement.textContent = (data !== null && data !== undefined) ? data.toLocaleString('id-ID') : '0';
+                }
+            };
+
+            if (statValueViews && statValuePosts) { // Check if dashboard stat cards are present
+                database.ref('posts').off(); // Remove previous listener to prevent duplicates
+                database.ref('posts').on('value', (snapshot) => {
+                    const posts = snapshot.val();
+                    let totalViews = 0;
+                    let postCount = 0;
+                    if (posts) {
+                        postCount = Object.keys(posts).length;
+                        Object.values(posts).forEach(post => {
+                            totalViews += (post.views || 0);
+                        });
+                    }
+                    updateStatCard(statValueViews, totalViews);
+                    updateStatCard(statValuePosts, postCount);
                 });
             }
-            updateStatCard(statValueViews, totalViews);
-            updateStatCard(statValuePosts, postCount);
-        });
 
-        // Fetch Total Comments
-        database.ref('comments').on('value', (snapshot) => {
-            const comments = snapshot.val();
-            updateStatCard(statValueComments, comments ? Object.keys(comments).length : 0);
-        });
-
-        // Fetch Total Categories
-        database.ref('categories').on('value', (snapshot) => {
-            const categories = snapshot.val();
-            updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
-        });
-
-        // --- Top Posts List (Firebase Integration) ---
-        const topPostsList = document.getElementById('topPostsList');
-
-        database.ref('posts').orderByChild('views').limitToLast(5).on('value', (snapshot) => {
-            const posts = snapshot.val();
-            topPostsList.innerHTML = '';
-            if (posts) {
-                const postsArray = Object.keys(posts).map(key => ({
-                    id: key,
-                    ...posts[key]
-                }));
-                postsArray.sort((a, b) => b.views - a.views);
-
-                postsArray.forEach(post => {
-                    const li = document.createElement('li');
-                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    });
-                    li.innerHTML = `
-                        <div class="post-details">
-                            <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
-                            <div class="post-meta">
-                                <span>Kategori: ${post.category || 'Belum ada'}</span>
-                                <span>&bull; ${postDate}</span>
-                            </div>
-                        </div>
-                        <div class="post-stats">
-                            <div class="stat-value">${(post.views || 0).toLocaleString('id-ID')}</div>
-                            <div class="stat-label">Views</div>
-                        </div>
-                    `;
-                    topPostsList.appendChild(li);
+            if (statValueComments) { // Check if comment stat card is present
+                database.ref('comments').off();
+                database.ref('comments').on('value', (snapshot) => {
+                    const comments = snapshot.val();
+                    updateStatCard(statValueComments, comments ? Object.keys(comments).length : 0);
                 });
+            }
+
+            if (statValueCategories) { // Check if category stat card is present
+                database.ref('categories').off();
+                database.ref('categories').on('value', (snapshot) => {
+                    const categories = snapshot.val();
+                    updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
+                });
+            }
+
+            if (topPostsList) { // Check if top posts list is present
+                database.ref('posts').off(); // Re-attach, will be handled by the post listener above
+                database.ref('posts').orderByChild('views').limitToLast(5).on('value', (snapshot) => {
+                    const posts = snapshot.val();
+                    topPostsList.innerHTML = '';
+                    if (posts) {
+                        const postsArray = Object.keys(posts).map(key => ({
+                            id: key,
+                            ...posts[key]
+                        }));
+                        postsArray.sort((a, b) => b.views - a.views);
+
+                        postsArray.forEach(post => {
+                            const li = document.createElement('li');
+                            const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                            li.innerHTML = `
+                                <div class="post-details">
+                                    <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
+                                    <div class="post-meta">
+                                        <span>Kategori: ${post.category || 'Belum ada'}</span>
+                                        <span>&bull; ${postDate}</span>
+                                    </div>
+                                </div>
+                                <div class="post-stats">
+                                    <div class="stat-value">${(post.views || 0).toLocaleString('id-ID')}</div>
+                                    <div class="stat-label">Views</div>
+                                </div>
+                            `;
+                            topPostsList.appendChild(li);
+                        });
+                    } else {
+                        topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
+                    }
+                });
+            }
+
+            if (latestPostsList) { // Check if latest posts list is present
+                database.ref('posts').off(); // Re-attach, will be handled by the post listener above
+                database.ref('posts').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+                    const posts = snapshot.val();
+                    latestPostsList.innerHTML = '';
+                    if (posts) {
+                        const postsArray = Object.keys(posts).map(key => ({
+                            id: key,
+                            ...posts[key]
+                        }));
+                        postsArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+                        postsArray.forEach(post => {
+                            const li = document.createElement('li');
+                            const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                            li.innerHTML = `
+                                <div>
+                                    <span class="item-title">${post.title || 'Judul Tidak Ada'}</span>
+                                    <div class="item-meta">
+                                        <span>Kategori: ${post.category || 'Belum ada'}</span>
+                                        <span>&bull; Status: ${post.status === 'published' ? 'Publikasi' : 'Draf'}</span>
+                                        <span>&bull; ${postDate}</span>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <button onclick="window.location.href='edit-post.html?id=${post.id}'"><ion-icon name="create"></ion-icon> Edit</button>
+                                    <button onclick="window.open('lihat-post.html?id=${post.id}','_blank')"><ion-icon name="eye"></ion-icon> Lihat</button>
+                                </div>
+                            `;
+                            latestPostsList.appendChild(li);
+                        });
+                    } else {
+                        latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
+                    }
+                });
+            }
+
+            if (loginActivityList) { // Check if login activity list is present
+                database.ref('login_activities').off();
+                database.ref('login_activities').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
+                    const activities = snapshot.val();
+                    loginActivityList.innerHTML = '';
+                    if (activities) {
+                        const activitiesArray = Object.keys(activities).map(key => ({
+                            id: key,
+                            ...activities[key]
+                        }));
+                        activitiesArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+                        activitiesArray.forEach(activity => {
+                            const li = document.createElement('li');
+                            const activityTime = new Date(activity.timestamp).toLocaleString('id-ID', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            li.classList.add('activity-item');
+                            li.innerHTML = `
+                                <span class="log-time">${activityTime}</span>
+                                <span class="log-message">${activity.message}</span>
+                            `;
+                            loginActivityList.appendChild(li);
+                        });
+                    } else {
+                        loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
+                    }
+                });
+            }
+        }
+
+
+        // --- Navigation Link Event Listeners ---
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior (page reload)
+
+                const path = link.getAttribute('data-path');
+                if (path) {
+                    loadContent(path);
+
+                    // Optional: Update URL without reloading (for browser history)
+                    history.pushState(null, '', `dashboard.html?page=${path.replace('content-', '').replace('.html', '')}`);
+                }
+            });
+        });
+
+        // Handle initial load based on URL parameter or default to dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            // The initial load of content is now handled by auth.onAuthStateChanged
+            // to ensure user is logged in before content attempts to load Firebase data.
+            // However, we still need to set the active state of the initial link
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialPage = urlParams.get('page') || 'dashboard';
+            const path = `content-${initialPage}.html`;
+
+            navLinks.forEach(item => item.classList.remove('active'));
+            const initialLink = document.querySelector(`.nav-link[data-path="${path}"]`);
+            if (initialLink) {
+                initialLink.classList.add('active');
             } else {
-                topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
+                // If initial page from URL param is invalid, default dashboard link should be active
+                document.querySelector('.nav-link[data-path="content-dashboard.html"]').classList.add('active');
             }
         });
 
-        // --- Latest Posts List (Firebase Integration) ---
-        const latestPostsList = document.getElementById('latestPostsList');
-        database.ref('posts').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
-            const posts = snapshot.val();
-            latestPostsList.innerHTML = '';
-            if (posts) {
-                const postsArray = Object.keys(posts).map(key => ({
-                    id: key,
-                    ...posts[key]
-                }));
-                postsArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+        // To handle browser back/forward buttons
+        window.addEventListener('popstate', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = urlParams.get('page') || 'dashboard';
+            const path = `content-${page}.html`;
 
-                postsArray.forEach(post => {
-                    const li = document.createElement('li');
-                    const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    });
-                    li.innerHTML = `
-                        <div>
-                            <span class="item-title">${post.title || 'Judul Tidak Ada'}</span>
-                            <div class="item-meta">
-                                <span>Kategori: ${post.category || 'Belum ada'}</span>
-                                <span>&bull; Status: ${post.status === 'published' ? 'Publikasi' : 'Draf'}</span>
-                                <span>&bull; ${postDate}</span>
-                            </div>
-                        </div>
-                        <div class="actions">
-                            <button onclick="window.location.href='edit-post.html?id=${post.id}'"><ion-icon name="create"></ion-icon> Edit</button>
-                            <button onclick="window.open('lihat-post.html?id=${post.id}','_blank')"><ion-icon name="eye"></ion-icon> Lihat</button>
-                        </div>
-                    `;
-                    latestPostsList.appendChild(li);
-                });
-            } else {
-                latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
-            }
-        });
-
-        // --- Login Activity (Firebase Integration) ---
-        const loginActivityList = document.getElementById('loginActivityList');
-        database.ref('login_activities').orderByChild('timestamp').limitToLast(5).on('value', (snapshot) => {
-            const activities = snapshot.val();
-            loginActivityList.innerHTML = '';
-            if (activities) {
-                const activitiesArray = Object.keys(activities).map(key => ({
-                    id: key,
-                    ...activities[key]
-                }));
-                activitiesArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
-
-                activitiesArray.forEach(activity => {
-                    const li = document.createElement('li');
-                    const activityTime = new Date(activity.timestamp).toLocaleString('id-ID', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                    li.classList.add('activity-item');
-                    li.innerHTML = `
-                        <span class="log-time">${activityTime}</span>
-                        <span class="log-message">${activity.message}</span>
-                    `;
-                    loginActivityList.appendChild(li);
-                });
-            } else {
-                loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
-            }
-        });
-
-        // --- Overlay Navigation Logic ---
-        const logoButton = document.getElementById('logoButton');
-        const overlayNav = document.getElementById('overlayNav');
-        const closeOverlayNav = document.getElementById('closeOverlayNav');
-
-        logoButton.addEventListener('click', () => {
-            overlayNav.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when overlay is active
-        });
-
-        closeOverlayNav.addEventListener('click', () => {
-            overlayNav.classList.remove('active');
-            document.body.style.overflow = ''; // Re-enable scrolling
-        });
-
-        // Close overlay if clicked outside (optional, but good UX)
-        overlayNav.addEventListener('click', (event) => {
-            // Check if the click occurred directly on the overlay-nav background, not its children
-            if (event.target === overlayNav) {
-                overlayNav.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+            // No need to set active class here, loadContent will handle it.
+            loadContent(path);
         });
     </script>
 </body>
