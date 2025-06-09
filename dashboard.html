@@ -8,32 +8,39 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
          :root {
-            --background-dark: #121212;
-            --card-background-dark: #181818;
+            /* macOS Sonoma-like color palette */
+            --background-dark: #1C1C1E;
+            /* Almost black, subtle dark grey - INI WARNA GELAP ASLI */
+            --card-background-dark: rgba(28, 28, 30, 0.75);
+            /* Slightly more opaque for better legibility */
             --border-dark: rgba(255, 255, 255, 0.1);
-            --primary-color: #FE2C55;
-            --primary-color-hover: #FF4D6B;
-            --accent-color: #69C9D0;
+            /* Slightly more visible border */
+            --primary-color: #0A84FF;
+            /* Vivid macOS blue */
+            --primary-color-hover: #3399FF;
+            /* Lighter blue on hover */
+            --accent-color: #007AFF;
+            /* Another shade of blue for accents */
             --text-light: #E0E0E0;
-            --text-lighter: #F0F0F0;
-            --text-muted: #A0A0A0;
-            --shadow-dark: rgba(0, 0, 0, 0.5);
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --info-color: #17a2b8;
-            --blue-accent: #007bff;
-            /* Warna untuk gradien liquid pada H1 greeting */
-            --gradient-start: #FE2C55;
-            /* Primary color */
-            --gradient-end: #69C9D0;
-            /* Accent color */
+            /* Light grey text */
+            --text-lighter: #FFFFFF;
+            /* Pure white text for emphasis */
+            --text-muted: #8E8E93;
+            /* Softer grey text for secondary info */
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            /* More pronounced but soft shadow */
+            --glass-blur: 30px;
+            /* Increased blur for stronger frosted effect */
+            /* Colors for liquid gradient (not used for background now) */
+            --gradient-start: #007AFF;
+            --gradient-end: #5AC8FA;
         }
+        /* General Styles */
         
         * {
             margin: 0;
@@ -42,27 +49,44 @@
         }
         
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
             background-color: var(--background-dark);
+            /* Mengembalikan warna gelap asli */
             color: var(--text-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 56px;
+            /* Space for fixed bottom header */
+            position: relative;
         }
-        /* Header */
+        /* Header (Fixed at bottom - untuk pas di bawah) */
         
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 1.5rem;
+            padding: 0.6rem 1rem;
             background-color: var(--card-background-dark);
-            border-bottom: 1px solid var(--border-dark);
-            box-shadow: 0 2px 4px var(--shadow-dark);
-            position: sticky;
-            top: 0;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-top: 1px solid var(--border-dark);
+            /* Border on top */
+            box-shadow: 0 -4px 15px var(--shadow-dark);
+            /* Shadow on top */
+            position: fixed;
+            /* Mengubah dari sticky ke fixed */
+            bottom: 0;
+            /* Stick to bottom */
+            left: 0;
+            right: 0;
             z-index: 100;
-            flex-wrap: nowrap;
+            width: 100%;
+            border-top-left-radius: 18px;
+            /* Rounding bagian kiri atas */
+            border-top-right-radius: 18px;
+            /* Rounding bagian kanan atas */
+            /* Pastikan tidak ada border-bottom-radius */
         }
         
         .header-left,
@@ -76,8 +100,8 @@
         
         .header-left {
             justify-content: flex-start;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 0.95rem;
             color: var(--text-lighter);
             white-space: nowrap;
             overflow: hidden;
@@ -90,8 +114,19 @@
         
         .header-center img {
             height: 32px;
+            /* Slightly larger logo */
             object-fit: contain;
             max-width: 100%;
+            opacity: 0.9;
+            /* More visible */
+            cursor: pointer;
+            /* Make logo clickable */
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        
+        .header-center img:hover {
+            transform: scale(1.05);
+            opacity: 1;
         }
         
         .header-right {
@@ -101,11 +136,10 @@
         .logout-btn {
             background-color: transparent;
             color: var(--primary-color);
-            padding: 0.4rem;
+            padding: 0.5rem;
             border: none;
-            border-radius: 6px;
-            font-size: 1.8rem;
-            /* Lebih besar */
+            border-radius: 8px;
+            font-size: 1.6rem;
             cursor: pointer;
             transition: color 0.2s ease, background-color 0.2s ease;
             white-space: nowrap;
@@ -116,36 +150,19 @@
         
         .logout-btn:hover {
             color: var(--primary-color-hover);
-            background-color: rgba(254, 44, 85, 0.1);
+            background-color: rgba(10, 132, 255, 0.15);
+            /* Slightly more opaque hover */
         }
         
         .logout-btn ion-icon {
-            font-size: 1.8rem;
-            /* Sesuaikan dengan tombol */
-        }
-        
-        @media (max-width: 480px) {
-            .header-left {
-                font-size: 0.9rem;
-            }
-            .logout-btn {
-                padding: 0.3rem;
-                font-size: 1.6rem;
-                /* Lebih kecil di mobile */
-            }
-            .logout-btn ion-icon {
-                font-size: 1.6rem;
-                /* Sesuaikan */
-            }
-            .header-center img {
-                height: 28px;
-            }
+            font-size: 1.6rem;
         }
         /* Main Content Wrapper */
         
         .main-content {
             flex-grow: 1;
             padding: 1.5rem;
+            /* Slightly more padding */
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
@@ -154,30 +171,29 @@
         
         .greeting-section {
             padding: 2rem 0;
+            /* More vertical padding */
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
+            /* More bottom margin */
             text-align: center;
-            /* Memastikan h1 di tengah */
         }
         
         .greeting-content {
             margin: 0;
         }
-        /* H1 Greeting Liquid Style & Responsive */
         
         .greeting-content h1 {
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            /* Responsive font size */
+            font-size: clamp(1.8rem, 8vw, 3rem);
+            /* Larger heading */
             margin-bottom: 0;
             line-height: 1.3;
             text-align: center;
-            /* Memastikan h1 di tengah */
-            /* Gradient effect */
             background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% 100%;
             animation: gradient-flow 3s linear infinite alternate;
+            font-weight: 700;
         }
         
         @keyframes gradient-flow {
@@ -188,148 +204,106 @@
                 background-position: 100% 50%;
             }
         }
-        
-        .greeting-content .subtext {
-            display: none;
-        }
-        /* Stat Grid - UPDATED for Responsiveness */
+        /* Stat Grid */
         
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            /* Slightly larger min-width */
             gap: 1rem;
+            /* More gap */
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-dark);
             margin-bottom: 1.5rem;
-        }
-        
-        @media (min-width: 481px) and (max-width: 768px) {
-            .stat-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (min-width: 769px) {
-            .stat-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
         }
         
         .stat-card {
             background-color: var(--card-background-dark);
             padding: 1.2rem;
-            border-radius: 0.8rem;
+            /* More padding */
+            border-radius: 14px;
+            /* More rounded */
             border: 1px solid var(--border-dark);
-            box-shadow: 0 2px 8px var(--shadow-dark);
+            box-shadow: 0 6px 20px var(--shadow-dark);
+            /* Stronger shadow */
             text-align: center;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
             min-height: 100px;
+            /* Taller cards */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(calc(var(--glass-blur) / 2));
+            -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
+            overflow: hidden;
+            /* Ensures blur doesn't bleed */
         }
         
         .stat-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            /* More pronounced lift */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            /* Even stronger shadow on hover */
         }
         
         .stat-value {
             font-size: 2rem;
+            /* Larger value */
             font-weight: 600;
             color: var(--text-lighter);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.4rem;
+            /* More space */
         }
         
         .stat-label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            /* Slightly larger label */
             color: var(--text-muted);
-        }
-        /* Quick Actions Section Styles */
-        
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        @media (min-width: 481px) and (max-width: 768px) {
-            .quick-actions-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (min-width: 769px) {
-            .quick-actions-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
-        .quick-action-card {
-            background-color: var(--card-background-dark);
-            padding: 1rem;
-            border-radius: 0.8rem;
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 2px 8px var(--shadow-dark);
-            text-align: center;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100px;
-        }
-        
-        .quick-action-card:hover {
-            transform: translateY(-2px);
-            background-color: rgba(24, 24, 24, 0.8);
-        }
-        /* Ionicon styling for quick actions */
-        
-        .quick-action-card ion-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .quick-action-card .label {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-lighter);
         }
         /* Info & List Sections */
         
         .dashboard-section {
             background-color: var(--card-background-dark);
-            border-radius: 12px;
+            border-radius: 14px;
+            /* More rounded */
             padding: 25px;
-            box-shadow: 0 4px 15px var(--shadow-dark);
+            /* More padding */
+            box-shadow: 0 6px 20px var(--shadow-dark);
+            /* Stronger shadow */
             border: 1px solid var(--border-dark);
             margin-bottom: 25px;
+            /* More bottom margin */
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            overflow: hidden;
+            /* Ensures blur doesn't bleed */
         }
         
         .dashboard-section h2 {
             color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 20px;
-            font-size: 1.5em;
+            /* More margin */
+            font-size: 1.4em;
+            /* Slightly larger title */
+            font-weight: 600;
         }
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            /* Slightly wider min-width */
             gap: 15px;
+            /* More gap */
         }
         
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
+            /* More padding */
             border-bottom: 1px dashed var(--border-dark);
         }
         
@@ -340,11 +314,15 @@
         .info-label {
             color: var(--text-muted);
             font-weight: 400;
+            font-size: 0.95em;
+            /* Slightly larger */
         }
         
         .info-value {
             color: var(--text-lighter);
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 1em;
+            /* Slightly larger */
         }
         
         .data-list ul {
@@ -355,38 +333,46 @@
         .data-list ul li {
             background-color: var(--background-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 12px;
             margin-bottom: 10px;
+            /* More margin */
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            /* More gap */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
         }
         
         .data-list ul li span {
             flex: 1;
             min-width: 150px;
+            /* Slightly wider min-width */
             color: var(--text-light);
         }
         
         .data-list ul li .item-title {
-            font-weight: bold;
-            font-size: 1.1em;
+            font-weight: 600;
+            font-size: 1.05em;
+            /* Slightly larger */
             color: var(--text-lighter);
         }
         
         .data-list ul li .item-meta {
-            font-size: 0.9em;
+            font-size: 0.88em;
+            /* Slightly larger */
             color: var(--text-muted);
-            margin-top: 5px;
+            margin-top: 4px;
+            /* More margin */
         }
         
         .data-list ul li .actions {
             display: flex;
             gap: 8px;
+            /* More gap */
             margin-left: auto;
         }
         
@@ -394,25 +380,33 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
+            padding: 7px 12px;
+            /* More padding */
+            border-radius: 8px;
+            /* More rounded */
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.85em;
+            /* Slightly larger */
             transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* More gap */
         }
         
         .data-list ul li .actions button:hover {
             background-color: var(--primary-color-hover);
         }
-        /* Style for ion-icon in buttons */
         
         .data-list ul li .actions button ion-icon {
             font-size: 1em;
+            /* Slightly larger */
             vertical-align: middle;
         }
         
         .activity-item {
             padding: 12px 0;
+            /* More padding */
             border-bottom: 1px dashed var(--border-dark);
             display: flex;
             flex-direction: column;
@@ -424,29 +418,18 @@
         
         .activity-item .log-time {
             font-size: 0.85em;
+            /* Slightly larger */
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 5px;
+            /* More margin */
         }
         
         .activity-item .log-message {
             font-size: 0.95em;
+            /* Slightly larger */
             color: var(--text-light);
         }
         /* Top Posts List Specific Styles */
-        
-        .top-posts-list ul li {
-            background-color: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
         
         .top-posts-list .post-details {
             flex-grow: 1;
@@ -454,15 +437,15 @@
         }
         
         .top-posts-list .post-title {
-            font-weight: bold;
-            font-size: 1.1em;
+            font-weight: 600;
+            font-size: 1.05em;
             color: var(--text-lighter);
         }
         
         .top-posts-list .post-meta {
-            font-size: 0.9em;
+            font-size: 0.88em;
             color: var(--text-muted);
-            margin-top: 5px;
+            margin-top: 4px;
         }
         
         .top-posts-list .post-stats {
@@ -473,12 +456,14 @@
         
         .top-posts-list .stat-value {
             font-size: 1.2em;
+            /* Larger */
             font-weight: 600;
             color: var(--primary-color);
         }
         
         .top-posts-list .stat-label {
             font-size: 0.8em;
+            /* Slightly larger */
             color: var(--text-muted);
         }
         /* Utility Classes */
@@ -499,7 +484,6 @@
         body.loading-dashboard>*:not(#loadingOverlay) {
             display: none;
         }
-        /* Spinner konsisten untuk overlay */
         
         #loadingOverlay {
             position: fixed;
@@ -514,7 +498,7 @@
             align-items: center;
             z-index: 9999;
             color: var(--text-muted);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
@@ -523,7 +507,7 @@
             opacity: 0;
             pointer-events: none;
         }
-        /* Base styles for the flower spinner */
+        /* Spinner konsisten untuk overlay */
         
         .spinner-flower-base {
             position: relative;
@@ -549,67 +533,213 @@
         /* Styles for the LARGE overlay spinner */
         
         .spinner-flower-large {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
         }
         
         .spinner-flower-large div {
-            width: 4px;
-            height: 9px;
-            background: var(--accent-color);
-            transform-origin: 18px 18px;
+            width: 3.5px;
+            height: 8px;
+            background: var(--primary-color);
+            transform-origin: 16px 16px;
         }
         /* Positioning for large spinner petals */
         
         .spinner-flower-large div:nth-child(1) {
-            transform: rotate(0deg) translate(14px);
+            transform: rotate(0deg) translate(12px);
             animation-delay: -1.1s;
         }
         
         .spinner-flower-large div:nth-child(2) {
-            transform: rotate(45deg) translate(14px);
+            transform: rotate(45deg) translate(12px);
             animation-delay: -1s;
         }
         
         .spinner-flower-large div:nth-child(3) {
-            transform: rotate(90deg) translate(14px);
+            transform: rotate(90deg) translate(12px);
             animation-delay: -0.9s;
         }
         
         .spinner-flower-large div:nth-child(4) {
-            transform: rotate(135deg) translate(14px);
+            transform: rotate(135deg) translate(12px);
             animation-delay: -0.8s;
         }
         
         .spinner-flower-large div:nth-child(5) {
-            transform: rotate(180deg) translate(14px);
+            transform: rotate(180deg) translate(12px);
             animation-delay: -0.7s;
         }
         
         .spinner-flower-large div:nth-child(6) {
-            transform: rotate(225deg) translate(14px);
+            transform: rotate(225deg) translate(12px);
             animation-delay: -0.6s;
         }
         
         .spinner-flower-large div:nth-child(7) {
-            transform: rotate(270deg) translate(14px);
+            transform: rotate(270deg) translate(12px);
             animation-delay: -0.5s;
         }
         
         .spinner-flower-large div:nth-child(8) {
-            transform: rotate(315deg) translate(14px);
+            transform: rotate(315deg) translate(12px);
             animation-delay: -0.4s;
         }
+        /* --- New/Modified Styles for Overlay Navigation --- */
         
-        @media (max-width: 480px) {
-            .spinner-flower-large {
-                width: 30px;
-                height: 30px;
+        .overlay-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(28, 28, 30, 0.95);
+            /* More opaque for full-screen feel */
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            z-index: 200;
+            /* Above header */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        
+        .overlay-nav.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* Tombol Close di dalam/sangat dekat card */
+        
+        .overlay-nav-close {
+            position: absolute;
+            /* Tetap absolute */
+            top: 15px;
+            /* Jarak dari atas card */
+            right: 15px;
+            /* Jarak dari kanan card */
+            background-color: transparent;
+            border: none;
+            color: var(--text-muted);
+            /* Softer color for close button */
+            font-size: 2.2rem;
+            /* Slightly smaller for elegance */
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+            z-index: 201;
+            /* Pastikan di atas konten card */
+        }
+        
+        .overlay-nav-close:hover {
+            color: var(--text-lighter);
+            transform: rotate(90deg);
+            /* Subtle rotate effect */
+        }
+        
+        .overlay-nav-content {
+            text-align: center;
+            width: 90%;
+            /* Wider on mobile */
+            max-width: 450px;
+            /* Increased max-width on larger screens */
+            padding: 30px;
+            /* More padding */
+            border-radius: 18px;
+            /* More rounded for macOS feel */
+            background-color: var(--card-background-dark);
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 8px 30px var(--shadow-dark);
+            /* Stronger shadow */
+            position: relative;
+            /* Sangat penting agar tombol close bisa di-posisi absolute di dalamnya */
+            margin-top: 0;
+            /* Hapus margin-top sebelumnya */
+        }
+        
+        .overlay-nav-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            /* More margin */
+            font-size: 1.8rem;
+            /* Larger title */
+            font-weight: 700;
+        }
+        /* Removed .overlay-nav-list completely */
+        /* Quick Actions within Overlay - Adjusted for prominence */
+        
+        .overlay-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            /* Larger min-width for items */
+            gap: 15px;
+            /* More gap */
+            padding-top: 0;
+            /* No top padding */
+            border-top: none;
+            /* No top border */
+            margin-top: 0;
+            /* No top margin */
+        }
+        
+        .overlay-quick-action-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            /* Darker, slightly transparent */
+            padding: 20px;
+            /* More padding */
+            border-radius: 14px;
+            /* More rounded */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* Slightly clearer border */
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            /* Taller items */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow for items */
+        }
+        
+        .overlay-quick-action-item:hover {
+            transform: translateY(-3px);
+            background-color: rgba(0, 0, 0, 0.35);
+            /* Darker on hover */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .overlay-quick-action-item ion-icon {
+            font-size: 2.5rem;
+            /* Larger icon */
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            /* More margin */
+        }
+        
+        .overlay-quick-action-item .label {
+            font-size: 0.95rem;
+            /* Slightly larger label */
+            font-weight: 500;
+            color: var(--text-lighter);
+        }
+        /* Media Queries */
+        
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 60px;
+                /* Adjust padding for larger header on desktop */
             }
-            .spinner-flower-large div {
-                width: 3.5px;
-                height: 8px;
-                transform-origin: 15px 15px;
+            header {
+                padding: 0.8rem 1.5rem;
+                /* Larger padding for desktop header */
+            }
+            .header-center img {
+                height: 38px;
+                /* Even larger logo on desktop */
             }
         }
     </style>
@@ -629,16 +759,6 @@
         </div>
     </div>
 
-    <header>
-        <div class="header-left" id="userNameDisplay">Admin</div>
-        <div class="header-center">
-            <img src="assets/logo.png" alt="Logo" />
-        </div>
-        <div class="header-right">
-            <button class="logout-btn" onclick="logout()">
-                <ion-icon name="log-out-outline"></ion-icon> </button>
-        </div>
-    </header>
     <div class="main-content">
         <section class="greeting-section">
             <div class="greeting-content">
@@ -663,24 +783,25 @@
                 <p class="stat-label">Kategori</p>
             </div>
         </section>
-        <section class="quick-actions-grid">
-            <div class="quick-action-card" onclick="window.location.href='post-add.html'">
-                <ion-icon name="create"></ion-icon>
-                <div class="label">Buat Postingan Baru</div>
-            </div>
-            <div class="quick-action-card" onclick="window.location.href='post-stats.html'">
-                <ion-icon name="stats-chart"></ion-icon>
-                <div class="label">Statistik</div>
-            </div>
-            <div class="quick-action-card" onclick="window.location.href='post-list.html'">
-                <ion-icon name="folder-open"></ion-icon>
-                <div class="label">Daftar Postingan</div>
-            </div>
-            <div class="quick-action-card" onclick="window.location.href='settings.html'">
-                <ion-icon name="settings"></ion-icon>
-                <div class="label">Pengaturan</div>
+
+        <section class="dashboard-section">
+            <h2>Postingan Teratas</h2>
+            <div class="data-list top-posts-list">
+                <ul id="topPostsList">
+                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
+                </ul>
             </div>
         </section>
+
+        <section class="dashboard-section">
+            <h2>Postingan Terbaru</h2>
+            <div class="data-list">
+                <ul id="latestPostsList">
+                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
+                </ul>
+            </div>
+        </section>
+
         <section class="dashboard-section">
             <h2>Informasi Sistem & Statistik Lanjutan</h2>
             <div class="info-grid">
@@ -702,22 +823,7 @@
                 </div>
             </div>
         </section>
-        <section class="dashboard-section">
-            <h2>Postingan Teratas</h2>
-            <div class="data-list top-posts-list">
-                <ul id="topPostsList">
-                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
-                </ul>
-            </div>
-        </section>
-        <section class="dashboard-section">
-            <h2>Postingan Terbaru</h2>
-            <div class="data-list">
-                <ul id="latestPostsList">
-                    <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
-                </ul>
-            </div>
-        </section>
+
         <section class="dashboard-section">
             <h2>Aktivitas Login</h2>
             <div class="data-list" id="loginActivityDataList">
@@ -727,6 +833,51 @@
             </div>
         </section>
     </div>
+
+    <header>
+        <div class="header-left" id="userNameDisplay">Admin</div>
+        <div class="header-center">
+            <img src="assets/logo.png" alt="Logo" id="logoButton" />
+        </div>
+        <div class="header-right">
+            <button class="logout-btn" onclick="logout()">
+                <ion-icon name="log-out-outline"></ion-icon>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay-nav" id="overlayNav">
+        <div class="overlay-nav-content">
+            <button class="overlay-nav-close" id="closeOverlayNav">
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+            <h2>Aksi Cepat</h2>
+            <div class="overlay-quick-actions">
+                <div class="overlay-quick-action-item" onclick="window.location.href='post-add.html'">
+                    <ion-icon name="create"></ion-icon>
+                    <div class="label">Buat Postingan Baru</div>
+                </div>
+                <div class="overlay-quick-action-item" onclick="window.location.href='post-stats.html'">
+                    <ion-icon name="stats-chart"></ion-icon>
+                    <div class="label">Statistik</div>
+                </div>
+                <div class="overlay-quick-action-item" onclick="window.location.href='post-list.html'">
+                    <ion-icon name="folder-open"></ion-icon>
+                    <div class="label">Daftar Postingan</div>
+                </div>
+                <div class="overlay-quick-action-item" onclick="window.location.href='settings.html'">
+                    <ion-icon name="settings"></ion-icon>
+                    <div class="label">Pengaturan</div>
+                </div>
+                <div class="overlay-quick-action-item" onclick="logout()">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <div class="label">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         // --- Firebase Configuration ---
         const firebaseConfig = {
@@ -899,7 +1050,7 @@
                     id: key,
                     ...posts[key]
                 }));
-                postsArray.sort((a, b) => b.timestamp - a.timestamp);
+                postsArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
 
                 postsArray.forEach(post => {
                     const li = document.createElement('li');
@@ -939,30 +1090,50 @@
                     id: key,
                     ...activities[key]
                 }));
-                activitiesArray.sort((a, b) => b.timestamp - a.timestamp);
+                activitiesArray.sort((a, b) => b.timestamp - a.timestamp); // Newest first
 
                 activitiesArray.forEach(activity => {
                     const li = document.createElement('li');
-                    const activityDate = new Date(activity.timestamp).toLocaleString('id-ID', {
+                    const activityTime = new Date(activity.timestamp).toLocaleString('id-ID', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
                         hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        timeZoneName: 'short',
-                        timeZone: 'Asia/Jakarta'
+                        minute: '2-digit'
                     });
+                    li.classList.add('activity-item');
                     li.innerHTML = `
-                        <span class="activity-item">
-                            <span class="log-time">${activityDate}</span>
-                            <span class="log-message">${activity.message || 'Aktivitas tidak diketahui'}</span>
-                        </span>
+                        <span class="log-time">${activityTime}</span>
+                        <span class="log-message">${activity.message}</span>
                     `;
                     loginActivityList.appendChild(li);
                 });
             } else {
                 loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
+            }
+        });
+
+        // --- Overlay Navigation Logic ---
+        const logoButton = document.getElementById('logoButton');
+        const overlayNav = document.getElementById('overlayNav');
+        const closeOverlayNav = document.getElementById('closeOverlayNav');
+
+        logoButton.addEventListener('click', () => {
+            overlayNav.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when overlay is active
+        });
+
+        closeOverlayNav.addEventListener('click', () => {
+            overlayNav.classList.remove('active');
+            document.body.style.overflow = ''; // Re-enable scrolling
+        });
+
+        // Close overlay if clicked outside (optional, but good UX)
+        overlayNav.addEventListener('click', (event) => {
+            // Check if the click occurred directly on the overlay-nav background, not its children
+            if (event.target === overlayNav) {
+                overlayNav.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     </script>
