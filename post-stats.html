@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistik Postingan - Dashboard</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Re-use the same root variables and general styles for consistency */
+        
+         :root {
+            --background-dark: #1C1C1E;
+            --card-background-dark: rgba(28, 28, 30, 0.75);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --primary-color: #0A84FF;
+            --primary-color-hover: #3399FF;
+            --accent-color: #007AFF;
+            --text-light: #E0E0E0;
+            --text-lighter: #FFFFFF;
+            --text-muted: #8E8E93;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --glass-blur: 30px;
+            --gradient-start: #007AFF;
+            --gradient-end: #5AC8FA;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 56px;
+            /* Space for fixed bottom header */
+            position: relative;
+        }
+        /* Header (Fixed at bottom) - Consistent with dashboard */
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 1rem;
+            background-color: var(--card-background-dark);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-top: 1px solid var(--border-dark);
+            box-shadow: 0 -4px 15px var(--shadow-dark);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            width: 100%;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+        
+        .header-left,
+        .header-center,
+        .header-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+        
+        .header-left {
+            justify-content: flex-start;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-lighter);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .header-center {
+            justify-content: center;
+        }
+        
+        .header-center img {
+            height: 32px;
+            object-fit: contain;
+            max-width: 100%;
+            opacity: 0.9;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        
+        .header-center img:hover {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+        
+        .header-right {
+            justify-content: flex-end;
+        }
+        
+        .header-right .back-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-right .back-btn:hover {
+            color: var(--primary-color-hover);
+            background-color: rgba(10, 132, 255, 0.15);
+        }
+        
+        .header-right .back-btn ion-icon {
+            font-size: 1.6rem;
+        }
+        /* Main Content Wrapper - Consistent with dashboard */
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        /* Dashboard Section (for charts) - Consistent with dashboard */
+        
+        .dashboard-section {
+            background-color: var(--card-background-dark);
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 6px 20px var(--shadow-dark);
+            border: 1px solid var(--border-dark);
+            margin-bottom: 25px;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            overflow: hidden;
+        }
+        
+        .dashboard-section h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            text-align: center;
+            /* Center chart titles */
+        }
+        /* Styling for the chart containers */
+        
+        .chart-container {
+            width: 100%;
+            max-width: 700px;
+            /* Slightly wider for charts */
+            margin: 0 auto 30px auto;
+            /* Add bottom margin between charts */
+            background-color: rgba(0, 0, 0, 0.2);
+            /* Darker background for chart area */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            /* Inner shadow for depth */
+            height: 300px;
+            /* <--- SOLUSI UNTUK CHART TINGGI TANPA HENTI */
+            position: relative;
+            /* Penting untuk responsivitas Chart.js */
+        }
+        
+        .chart-label {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        /* Loading Overlay (similar to dashboard) */
+        
+        body.loading-page>*:not(#loadingOverlay) {
+            display: none;
+        }
+        
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #loadingOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner-flower-base {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .spinner-flower-base div {
+            position: absolute;
+            border-radius: 2px;
+            opacity: 0.25;
+            animation: flower-spin 1.2s linear infinite;
+        }
+        
+        @keyframes flower-spin {
+            0% {
+                opacity: 0.25;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        .spinner-flower-large {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .spinner-flower-large div {
+            width: 3.5px;
+            height: 8px;
+            background: var(--primary-color);
+            transform-origin: 16px 16px;
+        }
+        
+        .spinner-flower-large div:nth-child(1) {
+            transform: rotate(0deg) translate(12px);
+            animation-delay: -1.1s;
+        }
+        
+        .spinner-flower-large div:nth-child(2) {
+            transform: rotate(45deg) translate(12px);
+            animation-delay: -1s;
+        }
+        
+        .spinner-flower-large div:nth-child(3) {
+            transform: rotate(90deg) translate(12px);
+            animation-delay: -0.9s;
+        }
+        
+        .spinner-flower-large div:nth-child(4) {
+            transform: rotate(135deg) translate(12px);
+            animation-delay: -0.8s;
+        }
+        
+        .spinner-flower-large div:nth-child(5) {
+            transform: rotate(180deg) translate(12px);
+            animation-delay: -0.7s;
+        }
+        
+        .spinner-flower-large div:nth-child(6) {
+            transform: rotate(225deg) translate(12px);
+            animation-delay: -0.6s;
+        }
+        
+        .spinner-flower-large div:nth-child(7) {
+            transform: rotate(270deg) translate(12px);
+            animation-delay: -0.5s;
+        }
+        
+        .spinner-flower-large div:nth-child(8) {
+            transform: rotate(315deg) translate(12px);
+            animation-delay: -0.4s;
+        }
+        /* Media Queries - Consistent with dashboard */
+        
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 60px;
+            }
+            header {
+                padding: 0.8rem 1.5rem;
+            }
+            .header-center img {
+                height: 38px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading-page">
+    <div id="loadingOverlay">
+        <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <section class="dashboard-section">
+            <h2>Statistik Postingan</h2>
+
+            <div class="chart-container">
+                <canvas id="postsViewsChart"></canvas>
+                <p class="chart-label">Menampilkan 5 postingan dengan views terbanyak.</p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="postsPerMonthChart"></canvas>
+                <p class="chart-label">Jumlah postingan yang dibuat setiap bulan.</p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="postsByCategoryChart"></canvas>
+                <p class="chart-label">Distribusi postingan berdasarkan kategori.</p>
+            </div>
+        </section>
+    </div>
+
+    <header>
+        <div class="header-left">Statistik</div>
+        <div class="header-center">
+            <img src="assets/logo.png" alt="Logo" onclick="window.location.href='dashboard.html'" />
+        </div>
+        <div class="header-right">
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+            </button>
+        </div>
+    </header>
+
+    <script>
+        // --- Firebase Configuration (Same as dashboard.html) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+            authDomain: "bima-akbar-web.firebaseapp.com",
+            databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bima-akbar-web",
+            storageBucket: "bima-akbar-web.appspot.com",
+            messagingSenderId: "521611265429",
+            appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        // --- End Firebase Configuration ---
+
+        // --- Auth State Change Listener (PENTING UNTUK PROTEKSI) ---
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const body = document.body;
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'login.html'; // Redirect to login if not authenticated
+            } else {
+                // Hide loading overlay with fade-out
+                loadingOverlay.classList.add('hidden');
+                loadingOverlay.addEventListener('transitionend', function handler() {
+                    loadingOverlay.style.display = 'none';
+                    body.classList.remove('loading-page');
+                    loadingOverlay.removeEventListener('transitionend', handler);
+                }, {
+                    once: true
+                });
+
+                // Load charts once user is authenticated
+                loadCharts();
+            }
+        });
+
+        // --- Chart Loading Function ---
+        function loadCharts() {
+            // Chart 1: Top 5 Postingan Berdasarkan Views (Bar Chart)
+            const postsViewsChartCtx = document.getElementById('postsViewsChart').getContext('2d');
+            database.ref('posts').orderByChild('views').limitToLast(10).on('value', (snapshot) => { // Get up to 10 for better data
+                const posts = snapshot.val();
+                let postTitles = [];
+                let postViews = [];
+
+                if (posts) {
+                    const postsArray = Object.keys(posts).map(key => ({
+                        id: key,
+                        ...posts[key]
+                    }));
+                    postsArray.sort((a, b) => b.views - a.views); // Sort descending by views
+
+                    const topPosts = postsArray.slice(0, 5); // Take top 5
+
+                    topPosts.forEach(post => {
+                        postTitles.push(post.title || 'Tanpa Judul');
+                        postViews.push(post.views || 0);
+                    });
+                } else {
+                    postTitles = ['Tidak Ada Data'];
+                    postViews = [0];
+                }
+
+
+                if (window.postsViewsChartInstance) {
+                    window.postsViewsChartInstance.destroy();
+                }
+
+                window.postsViewsChartInstance = new Chart(postsViewsChartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: postTitles,
+                        datasets: [{
+                            label: 'Total Views',
+                            data: postViews,
+                            backgroundColor: [
+                                'rgba(10, 132, 255, 0.7)',
+                                'rgba(51, 153, 255, 0.7)',
+                                'rgba(0, 122, 255, 0.7)',
+                                'rgba(93, 173, 255, 0.7)',
+                                'rgba(146, 203, 255, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(10, 132, 255, 1)',
+                                'rgba(51, 153, 255, 1)',
+                                'rgba(0, 122, 255, 1)',
+                                'rgba(93, 173, 255, 1)',
+                                'rgba(146, 203, 255, 1)'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Top 5 Postingan Berdasarkan Views',
+                                color: 'var(--text-lighter)',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: 'var(--text-muted)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.08)'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'var(--text-muted)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.08)'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Chart 2: Tren Jumlah Postingan per Bulan (Line Chart)
+            const postsPerMonthChartCtx = document.getElementById('postsPerMonthChart').getContext('2d');
+            database.ref('posts').on('value', (snapshot) => {
+                const posts = snapshot.val();
+                const monthlyPosts = {}; // e.g., { "2024-01": 5, "2024-02": 8 }
+
+                if (posts) {
+                    Object.values(posts).forEach(post => {
+                        const date = new Date(post.timestamp);
+                        const yearMonth = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+                        monthlyPosts[yearMonth] = (monthlyPosts[yearMonth] || 0) + 1;
+                    });
+                }
+
+                const sortedMonths = Object.keys(monthlyPosts).sort();
+                const postCounts = sortedMonths.map(month => monthlyPosts[month]);
+
+                // Map month codes to more readable names (e.g., "2024-01" to "Jan 2024")
+                const readableLabels = sortedMonths.map(month => {
+                    const [year, monthNum] = month.split('-');
+                    const date = new Date(year, parseInt(monthNum) - 1, 1);
+                    return date.toLocaleString('id-ID', {
+                        month: 'short',
+                        year: 'numeric'
+                    });
+                });
+
+
+                if (window.postsPerMonthChartInstance) {
+                    window.postsPerMonthChartInstance.destroy();
+                }
+
+                window.postsPerMonthChartInstance = new Chart(postsPerMonthChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: readableLabels,
+                        datasets: [{
+                            label: 'Jumlah Postingan',
+                            data: postCounts,
+                            borderColor: 'var(--primary-color)',
+                            backgroundColor: 'rgba(10, 132, 255, 0.2)',
+                            fill: true, // Fill area under the line
+                            tension: 0.3, // Make the line slightly curved
+                            pointBackgroundColor: 'var(--primary-color)',
+                            pointBorderColor: 'var(--text-lighter)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Tren Jumlah Postingan per Bulan',
+                                color: 'var(--text-lighter)',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'var(--text-muted)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.08)'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: 'var(--text-muted)',
+                                    precision: 0 // Ensure whole numbers for counts
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.08)'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Chart 3: Distribusi Postingan per Kategori (Doughnut Chart)
+            const postsByCategoryChartCtx = document.getElementById('postsByCategoryChart').getContext('2d');
+            database.ref('posts').on('value', (snapshot) => {
+                const posts = snapshot.val();
+                const categoryCounts = {}; // e.g., { "Teknologi": 10, "Gaya Hidup": 7 }
+
+                if (posts) {
+                    Object.values(posts).forEach(post => {
+                        const category = post.category || 'Tidak Berkategori';
+                        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+                    });
+                }
+
+                const categoryLabels = Object.keys(categoryCounts);
+                const categoryData = Object.values(categoryCounts);
+
+                // Generate a dynamic set of colors for the doughnut chart
+                const dynamicColors = () => {
+                    const colors = [];
+                    const baseHue = 210; // Blue hue
+                    const numColors = categoryLabels.length;
+                    for (let i = 0; i < numColors; i++) {
+                        // Vary lightness and saturation for distinct colors
+                        const lightness = 30 + (i * (60 / numColors)); // From dark to lighter
+                        const saturation = 70 + (i * (20 / numColors)); // More saturated
+                        colors.push(`hsl(${baseHue}, ${saturation}%, ${lightness}%)`);
+                    }
+                    return colors;
+                };
+                const backgroundColors = dynamicColors();
+
+                if (window.postsByCategoryChartInstance) {
+                    window.postsByCategoryChartInstance.destroy();
+                }
+
+                window.postsByCategoryChartInstance = new Chart(postsByCategoryChartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: categoryLabels,
+                        datasets: [{
+                            label: 'Jumlah Postingan',
+                            data: categoryData,
+                            backgroundColor: backgroundColors,
+                            borderColor: 'var(--background-dark)', // Border color to separate slices
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right', // Place legend on the right for better readability
+                                labels: {
+                                    color: 'var(--text-light)',
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Distribusi Postingan per Kategori',
+                                color: 'var(--text-lighter)',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw;
+                                        const total = context.dataset.data.reduce((acc, current) => acc + current, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
