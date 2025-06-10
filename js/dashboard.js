@@ -351,7 +351,7 @@ function loadContent(targetSectionId) {
 
 	// Update URL tanpa reload (untuk riwayat browser)
 
-	history.pushState(null, '', `dashboard.html?page=${targetSectionId.replace('Section', '').toLowerCase()}`);
+	history.pushState(null, '', `dashboard.html?page=${targetSectionId.replace('Section', '')}`);
 
 }
 
