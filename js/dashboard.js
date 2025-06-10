@@ -1835,35 +1835,18 @@ const firebaseConfig = {
 
         // New: Function to handle editing a post
         function editPost(postId) {
-            // Here you would typically load the post data into the "Add Post" form
-            // (or a dedicated "Edit Post" form) and then change the form's
-            // submit behavior to update an existing post instead of creating a new one.
-            // For now, we'll just log and redirect to the add post section.
-            console.log(`Mengedit postingan dengan ID: ${postId}`);
-            alert(`Fungsi Edit Postingan untuk ${postId} akan memuat data ke formulir edit. Implementasi akan datang.`);
-            loadContent('addPostSection'); // Redirect to add post section for now.
-            // In a real application, you'd fetch the post data and populate the form fields.
-            // Example:
-            // database.ref('BimaAkbar/posts/' + postId).once('value').then(snapshot => {
-            //     const postData = snapshot.val();
-            //     if (postData) {
-            //         // Populate form fields with postData
-            //         document.getElementById('postTitle').value = postData.title;
-            //         // ... and so on for other fields
-            //         // You might need a global variable to indicate "editing mode"
-            //         // and the postId being edited, so the form knows to UPDATE instead of PUSH
-            //     }
-            // });
-        }
+		database.ref('BimaAkbar/posts/' + postId).once('value').then(snapshot => {
+			const postData = snapshot.val();
+			if (postData) {
+				document.getElementById('postTitle').value = postData.title;
+			}
+		});
+	}
         window.editPost = editPost;
 
         // New: Function to handle viewing a post
         function viewPost(postSlug) {
-            // This function would typically redirect the user to the public view of the post.
-            // The actual URL structure would depend on your frontend setup.
-            console.log(`Melihat postingan dengan slug: ${postSlug}`);
-            alert(`Fungsi Lihat Postingan untuk ${postSlug} akan membuka halaman publik. Implementasi akan datang.`);
-            // Example: window.open(`../post/${postSlug}.html`, '_blank'); // Assuming your public posts are at /post/slug.html
+		window.open(`../post/${postSlug}.html`, '_blank');
         }
         window.viewPost = viewPost;
 
