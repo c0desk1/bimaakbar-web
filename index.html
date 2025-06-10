@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="post-title" content="Bima Akbar" />
-    <meta name="post-description" content="Tips & Trik terbaru seputar teknologi, blogging, dan pengembangan diri dari Bima Akbar. Dapatkan info lengkap dan praktis di sini." />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <title>Beranda</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bima Akbar</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHKJ22MFVE"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -21,53 +19,1155 @@
 
         gtag('config', 'G-ZHKJ22MFVE');
     </script>
+    <style>
+/* style.css - Main Stylesheet for Bima Akbar Blog */
+
+/* --- CSS Variables (Dark Mode Defaults) --- */
+:root {
+    --primary-color: #0A84FF; /* Blue */
+    --primary-color-hover: #3399FF; /* Lighter Blue on hover */
+    --secondary-color: #64D2FF; /* Light Blue */
+    --accent-color: #BF5AF2; /* Purple */
+
+    /* Dark Mode Palette */
+    --bg-dark: #1C1C1E; /* Very Dark Gray */
+    --card-bg-dark: rgba(28, 28, 30, 0.75); /* Dark Gray with transparency for cards/header/footer */
+    --border-dark: rgba(255, 255, 255, 0.1); /* Subtle white border for dark elements */
+    --text-light: #E0E0E0; /* Light Gray for main text */
+    --text-lighter: #FFFFFF; /* Pure White for contrast (e.g., hero titles) */
+    --text-muted: #8E8E93; /* Muted Gray for secondary text/meta */
+    --shadow-dark: rgba(0, 0, 0, 0.4); /* Dark shadow for depth */
+
+    /* Light Mode Palette (Optional - if you want to implement a toggle) */
+    --bg-light: #F2F2F7;
+    --card-bg-light: #FFFFFF;
+    --border-light: #D1D1D6;
+    --text-dark: #1C1C1E;
+}
+
+/* --- Global Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    line-height: 1.6;
+    color: var(--text-light); /* Default text color */
+    background-color: var(--bg-dark); /* Default background color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column; /* For sticky footer */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-color-hover);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-lighter);
+    line-height: 1.2;
+}
+
+main {
+    flex-grow: 1; /* Allow main content to grow and push footer down */
+}
+
+/* --- Header --- */
+.main-header {
+    background-color: var(--card-bg-dark);
+    border-bottom: 1px solid var(--border-dark);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px var(--shadow-dark);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping for mobile layout */
+}
+
+.blog-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-lighter);
+    font-size: 1.5em;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent shrinking on smaller screens */
+}
+
+.blog-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.main-nav a {
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 5px 0;
+    position: relative;
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+    width: 100%;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-grow: 1; /* Allow search bar to grow */
+    max-width: 300px; /* Limit max width for desktop */
+    margin-left: 20px; /* Space from nav */
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-bar input:focus {
+    border-color: var(--primary-color);
+}
+
+.search-bar button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: var(--text-lighter);
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.search-bar button ion-icon {
+    font-size: 1.2em;
+}
+
+.menu-toggle {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    color: var(--text-lighter);
+    font-size: 2em;
+    cursor: pointer;
+    margin-left: 15px; /* Space from search bar */
+}
+
+/* --- Main Content Area --- */
+.content-area {
+    padding: 40px 20px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 40px 20px;
+    /* background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); */
+    background: none; /* Menghapus background */
+    border-radius: 15px;
+    color: var(--text-lighter);
+    box-shadow: 0 5px 15px var(--shadow-dark); /* Tetap ada shadow untuk memberi sedikit "floating effect" */
+}
+
+.hero-section h2 {
+    /* Ukuran dasar (misalnya untuk layar sangat kecil) */
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: var(--text-lighter);
+    text-shadow: 2px 2px 4px var(--shadow-dark); /* Tambahkan sedikit shadow agar teks lebih terbaca tanpa background */
+
+    /* Font liquid menggunakan calc dan vw */
+    /* Semakin lebar layar, semakin besar fontnya, dalam batas yang wajar */
+    @media (min-width: 480px) {
+        font-size: calc(1.8em + (2.8 - 1.8) * (100vw - 480px) / (1200 - 480));
+    }
+    /* Batas atas ukuran font untuk layar besar */
+    @media (min-width: 1200px) {
+        font-size: 2.8em;
+    }
+}
+
+.hero-section p {
+    /* Ukuran dasar */
+    font-size: 0.9em;
+    opacity: 0.9;
+
+    /* Font liquid */
+    @media (min-width: 480px) {
+        font-size: calc(0.9em + (1.2 - 0.9) * (100vw - 480px) / (1200 - 480));
+    }
+    /* Batas atas */
+    @media (min-width: 1200px) {
+        font-size: 1.2em;
+    }
+    text-shadow: 1px 1px 2px var(--shadow-dark); /* Tambahkan shadow juga agar lebih jelas */
+}
+
+.recent-posts, .categories-section, .related-posts {
+    margin-bottom: 40px;
+    background-color: var(--card-bg-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px var(--shadow-dark);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.recent-posts h2, .categories-section h2, .related-posts h2 {
+    font-size: 2em;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-dark);
+    padding-bottom: 15px;
+    color: var(--text-lighter);
+}
+
+/* --- Posts Grid (for index.html and related posts) --- */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.post-card {
+    background-color: var(--bg-dark); /* Lighter background for cards */
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px var(--shadow-dark);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-dark);
+}
+
+.post-cover {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-info {
+    padding: 20px;
+    flex-grow: 1; /* Allow content to grow */
+    display: flex;
+    flex-direction: column;
+}
+
+.post-category {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--text-lighter);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.post-info h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    color: var(--text-lighter);
+}
+
+.post-excerpt {
+    font-size: 0.95em;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    flex-grow: 1; /* Allow excerpt to take available space */
+}
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-top: auto; /* Push meta to bottom */
+    margin-bottom: 15px;
+}
+
+.post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.post-meta ion-icon {
+    font-size: 1.1em;
+    color: var(--primary-color);
+}
+
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background-color: var(--primary-color);
+    color: var(--text-lighter);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    align-self: flex-start; /* Align button to start */
+}
+
+.read-more-btn:hover {
+    background-color: var(--primary-color-hover);
+    transform: translateY(-2px);
+}
+
+.info-message, .error-message {
+    grid-column: 1 / -1; /* Span full width of grid */
+    text-align: center;
+    font-style: italic;
+    color: var(--text-muted);
+    padding: 20px;
+}
+
+/* --- Pagination --- */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-dark);
+}
+
+.pagination-controls button {
+    background-color: var(--primary-color);
+    color: var(--text-lighter);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background-color: var(--primary-color-hover);
+}
+
+.pagination-controls button:disabled {
+    background-color: rgba(255, 255, 255, 0.1); /* Lighter gray for disabled */
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.pagination-controls span {
+    font-weight: 600;
+    color: var(--text-lighter);
+}
+
+/* --- Category Filter --- */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.category-btn {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--border-dark);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    text-transform: capitalize;
+}
+
+.category-btn:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.05); /* Slight tint on hover */
+    color: var(--text-lighter);
+}
+
+.category-btn.active {
+    background-color: var(--primary-color);
+    color: var(--text-lighter);
+    border-color: var(--primary-color);
+}
+
+/* --- Footer --- */
+.main-footer {
+    background-color: var(--card-bg-dark);
+    border-top: 1px solid var(--border-dark);
+    padding: 20px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    box-shadow: 0 -2px 10px var(--shadow-dark);
+    margin-top: 40px; /* Space from content above */
+}
+
+.main-footer .container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    margin: 0 8px;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Post Detail Page Specific Styles --- */
+.post-detail-page {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Space between post detail and related posts section */
+}
+
+.post-detail-card {
+    background-color: var(--card-bg-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px var(--shadow-dark);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden; /* For cover image radius */
+}
+
+.post-detail-cover {
+    width: 100%;
+    max-height: 450px; /* Slightly increased max height for larger screens */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.post-detail-category {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--text-lighter);
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+}
+
+.post-detail-title {
+    font-size: 2.8em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--text-lighter);
+}
+
+.post-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-dark);
+    padding-bottom: 20px;
+}
+
+.post-detail-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.post-detail-meta ion-icon {
+    font-size: 1.2em;
+    color: var(--primary-color);
+}
+
+/* --- Quill Editor Output Styling (post-body) --- */
+.post-body {
+    line-height: 1.8;
+    font-size: 1.1em;
+    color: var(--text-light);
+}
+
+.post-body h1, .post-body h2, .post-body h3, .post-body h4, .post-body h5, .post-body h6 {
+    color: var(--text-lighter);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    line-height: 1.3;
+}
+.post-body h1 { font-size: 2.4em; } /* Adjusted for better hierarchy */
+.post-body h2 { font-size: 2em; }
+.post-body h3 { font-size: 1.6em; }
+.post-body h4 { font-size: 1.4em; }
+.post-body h5 { font-size: 1.2em; }
+.post-body h6 { font-size: 1em; }
+
+.post-body p {
+    margin-bottom: 1em;
+    color: var(--text-light);
+}
+.post-body a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.post-body strong { font-weight: bold; }
+.post-body em { font-style: italic; }
+.post-body ul, .post-body ol {
+    margin-bottom: 1em;
+    padding-left: 25px;
+    color: var(--text-light);
+}
+.post-body li {
+    margin-bottom: 0.5em;
+}
+.post-body pre {
+    background-color: var(--bg-dark); /* Use darker background for code blocks */
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 15px;
+    overflow-x: auto;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Monospace font */
+    font-size: 0.9em;
+    margin-bottom: 1em;
+    color: var(--text-light);
+}
+.post-body blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 1em;
+    font-style: italic;
+    color: var(--text-muted);
+}
+.post-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto; /* Center images */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Subtle shadow for images */
+}
+.post-body iframe {
+    max-width: 100%;
+    display: block;
+    margin: 1em auto;
+    border-radius: 8px; /* Consistent border radius */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .main-header .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .blog-logo {
+        margin-right: auto; /* Push menu toggle to the right */
+    }
+    .main-nav {
+        display: none; /* Hidden by default on tablet/mobile */
+        width: 100%; /* Take full width when active */
+        order: 3; /* Push below logo and search */
+        margin-top: 15px;
+        text-align: center; /* Center nav items */
+    }
+    .main-nav.active {
+        display: block; /* Show when active */
+    }
+    .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 0;
+        background-color: var(--card-bg-dark); /* Background for open nav */
+        border-radius: 8px;
+        border: 1px solid var(--border-dark);
+    }
+    .main-nav li {
+        padding: 5px 0;
+    }
+    .search-bar {
+        order: 2; /* Position search bar before toggle on same row as logo */
+        margin-left: auto; /* Push search to the right */
+        flex-grow: 1; /* Allow search bar to grow */
+        max-width: 250px; /* Limit search bar width */
+        margin-right: 15px;
+    }
+    .menu-toggle {
+        display: block; /* Show hamburger menu */
+        order: 1; /* Position toggle after logo */
+        margin-left: 10px; /* Space from search bar */
+    }
+    .hero-section h2 {
+        font-size: 2.2em; /* Fallback for liquid font, overridden by calc */
+    }
+    .hero-section p {
+        font-size: 1em; /* Fallback for liquid font, overridden by calc */
+    }
+    .posts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust for smaller cards */
+        gap: 20px;
+    }
+
+    /* Post Detail Page */
+    .post-detail-title {
+        font-size: 2.2em;
+    }
+    .post-body h1 { font-size: 2em; }
+    .post-body h2 { font-size: 1.8em; }
+    .post-body h3 { font-size: 1.5em; }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    .main-header {
+        padding: 10px 0;
+    }
+    .blog-logo h1 {
+        font-size: 1.3em;
+    }
+    .blog-logo img {
+        height: 35px;
+    }
+    .search-bar {
+        width: 100%; /* Full width search bar */
+        order: 3;
+        margin-top: 15px;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%; /* Remove max-width on mobile */
+    }
+    .search-bar input {
+        flex-grow: 1;
+    }
+    .menu-toggle {
+        order: 2; /* Place after logo, before search */
+    }
+
+    .content-area {
+        padding: 25px 15px;
+    }
+
+    .hero-section {
+        padding: 30px 15px;
+    }
+    .hero-section h2 {
+        font-size: 1.8em; /* Fallback for liquid font */
+    }
+    .hero-section p {
+        font-size: 0.9em; /* Fallback for liquid font */
+    }
+
+    .recent-posts, .categories-section, .related-posts, .post-detail-card {
+        padding: 20px;
+        margin-bottom: 30px; /* Slightly less margin for tighter spacing */
+    }
+    .recent-posts h2, .categories-section h2, .related-posts h2 {
+        font-size: 1.6em;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .posts-grid {
+        grid-template-columns: 1fr; /* Stack cards in a single column on mobile */
+        gap: 25px;
+    }
+    .post-cover {
+        height: 180px;
+    }
+    .post-info {
+        padding: 15px;
+    }
+    .post-info h3 {
+        font-size: 1.3em;
+    }
+    .post-excerpt {
+        font-size: 0.9em;
+    }
+    .post-meta {
+        font-size: 0.8em;
+        gap: 10px;
+    }
+    .read-more-btn {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    .pagination-controls button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    .pagination-controls span {
+        font-size: 0.9em;
+    }
+    .category-btn {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+
+    .main-footer {
+        padding: 15px 0;
+        font-size: 0.8em;
+    }
+
+    /* Post Detail Page */
+    .post-detail-cover {
+        max-height: 250px;
+        margin-bottom: 20px;
+    }
+    .post-detail-category {
+        font-size: 0.8em;
+        padding: 4px 8px;
+        margin-bottom: 10px;
+    }
+    .post-detail-title {
+        font-size: 2em;
+        margin-bottom: 15px;
+    }
+    .post-detail-meta {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 0.8em;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    .post-body {
+        font-size: 1em;
+    }
+    .post-body h1 { font-size: 1.8em; }
+    .post-body h2 { font-size: 1.6em; }
+    .post-body h3 { font-size: 1.4em; }
+}
+
+@media (max-width: 480px) {
+    .blog-logo h1 {
+        display: none; /* Hide blog title on very small screens, keep logo */
+    }
+    .search-bar {
+        flex-basis: 100%; /* Make search bar take full width */
+        order: 3;
+        margin-top: 10px;
+    }
+    .menu-toggle {
+        margin-left: auto; /* Push toggle to the right if logo text is hidden */
+    }
+    .hero-section {
+        padding: 25px 10px;
+    }
+    .hero-section h2 {
+        font-size: 1.5em; /* Fallback for liquid font */
+    }
+    .hero-section p {
+        font-size: 0.8em; /* Fallback for liquid font */
+    }
+    .post-card {
+        padding: 0; /* No padding needed if content has its own padding */
+    }
+
+    /* Post Detail Page */
+    .post-detail-card {
+        padding: 15px;
+    }
+    .post-detail-title {
+        font-size: 1.6em;
+    }
+    .post-detail-meta {
+        font-size: 0.75em;
+    }
+    .post-body {
+        font-size: 0.9em;
+    }
+    .post-body h1 { font-size: 1.6em; }
+    .post-body h2 { font-size: 1.4em; }
+    .post-body h3 { font-size: 1.2em; }
+}
+    </style>
 </head>
-
 <body>
-	<div id="scrollProgress"></div>
-    <header class="header">
-        <div id="header-include"></div>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="blog-logo">
+                <img src="assets/logo.png" alt="Bima Akbar Logo">
+                <h1>Bima Akbar</h1>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="#about">Tentang</a></li>
+                    <li><a href="#contact">Kontak</a></li>>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" id="postSearchInput" placeholder="Cari postingan...">
+                <button id="searchButton"><ion-icon name="search-outline"></ion-icon></button>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </button>
+        </div>
     </header>
-    <div id="sidebar-include"></div>   
-    <main class="main">
-        <div id="hero-include"></div>
-        <div id="search-include"></div>
-        <section class="section-categories">
-            <div id="category-labels" class="category-grid"></div>
-        </section>
-        <div id="affiliate-include"></div>
-        <section class="popular-posts">
-            <h2>Popular</h2>
-            <div id="popular-posts"></div>
-        </section>
-        <section class="latest-posts">
-            <h2>Latest</h2>
-            <div id="latest-posts"></div>
-        </section>
-        <div id="newsletter-include"></div>
-    </main>
-    <div id="stats-include"></div>
-    <footer class="footer">
-        <div id="footer-include"></div>
-    </footer>
-    <script src="js/u/layout.js"></script>
-    <script src="js/u/page-title.js"></script>
-    <script src="js/u/post-title.js"></script>
-    <script src="js/u/header.js"></script>
-    <script src="js/u/search.js"></script>
-    <script src="js/u/time.js"></script>
-    <script src="js/d/affiliate-list.js"></script>
-    <script src="js/u/label.js"></script>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-database-compat.js"></script>
-    <script src="js/u/stats.js"></script>
-    
-    <script src="js/u/latest-popular.js"></script>
-    
-    <!-- Bima Akbar -->
-    <script src="js/u/main.js"></script>
-</body>
 
+    <main class="container content-area">
+        <section class="hero-section">
+            <h2>Hai</h2>
+        </section>
+
+        <section class="recent-posts">
+            <h2>Postingan Terbaru</h2>
+            <div class="posts-grid" id="postsGrid">
+                <p id="loadingMessage" class="info-message">Memuat postingan...</p>
+                <p id="noPostsMessage" class="info-message" style="display: none;">Tidak ada postingan untuk ditampilkan.</p>
+            </div>
+            <div class="pagination-controls" id="paginationControls" style="display: none;">
+                <button id="prevPageBtn" disabled><ion-icon name="arrow-back-outline"></ion-icon> Sebelumnya</button>
+                <span id="currentPageInfo">Halaman 1</span>
+                <button id="nextPageBtn">Selanjutnya <ion-icon name="arrow-forward-outline"></ion-icon></button>
+            </div>
+        </section>
+
+        <section class="categories-section">
+            <h2>Jelajahi Kategori</h2>
+            <div class="category-list" id="categoryList">
+                <button class="category-btn active" data-category="all">Semua</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Bima Akbar Blog. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privasi</a> | <a href="#">Syarat Penggunaan</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       // Firebase Configuration (same as dashboard)
+const firebaseConfig = {
+    apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
+    authDomain: "bima-akbar-web.firebaseapp.com",
+    databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "bima-akbar-web",
+    storageBucket: "bima-akbar-web.appspot.com",
+    messagingSenderId: "521611265429",
+    appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+// --- Firebase Path Adjustment ---
+const postsRef = database.ref('BimaAkbar/posts'); // Adjusted Firebase path
+
+
+// --- Global Elements ---
+const postsGrid = document.getElementById('postsGrid');
+const loadingMessage = document.getElementById('loadingMessage');
+const noPostsMessage = document.getElementById('noPostsMessage');
+const postSearchInput = document.getElementById('postSearchInput');
+const searchButton = document.getElementById('searchButton');
+const categoryList = document.getElementById('categoryList');
+const mainNav = document.querySelector('.main-nav');
+const menuToggle = document.getElementById('menuToggle');
+
+// Pagination elements
+const paginationControls = document.getElementById('paginationControls');
+const prevPageBtn = document.getElementById('prevPageBtn');
+const nextPageBtn = document.getElementById('nextPageBtn');
+const currentPageInfo = document.getElementById('currentPageInfo');
+
+let allPublishedPosts = []; // Stores all fetched published posts
+let filteredPosts = []; // Posts after search/category filter
+let currentPage = 1;
+const postsPerPage = 6; // Number of posts to show per page on the main blog
+
+// --- Utility Functions ---
+function showLoading() {
+    loadingMessage.style.display = 'block';
+    noPostsMessage.style.display = 'none';
+    postsGrid.innerHTML = ''; // Clear previous posts
+}
+
+function hideLoading() {
+    loadingMessage.style.display = 'none';
+}
+
+function showNoPostsMessage() {
+    noPostsMessage.style.display = 'block';
+}
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+}
+
+function truncateText(text, maxLength) {
+    if (text && text.length > maxLength) { // Added check for text existence
+        return text.substring(0, maxLength) + '...';
+    }
+    return text || ''; // Return empty string if text is null/undefined
+}
+
+// --- Fetch and Display Posts ---
+async function fetchAndDisplayPosts() {
+    showLoading();
+    try {
+        // --- Adjusted Firebase query using postsRef ---
+        const snapshot = await postsRef.orderByChild('timestamp').once('value');
+        const postsData = snapshot.val();
+        allPublishedPosts = [];
+
+        if (postsData) {
+            Object.keys(postsData).forEach(key => {
+                const post = { id: key, ...postsData[key] };
+                if (post.status === 'published' && post.slug) { // Only show published posts and ensure slug exists
+                    allPublishedPosts.push(post);
+                }
+            });
+            // Sort by newest first (descending timestamp)
+            allPublishedPosts.sort((a, b) => b.timestamp - a.timestamp);
+        }
+
+        applyFiltersAndSearch();
+        populateCategories(); // Populate categories after posts are loaded
+
+        // Handle search query from URL (e.g., from post.html search)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSearchTerm = urlParams.get('search');
+        if (urlSearchTerm) {
+            postSearchInput.value = decodeURIComponent(urlSearchTerm);
+            applyFiltersAndSearch();
+        }
+
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        postsGrid.innerHTML = '<p class="error-message">Gagal memuat postingan. Silakan coba lagi nanti.</p>';
+        hideLoading();
+    }
+}
+
+function renderPosts() {
+    postsGrid.innerHTML = ''; // Clear current posts
+    hideLoading();
+
+    if (filteredPosts.length === 0) {
+        showNoPostsMessage();
+        paginationControls.style.display = 'none';
+        return;
+    } else {
+        noPostsMessage.style.display = 'none';
+        paginationControls.style.display = 'flex';
+    }
+
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    const postsToDisplay = filteredPosts.slice(startIndex, endIndex);
+
+    postsToDisplay.forEach(post => {
+        const postCard = document.createElement('article');
+        postCard.classList.add('post-card');
+        postCard.setAttribute('data-slug', post.slug); // Using slug now
+
+        const coverImage = post.coverImageUrl ? `<img src="${post.coverImageUrl}" alt="${post.title}" class="post-cover">` : '';
+
+        // Extract plain text content for excerpt
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = post.content || '';
+        const excerpt = truncateText(tempDiv.textContent, 150); // Max 150 chars for excerpt
+
+        postCard.innerHTML = `
+            ${coverImage}
+            <div class="post-info">
+                <span class="post-category">${post.category || 'Uncategorized'}</span>
+                <h3>${post.title}</h3>
+                <p class="post-excerpt">${excerpt}</p>
+                <div class="post-meta">
+                    <span class="post-author"><ion-icon name="person-outline"></ion-icon> ${post.author}</span>
+                    <span class="post-date"><ion-icon name="calendar-outline"></ion-icon> ${formatDate(post.timestamp)}</span>
+                    <span class="post-views"><ion-icon name="eye-outline"></ion-icon> ${post.viewCount || 0}</span>
+                </div>
+                <a href="post.html?slug=${post.slug}" class="read-more-btn">Baca Selengkapnya <ion-icon name="arrow-forward-outline"></ion-icon></a>
+            </div>
+        `;
+        postsGrid.appendChild(postCard);
+    });
+
+    updatePaginationControls();
+}
+
+function applyFiltersAndSearch() {
+    const searchTerm = postSearchInput.value.toLowerCase().trim();
+    const activeCategoryBtn = categoryList.querySelector('.category-btn.active');
+    const selectedCategory = activeCategoryBtn ? activeCategoryBtn.dataset.category : 'all';
+
+    filteredPosts = allPublishedPosts.filter(post => {
+        const matchesSearch = post.title.toLowerCase().includes(searchTerm) ||
+                              (post.content && post.content.toLowerCase().includes(searchTerm)) || // Check content for search
+                              (post.slug && post.slug.toLowerCase().includes(searchTerm)); // Also search by slug
+
+        const matchesCategory = selectedCategory === 'all' ||
+                                (post.category && post.category.toLowerCase() === selectedCategory.toLowerCase());
+        return matchesSearch && matchesCategory;
+    });
+
+    currentPage = 1; // Reset to first page after filter/search
+    renderPosts();
+}
+
+function updatePaginationControls() {
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+    currentPageInfo.textContent = `Halaman ${currentPage} dari ${totalPages || 1}`;
+
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages || filteredPosts.length === 0;
+}
+
+function goToPage(direction) {
+    if (direction === 'next') {
+        currentPage++;
+    } else if (direction === 'prev') {
+        currentPage--;
+    }
+    renderPosts();
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+}
+
+// --- Category Handling ---
+function populateCategories() {
+    const categories = new Set();
+    allPublishedPosts.forEach(post => {
+        if (post.category) {
+            categories.add(post.category);
+        }
+    });
+
+    // Clear existing categories except "Semua"
+    categoryList.querySelectorAll('.category-btn:not([data-category="all"])').forEach(btn => btn.remove());
+
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.classList.add('category-btn');
+        button.textContent = category;
+        button.dataset.category = category;
+        categoryList.appendChild(button);
+    });
+}
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    fetchAndDisplayPosts();
+
+    // Search functionality
+    searchButton.addEventListener('click', applyFiltersAndSearch);
+    postSearchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            applyFiltersAndSearch();
+        }
+    });
+
+    // Category filtering
+    categoryList.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('category-btn')) {
+            categoryList.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            target.classList.add('active');
+            applyFiltersAndSearch();
+        }
+    });
+
+    // Pagination buttons
+    prevPageBtn.addEventListener('click', () => goToPage('prev'));
+    nextPageBtn.addEventListener('click', () => goToPage('next'));
+
+    // Mobile menu toggle
+    menuToggle.addEventListener('click', () => {
+        mainNav.classList.toggle('active');
+    });
+});
+    </script>
+</body>
 </html>
