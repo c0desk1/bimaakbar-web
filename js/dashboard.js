@@ -1590,8 +1590,8 @@ const firebaseConfig = {
 					    authorId: auth.currentUser ? auth.currentUser.uid : 'anonymous',
 					    cover: cover || null,
 					    excerpt: excerpt || content.substring(0, 120),
-					    slug,
-						hashtags
+			slug,
+			    hashtags
 					};
 					
 					if (scheduledTimestamp) postData.scheduledTimestamp = scheduledTimestamp;
@@ -1646,164 +1646,56 @@ const firebaseConfig = {
 
 
         function initPostListSection() {
-
-            console.log('Menginisialisasi Daftar Postingan...');
-
-            stopSectionListeners('postListSection');
-
-
-
-            const allPostsTableBody = document.getElementById('allPostsTableBody');
-
-            const postListMessage = document.getElementById('postListMessage');
-
-
-
-            if (allPostsTableBody) {
-
-                postListMessage.textContent = 'Memuat daftar postingan...';
-
-                postListMessage.style.color = '#8E8E93';
-
-                allPostsTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #8E8E93;">Memuat daftar postingan...</td></tr>`; // Updated colspan
-
-
-                registerListener('postListSection', 'posts', 'value', (snapshot) => { //
-                    const posts = snapshot.val();
-
-                    allPostsTableBody.innerHTML = '';
-
-
-
-                    if (posts) {
-
-                        const postsArray = Object.keys(posts).map(key => ({
-
-                            id: key,
-
-                            ...posts[key]
-
-                        }));
-
-                        postsArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-
-
-                        if (postsArray.length > 0) {
-
-                            postsArray.forEach(post => {
-
-                                const tr = document.createElement('tr');
-
-                                const postDate = post.timestamp ? new Date(post.timestamp).toLocaleDateString('id-ID', {
-
-                                    year: 'numeric',
-
-                                    month: 'short',
-
-                                    day: 'numeric'
-
-                                }) : 'N/A';
-
-
-
-                                let statusDisplay = '';
-
-                                let rowClass = '';
-
-
-
-                                switch (post.status) {
-
-                                    case 'published':
-
-                                        statusDisplay = 'Publikasi';
-
-                                        break;
-
-                                    case 'draft':
-
-                                        statusDisplay = 'Draf';
-
-                                        break;
-
-                                    case 'scheduled':
-
-                                        if (post.scheduledTimestamp && new Date(post.scheduledTimestamp) <= Date.now()) {
-
-                                            statusDisplay = 'Terjadwal (Terlewat)';
-
-                                            rowClass = 'status-overdue';
-
-                                        } else if (post.scheduledTimestamp) {
-
-                                            statusDisplay = `Terjadwal<br>(${new Date(post.scheduledTimestamp).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })})`;
-
-                                        } else {
-
-                                            statusDisplay = 'Terjadwal (Tgl Tidak Ada)';
-
-                                        }
-
-                                        break;
-
-                                    default:
-
-                                        statusDisplay = 'Tidak Diketahui';
-
-                                }
-
-
-                                tr.className = rowClass;
-
-                                tr.innerHTML = `
-                                    <td>${post.title || 'Tidak Ada Judul'}</td>
-                                    <td>${post.category || '-'}</td>
-                                    <td>${(post.views || 0).toLocaleString('id-ID')}</td>
-                                    <td>${statusDisplay}</td>
-                                    <td>${postDate}</td>
-                                    <td>${post.slug || '-'}</td> <td>${(post.hashtags && post.hashtags.length > 0) ? post.hashtags.join(', ') : '-'}</td> <td class="actions-col">
-                                        <button onclick="editPost('${post.id}')"><ion-icon name="create"></ion-icon> Edit</button>
-                                        <button onclick="viewPost('${post.slug || post.id}')"><ion-icon name="eye"></ion-icon> Lihat</button>
-                                        <button class="delete-btn" onclick="deletePost('${post.id}')"><ion-icon name="trash"></ion-icon> Hapus</button>
-                                    </td>
-                                `;
-
-                                allPostsTableBody.appendChild(tr);
-
-                            });
-
-                            postListMessage.textContent = '';
-
-                        } else {
-
-                            allPostsTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #8E8E93">Belum ada postingan.</td></tr>`; // Updated colspan
-                            postListMessage.textContent = '';
-
-                        }
-
-                    } else {
-
-                        allPostsTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #8E8E93">Belum ada postingan.</td></tr>`; // Updated colspan
-                        postListMessage.textContent = '';
-
-                    }
-
-                }, (error) => {
-
-                    console.error("Error fetching all posts:", error);
-
-                    postListMessage.textContent = 'Gagal memuat postingan.';
-
-                    postListMessage.style.color = 'red';
-
-                    allPostsTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Gagal memuat postingan.</td></tr>`; // Updated colspan
-                });
-
-            }
-
-        }
-
+	console.log('Menginisialisasi Daftar Postingan...');
+	stopSectionListeners('postListSection');
+
+	function renderPostsCard(posts) {
+		const cardList = document.getElementById("allPostsCardList");
+		cardList.innerHTML = "";
+
+		if (!posts || !posts.length) {
+			cardList.innerHTML = `<div style="color:#bdbdbd;text-align:center;padding:1.5em;">Belum ada postingan</div>`;
+			return;
+		}
+		posts.forEach(post => {
+			const card = document.createElement("div");
+			card.className = "post-card";
+			card.innerHTML = `<div class="post-card-title">${post.title || "(Tanpa Judul)"}</div>
+				<div class="post-card-meta">
+					<span>Kategori: <strong>${post.category || "-"}</strong></span>
+					<span>Status: <strong>${post.status || "-"}</strong></span>
+					<span>Views: <strong>${post.views ?? 0}</strong></span>
+					<span>Tanggal: <strong>${post.timestamp ? new Date(post.timestamp).toLocaleDateString('id-ID') : "-"}</strong></span>
+					<span>Slug: <strong>${post.slug || "-"}</strong></span>
+				</div>
+				${post.hashtags ? `<div class="post-card-hashtags">${Array.isArray(post.hashtags) ? post.hashtags.join(', ') : post.hashtags}</div>` : ""}
+				<div class="post-card-actions">
+					<button onclick="editPost('${post.id}')">Edit</button>
+					<button onclick="viewPost('${post.slug || post.id}')">Lihat</button>
+					<button class="delete" onclick="deletePost('${post.id}')">Hapus</button>
+				</div>`;
+			cardList.appendChild(card);
+		});
+	}
+
+	const cardList = document.getElementById("allPostsCardList");
+	if (cardList) {
+		cardList.innerHTML = `<div style="color:#8E8E93;text-align:center;padding:1.5em;">Memuat daftar postingan...</div>`;
+	}
+
+	registerListener('postListSection', 'posts', 'value', (snapshot) => {
+		const posts = snapshot.val();
+		if (posts) {
+			const postsArray = Object.keys(posts).map(key => ({
+				id: key,
+				...posts[key]
+			})).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+			renderPostsCard(postsArray);
+		} else {
+			renderPostsCard([]);
+		}
+	});
+}
 
 
         // Fungsi Global untuk Menghapus Postingan (dapat dipanggil dari tombol)
