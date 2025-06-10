@@ -557,12 +557,19 @@
                             </div>
 
                         </div>
+                        <button type="button" class="btn-preview" id="previewPostBtn" style="margin-right:10px;">Preview</button>
 
                         <button type="submit" class="btn-submit">Simpan Postingan</button>
 
                         <p id="addPostMessage" style="margin-top: 15px;"></p>
 
                     </form>
+                    <div id="previewModal" class="modal" style="display:none;">
+                        <div class="modal-content">
+                            <span class="close" id="closePreviewModal">&times;</span>
+                            <div id="previewContent"></div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -678,4 +685,3 @@
 
 
 </html>
-
