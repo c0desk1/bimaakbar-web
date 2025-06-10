@@ -26,6 +26,17 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHKJ22MFVE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-ZHKJ22MFVE');
+    </script>
 
 
 </head>
@@ -138,7 +149,7 @@
 
                     <ion-icon name="add-circle-outline"></ion-icon>
 
-                    <span>Buat Postingan Baru</span>
+                    <span>Postingan Baru</span>
 
                 </a>
 
@@ -203,7 +214,7 @@
 
                 <div class="dashboard-section text-center">
 
-                    <h2>Selamat Datang Admin</h2>
+                    <h2>Hai, Admin</h2>
                     <img src="assets/logo.png" alt="Logo" style="max-width: 150px; opacity: 0.7;" />
 
                     <p style="margin-top: 20px; font-size: 0.9em; color: var(--text-muted);">Waktu Server (Lokal): <span id="serverTime">Memuat...</span></p>
@@ -489,11 +500,11 @@
                         </div>
                         
                         <div class="form-group">
-							<label for="postCover">URL Cover (opsional)</label>
-							<input type="url" id="postCover" placeholder="https://...">
+							<label for="postCover">URL Cover</label>
+							<input type="url" id="postCover" placeholder="https://bimaakbar.netlify.app/assets/error.jpg">
 						</div>
 						<div class="form-group">
-							<label for="postExcerpt">Ringkasan/Excerpt (opsional)</label>
+							<label for="postExcerpt">Ringkasan</label>
 							<input type="text" id="postExcerpt" placeholder="Boleh dikosongkan">
 						</div>
 
@@ -518,7 +529,7 @@
 
                                 <input type="radio" id="statusPublished" name="postStatus" value="published" checked>
 
-                                <label for="statusPublished">Publikasi</label>
+                                <label for="statusPublished">Publik</label>
 
                                 <input type="radio" id="statusDraft" name="postStatus" value="draft">
 
@@ -531,38 +542,22 @@
                             </div>
 
                         </div>
-
                         <div class="form-group" id="scheduleDateTimeGroup" style="display: none;">
-
                             <label>Jadwalkan Publikasi:</label>
-
                             <div class="datetime-group">
-
                                 <div class="form-group">
-
                                     <label for="scheduleDate">Tanggal:</label>
-
                                     <input type="date" id="scheduleDate">
-
                                 </div>
-
                                 <div class="form-group">
-
                                     <label for="scheduleTime">Waktu:</label>
-
                                     <input type="time" id="scheduleTime">
-
                                 </div>
-
                             </div>
-
                         </div>
-                        <button type="button" class="btn-preview" id="previewPostBtn" style="margin-right:10px;">Preview</button>
-
-                        <button type="submit" class="btn-submit">Simpan Postingan</button>
-
+                        <button type="button" class="btn-submit" id="previewPostBtn" style="margin-right:10px;">Preview</button>
+                        <button type="submit" class="btn-submit">Simpan</button>
                         <p id="addPostMessage" style="margin-top: 15px;"></p>
-
                     </form>
                     <div id="previewModal" class="modal" style="display:none;">
                         <div class="modal-content">
@@ -570,118 +565,60 @@
                             <div id="previewContent"></div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-
-
             <div id="postListSection" class="content-section" style="display: none;">
-
                 <div class="dashboard-section">
-
                     <h2>Daftar Semua Postingan</h2>
-
                     <p>Kelola semua postingan Anda: edit, lihat, atau hapus.</p>
-
                     <div class="post-list" id="allPostsCardList"></div>
-
                 </div>
-
             </div>
-
-
-
             <div id="settingsSection" class="content-section" style="display: none;">
-
                 <div class="dashboard-section">
-
                     <h2>Pengaturan Aplikasi</h2>
-
                     <p>Kelola konfigurasi umum atau akun Anda.</p>
-
                     <form id="settingsForm">
-
                         <div class="form-group">
-
                             <label for="adminEmail">Email Admin:</label>
-
                             <input type="email" id="adminEmail" value="admin@example.com" readonly>
-
                             <small style="color: var(--text-muted);">Email ini terdaftar sebagai akun admin.</small>
-
                         </div>
-
                         <div class="form-group">
-
                             <label for="siteName">Nama Situs:</label>
-
                             <input type="text" id="siteName" placeholder="Nama Situs Anda">
-
                         </div>
-
                         <div class="form-group">
-
-                            <label for="itemsPerPage">Item per Halaman (Default):</label>
-
+                            <label for="itemsPerPage">Item per Halaman:</label>
                             <input type="number" id="itemsPerPage" value="10" min="1" max="100">
-
                         </div>
-
                         <div class="settings-button">
     						<button type="button" class="btn-submit" id="changePasswordBtn">Ubah Password</button>
     						<button type="submit" class="btn-submit" style="margin-top: 10px;">Simpan Pengaturan</button>
     						<p id="settingsMessage" style="margin-top: 15px;"></p>
 						</div>
                     </form>
-
                 </div>
-
             </div>
-
-
-
         </div>
-
     </div>
-
-
-
     <nav class="bottom-nav">
-
         <a href="#" class="bottom-nav-item nav-link active" data-target="dashboardSection">
-
             <ion-icon name="home-outline"></ion-icon>
         </a>
-
         <a href="#" class="bottom-nav-item nav-link" data-target="postStatsSection">
-
             <ion-icon name="stats-chart-outline"></ion-icon>
         </a>
-
         <a href="#" class="bottom-nav-item nav-link" data-target="addPostSection">
-
             <ion-icon name="add-circle-outline"></ion-icon>
         </a>
-
         <a href="#" class="bottom-nav-item nav-link" data-target="postListSection">
-
             <ion-icon name="folder-open-outline"></ion-icon>
         </a>
         <a href="#" class="bottom-nav-item nav-link" data-target="settingsSection">
-
             <ion-icon name="settings-outline"></ion-icon>
         </a>
-
     </nav>
-
-
-
     <script src="js/dashboard.js"></script>
-
 </body>
-
-
-
 </html>
