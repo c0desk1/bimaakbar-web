@@ -299,6 +299,8 @@ function loadContent(targetSectionId) {
 
 	}
 
+	console.log('Target Section ID:', targetSectionId);
+
 
 
 	// Panggil fungsi inisialisasi spesifik untuk section yang aktif
