@@ -105,10 +105,6 @@ const firebaseConfig = {
 
                 activeUserEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
 
-                userNameDisplayMobile.textContent = `${activeUserEmailPart}`;
-
-
-
                 // Load initial content based on URL or default
 
                 const urlParams = new URLSearchParams(window.location.search);
