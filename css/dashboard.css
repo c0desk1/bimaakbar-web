@@ -1838,9 +1838,6 @@ body.loading-dashboard>* :not(#loadingOverlay) {
     .header-stats {
         display: none;
     }
-    .header-left {
-        flex: 1;
-    }
     .settings-button {
         display: flex;
         flex-direction: column;
