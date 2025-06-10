@@ -1361,18 +1361,52 @@ function initAddPostSection() {
 
 
 	const addPostForm = document.getElementById('addPostForm');
-
 	const addPostMessage = document.getElementById('addPostMessage');
-
 	const postCategorySelect = document.getElementById('postCategory');
-
 	const statusRadios = document.querySelectorAll('input[name="postStatus"]');
-
 	const scheduleDateTimeGroup = document.getElementById('scheduleDateTimeGroup');
-
 	const scheduleDateInput = document.getElementById('scheduleDate');
-
 	const scheduleTimeInput = document.getElementById('scheduleTime');
+	const previewBtn = document.getElementById('previewPostBtn');
+	const previewModal = document.getElementById('previewModal');
+	const previewContent = document.getElementById('previewContent');
+	const closePreviewModal = document.getElementById('closePreviewModal');
+
+	// Preview Post
+	if (previewBtn && previewModal && previewContent && closePreviewModal) {
+	previewBtn.onclick = function() {
+		// Ambil data dari input form
+		const title = document.getElementById('postTitle').value.trim();
+		const category = document.getElementById('postCategory').value;
+		const content = document.getElementById('postContent').value.trim();
+		const cover = document.getElementById('postCover') ? document.getElementById('postCover').value.trim() : '';
+		const excerpt = document.getElementById('postExcerpt') ? document.getElementById('postExcerpt').value.trim() : '';
+		const hashtags = document.getElementById('postTags').value.split(',').map(t => t.trim()).filter(t => t.length > 0);
+
+		// Render preview HTML (bisa kamu desain sendiri)
+		previewContent.innerHTML = `
+		<h2>${title || '(Tanpa Judul)'}</h2>
+		<p><strong>Kategori:</strong> ${category || '-'}</p>
+		${cover ? `<img src="${cover}" alt="cover" style="max-width:100%;margin-bottom:10px;">` : ''}
+		<div style="margin:1em 0;">${content.replace(/\n/g, '<br>')}</div>
+		${excerpt ? `<div style="color:#888;font-style:italic;">${excerpt}</div>` : ''}
+		${hashtags.length ? `<div style="margin-top:10px;"><b>Tags:</b> ${hashtags.join(', ')}</div>` : ''}
+		`;
+
+		previewModal.style.display = 'block';
+	};
+
+	closePreviewModal.onclick = function() {
+		previewModal.style.display = 'none';
+	};
+
+	// Tutup modal jika klik di luar modal-content
+	window.onclick = function(event) {
+		if (event.target == previewModal) {
+		previewModal.style.display = 'none';
+		}
+	};
+	}
 
 
 
