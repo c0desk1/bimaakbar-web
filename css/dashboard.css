@@ -1800,7 +1800,7 @@
 
             .header-left {
 
-                flex: 2; /* More space for user name */
+                flex: 1; /* More space for user name */
 
             }
 
