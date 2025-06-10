@@ -81,114 +81,63 @@ body {
 
 
 header {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     padding: 0.6rem 1rem;
-
     background-color: var(--card-background-dark);
-
     backdrop-filter: blur(var(--glass-blur));
-
     -webkit-backdrop-filter: blur(var(--glass-blur));
-
     border-bottom: 1px solid var(--border-dark);
-
     box-shadow: 0 4px 15px var(--shadow-dark);
-
     position: fixed;
-
     top: 0;
-
     left: 0;
-
     right: 0;
-
     z-index: 100;
-
     width: 100%;
     border-bottom-left-radius: 18px;
-
     border-bottom-right-radius: 18px;
-
 }
-
-
 
 .header-left,
-
-.header-center,
-
 .header-right {
-
     flex: 1;
-
     display: flex;
-
     align-items: center;
-
-    min-width: 100%;
-
+    min-width: 0;
 }
-
-
 
 .header-left {
-
     justify-content: flex-start;
-
-   font-weight: 500;
+    font-weight: 500;
     font-size: 0.95rem;
-
     color: var(--text-lighter);
-
     white-space: nowrap;
-
     overflow: hidden;
-
     text-overflow: ellipsis;
-
 }
-
-
 
 .header-center {
-
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
     align-items: center;
-
-    justify-content: center;
-
-    
+    z-index: 1;
 }
-
-
 
 .header-center img {
-
     align-items: center;
-
     height: 40px;
-
     justify-content: center;
-
     object-fit: contain;
-
     width: 40px;
-
     opacity: 0.9;
-
 }
 
-
-
 .header-right {
-
     justify-content: flex-end;
-
 }
 
 
@@ -1800,9 +1749,6 @@ body.loading-dashboard>* :not(#loadingOverlay) {
 }
 
 
-
-/* Section for inline stats in the header */
-
 .header-stats {
 
     display: flex;
@@ -1861,15 +1807,6 @@ body.loading-dashboard>* :not(#loadingOverlay) {
 .post-actions {
     margin-top: 0.5em;
 }
-@media (min-width: 700px) {
-    .post-list {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    .post-card {
-        width: calc(33% - 1rem);
-    }
-}
 
 .modal { 
     display:none; 
@@ -1898,24 +1835,22 @@ body.loading-dashboard>* :not(#loadingOverlay) {
 }
 
 @media (max-width: 767px) {
-
     .header-stats {
-
-        display: none; /* Hide on mobile to keep header clean */
-
+        display: none;
     }
-
-    /* Adjust header-left to take full space if stats are hidden */
-
     .header-left {
-
-        flex: 2; /* More space for user name */
-
+        flex: 1;
     }
-
     .settings-button {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+    .post-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .post-card {
+        width: calc(33% - 1rem);
     }
 }
