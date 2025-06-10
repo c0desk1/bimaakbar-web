@@ -1,2635 +1,718 @@
 <!DOCTYPE html>
+
 <html lang="id">
 
+
+
 <head>
+
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Admin</title>
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="css/dashboard.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-         :root {
-            /* macOS Sonoma-like color palette */
-            --background-dark: #1C1C1E;
-            --card-background-dark: rgba(28, 28, 30, 0.75);
-            --border-dark: rgba(255, 255, 255, 0.1);
-            --primary-color: #0A84FF;
-            --primary-color-hover: #3399FF;
-            --accent-color: #007AFF;
-            --text-light: #E0E0E0;
-            --text-lighter: #FFFFFF;
-            --text-muted: #8E8E93;
-            --shadow-dark: rgba(0, 0, 0, 0.4);
-            --glass-blur: 30px;
-            --gradient-start: #007AFF;
-            --gradient-end: #5AC8FA;
-            /* Sidebar specific */
-            --sidebar-width: 250px;
-            --sidebar-header-height: 56px;
-        }
-        /* General Styles */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 56px;
-            padding-bottom: 56px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        /* Header (Fixed at top for mobile/all) */
-        
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.6rem 1rem;
-            background-color: var(--card-background-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-bottom: 1px solid var(--border-dark);
-            box-shadow: 0 4px 15px var(--shadow-dark);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            width: 100%;
-            border-bottom-left-radius: 18px;
-            border-bottom-right-radius: 18px;
-        }
-        
-        .header-left,
-        .header-center,
-        .header-right {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            min-width: 0;
-        }
-        
-        .header-left {
-            justify-content: flex-start;
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: var(--text-lighter);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .header-center {
-            justify-content: center;
-        }
-        
-        .header-center img {
-            height: 32px;
-            object-fit: contain;
-            max-width: 100%;
-            opacity: 0.9;
-        }
-        
-        .header-right {
-            justify-content: flex-end;
-        }
-        
-        .logout-btn {
-            background-color: transparent;
-            color: var(--primary-color);
-            padding: 0.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.6rem;
-            cursor: pointer;
-            transition: color 0.2s ease, background-color 0.2s ease;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logout-btn:hover {
-            color: var(--primary-color-hover);
-            background-color: rgba(10, 132, 255, 0.15);
-        }
-        
-        .logout-btn ion-icon {
-            font-size: 1.6rem;
-        }
-        /* Main Content Wrapper */
-        
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            width: 100%;
-        }
-        
-        .main-content {
-            flex-grow: 1;
-            padding: 1.5rem;
-            max-width: 100%;
-            margin: 0 auto;
-            width: 100%;
-        }
-        /* Greeting Section */
-        
-        .greeting-section {
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--border-dark);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .greeting-content {
-            margin: 0;
-        }
-        
-        .greeting-content h1 {
-            font-size: clamp(1.8rem, 8vw, 3rem);
-            margin-bottom: 0;
-            line-height: 1.3;
-            text-align: center;
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% 100%;
-            animation: gradient-flow 3s linear infinite alternate;
-            font-weight: 700;
-        }
-        
-        @keyframes gradient-flow {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-        /* Stat Grid */
-        
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        .stat-card {
-            background-color: var(--card-background-dark);
-            padding: 1.2rem;
-            border-radius: 14px;
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 6px 20px var(--shadow-dark);
-            text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            position: relative;
-            min-height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(calc(var(--glass-blur) / 2));
-            -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
-            overflow: hidden;
-            color: var(--text-light);
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-        }
-        
-        .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-lighter);
-            margin-bottom: 0.4rem;
-        }
-        
-        .stat-card .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-        /* Info & List Sections */
-        
-        .dashboard-section {
-            background-color: var(--card-background-dark);
-            border-radius: 14px;
-            padding: 25px;
-            box-shadow: 0 6px 20px var(--shadow-dark);
-            border: 1px solid var(--border-dark);
-            margin-bottom: 25px;
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            overflow: hidden;
-        }
-        
-        .dashboard-section h2 {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            font-weight: 600;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
-        
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px dashed var(--border-dark);
-        }
-        
-        .info-item:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            color: var(--text-muted);
-            font-weight: 400;
-            font-size: 0.95em;
-        }
-        
-        .info-value {
-            color: var(--text-lighter);
-            font-weight: 500;
-            font-size: 1em;
-        }
-        
-        .data-list ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .data-list ul li {
-            background-color: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        .data-list ul li span {
-            flex: 1;
-            min-width: 150px;
-            color: var(--text-light);
-        }
-        
-        .data-list ul li .item-title {
-            font-weight: 600;
-            font-size: 1.05em;
-            color: var(--text-lighter);
-        }
-        
-        .data-list ul li .item-meta {
-            font-size: 0.88em;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        
-        .data-list ul li .actions {
-            display: flex;
-            gap: 8px;
-            margin-left: auto;
-        }
-        
-        .data-list ul li .actions button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 7px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: background-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .data-list ul li .actions button:hover {
-            background-color: var(--primary-color-hover);
-        }
-        
-        .data-list ul li .actions button ion-icon {
-            font-size: 1em;
-            vertical-align: middle;
-        }
-        
-        .activity-item {
-            padding: 12px 0;
-            border-bottom: 1px dashed var(--border-dark);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-        
-        .activity-item .log-time {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-        
-        .activity-item .log-message {
-            font-size: 0.95em;
-            color: var(--text-light);
-        }
-        /* Top Posts List Specific Styles */
-        
-        .top-posts-list .post-details {
-            flex-grow: 1;
-            min-width: 150px;
-        }
-        
-        .top-posts-list .post-title {
-            font-weight: 600;
-            font-size: 1.05em;
-            color: var(--text-lighter);
-        }
-        
-        .top-posts-list .post-meta {
-            font-size: 0.88em;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-        
-        .top-posts-list .post-stats {
-            margin-left: auto;
-            text-align: right;
-            white-space: nowrap;
-        }
-        
-        .top-posts-list .stat-value {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .top-posts-list .stat-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
-        }
-        /* Utility Classes */
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        .text-right {
-            text-align: right;
-        }
-        
-        .flex-grow {
-            flex-grow: 1;
-        }
-        /* Styles for initial loading/hiding content */
-        
-        body.loading-dashboard>* :not(#loadingOverlay) {
-            display: none;
-        }
-        
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--background-dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-        
-        #loadingOverlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        /* Spinner konsisten untuk overlay */
-        
-        .spinner-flower-base {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .spinner-flower-base div {
-            position: absolute;
-            border-radius: 2px;
-            opacity: 0.25;
-            animation: flower-spin 1.2s linear infinite;
-        }
-        /* Keyframes for spinner animation */
-        
-        @keyframes flower-spin {
-            0% {
-                opacity: 0.25;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-        /* Styles for the LARGE overlay spinner */
-        
-        .spinner-flower-large {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .spinner-flower-large div {
-            width: 3.5px;
-            height: 8px;
-            background: var(--primary-color);
-            transform-origin: 16px 16px;
-        }
-        /* Positioning for large spinner petals */
-        
-        .spinner-flower-large div:nth-child(1) {
-            transform: rotate(0deg) translate(12px);
-            animation-delay: -1.1s;
-        }
-        
-        .spinner-flower-large div:nth-child(2) {
-            transform: rotate(45deg) translate(12px);
-            animation-delay: -1s;
-        }
-        
-        .spinner-flower-large div:nth-child(3) {
-            transform: rotate(90deg) translate(12px);
-            animation-delay: -0.9s;
-        }
-        
-        .spinner-flower-large div:nth-child(4) {
-            transform: rotate(135deg) translate(12px);
-            animation-delay: -0.8s;
-        }
-        
-        .spinner-flower-large div:nth-child(5) {
-            transform: rotate(180deg) translate(12px);
-            animation-delay: -0.7s;
-        }
-        
-        .spinner-flower-large div:nth-child(6) {
-            transform: rotate(225deg) translate(12px);
-            animation-delay: -0.6s;
-        }
-        
-        .spinner-flower-large div:nth-child(7) {
-            transform: rotate(270deg) translate(12px);
-            animation-delay: -0.5s;
-        }
-        
-        .spinner-flower-large div:nth-child(8) {
-            transform: rotate(315deg) translate(12px);
-            animation-delay: -0.4s;
-        }
-        /* --- Bottom Navigation Bar (MOBILE ONLY) --- */
-        
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background-color: var(--card-background-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-top: 1px solid var(--border-dark);
-            box-shadow: 0 -4px 15px var(--shadow-dark);
-            z-index: 100;
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem 0;
-            border-top-left-radius: 18px;
-            border-top-right-radius: 18px;
-        }
-        
-        .bottom-nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.75rem;
-            padding: 0.3rem 0;
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-        
-        .bottom-nav-item ion-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-        }
-        
-        .bottom-nav-item.active,
-        .bottom-nav-item:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-        
-        .bottom-nav-item.active {
-            font-weight: 600;
-        }
-        /* --- Sidebar Navigation (DESKTOP ONLY) --- */
-        
-        .sidebar {
-            display: none;
-            flex-direction: column;
-            width: var(--sidebar-width);
-            background-color: var(--card-background-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-right: 1px solid var(--border-dark);
-            box-shadow: 4px 0 15px var(--shadow-dark);
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            z-index: 90;
-            padding-top: var(--sidebar-header-height);
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
-            overflow-y: auto;
-            padding-bottom: 1rem;
-        }
-        
-        .sidebar-header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: var(--sidebar-header-height);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 0 1rem;
-            border-bottom: 1px solid var(--border-dark);
-            background-color: var(--card-background-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            z-index: 101;
-            border-top-right-radius: 18px;
-        }
-        
-        .sidebar-header img {
-            height: 38px;
-            opacity: 0.95;
-        }
-        
-        .sidebar-nav-list {
-            list-style: none;
-            padding: 1rem 0;
-        }
-        
-        .sidebar-nav-item {
-            display: block;
-            margin: 0.5rem 0.8rem;
-        }
-        
-        .sidebar-nav-item a {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            border-radius: 10px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        
-        .sidebar-nav-item a:hover {
-            background-color: rgba(10, 132, 255, 0.15);
-            color: var(--primary-color-hover);
-        }
-        
-        .sidebar-nav-item a.active {
-            background: linear-gradient(45deg, var(--primary-color), var(--gradient-end));
-            color: var(--text-lighter);
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .sidebar-nav-item a ion-icon {
-            font-size: 1.3rem;
-            margin-right: 0.8rem;
-            min-width: 24px;
-        }
-        
-        .sidebar-nav-item a.logout-link {
-            color: #FF453A;
-            margin-top: 1.5rem;
-        }
-        
-        .sidebar-nav-item a.logout-link:hover {
-            background-color: rgba(255, 69, 58, 0.15);
-            color: #FF665C;
-        }
-        /* Media Queries */
-        
-        @media (min-width: 768px) {
-            body {
-                padding-top: 0;
-                padding-bottom: 0;
-                flex-direction: row;
-            }
-            header {
-                display: none;
-            }
-            .bottom-nav {
-                display: none;
-            }
-            .sidebar {
-                display: flex;
-            }
-            .content-wrapper {
-                margin-left: var(--sidebar-width);
-                flex-direction: column;
-                width: calc(100% - var(--sidebar-width));
-            }
-            .main-content {
-                max-width: 1000px;
-            }
-        }
-        /* Styles for forms and tables within sections */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group input[type="number"],
-        .form-group input[type="date"],
-        .form-group input[type="time"],
-        .form-group input[type="datetime-local"],
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-dark);
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            font-size: 1em;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            /* REMOVED appearance: none; to prevent arrows on text/date/time inputs */
-        }
-        .form-group select { /* SPECIFICALLY FOR SELECT */
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-dark);
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            font-size: 1em;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            -webkit-appearance: none; /* Remove default styling on Safari/Chrome */
-            -moz-appearance: none; /* Remove default styling on Firefox */
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%23E0E0E0" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom dropdown arrow */
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 24px;
-            padding-right: 40px; /* Make space for the arrow */
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        /* Custom Radio Button & Checkbox Styling */
-        .form-group .radio-group, .form-group .checkbox-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .form-group .radio-group label, .form-group .checkbox-group label {
-            display: inline-flex;
-            align-items: center;
-            font-weight: 400;
-            margin-bottom: 0;
-            cursor: pointer;
-            position: relative; /* For custom indicator */
-            padding-left: 28px; /* Space for custom radio/checkbox */
-            color: var(--text-light); /* Text color */
-        }
-        .form-group .radio-group input[type="radio"],
-        .form-group .checkbox-group input[type="checkbox"] {
-            /* Hide the browser's default radio/checkbox */
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-
-        /* Create a custom radio/checkbox indicator */
-        .form-group .radio-group label::before,
-        .form-group .checkbox-group label::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--text-muted); /* Default border color */
-            background-color: var(--background-dark); /* Background color */
-            transition: all 0.2s ease;
-        }
-
-        /* Style the custom radio (rounded) */
-        .form-group .radio-group label::before {
-            border-radius: 50%; /* Make it round */
-        }
-        /* Style the custom checkbox (rounded square) */
-        .form-group .checkbox-group label::before {
-            border-radius: 4px; /* Slightly rounded square */
-        }
-
-        /* On hover, increase border darkness or highlight */
-        .form-group .radio-group input[type="radio"]:hover + label::before,
-        .form-group .checkbox-group input[type="checkbox"]:hover + label::before {
-            border-color: var(--primary-color);
-        }
-
-        /* When checked, change border color */
-        .form-group .radio-group input[type="radio"]:checked + label::before,
-        .form-group .checkbox-group input[type="checkbox"]:checked + label::before {
-            border-color: var(--primary-color); /* Highlight border on check */
-            box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.3); /* Subtle glow */
-        }
-
-        /* No inner checkmark for clean look */
-        /* You can add a subtle inner dot for radio if preferred: */
-        /* .form-group .radio-group input[type="radio"]:checked + label::after {
-            content: "";
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary-color);
-        } */
-
-
-        .btn-submit {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-        .btn-submit:hover {
-            background-color: var(--primary-color-hover);
-            transform: translateY(-2px);
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-        .data-table th,
-        .data-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-dark);
-            color: var(--text-light);
-        }
-        .data-table th {
-            background-color: rgba(0, 0, 0, 0.2);
-            color: var(--text-lighter);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .data-table tbody tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        .data-table .actions-col button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: background-color 0.2s ease;
-            margin-right: 5px;
-            white-space: nowrap; /* Prevent button text wrapping */
-        }
-        .data-table .actions-col button:hover {
-            background-color: var(--primary-color-hover);
-        }
-        .data-table .actions-col button.delete-btn {
-            background-color: #FF453A;
-        }
-        .data-table .actions-col button.delete-btn:hover {
-            background-color: #FF665C;
-        }
-        /* Chart specific styles */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 350px; /* Adjust height as needed */
-            margin-top: 20px;
-            padding: 15px;
-            background-color: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px var(--shadow-dark);
-            margin-bottom: 20px; /* Space between charts */
-        }
-
-        /* Flex container for date and time inputs */
-        .datetime-group {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-        }
-        .datetime-group .form-group {
-            flex: 1; /* Distribute space evenly */
-            min-width: 150px; /* Minimum width for each input */
-        }
-
-        /* Section for inline stats in the header */
-        .header-stats {
-            display: flex;
-            gap: 15px;
-            font-size: 0.85em;
-            color: var(--text-muted);
-            justify-content: flex-end;
-            margin-left: 1rem;
-        }
-        .header-stats .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-        .header-stats .stat-item ion-icon {
-            font-size: 1.1em;
-            color: var(--primary-color);
-        }
-        @media (max-width: 767px) {
-            .header-stats {
-                display: none; /* Hide on mobile to keep header clean */
-            }
-            /* Adjust header-left to take full space if stats are hidden */
-            .header-left {
-                flex: 2; /* More space for user name */
-            }
-        }
-
-    </style>
 
 </head>
 
+
+
 <body class="loading-dashboard">
-
     <div id="loadingOverlay">
-        <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
 
+        <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+            <div></div>
+
+        </div>
+
+    </div>
     <header>
-        <div class="header-left" id="userNameDisplayMobile"></div>
+        <div class="header-left" id="pageTitle"></div>
         <div class="header-center">
+
             <img src="assets/logo.png" alt="Logo" />
+
         </div>
+
         <div class="header-right">
+
             <div class="header-stats">
+
                 <div class="stat-item">
+
                     <ion-icon name="document-text-outline"></ion-icon>
+
                     <span id="headerStatPosts">0 Post</span>
+
                 </div>
+
                 <div class="stat-item">
+
                     <ion-icon name="eye-outline"></ion-icon>
+
                     <span id="headerStatViews">0 Views</span>
+
                 </div>
+
             </div>
+
             <button class="logout-btn" onclick="logout()">
+
                 <ion-icon name="log-out-outline"></ion-icon>
+
             </button>
+
         </div>
+
     </header>
 
+
+
     <aside class="sidebar">
+
         <div class="sidebar-header">
+
             <img src="assets/logo.png" alt="Logo" />
+
         </div>
+
         <ul class="sidebar-nav-list">
+
             <li class="sidebar-nav-item">
+
                 <a href="#" class="nav-link active" data-target="dashboardSection">
+
                     <ion-icon name="home-outline"></ion-icon>
+
                     <span>Dashboard</span>
+
                 </a>
+
             </li>
+
             <li class="sidebar-nav-item">
+
                 <a href="#" class="nav-link" data-target="postStatsSection">
+
                     <ion-icon name="stats-chart-outline"></ion-icon>
+
                     <span>Statistik Postingan</span>
+
                 </a>
+
             </li>
+
             <li class="sidebar-nav-item">
+
                 <a href="#" class="nav-link" data-target="addPostSection">
+
                     <ion-icon name="add-circle-outline"></ion-icon>
+
                     <span>Buat Postingan Baru</span>
+
                 </a>
+
             </li>
+
             <li class="sidebar-nav-item">
+
                 <a href="#" class="nav-link" data-target="postListSection">
+
                     <ion-icon name="folder-open-outline"></ion-icon>
+
                     <span>Daftar Postingan</span>
+
                 </a>
+
             </li>
             <li class="sidebar-nav-item">
-                <a href="#" class="nav-link" data-target="categoryManagementSection">
-                    <ion-icon name="pricetags-outline"></ion-icon>
-                    <span>Manajemen Kategori</span>
-                </a>
-            </li>
-            <li class="sidebar-nav-item">
+
                 <a href="#" class="nav-link" data-target="settingsSection">
+
                     <ion-icon name="settings-outline"></ion-icon>
+
                     <span>Pengaturan</span>
+
                 </a>
+
             </li>
+
             <li class="sidebar-nav-item">
+
                 <a href="#" class="logout-link" onclick="logout()">
+
                     <ion-icon name="log-out-outline"></ion-icon>
+
                     <span>Logout</span>
+
                 </a>
+
             </li>
+
         </ul>
+
     </aside>
 
+
+
     <div class="content-wrapper">
+
         <div class="main-content" id="mainContent">
 
+
+
             <div id="dashboardSection" class="content-section">
+
                 <div class="greeting-section">
+
                     <h1 id="greeting-text-dynamic">Halo, Admin!</h1>
+
                 </div>
+
+
 
                 <div class="dashboard-section text-center">
-                    <h2>Selamat Datang di Dashboard Admin</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Silakan pilih menu dari sidebar atau navigasi bawah untuk memulai.</p>
+
+                    <h2>Selamat Datang Admin</h2>
                     <img src="assets/logo.png" alt="Logo" style="max-width: 150px; opacity: 0.7;" />
+
                     <p style="margin-top: 20px; font-size: 0.9em; color: var(--text-muted);">Waktu Server (Lokal): <span id="serverTime">Memuat...</span></p>
+
                 </div>
 
+
+
                 <div class="dashboard-section">
+
                     <h2>Statistik Umum</h2>
+
                     <div class="stat-grid">
+
                         <div class="stat-card">
+
                             <span class="stat-value" id="statCardViews">0</span>
+
                             <span class="stat-label">Total Views</span>
+
                         </div>
+
                         <div class="stat-card">
+
                             <span class="stat-value" id="statCardPosts">0</span>
+
                             <span class="stat-label">Jumlah Postingan</span>
+
                         </div>
+
                         <div class="stat-card">
+
                             <span class="stat-value" id="statCardComments">0</span>
+
                             <span class="stat-label">Total Komentar</span>
+
                         </div>
+
                         <div class="stat-card">
+
                             <span class="stat-value" id="statCardCategories">0</span>
+
                             <span class="stat-label">Kategori</span>
+
                         </div>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="dashboard-section">
-                    <h2>Postingan Teratas (Top 5)</h2>
+
+                    <h2>Postingan Teratas</h2>
+
                     <div class="data-list">
+
                         <ul id="topPostsList">
+
                             <li style="text-align: center; color: var(--text-muted);">Memuat postingan teratas...</li>
+
                         </ul>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="dashboard-section">
-                    <h2>Postingan Terbaru (Top 5)</h2>
+
+                    <h2>Postingan Terbaru</h2>
+
                     <div class="data-list">
+
                         <ul id="latestPostsList">
-                            <li style="text-align: center; color: var(--text-muted);">Memuat postingan terbaru...</li>
+
+                            <li style="text-align: center; color: var(--text-muted);">Memuat...</li>
+
                         </ul>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="dashboard-section">
+
                     <h2>Aktivitas Login Terbaru (Top 5)</h2>
+
                     <div class="data-list">
+
                         <ul id="loginActivityList">
-                            <li style="text-align: center; color: var(--text-muted);">Memuat aktivitas login...</li>
+
+                            <li style="text-align: center; color: var(--text-muted);">Memuat...</li>
+
                         </ul>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="dashboard-section">
+
                     <h2>Informasi Sistem</h2>
+
                     <div class="info-grid">
+
                         <div class="info-item">
+
                             <span class="info-label">Versi Dashboard:</span>
+
                             <span class="info-value">1.0.0</span>
+
                         </div>
+
                         <div class="info-item">
+
                             <span class="info-label">Terakhir Diperbarui:</span>
+
                             <span class="info-value" id="lastUpdatedDashboard">Memuat...</span>
+
                         </div>
+
                         <div class="info-item">
+
                             <span class="info-label">Firebase Project ID:</span>
+
                             <span class="info-value" id="firebaseProjectId">Memuat...</span>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
 
+
+
             <div id="postStatsSection" class="content-section" style="display: none;">
+
                 <div class="dashboard-section">
+
                     <h2>Statistik Postingan</h2>
+
                     <p>Lihat grafik dan data terperinci tentang performa postingan Anda di sini.</p>
 
+
+
                     <div class="form-group">
+
                         <label for="statFilterCategory">Filter Berdasarkan Kategori:</label>
+
                         <select id="statFilterCategory">
+
                             <option value="all">Semua Kategori</option>
+
                             </select>
+
                     </div>
+
+
 
                     <h3 style="margin-top: 30px; color: var(--text-lighter);">Views Postingan</h3>
+
                     <div class="chart-container">
+
                         <canvas id="postViewsChart"></canvas>
+
                         <p id="chartViewsMessage" style="text-align: center; color: var(--text-muted); margin-top: 15px; display: none;">Memuat data grafik...</p>
+
                     </div>
 
+
+
                     <h3 style="margin-top: 30px; color: var(--text-lighter);">Views per Kategori</h3>
+
                     <div class="chart-container">
+
                         <canvas id="categoryViewsChart"></canvas>
+
                         <p id="chartCategoryViewsMessage" style="text-align: center; color: var(--text-muted); margin-top: 15px; display: none;">Memuat data grafik...</p>
+
                     </div>
+
+
+
 
 
                     <h3 style="margin-top: 30px; color: var(--text-lighter);">Ringkasan Statistik</h3>
+
                     <div class="info-grid">
+
                         <div class="info-item">
+
                             <span class="info-label">Total Views Bulan Ini:</span>
+
                             <span class="info-value" id="monthlyViews">0</span>
+
                         </div>
+
                         <div class="info-item">
+
                             <span class="info-label">Postingan Populer:</span>
+
                             <span class="info-value" id="mostPopularPost">N/A</span>
+
                         </div>
+
                         <div class="info-item">
+
                             <span class="info-label">Rata-rata Komentar per Post:</span>
+
                             <span class="info-value" id="avgCommentsPerPost">0</span>
+
                         </div>
+
                     </div>
 
-                    <h3 style="margin-top: 30px; color: var(--text-lighter);">Top 3 Postingan Bulan Ini</h3>
+
+
+                    <h3 style="padding-bottom: 30px; margin-top: 30px; color: var(--text-lighter);">Top 3 Postingan Bulan Ini</h3>
                     <div class="data-list">
+
                         <ul id="topMonthlyPostsList">
+
                             <li style="text-align: center; color: var(--text-muted);">Memuat postingan...</li>
+
                         </ul>
+
                     </div>
 
-                    <h3 style="margin-top: 30px; color: var(--text-lighter);">Kategori Paling Aktif (Berdasarkan Jumlah Postingan)</h3>
+
+
+                    <h3 style="padding-bottom: 30px; margin-top: 30px; color: var(--text-lighter);">Kategori Paling Aktif</h3>
                     <div class="data-list">
+
                         <ul id="mostActiveCategoriesList">
-                            <li style="text-align: center; color: var(--text-muted);">Memuat kategori...</li>
+
+                            <li style="text-align: center; color: var(--text-muted);">Memuat...</li>
+
                         </ul>
+
                     </div>
+
                 </div>
+
             </div>
+
+
 
             <div id="addPostSection" class="content-section" style="display: none;">
+
                 <div class="dashboard-section">
+
                     <h2>Buat Postingan Baru</h2>
+
                     <form id="addPostForm">
+
                         <div class="form-group">
+
                             <label for="postTitle">Judul Postingan:</label>
+
                             <input type="text" id="postTitle" placeholder="Masukkan judul postingan" required>
+
                         </div>
+
                         <div class="form-group">
+
                             <label for="postCategory">Kategori:</label>
+
                             <select id="postCategory" required>
+
                                 <option value="">Pilih Kategori</option>
+
                                 </select>
+
                         </div>
+                        
                         <div class="form-group">
+							<label for="postCover">URL Cover (opsional)</label>
+							<input type="url" id="postCover" placeholder="https://...">
+						</div>
+						<div class="form-group">
+							<label for="postExcerpt">Ringkasan/Excerpt (opsional)</label>
+							<input type="text" id="postExcerpt" placeholder="Boleh dikosongkan">
+						</div>
+
+                        <div class="form-group">
+
                             <label for="postContent">Konten Postingan:</label>
+
                             <textarea id="postContent" placeholder="Tulis konten postingan Anda di sini..." required></textarea>
+
                         </div>
+                        
                         <div class="form-group">
+						  <label for="postTags">Hashtags</label>
+						  <input type="text" id="postTags" placeholder="tag1,tag2,tag3">
+						</div>
+
+                        <div class="form-group">
+
                             <label>Status:</label>
+
                             <div class="radio-group">
+
                                 <input type="radio" id="statusPublished" name="postStatus" value="published" checked>
+
                                 <label for="statusPublished">Publikasi</label>
+
                                 <input type="radio" id="statusDraft" name="postStatus" value="draft">
+
                                 <label for="statusDraft">Draf</label>
+
                                 <input type="radio" id="statusScheduled" name="postStatus" value="scheduled">
+
                                 <label for="statusScheduled">Terjadwal</label>
+
                             </div>
+
                         </div>
+
                         <div class="form-group" id="scheduleDateTimeGroup" style="display: none;">
+
                             <label>Jadwalkan Publikasi:</label>
+
                             <div class="datetime-group">
+
                                 <div class="form-group">
+
                                     <label for="scheduleDate">Tanggal:</label>
+
                                     <input type="date" id="scheduleDate">
+
                                 </div>
+
                                 <div class="form-group">
+
                                     <label for="scheduleTime">Waktu:</label>
+
                                     <input type="time" id="scheduleTime">
+
                                 </div>
+
                             </div>
+
                         </div>
+
                         <button type="submit" class="btn-submit">Simpan Postingan</button>
+
                         <p id="addPostMessage" style="margin-top: 15px;"></p>
+
                     </form>
+
                 </div>
+
             </div>
+
+
 
             <div id="postListSection" class="content-section" style="display: none;">
+
                 <div class="dashboard-section">
+
                     <h2>Daftar Semua Postingan</h2>
+
                     <p>Kelola semua postingan Anda: edit, lihat, atau hapus.</p>
+
                     <div class="table-container">
+
                         <table class="data-table">
+
                             <thead>
+
                                 <tr>
+
                                     <th>Judul</th>
+
                                     <th>Kategori</th>
+
                                     <th>Views</th>
+
                                     <th>Status</th>
+
                                     <th>Tanggal</th>
+
                                     <th>Aksi</th>
+
                                 </tr>
+
                             </thead>
+
                             <tbody id="allPostsTableBody">
+
                                 <tr>
+
                                     <td colspan="6" style="text-align: center; color: var(--text-muted);">Memuat daftar postingan...</td>
+
                                 </tr>
+
                             </tbody>
+
                         </table>
+
                         <p id="postListMessage" style="margin-top: 15px; color: var(--text-muted); text-align: center;"></p>
-                    </div>
-                </div>
-            </div>
 
-            <div id="categoryManagementSection" class="content-section" style="display: none;">
-                <div class="dashboard-section">
-                    <h2>Manajemen Kategori</h2>
-                    <p>Tambah, edit, atau hapus kategori postingan Anda.</p>
-                    
-                    <form id="categoryForm" style="margin-bottom: 25px;">
-                        <div class="form-group">
-                            <label for="categoryName">Nama Kategori:</label>
-                            <input type="text" id="categoryName" placeholder="Masukkan nama kategori baru" required>
-                        </div>
-                        <button type="submit" class="btn-submit" id="addCategoryBtn">Tambah Kategori</button>
-                        <button type="button" class="btn-submit" id="updateCategoryBtn" style="display: none;">Update Kategori</button>
-                        <button type="button" class="btn-submit" id="cancelEditCategoryBtn" style="display: none; background-color: #5AC8FA;">Batal Edit</button>
-                        <p id="categoryMessage" style="margin-top: 15px;"></p>
-                        <input type="hidden" id="editingCategoryId">
-                    </form>
-
-                    <h3 style="margin-top: 30px; color: var(--text-lighter);">Daftar Kategori</h3>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Nama Kategori</th>
-                                    <th>Jumlah Postingan</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="categoryTableBody">
-                                <tr>
-                                    <td colspan="3" style="text-align: center; color: var(--text-muted);">Memuat kategori...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p id="categoryListMessage" style="margin-top: 15px; color: var(--text-muted); text-align: center;"></p>
                     </div>
+
                 </div>
+
             </div>
 
 
             <div id="settingsSection" class="content-section" style="display: none;">
+
                 <div class="dashboard-section">
+
                     <h2>Pengaturan Aplikasi</h2>
+
                     <p>Kelola konfigurasi umum atau akun Anda.</p>
+
                     <form id="settingsForm">
+
                         <div class="form-group">
+
                             <label for="adminEmail">Email Admin:</label>
+
                             <input type="email" id="adminEmail" value="admin@example.com" readonly>
+
                             <small style="color: var(--text-muted);">Email ini terdaftar sebagai akun admin.</small>
+
                         </div>
+
                         <div class="form-group">
+
                             <label for="siteName">Nama Situs:</label>
+
                             <input type="text" id="siteName" placeholder="Nama Situs Anda">
+
                         </div>
+
                         <div class="form-group">
+
                             <label for="itemsPerPage">Item per Halaman (Default):</label>
+
                             <input type="number" id="itemsPerPage" value="10" min="1" max="100">
+
                         </div>
-                        <button type="button" class="btn-submit" id="changePasswordBtn">Ubah Password</button>
-                        <button type="submit" class="btn-submit" style="margin-left: 10px;">Simpan Pengaturan</button>
-                        <p id="settingsMessage" style="margin-top: 15px;"></p>
+
+                        <div class="settings-button">
+    						<button type="button" class="btn-submit" id="changePasswordBtn">Ubah Password</button>
+    						<button type="submit" class="btn-submit" style="margin-top: 10px;">Simpan Pengaturan</button>
+    						<p id="settingsMessage" style="margin-top: 15px;"></p>
+						</div>
                     </form>
+
                 </div>
+
             </div>
 
+
+
         </div>
+
     </div>
 
+
+
     <nav class="bottom-nav">
+
         <a href="#" class="bottom-nav-item nav-link active" data-target="dashboardSection">
+
             <ion-icon name="home-outline"></ion-icon>
-            <span>Dashboard</span>
         </a>
+
         <a href="#" class="bottom-nav-item nav-link" data-target="postStatsSection">
+
             <ion-icon name="stats-chart-outline"></ion-icon>
-            <span>Statistik</span>
         </a>
+
         <a href="#" class="bottom-nav-item nav-link" data-target="addPostSection">
+
             <ion-icon name="add-circle-outline"></ion-icon>
-            <span>Buat Baru</span>
         </a>
+
         <a href="#" class="bottom-nav-item nav-link" data-target="postListSection">
+
             <ion-icon name="folder-open-outline"></ion-icon>
-            <span>Postingan</span>
-        </a>
-         <a href="#" class="bottom-nav-item nav-link" data-target="categoryManagementSection">
-            <ion-icon name="pricetags-outline"></ion-icon>
-            <span>Kategori</span>
         </a>
         <a href="#" class="bottom-nav-item nav-link" data-target="settingsSection">
+
             <ion-icon name="settings-outline"></ion-icon>
-            <span>Pengaturan</span>
         </a>
+
     </nav>
 
-    <script>
-        // --- Firebase Configuration ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
-            authDomain: "bima-akbar-web.firebaseapp.com",
-            databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "bima-akbar-web",
-            storageBucket: "bima-akbar-web.appspot.com",
-            messagingSenderId: "521611265429",
-            appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
-        };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-        // --- End Firebase Configuration ---
 
-        // --- Global Elements ---
-        const mainContent = document.getElementById('mainContent');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const body = document.body;
-        const userNameDisplayMobile = document.getElementById("userNameDisplayMobile");
-        let activeUserEmailPart = 'Admin'; // To store user email part for dynamic greeting
-        let myChart; // Global variable to hold the Chart.js instance for post views
-        let myCategoryChart; // Global variable to hold the Chart.js instance for category views
+    <script src="js/dashboard.js"></script>
 
-        const headerStatPosts = document.getElementById('headerStatPosts');
-        const headerStatViews = document.getElementById('headerStatViews');
-        // --- End Global Elements ---
-
-        // --- Logout Function ---
-        const logout = () => {
-            auth.signOut()
-                .then(() => {
-                    window.location.href = 'login.html';
-                })
-                .catch((error) => {
-                    alert(`Gagal logout: ${error.message}`);
-                });
-        };
-
-        // Function to update server time (client-side time for demonstration)
-        const updateServerTime = () => {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZoneName: 'short',
-                timeZone: 'Asia/Jakarta'
-            };
-            const serverTimeElement = document.getElementById('serverTime');
-            if (serverTimeElement) {
-                serverTimeElement.textContent = now.toLocaleString('id-ID', options);
-            }
-        };
-
-        // --- Auth State Change Listener for Dashboard (PENTING UNTUK PROTEKSI) ---
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = 'login.html';
-            } else {
-                activeUserEmailPart = user.email ? user.email.split('@')[0] : 'Admin';
-                userNameDisplayMobile.textContent = `Hai, ${activeUserEmailPart}`; // Set for mobile header
-
-                // Load initial content based on URL or default
-                const urlParams = new URLSearchParams(window.location.search);
-                const initialPage = urlParams.get('page') || 'dashboard';
-                const initialTargetId = `${initialPage}Section`;
-                loadContent(initialTargetId); // Panggil loadContent setelah user terautentikasi
-
-                // Hide loading overlay with fade-out
-                loadingOverlay.classList.add('hidden');
-                loadingOverlay.addEventListener('transitionend', function handler() {
-                    loadingOverlay.style.display = 'none';
-                    body.classList.remove('loading-dashboard');
-                    loadingOverlay.removeEventListener('transitionend', handler);
-                }, {
-                    once: true
-                });
-
-                // Update last login time in database (optional, but good for tracking)
-                database.ref(`users/${user.uid}`).update({
-                    lastLogin: firebase.database.ServerValue.TIMESTAMP
-                });
-
-                // Log activity for successful login (only when dashboard is loaded)
-                database.ref('login_activities').push({
-                    userId: user.uid,
-                    message: `Berhasil login ke dashboard: ${user.email}`,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    type: 'login'
-                });
-
-                // Initialize header stats listener
-                initHeaderStats();
-            }
-        });
-
-        // --- Content Loading & Initialization Logic (MODULARIZED) ---
-        const navLinks = document.querySelectorAll('.nav-link');
-        const contentSections = document.querySelectorAll('.content-section');
-
-        // Object to store active Firebase listener references
-        const activeFirebaseListeners = {};
-
-        // Function to stop all active Firebase listeners for a specific section
-        function stopSectionListeners(sectionId) {
-            if (activeFirebaseListeners[sectionId]) {
-                activeFirebaseListeners[sectionId].forEach(listener => {
-                    if (listener.ref && listener.eventType && listener.callback) {
-                        listener.ref.off(listener.eventType, listener.callback);
-                    }
-                });
-                activeFirebaseListeners[sectionId] = []; // Clear listeners for this section
-            }
-        }
-
-        // Helper to register a Firebase listener
-        function registerListener(sectionId, path, eventType, callback) {
-            const ref = database.ref(path);
-            ref.on(eventType, callback);
-            if (!activeFirebaseListeners[sectionId]) {
-                activeFirebaseListeners[sectionId] = [];
-            }
-            activeFirebaseListeners[sectionId].push({
-                ref, // Store the reference
-                path,
-                eventType,
-                callback
-            });
-            return ref; // Return ref if needed for specific detach later
-        }
-
-        function loadContent(targetSectionId) {
-            // Stop listeners from ALL previously active sections
-            Object.keys(activeFirebaseListeners).forEach(sectionId => {
-                stopSectionListeners(sectionId);
-            });
-            // Stop global dashboard interval
-            if (window.serverTimeInterval) {
-                clearInterval(window.serverTimeInterval);
-                window.serverTimeInterval = null; // Clear reference
-            }
-            // Destroy Chart.js instances if they exist
-            if (myChart) {
-                myChart.destroy();
-                myChart = null;
-            }
-            if (myCategoryChart) {
-                myCategoryChart.destroy();
-                myCategoryChart = null;
-            }
-
-
-            // Sembunyikan semua section
-            contentSections.forEach(section => {
-                section.style.display = 'none';
-            });
-
-            // Tampilkan section yang ditargetkan
-            const targetSection = document.getElementById(targetSectionId);
-            if (targetSection) {
-                targetSection.style.display = 'block';
-            }
-
-            // Perbarui kelas 'active' untuk semua elemen navigasi
-            navLinks.forEach(item => item.classList.remove('active'));
-            const currentLink = document.querySelector(`.nav-link[data-target="${targetSectionId}"]`);
-            if (currentLink) {
-                currentLink.classList.add('active');
-            }
-
-            // Panggil fungsi inisialisasi spesifik untuk section yang aktif
-            switch (targetSectionId) {
-                case 'dashboardSection':
-                    initDashboardSection();
-                    break;
-                case 'postStatsSection':
-                    initPostStatsSection();
-                    break;
-                case 'addPostSection':
-                    initAddPostSection();
-                    break;
-                case 'postListSection':
-                    initPostListSection();
-                    break;
-                case 'categoryManagementSection':
-                    initCategoryManagementSection();
-                    break;
-                case 'settingsSection':
-                    initSettingsSection();
-                    break;
-                default:
-                    // Fallback or error handling
-                    console.warn(`Unknown section ID: ${targetSectionId}`);
-                    break;
-            }
-
-            // Update URL tanpa reload (untuk riwayat browser)
-            history.pushState(null, '', `dashboard.html?page=${targetSectionId.replace('Section', '').toLowerCase()}`);
-        }
-
-        // --- Header Stats (New Feature) ---
-        function initHeaderStats() {
-            const postsRef = database.ref('posts');
-            
-            // Listener for total posts and total views
-            registerListener('headerStats', 'posts', 'value', (snapshot) => {
-                const posts = snapshot.val();
-                let postCount = 0;
-                let totalViews = 0;
-                if (posts) {
-                    postCount = Object.keys(posts).length;
-                    Object.values(posts).forEach(post => {
-                        totalViews += (post.views || 0);
-                    });
-                }
-                if (headerStatPosts) headerStatPosts.textContent = `${postCount} Post`;
-                if (headerStatViews) headerStatViews.textContent = `${totalViews.toLocaleString('id-ID')} Views`;
-            });
-        }
-
-
-        // --- Initialization Functions for Each Section ---
-
-        function initDashboardSection() {
-            // Update greeting for the dynamically loaded dashboard content
-            const dynamicGreetingH1 = document.getElementById("greeting-text-dynamic");
-            if (dynamicGreetingH1) {
-                dynamicGreetingH1.textContent = `Halo, ${activeUserEmailPart}.`;
-            }
-
-            // Update server time
-            updateServerTime();
-            window.serverTimeInterval = setInterval(updateServerTime, 1000);
-
-            // Update "Last Updated" timestamp
-            const lastUpdatedDashboard = document.getElementById('lastUpdatedDashboard');
-            if (lastUpdatedDashboard) {
-                const now = new Date();
-                const options = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                };
-                lastUpdatedDashboard.textContent = now.toLocaleString('id-ID', options);
-            }
-
-            // Update Firebase Project ID
-            const firebaseProjectIdElement = document.getElementById('firebaseProjectId');
-            if (firebaseProjectIdElement) {
-                firebaseProjectIdElement.textContent = firebaseConfig.projectId;
-            }
-
-            // Inisialisasi elemen statistik dan daftar
-            const statCardViewsElement = document.getElementById('statCardViews');
-            const statValueViews = statCardViewsElement;
-
-            const statCardPostsElement = document.getElementById('statCardPosts');
-            const statValuePosts = statCardPostsElement;
-
-            const statCardCommentsElement = document.getElementById('statCardComments');
-            const statValueComments = statCardCommentsElement;
-
-            const statCardCategoriesElement = document.getElementById('statCardCategories');
-            const statValueCategories = statCardCategoriesElement;
-
-            const topPostsList = document.getElementById('topPostsList');
-            const latestPostsList = document.getElementById('latestPostsList');
-            const loginActivityList = document.getElementById('loginActivityList');
-
-            const updateStatCard = (valueElement, data) => {
-                if (valueElement) {
-                    valueElement.textContent = (data !== null && data !== undefined) ? data.toLocaleString('id-ID') : '0';
-                }
-            };
-
-            // Firebase data listeners for dashboard content
-            // Stats Listener (Posts & Views)
-            if (statValueViews && statValuePosts) {
-                registerListener('dashboardSection', 'posts', 'value', (snapshot) => {
-                    const posts = snapshot.val();
-                    let totalViews = 0;
-                    let postCount = 0;
-                    if (posts) {
-                        postCount = Object.keys(posts).length;
-                        Object.values(posts).forEach(post => {
-                            totalViews += (post.views || 0);
-                        });
-                    }
-                    updateStatCard(statValueViews, totalViews);
-                    updateStatCard(statValuePosts, postCount);
-                });
-            }
-
-            // Comments Listener
-            if (statValueComments) {
-                registerListener('dashboardSection', 'comments', 'value', (snapshot) => {
-                    const comments = snapshot.val();
-                    updateStatCard(statValueComments, comments ? Object.keys(comments).length : 0);
-                });
-            }
-
-            // Categories Listener
-            if (statValueCategories) {
-                registerListener('dashboardSection', 'categories', 'value', (snapshot) => {
-                    const categories = snapshot.val();
-                    updateStatCard(statValueCategories, categories ? Object.keys(categories).length : 0);
-                });
-            }
-
-            // Top Posts Listener (Adding Comments & Status)
-            if (topPostsList) {
-                registerListener('dashboardSection', 'posts', 'value', (snapshot) => {
-                    const posts = snapshot.val();
-                    topPostsList.innerHTML = '';
-                    if (posts) {
-                        const postsArray = Object.keys(posts).map(key => ({
-                            id: key,
-                            ...posts[key]
-                        }));
-                        postsArray.sort((a, b) => b.views - a.views); // Sort by views descending
-                        const top5Posts = postsArray.slice(0, 5); // Take top 5
-
-                        if (top5Posts.length > 0) {
-                            top5Posts.forEach(post => {
-                                const li = document.createElement('li');
-                                const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                });
-                                // Fetch comment count for this post (this is a simplified approach,
-                                // a more efficient way would be to denormalize comment counts in post data)
-                                let commentCount = 0;
-                                database.ref('comments').orderByChild('postId').equalTo(post.id).once('value', commentSnap => {
-                                    commentCount = commentSnap.exists() ? Object.keys(commentSnap.val()).length : 0;
-
-                                    let statusText = post.status === 'published' ? 'Publikasi' : (post.status === 'scheduled' ? 'Terjadwal' : 'Draf');
-                                    if (post.status === 'scheduled' && post.scheduledTimestamp && new Date(post.scheduledTimestamp) < new Date()) {
-                                        statusText = 'Terjadwal (Terlewat)';
-                                    }
-
-                                    li.innerHTML = `
-                                        <div class="post-details">
-                                            <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
-                                            <div class="post-meta">
-                                                <span>Kategori: ${post.category || 'Belum ada'}</span>
-                                                <span>&bull; Status: ${statusText}</span>
-                                                <span>&bull; Komentar: ${commentCount}</span>
-                                                <span>&bull; ${postDate}</span>
-                                            </div>
-                                        </div>
-                                        <div class="post-stats">
-                                            <div class="stat-value">${(post.views || 0).toLocaleString('id-ID')}</div>
-                                            <div class="stat-label">Views</div>
-                                        </div>
-                                    `;
-                                    topPostsList.appendChild(li); // Append after comments are fetched
-                                });
-                            });
-                        } else {
-                            topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
-                        }
-                    } else {
-                        topPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan teratas.</li>';
-                    }
-                });
-            }
-
-            // Latest Posts Listener
-            if (latestPostsList) {
-                registerListener('dashboardSection', 'posts', 'value', (snapshot) => {
-                    const posts = snapshot.val();
-                    latestPostsList.innerHTML = '';
-                    if (posts) {
-                        const postsArray = Object.keys(posts).map(key => ({
-                            id: key,
-                            ...posts[key]
-                        }));
-                        postsArray.sort((a, b) => b.timestamp - a.timestamp); // Sort by latest timestamp descending
-                        const latest5Posts = postsArray.slice(0, 5); // Take latest 5
-
-                        if (latest5Posts.length > 0) {
-                            latest5Posts.forEach(post => {
-                                const li = document.createElement('li');
-                                const postDate = new Date(post.timestamp).toLocaleDateString('id-ID', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                });
-                                let statusText = post.status === 'published' ? 'Publikasi' : (post.status === 'scheduled' ? 'Terjadwal' : 'Draf');
-                                if (post.status === 'scheduled' && post.scheduledTimestamp && new Date(post.scheduledTimestamp) < new Date()) {
-                                    statusText = 'Terjadwal (Terlewat)';
-                                }
-                                li.innerHTML = `
-                                    <div>
-                                        <span class="item-title">${post.title || 'Judul Tidak Ada'}</span>
-                                        <div class="item-meta">
-                                            <span>Kategori: ${post.category || 'Belum ada'}</span>
-                                            <span>&bull; Status: ${statusText}</span>
-                                            ${post.scheduledTimestamp ? `<span>&bull; Jadwal: ${new Date(post.scheduledTimestamp).toLocaleString('id-ID')}</span>` : ''}
-                                            <span>&bull; ${postDate}</span>
-                                        </div>
-                                    </div>
-                                    <div class="actions">
-                                        <button onclick="alert('Fungsi Edit Postingan untuk ${post.id} akan datang!')"><ion-icon name="create"></ion-icon> Edit</button>
-                                        <button onclick="alert('Fungsi Lihat Postingan untuk ${post.id} akan datang!')"><ion-icon name="eye"></ion-icon> Lihat</button>
-                                    </div>
-                                `;
-                                latestPostsList.appendChild(li);
-                            });
-                        } else {
-                            latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
-                        }
-                    } else {
-                        latestPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan terbaru.</li>';
-                    }
-                });
-            }
-
-            // Login Activity Listener
-            if (loginActivityList) {
-                registerListener('dashboardSection', 'login_activities', 'value', (snapshot) => {
-                    const activities = snapshot.val();
-                    loginActivityList.innerHTML = '';
-                    if (activities) {
-                        const activitiesArray = Object.keys(activities).map(key => ({
-                            id: key,
-                            ...activities[key]
-                        }));
-                        activitiesArray.sort((a, b) => b.timestamp - a.timestamp); // Sort by latest timestamp descending
-                        const latest5Activities = activitiesArray.slice(0, 5); // Take latest 5
-
-                        if (latest5Activities.length > 0) {
-                            latest5Activities.forEach(activity => {
-                                const li = document.createElement('li');
-                                const activityTime = new Date(activity.timestamp).toLocaleString('id-ID', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                });
-                                li.classList.add('activity-item');
-                                li.innerHTML = `
-                                    <span class="log-time">${activityTime}</span>
-                                    <span class="log-message">${activity.message}</span>
-                                `;
-                                loginActivityList.appendChild(li);
-                            });
-                        } else {
-                            loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
-                        }
-                    } else {
-                        loginActivityList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada aktivitas login.</li>';
-                    }
-                });
-            }
-        }
-
-        function initPostStatsSection() {
-            console.log('Menginisialisasi Statistik Postingan...');
-            stopSectionListeners('postStatsSection'); // Stop any previous listeners specific to this section
-
-            const statFilterCategory = document.getElementById('statFilterCategory');
-            const postViewsChartCtx = document.getElementById('postViewsChart').getContext('2d');
-            const categoryViewsChartCtx = document.getElementById('categoryViewsChart').getContext('2d');
-            const chartViewsMessage = document.getElementById('chartViewsMessage');
-            const chartCategoryViewsMessage = document.getElementById('chartCategoryViewsMessage');
-            const topMonthlyPostsList = document.getElementById('topMonthlyPostsList');
-            const mostActiveCategoriesList = document.getElementById('mostActiveCategoriesList');
-
-
-            chartViewsMessage.style.display = 'block';
-            chartViewsMessage.textContent = 'Memuat data grafik Views Postingan...';
-            chartCategoryViewsMessage.style.display = 'block';
-            chartCategoryViewsMessage.textContent = 'Memuat data grafik Views per Kategori...';
-            topMonthlyPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Memuat postingan...</li>';
-            mostActiveCategoriesList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Memuat kategori...</li>';
-
-            if (myChart) myChart.destroy();
-            if (myCategoryChart) myCategoryChart.destroy();
-
-            const updateChartsAndStats = (filterCategory = 'all') => {
-                registerListener('postStatsSection', 'posts', 'value', (snapshot) => {
-                    const posts = snapshot.val();
-                    let postLabels = [];
-                    let postViewsData = [];
-                    let totalMonthlyViews = 0;
-                    let popularPostTitle = 'N/A';
-                    let maxViews = -1;
-                    
-                    let categoryViews = {}; // For category views chart
-                    let categoryPostCounts = {}; // For most active categories
-
-                    const now = new Date();
-                    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
-
-                    if (posts) {
-                        const postsArray = Object.keys(posts).map(key => ({ id: key, ...posts[key] }));
-                        let monthlyPosts = [];
-
-                        postsArray.forEach(post => {
-                            // Calculate monthly views
-                            const postTimestamp = post.timestamp;
-                            if (postTimestamp && postTimestamp >= firstDayOfMonth) {
-                                totalMonthlyViews += (post.views || 0);
-                                monthlyPosts.push(post);
-                            }
-
-                            // Prepare data for individual post views chart (filtered by category)
-                            if (filterCategory === 'all' || post.category === filterCategory) {
-                                postLabels.push(post.title || `Post ${post.id.substring(0, 5)}`);
-                                postViewsData.push(post.views || 0);
-                                if ((post.views || 0) > maxViews) {
-                                    maxViews = (post.views || 0);
-                                    popularPostTitle = post.title || 'N/A';
-                                }
-                            }
-
-                            // Accumulate views per category for category views chart
-                            if (post.category) {
-                                categoryViews[post.category] = (categoryViews[post.category] || 0) + (post.views || 0);
-                                categoryPostCounts[post.category] = (categoryPostCounts[post.category] || 0) + 1;
-                            }
-                        });
-                        
-                        // Sort individual post data for chart readability
-                        const sortedPostData = postLabels.map((label, index) => ({
-                            label: label,
-                            views: postViewsData[index]
-                        })).sort((a, b) => b.views - a.views);
-
-                        postLabels = sortedPostData.map(item => item.label);
-                        postViewsData = sortedPostData.map(item => item.views);
-
-                        // Render Top 3 Monthly Posts
-                        monthlyPosts.sort((a, b) => b.views - a.views);
-                        const top3Monthly = monthlyPosts.slice(0, 3);
-                        topMonthlyPostsList.innerHTML = '';
-                        if (top3Monthly.length > 0) {
-                            top3Monthly.forEach(post => {
-                                const li = document.createElement('li');
-                                li.innerHTML = `
-                                    <div class="post-details">
-                                        <span class="post-title">${post.title || 'Judul Tidak Ada'}</span>
-                                        <div class="post-meta">
-                                            <span>Views: ${(post.views || 0).toLocaleString('id-ID')}</span>
-                                            <span>&bull; Kategori: ${post.category || 'Belum ada'}</span>
-                                        </div>
-                                    </div>
-                                `;
-                                topMonthlyPostsList.appendChild(li);
-                            });
-                        } else {
-                            topMonthlyPostsList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada postingan bulan ini.</li>';
-                        }
-
-                        // Render Most Active Categories
-                        const sortedCategories = Object.keys(categoryPostCounts).map(key => ({
-                            name: key,
-                            count: categoryPostCounts[key]
-                        })).sort((a, b) => b.count - a.count);
-                        
-                        const top3Categories = sortedCategories.slice(0, 3);
-                        mostActiveCategoriesList.innerHTML = '';
-                        if (top3Categories.length > 0) {
-                            top3Categories.forEach(cat => {
-                                const li = document.createElement('li');
-                                li.innerHTML = `
-                                    <div>
-                                        <span class="item-title">${cat.name}</span>
-                                        <div class="item-meta">
-                                            <span>Jumlah Postingan: ${cat.count}</span>
-                                        </div>
-                                    </div>
-                                `;
-                                mostActiveCategoriesList.appendChild(li);
-                            });
-                        } else {
-                            mostActiveCategoriesList.innerHTML = '<li style="text-align: center; color: var(--text-muted);">Belum ada kategori aktif.</li>';
-                        }
-
-
-                    } else {
-                        postLabels = ['No Data'];
-                        postViewsData = [0];
-                        chartViewsMessage.textContent = 'Tidak ada data postingan untuk ditampilkan.';
-                    }
-
-                    // Calculate average comments (still requires actual comment data per post, simplified for now)
-                    let totalComments = 0;
-                    let numPostsWithComments = 0;
-                    database.ref('comments').once('value').then(commentSnapshot => {
-                        const comments = commentSnapshot.val();
-                        if (comments) {
-                            const commentsArray = Object.values(comments);
-                            totalComments = commentsArray.length;
-                            const uniquePostIdsWithComments = new Set(commentsArray.map(comment => comment.postId));
-                            numPostsWithComments = uniquePostIdsWithComments.size;
-                        }
-                        const avgComments = numPostsWithComments > 0 ? (totalComments / numPostsWithComments).toFixed(1) : 0;
-                        document.getElementById('avgCommentsPerPost').textContent = avgComments;
-                    });
-
-                    // Update summary stats
-                    document.getElementById('monthlyViews').textContent = totalMonthlyViews.toLocaleString('id-ID');
-                    document.getElementById('mostPopularPost').textContent = popularPostTitle;
-
-                    // Chart 1: Post Views
-                    if (myChart) myChart.destroy();
-                    myChart = new Chart(postViewsChartCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: postLabels,
-                            datasets: [{
-                                label: 'Jumlah Views',
-                                data: postViewsData,
-                                backgroundColor: 'rgba(10, 132, 255, 0.7)',
-                                borderColor: 'var(--primary-color)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                                    ticks: { color: 'var(--text-muted)' }
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                                    ticks: { color: 'var(--text-muted)', callback: function(value) { return value.toLocaleString('id-ID'); } }
-                                }
-                            },
-                            plugins: {
-                                legend: { labels: { color: 'var(--text-light)' } },
-                                tooltip: {
-                                    backgroundColor: 'rgba(28, 28, 30, 0.9)',
-                                    titleColor: 'var(--text-lighter)',
-                                    bodyColor: 'var(--text-light)',
-                                    borderColor: 'var(--primary-color)',
-                                    borderWidth: 1
-                                }
-                            },
-                            animation: { duration: 1000, easing: 'easeOutQuart' }
-                        }
-                    });
-                    chartViewsMessage.style.display = 'none';
-
-                    // Chart 2: Category Views
-                    if (myCategoryChart) myCategoryChart.destroy();
-                    const categoryLabels = Object.keys(categoryViews);
-                    const categoryViewsData = Object.values(categoryViews);
-
-                    myCategoryChart = new Chart(categoryViewsChartCtx, {
-                        type: 'doughnut', // Pie or Doughnut chart is good for categories
-                        data: {
-                            labels: categoryLabels,
-                            datasets: [{
-                                label: 'Views per Kategori',
-                                data: categoryViewsData,
-                                backgroundColor: [
-                                    'rgba(10, 132, 255, 0.7)', // Primary
-                                    'rgba(0, 199, 190, 0.7)', // Teal
-                                    'rgba(255, 159, 10, 0.7)', // Orange
-                                    'rgba(255, 69, 58, 0.7)',  // Red
-                                    'rgba(94, 92, 230, 0.7)',  // Indigo
-                                    'rgba(209, 97, 236, 0.7)'  // Purple
-                                ],
-                                borderColor: 'var(--background-dark)',
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'right',
-                                    labels: {
-                                        color: 'var(--text-light)'
-                                    }
-                                },
-                                tooltip: {
-                                    backgroundColor: 'rgba(28, 28, 30, 0.9)',
-                                    titleColor: 'var(--text-lighter)',
-                                    bodyColor: 'var(--text-light)',
-                                    borderColor: 'var(--primary-color)',
-                                    borderWidth: 1,
-                                    callbacks: {
-                                        label: function(context) {
-                                            let label = context.label || '';
-                                            if (label) {
-                                                label += ': ';
-                                            }
-                                            if (context.parsed !== null) {
-                                                label += context.parsed.toLocaleString('id-ID') + ' views';
-                                            }
-                                            return label;
-                                        }
-                                    }
-                                }
-                            },
-                            animation: { duration: 1000, easing: 'easeOutQuart' }
-                        }
-                    });
-                    chartCategoryViewsMessage.style.display = 'none';
-
-                });
-            };
-
-            // Initial chart load
-            updateChartsAndStats('all');
-
-            // Handle filter change
-            if (statFilterCategory) {
-                if (window.statFilterCategoryChangeHandler) {
-                    statFilterCategory.removeEventListener('change', window.statFilterCategoryChangeHandler);
-                }
-                window.statFilterCategoryChangeHandler = (event) => {
-                    updateChartsAndStats(event.target.value);
-                };
-                statFilterCategory.addEventListener('change', window.statFilterCategoryChangeHandler);
-            }
-
-            // Populate category filter dropdown
-            if (statFilterCategory) {
-                 registerListener('postStatsSection', 'categories', 'value', (snapshot) => {
-                    const categories = snapshot.val();
-                    // Clear existing options except 'Semua Kategori'
-                    statFilterCategory.querySelectorAll('option:not([value="all"])').forEach(option => option.remove());
-                    if (categories) {
-                        // Convert categories object to array for sorting by name
-                        const categoryArray = Object.keys(categories).map(key => ({ id: key, ...categories[key] }));
-                        categoryArray.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
-
-                        categoryArray.forEach(cat => {
-                            const option = document.createElement('option');
-                            option.value = cat.name; // Use original case for value if filtering by exact name
-                            option.textContent = cat.name;
-                            statFilterCategory.appendChild(option);
-                        });
-                    }
-                 });
-            }
-        }
-
-        function initAddPostSection() {
-            console.log('Menginisialisasi Buat Postingan Baru...');
-            stopSectionListeners('addPostSection'); // Stop any previous listeners specific to this section
-
-            const addPostForm = document.getElementById('addPostForm');
-            const addPostMessage = document.getElementById('addPostMessage');
-            const postCategorySelect = document.getElementById('postCategory');
-            const statusRadios = document.querySelectorAll('input[name="postStatus"]');
-            const scheduleDateTimeGroup = document.getElementById('scheduleDateTimeGroup');
-            const scheduleDateInput = document.getElementById('scheduleDate');
-            const scheduleTimeInput = document.getElementById('scheduleTime');
-
-            // --- Fill Category Dropdown from Firebase ---
-            if (postCategorySelect) {
-                postCategorySelect.querySelectorAll('option:not([value=""])').forEach(option => option.remove()); // Clear
-                registerListener('addPostSection', 'categories', 'value', (snapshot) => {
-                    const categories = snapshot.val();
-                    if (categories) {
-                        const categoryArray = Object.keys(categories).map(key => ({ id: key, ...categories[key] }));
-                        categoryArray.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
-
-                        categoryArray.forEach(cat => {
-                            const option = document.createElement('option');
-                            option.value = cat.name;
-                            option.textContent = cat.name;
-                            postCategorySelect.appendChild(option);
-                        });
-                    } else {
-                        console.warn("No categories found in Firebase. Please add some categories first.");
-                    }
-                });
-            }
-
-            // --- Toggle Schedule Date/Time Input Based on Status ---
-            const toggleScheduleInputs = () => {
-                if (document.getElementById('statusScheduled').checked) {
-                    scheduleDateTimeGroup.style.display = 'block';
-                    scheduleDateInput.setAttribute('required', 'true');
-                    scheduleTimeInput.setAttribute('required', 'true');
-
-                    const now = new Date();
-                    now.setHours(now.getHours() + 1);
-                    const defaultDate = now.toISOString().split('T')[0];
-                    const defaultTime = now.toTimeString().split(' ')[0].substring(0, 5);
-
-                    if (!scheduleDateInput.value) scheduleDateInput.value = defaultDate;
-                    if (!scheduleTimeInput.value) scheduleTimeInput.value = defaultTime;
-
-                } else {
-                    scheduleDateTimeGroup.style.display = 'none';
-                    scheduleDateInput.removeAttribute('required');
-                    scheduleTimeInput.removeAttribute('required');
-                }
-            };
-
-            statusRadios.forEach(radio => {
-                if (window.statusRadioChangeHandler) { // Remove if exists
-                     radio.removeEventListener('change', window.statusRadioChangeHandler);
-                }
-                window.statusRadioChangeHandler = toggleScheduleInputs;
-                radio.addEventListener('change', toggleScheduleInputs);
-            });
-            toggleScheduleInputs(); // Initial call
-
-            // --- Handle Form Submission ---
-            if (addPostForm) {
-                if (window.addPostFormSubmitHandler) { // Remove if exists
-                    addPostForm.removeEventListener('submit', window.addPostFormSubmitHandler);
-                }
-
-                window.addPostFormSubmitHandler = (event) => {
-                    event.preventDefault();
-
-                    const title = document.getElementById('postTitle').value.trim();
-                    const category = postCategorySelect.value;
-                    const content = document.getElementById('postContent').value.trim();
-                    const status = document.querySelector('input[name="postStatus"]:checked').value;
-                    
-                    let scheduledTimestamp = null;
-                    if (status === 'scheduled') {
-                        const scheduleDate = scheduleDateInput.value;
-                        const scheduleTime = scheduleTimeInput.value;
-
-                        if (!scheduleDate || !scheduleTime) {
-                            addPostMessage.textContent = 'Tanggal dan waktu jadwal harus diisi!';
-                            addPostMessage.style.color = 'red';
-                            return;
-                        }
-                        scheduledTimestamp = new Date(`${scheduleDate}T${scheduleTime}`).getTime();
-                        if (isNaN(scheduledTimestamp)) {
-                            addPostMessage.textContent = 'Format tanggal atau waktu jadwal tidak valid.';
-                            addPostMessage.style.color = 'red';
-                            return;
-                        }
-                        if (scheduledTimestamp <= Date.now()) {
-                            addPostMessage.textContent = 'Waktu jadwal harus di masa depan.';
-                            addPostMessage.style.color = 'red';
-                            return;
-                        }
-                    }
-
-                    if (!title || !category || !content) {
-                        addPostMessage.textContent = 'Judul, kategori, dan konten harus diisi!';
-                        addPostMessage.style.color = 'red';
-                        return;
-                    }
-
-                    addPostMessage.textContent = 'Menyimpan postingan...';
-                    addPostMessage.style.color = 'var(--text-muted)';
-
-                    const newPostRef = database.ref('posts').push();
-                    const postData = {
-                            title: title,
-                            category: category,
-                            content: content,
-                            status: status,
-                            views: 0,
-                            timestamp: firebase.database.ServerValue.TIMESTAMP,
-                            authorId: auth.currentUser ? auth.currentUser.uid : 'anonymous'
-                    };
-
-                    if (scheduledTimestamp) {
-                        postData.scheduledTimestamp = scheduledTimestamp;
-                    }
-
-                    newPostRef.set(postData)
-                        .then(() => {
-                            addPostMessage.textContent = 'Postingan berhasil disimpan!';
-                            addPostMessage.style.color = 'var(--primary-color)';
-                            addPostForm.reset();
-                            document.getElementById('statusPublished').checked = true;
-                            toggleScheduleInputs();
-                        })
-                        .catch(error => {
-                            addPostMessage.textContent = `Gagal menyimpan postingan: ${error.message}`;
-                            addPostMessage.style.color = 'red';
-                            console.error("Error saving post:", error);
-                        });
-                };
-                addPostForm.addEventListener('submit', window.addPostFormSubmitHandler);
-            }
-        }
-
-        function initPostListSection() {
-            console.log('Menginisialisasi Daftar Postingan...');
-            stopSectionListeners('postListSection');
-
-            const allPostsTableBody = document.getElementById('allPostsTableBody');
-            const postListMessage = document.getElementById('postListMessage');
-
-            if (allPostsTableBody) {
-                postListMessage.textContent = 'Memuat daftar postingan...';
-                postListMessage.style.color = 'var(--text-muted)';
-                allPostsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Memuat daftar postingan...</td></tr>`;
-
-                registerListener('postListSection', 'posts', 'value', (snapshot) => {
-                    const posts = snapshot.val();
-                    allPostsTableBody.innerHTML = '';
-
-                    if (posts) {
-                        const postsArray = Object.keys(posts).map(key => ({
-                            id: key,
-                            ...posts[key]
-                        }));
-                        postsArray.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-                        if (postsArray.length > 0) {
-                            postsArray.forEach(post => {
-                                const tr = document.createElement('tr');
-                                const postDate = post.timestamp ? new Date(post.timestamp).toLocaleDateString('id-ID', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                }) : 'N/A';
-
-                                let statusDisplay = '';
-                                let rowClass = '';
-
-                                switch (post.status) {
-                                    case 'published':
-                                        statusDisplay = 'Publikasi';
-                                        break;
-                                    case 'draft':
-                                        statusDisplay = 'Draf';
-                                        break;
-                                    case 'scheduled':
-                                        if (post.scheduledTimestamp && new Date(post.scheduledTimestamp) <= Date.now()) {
-                                            statusDisplay = 'Terjadwal (Terlewat)';
-                                            rowClass = 'status-overdue';
-                                        } else if (post.scheduledTimestamp) {
-                                            statusDisplay = `Terjadwal<br>(${new Date(post.scheduledTimestamp).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })})`;
-                                        } else {
-                                            statusDisplay = 'Terjadwal (Tgl Tidak Ada)';
-                                        }
-                                        break;
-                                    default:
-                                        statusDisplay = 'Tidak Diketahui';
-                                }
-
-                                tr.className = rowClass;
-                                tr.innerHTML = `
-                                    <td>${post.title || 'Tidak Ada Judul'}</td>
-                                    <td>${post.category || '-'}</td>
-                                    <td>${(post.views || 0).toLocaleString('id-ID')}</td>
-                                    <td>${statusDisplay}</td>
-                                    <td>${postDate}</td>
-                                    <td class="actions-col">
-                                        <button onclick="alert('Fungsi Edit Postingan ${post.id} akan datang!')"><ion-icon name="create"></ion-icon> Edit</button>
-                                        <button class="delete-btn" onclick="deletePost('${post.id}')"><ion-icon name="trash"></ion-icon> Hapus</button>
-                                    </td>
-                                `;
-                                allPostsTableBody.appendChild(tr);
-                            });
-                            postListMessage.textContent = '';
-                        } else {
-                            allPostsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Belum ada postingan.</td></tr>`;
-                            postListMessage.textContent = '';
-                        }
-                    } else {
-                        allPostsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Belum ada postingan.</td></tr>`;
-                        postListMessage.textContent = '';
-                    }
-                }, (error) => {
-                    console.error("Error fetching all posts:", error);
-                    postListMessage.textContent = 'Gagal memuat postingan.';
-                    postListMessage.style.color = 'red';
-                    allPostsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Gagal memuat postingan.</td></tr>`;
-                });
-            }
-        }
-
-        // Fungsi Global untuk Menghapus Postingan (dapat dipanggil dari tombol)
-        function deletePost(postId) {
-            if (confirm('Apakah Anda yakin ingin menghapus postingan ini? Tindakan ini tidak dapat dibatalkan.')) {
-                database.ref('posts/' + postId).remove()
-                    .then(() => {
-                        alert('Postingan berhasil dihapus!');
-                    })
-                    .catch(error => {
-                        alert(`Gagal menghapus postingan: ${error.message}`);
-                        console.error("Error deleting post:", error);
-                    });
-            }
-        }
-        window.deletePost = deletePost;
-
-        // --- Category Management Section (New Feature) ---
-        function initCategoryManagementSection() {
-            console.log('Menginisialisasi Manajemen Kategori...');
-            stopSectionListeners('categoryManagementSection');
-
-            const categoryForm = document.getElementById('categoryForm');
-            const categoryNameInput = document.getElementById('categoryName');
-            const addCategoryBtn = document.getElementById('addCategoryBtn');
-            const updateCategoryBtn = document.getElementById('updateCategoryBtn');
-            const cancelEditCategoryBtn = document.getElementById('cancelEditCategoryBtn');
-            const editingCategoryIdInput = document.getElementById('editingCategoryId');
-            const categoryMessage = document.getElementById('categoryMessage');
-            const categoryTableBody = document.getElementById('categoryTableBody');
-            const categoryListMessage = document.getElementById('categoryListMessage');
-
-            let currentEditId = null;
-
-            const resetCategoryForm = () => {
-                categoryNameInput.value = '';
-                addCategoryBtn.style.display = 'inline-block';
-                updateCategoryBtn.style.display = 'none';
-                cancelEditCategoryBtn.style.display = 'none';
-                editingCategoryIdInput.value = '';
-                categoryMessage.textContent = '';
-                currentEditId = null;
-            };
-
-            // Event Listener for Add/Update Category Form
-            if (categoryForm) {
-                if (window.categoryFormSubmitHandler) {
-                    categoryForm.removeEventListener('submit', window.categoryFormSubmitHandler);
-                }
-                window.categoryFormSubmitHandler = (event) => {
-                    event.preventDefault();
-                    const categoryName = categoryNameInput.value.trim();
-                    if (!categoryName) {
-                        categoryMessage.textContent = 'Nama kategori tidak boleh kosong!';
-                        categoryMessage.style.color = 'red';
-                        return;
-                    }
-
-                    categoryMessage.textContent = 'Menyimpan kategori...';
-                    categoryMessage.style.color = 'var(--text-muted)';
-
-                    if (currentEditId) {
-                        // Update existing category
-                        database.ref('categories/' + currentEditId).update({ name: categoryName })
-                            .then(() => {
-                                categoryMessage.textContent = 'Kategori berhasil diperbarui!';
-                                categoryMessage.style.color = 'var(--primary-color)';
-                                resetCategoryForm();
-                            })
-                            .catch(error => {
-                                categoryMessage.textContent = `Gagal memperbarui kategori: ${error.message}`;
-                                categoryMessage.style.color = 'red';
-                                console.error("Error updating category:", error);
-                            });
-                    } else {
-                        // Add new category
-                        database.ref('categories').push({ name: categoryName })
-                            .then(() => {
-                                categoryMessage.textContent = 'Kategori berhasil ditambahkan!';
-                                categoryMessage.style.color = 'var(--primary-color)';
-                                resetCategoryForm();
-                            })
-                            .catch(error => {
-                                categoryMessage.textContent = `Gagal menambahkan kategori: ${error.message}`;
-                                categoryMessage.style.color = 'red';
-                                console.error("Error adding category:", error);
-                            });
-                    }
-                };
-                categoryForm.addEventListener('submit', window.categoryFormSubmitHandler);
-            }
-
-            // Event Listener for Cancel Edit Button
-            if (cancelEditCategoryBtn) {
-                if (window.cancelEditCategoryHandler) {
-                    cancelEditCategoryBtn.removeEventListener('click', window.cancelEditCategoryHandler);
-                }
-                window.cancelEditCategoryHandler = resetCategoryForm;
-                cancelEditCategoryBtn.addEventListener('click', window.cancelEditCategoryHandler);
-            }
-
-            // --- Display Categories in Table ---
-            if (categoryTableBody) {
-                categoryListMessage.textContent = 'Memuat kategori...';
-                categoryListMessage.style.color = 'var(--text-muted)';
-                categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Memuat kategori...</td></tr>`;
-
-                registerListener('categoryManagementSection', 'categories', 'value', (snapshot) => {
-                    const categories = snapshot.val();
-                    categoryTableBody.innerHTML = '';
-                    categoryListMessage.textContent = '';
-
-                    if (categories) {
-                        const categoryArray = Object.keys(categories).map(key => ({ id: key, ...categories[key] }));
-                        categoryArray.sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically
-
-                        if (categoryArray.length > 0) {
-                            categoryArray.forEach(category => {
-                                // Count posts per category (this involves another Firebase read, can be optimized by denormalization)
-                                database.ref('posts').orderByChild('category').equalTo(category.name).once('value', postSnap => {
-                                    const postCount = postSnap.exists() ? Object.keys(postSnap.val()).length : 0;
-
-                                    const tr = document.createElement('tr');
-                                    tr.innerHTML = `
-                                        <td>${category.name}</td>
-                                        <td>${postCount}</td>
-                                        <td class="actions-col">
-                                            <button onclick="editCategory('${category.id}', '${category.name}')"><ion-icon name="create"></ion-icon> Edit</button>
-                                            <button class="delete-btn" onclick="deleteCategory('${category.id}')"><ion-icon name="trash"></ion-icon> Hapus</button>
-                                        </td>
-                                    `;
-                                    categoryTableBody.appendChild(tr);
-                                });
-                            });
-                        } else {
-                            categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Belum ada kategori.</td></tr>`;
-                        }
-                    } else {
-                        categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Belum ada kategori.</td></tr>`;
-                    }
-                }, (error) => {
-                    console.error("Error fetching categories:", error);
-                    categoryListMessage.textContent = 'Gagal memuat kategori.';
-                    categoryListMessage.style.color = 'red';
-                    categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: red;">Gagal memuat kategori.</td></tr>`;
-                });
-            }
-
-            // Global functions for inline actions
-            window.editCategory = (id, name) => {
-                categoryNameInput.value = name;
-                currentEditId = id;
-                addCategoryBtn.style.display = 'none';
-                updateCategoryBtn.style.display = 'inline-block';
-                cancelEditCategoryBtn.style.display = 'inline-block';
-                editingCategoryIdInput.value = id;
-                categoryMessage.textContent = 'Mode Edit: Perbarui nama kategori.';
-                categoryMessage.style.color = 'var(--text-muted)';
-            };
-
-            window.deleteCategory = (categoryId) => {
-                // Check if any posts are linked to this category before deleting
-                database.ref('posts').orderByChild('category').equalTo(categoryTableBody.querySelector(`[onclick*="${categoryId}"]`).closest('tr').cells[0].textContent).once('value')
-                    .then(snapshot => {
-                        if (snapshot.exists()) {
-                            alert('Tidak dapat menghapus kategori ini karena masih ada postingan yang menggunakannya.');
-                        } else if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
-                            database.ref('categories/' + categoryId).remove()
-                                .then(() => {
-                                    alert('Kategori berhasil dihapus!');
-                                    resetCategoryForm();
-                                })
-                                .catch(error => {
-                                    alert(`Gagal menghapus kategori: ${error.message}`);
-                                    console.error("Error deleting category:", error);
-                                });
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error checking posts for category deletion:", error);
-                        alert("Terjadi kesalahan saat memeriksa postingan terkait.");
-                    });
-            };
-        }
-
-
-        function initSettingsSection() {
-            console.log('Menginisialisasi Pengaturan...');
-            stopSectionListeners('settingsSection');
-
-            const adminEmailInput = document.getElementById('adminEmail');
-            const siteNameInput = document.getElementById('siteName');
-            const itemsPerPageInput = document.getElementById('itemsPerPage');
-            const settingsForm = document.getElementById('settingsForm');
-            const settingsMessage = document.getElementById('settingsMessage');
-
-            if (adminEmailInput && auth.currentUser) {
-                adminEmailInput.value = auth.currentUser.email;
-            }
-
-            database.ref('settings').once('value').then(snapshot => {
-                const settings = snapshot.val();
-                if (settings) {
-                    if (siteNameInput) siteNameInput.value = settings.siteName || '';
-                    if (itemsPerPageInput) itemsPerPageInput.value = settings.itemsPerPage || 10;
-                }
-            }).catch(error => console.error("Error loading settings:", error));
-
-
-            if (settingsForm) {
-                if (window.settingsFormSubmitHandler) {
-                    settingsForm.removeEventListener('submit', window.settingsFormSubmitHandler);
-                }
-
-                window.settingsFormSubmitHandler = (event) => {
-                    event.preventDefault();
-                    settingsMessage.textContent = 'Menyimpan pengaturan...';
-                    settingsMessage.style.color = 'var(--text-muted)';
-
-                    const newSiteName = siteNameInput ? siteNameInput.value.trim() : '';
-                    const newItemsPerPage = itemsPerPageInput ? parseInt(itemsPerPageInput.value) : 10;
-
-                    database.ref('settings').update({
-                            siteName: newSiteName,
-                            itemsPerPage: newItemsPerPage,
-                            lastUpdated: firebase.database.ServerValue.TIMESTAMP
-                        })
-                        .then(() => {
-                            settingsMessage.textContent = 'Pengaturan berhasil disimpan!';
-                            settingsMessage.style.color = 'var(--primary-color)';
-                        })
-                        .catch(error => {
-                            settingsMessage.textContent = `Gagal menyimpan pengaturan: ${error.message}`;
-                            settingsMessage.style.color = 'red';
-                            console.error("Error saving settings:", error);
-                        });
-                };
-                settingsForm.addEventListener('submit', window.settingsFormSubmitHandler);
-            }
-
-            const changePasswordBtn = document.getElementById('changePasswordBtn');
-            if (changePasswordBtn) {
-                changePasswordBtn.onclick = () => {
-                    const newPassword = prompt("Masukkan password baru (minimal 6 karakter):");
-                    if (newPassword && newPassword.length >= 6) {
-                        auth.currentUser.updatePassword(newPassword)
-                            .then(() => {
-                                alert("Password berhasil diubah!");
-                                settingsMessage.textContent = 'Password berhasil diubah!';
-                                settingsMessage.style.color = 'var(--primary-color)';
-                            })
-                            .catch((error) => {
-                                alert(`Gagal mengubah password: ${error.message}`);
-                                settingsMessage.textContent = `Gagal mengubah password: ${error.message}`;
-                                settingsMessage.style.color = 'red';
-                                console.error("Error updating password:", error);
-                            });
-                    } else if (newPassword !== null) {
-                        alert("Password minimal 6 karakter.");
-                    }
-                };
-            }
-        }
-
-
-        // --- Navigation Link Event Listeners ---
-        navLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                const targetId = link.getAttribute('data-target');
-                if (targetId) {
-                    loadContent(targetId);
-                }
-            });
-        });
-
-        // Handle initial load based on URL parameter or default to dashboard
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const initialPage = urlParams.get('page') || 'dashboard';
-            const initialTargetId = `${initialPage}Section`;
-
-            navLinks.forEach(item => item.classList.remove('active'));
-            const initialLink = document.querySelector(`.nav-link[data-target="${initialTargetId}"]`);
-            if (initialLink) {
-                initialLink.classList.add('active');
-            } else {
-                document.querySelector('.nav-link[data-target="dashboardSection"]').classList.add('active');
-            }
-        });
-
-        // To handle browser back/forward buttons
-        window.addEventListener('popstate', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const page = urlParams.get('page') || 'dashboard';
-            const targetId = `${page}Section`;
-            loadContent(targetId);
-        });
-    </script>
 </body>
 
+
+
 </html>
+
