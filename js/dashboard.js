@@ -22,6 +22,7 @@ const userNameDisplayMobile = document.getElementById('pageTitle').textContent =
 let activeUserEmailPart = 'Admin'; // To store user email part for dynamic greeting
 let myChart; // Global variable to hold the Chart.js instance for post views
 let myCategoryChart; // Global variable to hold the Chart.js instance for category views
+let editingPostId = null;
 
 const headerStatPosts = document.getElementById('headerStatPosts');
 
@@ -32,23 +33,14 @@ const headerStatViews = document.getElementById('headerStatViews');
 
 
 // --- Logout Function ---
-
 const logout = () => {
-
 	auth.signOut()
-
 		.then(() => {
-
 			window.location.href = 'login.html';
-
 		})
-
 		.catch((error) => {
-
 			alert(`Gagal logout: ${error.message}`);
-
 		});
-
 };
 
 
@@ -1498,139 +1490,107 @@ function initAddPostSection() {
 
 
 		window.addPostFormSubmitHandler = (event) => {
-
 			event.preventDefault();
-
-
-
+		
 			const title = document.getElementById('postTitle').value.trim();
 			const category = postCategorySelect.value;
 			const content = document.getElementById('postContent').value.trim();
 			const status = document.querySelector('input[name="postStatus"]:checked').value;
 			const cover = document.getElementById('postCover') ? document.getElementById('postCover').value.trim() : '';
 			const excerpt = document.getElementById('postExcerpt') ? document.getElementById('postExcerpt').value.trim() : '';
-			const slug = generateSlug(title);				
+			const slug = generateSlug(title);
 			const hashtags = document.getElementById('postTags').value.split(',').map(t => t.trim()).filter(t => t.length > 0);
-			
-			
-
+		
 			let scheduledTimestamp = null;
-
 			if (status === 'scheduled') {
-
-				const scheduleDate = scheduleDateInput.value;
-
-				const scheduleTime = scheduleTimeInput.value;
-
-
-
-				if (!scheduleDate || !scheduleTime) {
-
-					addPostMessage.textContent = 'Tanggal dan waktu jadwal harus diisi!';
-
-					addPostMessage.style.color = 'red';
-
-					return;
-
-				}
-
-				scheduledTimestamp = new Date(`${scheduleDate}T${scheduleTime}`).getTime();
-
-				if (isNaN(scheduledTimestamp)) {
-
-					addPostMessage.textContent = 'Format tanggal atau waktu jadwal tidak valid.';
-
-					addPostMessage.style.color = 'red';
-
-					return;
-
-				}
-
-				if (scheduledTimestamp <= Date.now()) {
-
-					addPostMessage.textContent = 'Waktu jadwal harus di masa depan.';
-
-					addPostMessage.style.color = 'red';
-
-					return;
-
-				}
-
-			}
-
-
-
-			if (!title || !category || !content) {
-
-				addPostMessage.textContent = 'Judul, kategori, dan konten harus diisi!';
-
+			  const scheduleDate = scheduleDateInput.value;
+			  const scheduleTime = scheduleTimeInput.value;
+		
+			  if (!scheduleDate || !scheduleTime) {
+				addPostMessage.textContent = 'Tanggal dan waktu jadwal harus diisi!';
 				addPostMessage.style.color = 'red';
-
 				return;
-
+			  }
+			  scheduledTimestamp = new Date(`${scheduleDate}T${scheduleTime}`).getTime();
+			  if (isNaN(scheduledTimestamp)) {
+				addPostMessage.textContent = 'Format tanggal atau waktu jadwal tidak valid.';
+				addPostMessage.style.color = 'red';
+				return;
+			  }
+			  if (scheduledTimestamp <= Date.now()) {
+				addPostMessage.textContent = 'Waktu jadwal harus di masa depan.';
+				addPostMessage.style.color = 'red';
+				return;
+			  }
 			}
-
-
-
-			addPostMessage.textContent = 'Menyimpan postingan...';
-
+		
+			if (!title || !category || !content) {
+			  addPostMessage.textContent = 'Judul, kategori, dan konten harus diisi!';
+			  addPostMessage.style.color = 'red';
+			  return;
+			}
+		
+			addPostMessage.textContent = (editingPostId ? 'Menyimpan perubahan...' : 'Menyimpan postingan...');
 			addPostMessage.style.color = '#8E8E93';
-
-
-
-			const newPostRef = database.ref('BimaAkbar/posts').push(); //
-
+		
 			const postData = {
-				title,
-				category,
-				content,
-				status,
-				views: 0,
-				timestamp: firebase.database.ServerValue.TIMESTAMP,
-				authorId: auth.currentUser ? auth.currentUser.uid : 'anonymous',
-				cover: cover || null,
-				excerpt: excerpt || content.substring(0, 120),
-	slug,
-		hashtags
+			  title,
+			  category,
+			  content,
+			  status,
+			  views: 0,
+			  timestamp: editingPostId ? undefined : firebase.database.ServerValue.TIMESTAMP,
+			  authorId: auth.currentUser ? auth.currentUser.uid : 'anonymous',
+			  cover: cover || null,
+			  excerpt: excerpt || content.substring(0, 120),
+			  slug,
+			  hashtags
 			};
-			
 			if (scheduledTimestamp) postData.scheduledTimestamp = scheduledTimestamp;
-			if ((postData.hashtags || []).includes('web')) {}; // Fixed post to postData
-
-
-			newPostRef.set(postData)
-
+		
+			if (editingPostId) {
+			  // MODE EDIT: update post
+			  // Jangan update views, timestamp, authorId jika tidak diperlukan!
+			  delete postData.views;
+			  delete postData.timestamp;
+			  delete postData.authorId;
+		
+			  database.ref('BimaAkbar/posts/' + editingPostId)
+				.update(postData)
 				.then(() => {
-
-					addPostMessage.textContent = 'Postingan berhasil disimpan!';
-
-					addPostMessage.style.color = '#0A84FF';
-
-					addPostForm.reset();
-
-					document.getElementById('statusPublished').checked = true;
-
-					toggleScheduleInputs();
-
+				  addPostMessage.textContent = 'Postingan berhasil di-update!';
+				  addPostMessage.style.color = '#0A84FF';
+				  editingPostId = null;
+				  // Reset form
+				  addPostForm.reset();
+				  document.getElementById('statusPublished').checked = true;
+				  if (document.getElementById('formTitle')) document.getElementById('formTitle').textContent = "Buat Postingan Baru";
+				  // Kembali ke daftar postingan:
+				  loadContent('postListSection');
 				})
-
 				.catch(error => {
-
-					addPostMessage.textContent = `Gagal menyimpan postingan: ${error.message}`;
-
-					addPostMessage.style.color = 'red';
-
-					console.error("Error saving post:", error);
-
+				  addPostMessage.textContent = `Gagal update postingan: ${error.message}`;
+				  addPostMessage.style.color = 'red';
 				});
-
-		};
+			} else {
+			  // MODE TAMBAH: push baru
+			  database.ref('BimaAkbar/posts').push(postData)
+				.then(() => {
+				  addPostMessage.textContent = 'Postingan berhasil disimpan!';
+				  addPostMessage.style.color = '#0A84FF';
+				  addPostForm.reset();
+				  document.getElementById('statusPublished').checked = true;
+				  if (document.getElementById('formTitle')) document.getElementById('formTitle').textContent = "Buat Postingan Baru";
+				})
+				.catch(error => {
+				  addPostMessage.textContent = `Gagal menyimpan postingan: ${error.message}`;
+				  addPostMessage.style.color = 'red';
+				});
+			}
+		  };
 		
-
-		addPostForm.addEventListener('submit', window.addPostFormSubmitHandler);
-		
-
-	}
+		  addPostForm.addEventListener('submit', window.addPostFormSubmitHandler);
+		}
 
 }
 
@@ -1646,17 +1606,17 @@ function generateSlug(text) {
 
 
 function initPostListSection() {
-console.log('Menginisialisasi Daftar Postingan...');
-stopSectionListeners('postListSection');
-
-function renderPostsCard(posts) {
-const cardList = document.getElementById("allPostsCardList");
-cardList.innerHTML = "";
-
-if (!posts || !posts.length) {
-	cardList.innerHTML = `<div style="color:#bdbdbd;text-align:center;padding:1.5em;">Belum ada postingan</div>`;
-	return;
-}
+	console.log('Menginisialisasi Daftar Postingan...');
+	stopSectionListeners('postListSection');
+		
+	function renderPostsCard(posts) {
+		const cardList = document.getElementById("allPostsCardList");
+		cardList.innerHTML = "";
+		
+		if (!posts || !posts.length) {
+			cardList.innerHTML = `<div style="color:#bdbdbd;text-align:center;padding:1.5em;">Belum ada postingan</div>`;
+			return;
+		}
 posts.forEach(post => {
 	const card = document.createElement("div");
 	card.className = "post-card";
@@ -1698,55 +1658,80 @@ if (posts) {
 }
 
 
+
 // Fungsi Global untuk Menghapus Postingan (dapat dipanggil dari tombol)
-
 function deletePost(postId) {
-
 	if (confirm('Apakah Anda yakin ingin menghapus postingan ini? Tindakan ini tidak dapat dibatalkan.')) {
-
 		database.ref('BimaAkbar/posts/' + postId).remove() //
 			.then(() => {
-
 				alert('Postingan berhasil dihapus!');
-
 			})
-
 			.catch(error => {
-
 				alert(`Gagal menghapus postingan: ${error.message}`);
-
 				console.error("Error deleting post:", error);
-
 			});
-
 	}
-
 }
-
 window.deletePost = deletePost;
 
 // New: Function to handle editing a post
 function editPost(postId) {
-database.ref('BimaAkbar/posts/' + postId).once('value').then(snapshot => {
-	const postData = snapshot.val();
-	if (postData) {
-		document.getElementById('postTitle').value = postData.title;
-	}
-});
-}
-window.editPost = editPost;
+	editingPostId = postId; // set mode edit
+  
+	// Ambil data post dari Firebase
+	database.ref('BimaAkbar/posts/' + postId).once('value').then(snapshot => {
+	  const postData = snapshot.val();
+	  if (postData) {
+		// Pindah ke section form tambah/ubah
+		loadContent('addPostSection');
+  
+		// Tunggu form render, lalu isi field
+		setTimeout(() => {
+		  document.getElementById('postTitle').value = postData.title || '';
+		  document.getElementById('postContent').value = postData.content || '';
+		  document.getElementById('postCategory').value = postData.category || '';
+		  if (document.getElementById('postExcerpt')) document.getElementById('postExcerpt').value = postData.excerpt || '';
+		  if (document.getElementById('postCover')) document.getElementById('postCover').value = postData.cover || '';
+		  document.getElementById('postTags').value = Array.isArray(postData.hashtags)
+			? postData.hashtags.join(', ')
+			: (postData.hashtags || '');
+  
+		  // Status
+		  if (postData.status === 'published') {
+			document.getElementById('statusPublished').checked = true;
+		  } else if (postData.status === 'draft') {
+			document.getElementById('statusDraft').checked = true;
+		  } else if (postData.status === 'scheduled') {
+			document.getElementById('statusScheduled').checked = true;
+			// Isi tanggal dan waktu jika ada
+			if (postData.scheduledTimestamp) {
+			  const dateObj = new Date(postData.scheduledTimestamp);
+			  if (document.getElementById('scheduleDate')) document.getElementById('scheduleDate').value = dateObj.toISOString().slice(0,10);
+			  if (document.getElementById('scheduleTime')) document.getElementById('scheduleTime').value = dateObj.toTimeString().slice(0,5);
+			}
+		  }
+  
+		  // Ubah judul form (opsional)
+		  if (document.getElementById('formTitle')) {
+			document.getElementById('formTitle').textContent = "Edit Postingan";
+		  }
+		}, 400);
+	  } else {
+		alert("Postingan tidak ditemukan.");
+	  }
+	});
+  }
+  window.editPost = editPost;
+  
 
 // New: Function to handle viewing a post
 function viewPost(postSlug) {
 	window.open(`https://bimaakbar.netlify.app/post.html?slug=${postSlug}`, '_blank');
 }
-
 window.viewPost = viewPost;
 
 
 // --- Category Management Section (New Feature) ---
-
-
 function initSettingsSection() {
 
 	console.log('Menginisialisasi Pengaturan...');
