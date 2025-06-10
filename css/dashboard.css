@@ -896,23 +896,4 @@ canvas {
     }
 
     .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 10px; /* Slightly smaller padding for inputs */
-    }
-
-    .btn-submit {
-        width: 100%; /* Full width buttons */
-        padding: 10px 20px;
-    }
-
-    .settings-button {
-        flex-direction: column; /* Stack buttons vertically */
-        gap: 10px;
-    }
-
-    .radio-group {
-        flex-direction: column; /* Stack radio buttons vertically */
-        gap: 10px;
-    }
-}
+    .form-gro
