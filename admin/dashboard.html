@@ -3,141 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-item.active i, .nav-item.active span { color: #818cf8; }
+        .nav-item.active { color: #818cf8; /* indigo-400 */ }
+        .form-input { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+        .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
     </style>
 </head>
 <body class="min-h-screen">
 
     <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500">
-        <header class="flex justify-between items-center mb-8">
-            <div>
-                <h1 id="greeting" class="text-3xl font-bold text-white"></h1>
-                <p class="text-gray-400">Selamat datang di Content Hub Anda.</p>
-            </div>
-            <div class="flex items-center space-x-3 mt-4 sm:mt-0">
-                <button id="logoutButton" title="Logout" class="bg-white text-slate-600 font-bold py-2 px-4 rounded-xl shadow-sm hover:bg-slate-200 transition-colors">
-                    <i class="ri-logout-box-r-line"></i>
-                </button>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
-            <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
-            <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
-            <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-8">
-                <div>
-                    <h2 class="text-xl font-semibold text-white mb-4">Aktivitas Terbaru</h2>
-                    <div id="recentPostsList" class="space-y-3"></div>
-                </div>
-            </div>
-            <div class="space-y-8">
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h3>
-                    <div id="popularPostsList" class="space-y-3"></div>
-                </div>
-                 <div>
-                    <h3 class="text-xl font-semibold text-white mb-4">Informasi Sistem</h3>
-                    <div id="systemInfo" class="glass-card p-4 rounded-2xl text-sm space-y-2"></div>
-                </div>
-            </div>
-        </div>
-    </main>
+        </main>
     
     <nav class="fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center" style="border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-        <a href="dashboard.html" class="nav-item flex flex-col items-center justify-center text-indigo-400"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></a>
+        <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
         <a href="content-studio.html" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-pencil-ruler-2-line text-2xl"></i><span class="text-xs mt-1">Konten</span></a>
-        <a href="#" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-music-2-line text-2xl"></i><span class="text-xs mt-1">Musik</span></a>
-        <a href="#" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-shopping-bag-3-line text-2xl"></i><span class="text-xs mt-1">Afiliasi</span></a>
+        <button data-view="music" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-music-2-line text-2xl"></i><span class="text-xs mt-1">Musik</span></button>
+        <button data-view="affiliates" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-shopping-bag-3-line text-2xl"></i><span class="text-xs mt-1">Afiliasi</span></button>
         <button id="logoutButton" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-logout-box-r-line text-2xl"></i><span class="text-xs mt-1">Logout</span></button>
     </nav>
     
+    <template id="view-home">
+        <div class="space-y-8">
+            <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Content Hub Anda.</p></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h2>
+                    <div id="popularPostsList" class="space-y-3"></div>
+                </div>
+                <div>
+                     <h3 class="text-xl font-semibold text-white mb-4">Komposisi Post</h3>
+                     <div class="glass-card p-4 rounded-2xl h-64 flex items-center justify-center"><canvas id="postStatusChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="view-music">
+        <h1 class="text-3xl font-bold text-white mb-6">Kelola Rilisan Musik</h1>
+        <div class="glass-card p-6 rounded-2xl">
+            <h2 class="text-lg font-semibold text-white mb-4">Tambah Rilisan Baru</h2>
+            <form id="musicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input name="song_title" required placeholder="Judul Lagu" class="form-input p-3 rounded-lg">
+                <input name="release_date" type="date" placeholder="Tanggal Rilis" class="form-input p-3 rounded-lg">
+                <input name="cover_art_url" placeholder="URL Cover Art" class="form-input p-3 rounded-lg">
+                <input name="spotify_url" placeholder="URL Spotify" class="form-input p-3 rounded-lg">
+                <input name="apple_music_url" placeholder="URL Apple Music" class="form-input p-3 rounded-lg md:col-span-2">
+                <button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600 transition">Tambah Musik</button>
+            </form>
+        </div>
+        <div id="musicList" class="mt-8 space-y-3"></div>
+    </template>
+    
+    <template id="view-affiliates">
+        <h1 class="text-3xl font-bold text-white mb-6">Kelola Link Afiliasi</h1>
+         <div class="glass-card p-6 rounded-2xl">
+            <h2 class="text-lg font-semibold text-white mb-4">Tambah Link Baru</h2>
+            <form id="affiliateForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input name="product_name" required placeholder="Nama Produk" class="form-input p-3 rounded-lg">
+                <input name="product_url" required type="url" placeholder="URL Afiliasi" class="form-input p-3 rounded-lg">
+                <input name="product_image_url" placeholder="URL Gambar Produk" class="form-input p-3 rounded-lg">
+                <input name="category" placeholder="Kategori (mis: Gadget)" class="form-input p-3 rounded-lg">
+                <button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600 transition">Tambah Link</button>
+            </form>
+        </div>
+        <div id="affiliateList" class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+    </template>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        async function fetchDashboardData() {
-            // ... (Fungsi mengambil data, sama seperti sebelumnya, tapi kita tambah total views)
-            const [postsRes, popularPostsRes, totalViewsRes] = await Promise.all([
-                supabase.from('posts').select('id, published'),
-                supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(3),
-                supabase.rpc('get_total_views')
-            ]);
-            
-            // Update Statistik
-            if (!postsRes.error) {
-                const posts = postsRes.data;
-                const publishedCount = posts.filter(p => p.published).length;
-                document.getElementById('totalPosts').textContent = posts.length;
-                document.getElementById('publishedPosts').textContent = publishedCount;
-                document.getElementById('draftPosts').textContent = posts.length - publishedCount;
-            }
-            if (!totalViewsRes.error) {
-                document.getElementById('totalViews').textContent = totalViewsRes.data;
-            }
+        const app = document.getElementById('app');
+        const navItems = document.querySelectorAll('.nav-item');
+        let postStatusChart = null;
 
-            // Update Postingan Terpopuler
-            if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
-                const list = document.getElementById('popularPostsList');
-                list.innerHTML = '';
-                popularPostsRes.data.forEach(post => {
-                    const el = document.createElement('div');
-                    el.className = 'glass-card p-3 rounded-xl flex justify-between items-center text-sm';
-                    el.innerHTML = `<p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views} views</p>`;
-                    list.appendChild(el);
-                });
-            }
+        // === FUNGSI RENDER UTAMA ===
+        async function renderView(viewName = 'home') {
+            app.innerHTML = document.getElementById(`view-${viewName}`).innerHTML;
+            navItems.forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
+
+            if (viewName === 'home') await renderHomeView();
+            if (viewName === 'music') await renderMusicView();
+            if (viewName === 'affiliates') await renderAffiliatesView();
         }
 
-        function displaySystemInfo() {
-            const infoContainer = document.getElementById('systemInfo');
-            const onlineStatus = navigator.onLine ? '<span class="text-green-400">Online</span>' : '<span class="text-red-400">Offline</span>';
-            supabase.from('posts').select('id', { count: 'exact', head: true }).then(({error}) => {
-                const supabaseStatus = error ? '<span class="text-red-400">Error</span>' : '<span class="text-green-400">Connected</span>';
-                 infoContainer.innerHTML = `
-                    <div class="flex justify-between"><span>Koneksi Browser:</span> <span class="font-semibold">${onlineStatus}</span></div>
-                    <div class="flex justify-between"><span>Koneksi Supabase:</span> <span class="font-semibold">${supabaseStatus}</span></div>
-                    <div class="flex justify-between"><span>Waktu Lokal:</span> <span class="font-semibold">${new Date().toLocaleTimeString('id-ID')}</span></div>
+        // === FUNGSI RENDER SPESIFIK VIEW ===
+        async function renderHomeView() {
+            /* ... Fungsi sama, hanya ditambah memanggil updateChart ... */
+            const { data: posts, error } = await supabase.from('posts').select('published, views');
+            if (error) return;
+            const publishedCount = posts.filter(p => p.published).length;
+            const draftCount = posts.length - publishedCount;
+            updateChart(publishedCount, draftCount);
+             // ... sisa fungsi home view ...
+        }
+        
+        async function renderMusicView() {
+            const list = document.getElementById('musicList');
+            const { data, error } = await supabase.from('music_releases').select('*').order('created_at', { ascending: false });
+            list.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl flex items-center justify-between';
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <img src="${item.cover_art_url || 'https://via.placeholder.com/64'}" class="w-16 h-16 rounded-lg object-cover">
+                        <div>
+                            <p class="font-bold text-white">${item.song_title}</p>
+                            <p class="text-xs text-gray-400">Rilis: ${new Date(item.release_date).toLocaleDateString('id-ID')}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteItem('music_releases', '${item.id}')" class="text-gray-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button>
                 `;
+                list.appendChild(card);
+            });
+            document.getElementById('musicForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const musicData = Object.fromEntries(formData.entries());
+                await supabase.from('music_releases').insert(musicData);
+                renderView('music');
             });
         }
         
-        async function initializePage() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                window.location.replace('login.html');
-                return;
+        async function renderAffiliatesView() {
+            const list = document.getElementById('affiliateList');
+            const { data, error } = await supabase.from('affiliate_links').select('*').order('created_at', { ascending: false });
+            list.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl';
+                card.innerHTML = `
+                    <img src="${item.product_image_url || 'https://via.placeholder.com/300'}" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h4 class="font-bold text-white">${item.product_name}</h4>
+                    <p class="text-xs text-gray-400">${item.category || 'Lainnya'}</p>
+                    <div class="mt-4 flex space-x-2">
+                        <a href="${item.product_url}" target="_blank" class="flex-1 text-center bg-indigo-500 text-white font-semibold py-2 px-3 text-sm rounded-lg">Lihat</a>
+                        <button onclick="deleteItem('affiliate_links', '${item.id}')" class="bg-neutral-700 text-white p-2 rounded-lg"><i class="ri-delete-bin-line"></i></button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+             document.getElementById('affiliateForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const affiliateData = Object.fromEntries(formData.entries());
+                await supabase.from('affiliate_links').insert(affiliateData);
+                renderView('affiliates');
+            });
+        }
+
+        // === FUNGSI HELPERS ===
+        function updateChart(published, drafts) {
+             if (postStatusChart) postStatusChart.destroy();
+             const ctx = document.getElementById('postStatusChart').getContext('2d');
+             postStatusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Published', 'Drafts'], datasets: [{ data: [published, drafts], backgroundColor: ['#22c55e', '#f59e0b'], borderColor: '#171717', borderWidth: 4 }] }, options: { responsive: true, cutout: '70%', plugins: { legend: { display: false } } } });
+        }
+        
+        window.deleteItem = async (tableName, id) => {
+            if (confirm('Yakin ingin menghapus item ini?')) {
+                await supabase.from(tableName).delete().eq('id', id);
+                const currentView = document.querySelector('.nav-item.active').dataset.view;
+                renderView(currentView);
             }
+        }
+
+        // === INISIALISASI HALAMAN ===
+        async function initialize() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) { window.location.replace('login.html'); return; }
             document.getElementById('app').classList.remove('opacity-0');
 
-            const hour = new Date().getHours();
-            document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const view = e.currentTarget.dataset.view;
+                    if(view) renderView(view);
+                });
+            });
             
-            fetchDashboardData();
-            displaySystemInfo();
-            // Refresh info sistem setiap 30 detik
-            setInterval(displaySystemInfo, 30000);
-
             document.getElementById('logoutButton').addEventListener('click', async () => {
                 await supabase.auth.signOut();
                 window.location.replace('login.html');
             });
+            
+            renderView('home'); // Render view awal
         }
 
-        document.addEventListener('DOMContentLoaded', initializePage);
+        document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
 </html>
