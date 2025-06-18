@@ -1,393 +1,205 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - Dark Mode</title>
-  <link rel="icon" href="assets/favicon.ico">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
- <!--script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script-->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <title>Dashboard Admin</title>
+  <link rel="icon" href="assets/favicon.ico"> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
     :root {
-      --bg-dark: #121212;
-      --bg-sidebar: #1c1c1e;
-      --text-main: #ffffff;
-      --text-muted: #aaa;
-      --accent: #0a84ff;
-      --border-color: #2c2c2e;
-      --card-bg: #1e1e20;
+      --bs-body-bg: #1A1A1A;
+      --bs-body-color: #E0E0E0;
+      --bs-border-color: #333333;
+      --bs-emphasis-color: #007AFF;
+      --bs-card-bg: #222222;
+      --bs-card-border-color: var(--bs-border-color);
     }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
+    .status-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.3em 0.6em;
+        border-radius: 0.375rem;
     }
-
-    .sidebar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 220px;
-      background-color: var(--bg-sidebar);
-      border-right: 1px solid var(--border-color);
-      padding-top: 2rem;
-      z-index: 1000;
+    .status-published {
+        color: #30D158;
+        background-color: rgba(48, 209, 88, 0.15);
     }
-
-    .sidebar .nav-link {
-      color: var(--text-muted);
-      padding: 0.75rem 1.5rem;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      transition: 0.2s ease;
-      border-radius: 8px;
-      margin: 0.25rem 1rem;
+    .status-draft {
+        color: #FF9F0A;
+        background-color: rgba(255, 159, 10, 0.15);
     }
-
-    .sidebar .nav-link.active,
-    .sidebar .nav-link:hover {
-      background-color: rgba(10, 132, 255, 0.1);
-      color: var(--accent);
-      font-weight: 500;
+    .table-dark-custom {
+        --bs-table-bg: var(--bs-card-bg);
+        --bs-table-border-color: var(--bs-border-color);
+        --bs-table-striped-bg: #2C2C2E;
+        --bs-table-hover-bg: #3A3A3C;
     }
-
-    .sidebar svg {
-      margin-right: 0.75rem;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      background-color: var(--bg-dark);
-      padding: 1rem 2rem;
-      margin-left: 220px;
-      border-bottom: 1px solid var(--border-color);
-      z-index: 999;
-    }
-
-    main {
-      margin-left: 220px;
-      padding: 2rem;
-    }
-
-    .card-box {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.3);
-      transition: 0.3s;
-    }
-
-    .card-box:hover {
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-
-    .btn-accent {
-      background-color: var(--accent);
-      color: #fff;
-      border-radius: 999px;
-      padding: 0.6rem 1.4rem;
-      font-weight: 500;
-      border: none;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        position: fixed;
-        bottom: 0;
-        top: auto;
-        width: 100%;
-        height: 60px;
-        border-top: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-around;
-        padding-top: 0;
-      }
-
-      .sidebar .nav-link {
-        flex-direction: column;
-        padding: 0.3rem;
-        margin: 0;
-        font-size: 11px;
-      }
-
-      .sidebar svg {
-        margin-right: 0;
-        margin-bottom: 4px;
-      }
-
-      header, main {
-        margin-left: 0;
-      }
-    }
-    .sidebar i {
-		font-size: 1.1rem;
-		margin-right: 0.75rem;
-		transition: color 0.2s ease;
-	}
-	.sidebar .nav-link:hover i,
-	.sidebar .nav-link.active i {
-		color: var(--accent);
-	}
   </style>
 </head>
-
 <body>
-<div class="sidebar">
-  <a href="#" class="nav-link active" onclick="showPage('dashboard', this)">
-    <i class="bi bi-speedometer2"></i> Dashboard
-  </a>
-  <a href="#" class="nav-link" onclick="showPage('statistik', this)">
-    <i class="bi bi-bar-chart-fill"></i> Statistik
-  </a>
-  <a href="#" class="nav-link" onclick="showPage('postingan', this)">
-    <i class="bi bi-journal-richtext"></i> Postingan
-  </a>
-  <a href="#" class="nav-link" onclick="showPage('pengaturan', this)">
-    <i class="bi bi-gear-fill"></i> Pengaturan
-  </a>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+    <div>
+        <h1 class="h3 mb-0">Dashboard Admin</h1>
+        <p id="welcomeMessage" class="text-secondary mb-0">Selamat datang kembali!</p>
+    </div>
+    <button id="logoutButton" class="btn btn-outline-danger">
+        <i class="bi bi-box-arrow-right me-2"></i>Logout
+    </button>
+  </div>
+
+  <div class="d-flex gap-2 mb-4">
+    <a href="post-add.html" class="btn btn-primary">
+        <i class="bi bi-plus-circle-fill me-2"></i>Buat Postingan Baru
+    </a>
+    <a href="post-categoryhtml" class="btn btn-secondary"> <i class="bi bi-tags-fill me-2"></i>Kelola Kategori
+    </a>
+  </div>
+
+  <div class="card" style="background-color: var(--bs-card-bg);">
+    <div class="card-header">
+      Daftar Postingan
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark-custom table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Judul</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Tanggal Dibuat</th>
+                        <th scope="col" class="text-end">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="postList">
+                    <tr><td colspan="4" class="text-center p-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
 </div>
 
-  <!-- Header -->
-  <header class="d-flex justify-content-between align-items-center">
-    <div>
-      <h6 class="mb-0 fw-semibold text-secondary" id="page-title">Dashboard</h6>
-    </div>
-    <div><img src="assets/logo.png" alt="Logo" height="28"></div>
-    <div><button class="btn btn-sm btn-outline-light rounded-pill">Keluar</button></div>
-  </header>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  <!-- Main -->
-  <main id="main-content">
-    <!-- Konten dashboard (default) -->
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card-box text-center">
-          <small class="text-muted">Total Post</small>
-          <h3 class="mt-1">12</h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-box text-center">
-          <small class="text-muted">Draft</small>
-          <h3 class="mt-1">4</h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-box text-center">
-          <small class="text-muted">Viewer</small>
-          <h3 class="mt-1">1.2K</h3>
-        </div>
-      </div>
-    </div>
-    <div class="text-end mt-4">
-      <a href="#" class="btn btn-accent">+ Tambah Postingan</a>
-    </div>
-  </main>
+  // === Elemen DOM ===
+  const postListBody = document.getElementById('postList');
+  const welcomeMessage = document.getElementById('welcomeMessage');
+  const logoutButton = document.getElementById('logoutButton');
 
-  <script>
-	/* const supabaseUrl = 'https://wgcslximcxnprmfqtsoh.supabase.co'; */
-	/* const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk'; */
-	/* const supabase = supabase.createClient(supabaseUrl, supabaseKey); */
+  // === Fungsi-fungsi ===
 
-    function showPage(page, el) {
-      const titleMap = {
-        dashboard: 'Dashboard',
-        statistik: 'Statistik',
-        postingan: 'Postingan',
-        pengaturan: 'Pengaturan'
-      };
-      document.getElementById('page-title').innerText = titleMap[page];
-      
-      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-      el.classList.add('active');
+  // Fungsi memuat semua postingan
+  async function loadPosts() {
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('id, title, created_at, published, slug')
+      .order('created_at', { ascending: false });
 
-      const content = {
-        dashboard: `
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card-box text-center">
-        <small class="text-muted">Total Post</small>
-        <h3 class="mt-1">12</h3>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-box text-center">
-        <small class="text-muted">Draft</small>
-        <h3 class="mt-1">4</h3>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card-box text-center">
-        <small class="text-muted">Viewer</small>
-        <h3 class="mt-1">1.2K</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="row g-4 mt-2">
-    <div class="col-md-6">
-      <div class="card-box">
-        <h6 class="mb-3">Aktivitas Terakhir</h6>
-        <ul class="list-unstyled small">
-          <li class="mb-2"><i class="bi bi-clock-history me-2 text-secondary"></i>Login terakhir: 5 jam lalu</li>
-          <li class="mb-2"><i class="bi bi-pencil-square me-2 text-secondary"></i>Postingan baru dibuat</li>
-          <li class="mb-2"><i class="bi bi-gear me-2 text-secondary"></i>Pengaturan diperbarui</li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card-box">
-        <h6 class="mb-3">Notifikasi Sistem</h6>
-        <ul class="list-unstyled small">
-          <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i>Auto-backup berhasil</li>
-          <li class="mb-2"><i class="bi bi-clock me-2 text-warning"></i>1 konten terjadwal</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-`,
-        statistik: `
-		  <div class="row g-4 mb-4">
-		    <div class="col-md-4">
-		      <div class="card-box text-center">
-		        <small class="text-muted">Total Views (7 Hari)</small>
-		        <h3 class="mt-1">2.430</h3>
-		      </div>
-		    </div>
-		    <div class="col-md-4">
-		      <div class="card-box text-center">
-		        <small class="text-muted">Post Terpopuler</small>
-		        <h6 class="mt-2">Tutorial UI/UX Dasar</h6>
-		        <span class="text-muted small">789 views</span>
-		      </div>
-		    </div>
-		    <div class="col-md-4">
-		      <div class="card-box text-center">
-		        <small class="text-muted">Viewer Harian (Rata-rata)</small>
-		        <h3 class="mt-1">347</h3>
-		      </div>
-		    </div>
-		  </div>
-		
-		  <div class="card-box">
-		    <h5 class="mb-3">Tren Mingguan</h5>
-		    <div class="text-muted small mb-2">Statistik sementara (dummy)</div>
-		    <div style="width: 100%; height: 200px; background: linear-gradient(to right, #0a84ff33, #0a84ff22); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #aaa;">
-		      <span>📊 Grafik akan tampil di sini</span>
-		    </div>
-		  </div>
-		`,
-        postingan: `
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h5 class="mb-0">Daftar Postingan</h5>
-			<a href="#" class="btn btn-accent">+ Tambah Postingan</a>
-		</div>
-		<div class="card-box table-responsive">
-			<table class="table table-dark table-hover align-middle mb-0">
-				<thead>
-					<tr class="text-muted small">
-						<th>Judul</th>
-						<th>Kategori</th>
-						<th>Status</th>
-						<th>Tanggal</th>
-						<th>Aksi</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Produksi Lagu Baru</td>
-						<td>Musik</td>
-						<td><span class="badge bg-primary">Dipublikasikan</span></td>
-						<td>14 Juni 2025</td>
-						<td>
-							<button class="btn btn-sm btn-outline-light rounded-pill me-1">Edit</button>
-							<button class="btn btn-sm btn-outline-danger rounded-pill">Hapus</button>
-						</td>
-					</tr>
-					<tr>
-						<td>Tutorial UI/UX Dasar</td>
-						<td>Artikel</td>
-						<td><span class="badge bg-warning text-dark">Draft</span></td>
-						<td>12 Juni 2025</td>
-						<td>
-							<button class="btn btn-sm btn-outline-light rounded-pill me-1">Edit</button>
-							<button class="btn btn-sm btn-outline-danger rounded-pill">Hapus</button>
-						</td>
-					</tr>
-					<tr>
-						<td>Cerita Lagu “Juni Sendu”</td>
-						<td>Journal</td>
-						<td><span class="badge bg-primary">Dipublikasikan</span></td>
-						<td>10 Juni 2025</td>
-						<td>
-							<button class="btn btn-sm btn-outline-light rounded-pill me-1">Edit</button>
-							<button class="btn btn-sm btn-outline-danger rounded-pill">Hapus</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		`,
-        pengaturan: `
-		  <div class="card-box">
-		    <h5 class="mb-4">Pengaturan Akun</h5>
-		
-		    <form>
-		      <div class="mb-3">
-		        <label for="displayName" class="form-label">Nama Tampilan</label>
-		        <input type="text" class="form-control bg-dark text-white border-secondary" id="displayName" placeholder="Bima Akbar">
-		      </div>
-		
-		      <div class="mb-3">
-		        <label for="email" class="form-label">Email Login</label>
-		        <input type="email" class="form-control bg-dark text-white border-secondary" id="email" placeholder="kamu@email.com">
-		      </div>
-		
-		      <div class="mb-3">
-		        <label for="password" class="form-label">Ganti Password</label>
-		        <input type="password" class="form-control bg-dark text-white border-secondary" id="password" placeholder="Password baru">
-		      </div>
-		
-		      <div class="text-end">
-		        <button type="submit" class="btn btn-accent">Simpan Perubahan</button>
-		      </div>
-		    </form>
-		  </div>
-		`
-      };
-      document.getElementById('main-content').innerHTML = content[page];
+    if (error) {
+      console.error('Error memuat postingan:', error.message);
+      postListBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Gagal memuat data.</td></tr>`;
+      return;
     }
-	</script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script>
-		const viewerChart = new Chart(document.getElementById('viewerChart'), {
-			type: 'line', data: {
-				labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], datasets: [{
-					label: 'Viewer', data: [120, 190, 300, 280, 250, 310, 400], fill: true, backgroundColor: 'rgba(10,132,255,0.2)', borderColor: 'rgba(10,132,255,1)', tension: 0.4
-				}]
-    		},
-    		options: {
-				plugins: { legend: { display: false }},
-				scales: {
-        			y: {
-						ticks: { color: '#aaa' },
-						grid: { color: '#2c2c2e' }	
-					},
-					x: {
-						ticks: { color: '#aaa' },
-						grid: { color: '#2c2c2e' }
-					}
-				}
-			}
-		});
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    if (posts.length === 0) {
+      postListBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Belum ada postingan. Silakan buat yang baru!</td></tr>`;
+      return;
+    }
+    
+    postListBody.innerHTML = ''; // Kosongkan tabel
+    posts.forEach(post => {
+      const row = `
+        <tr>
+          <td>
+            <a href="post.html?slug=${post.slug}" target="_blank" class="text-decoration-none">${post.title}</a>
+          </td>
+          <td>
+            <span class="status-badge ${post.published ? 'status-published' : 'status-draft'}">
+              ${post.published ? 'Published' : 'Draft'}
+            </span>
+          </td>
+          <td>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'})}</td>
+          <td class="text-end">
+            <a href="post-add.html?id=${post.id}" class="btn btn-sm btn-outline-warning">Edit</a>
+            <button class="btn btn-sm btn-outline-danger ms-1" onclick="deletePost('${post.id}', '${post.title.replace(/'/g, "\\'")}')">Hapus</button>
+          </td>
+        </tr>
+      `;
+      postListBody.innerHTML += row;
+    });
+  }
+
+  // Fungsi menghapus postingan
+  async function deletePost(id, title) {
+    if (confirm(`Apakah kamu yakin ingin menghapus postingan berjudul "${title}"?`)) {
+      // Pertama, ambil data post untuk mendapatkan URL thumbnail jika ada
+      const { data: postData, error: getError } = await supabase.from('posts').select('thumbnail_url').eq('id', id).single();
+      
+      if(getError) {
+          alert('Gagal mengambil data post untuk dihapus: ' + getError.message);
+          return;
+      }
+
+      // Hapus data post dari tabel
+      const { error: deleteDbError } = await supabase.from('posts').delete().eq('id', id);
+
+      if (deleteDbError) {
+        alert('Gagal menghapus postingan: ' + deleteDbError.message);
+        return;
+      }
+      
+      // Jika post berhasil dihapus & ada thumbnail_url, hapus juga filenya dari Storage
+      if (postData && postData.thumbnail_url) {
+        const filePath = new URL(postData.thumbnail_url).pathname.split('/bimaakbar.thumbnail/')[1];
+        const { error: deleteStorageError } = await supabase.storage.from('bimaakbar.thumbnail').remove([filePath]);
+        if(deleteStorageError) {
+            console.error('Gagal menghapus file di Storage, tapi post sudah terhapus dari database:', deleteStorageError.message);
+        }
+      }
+      
+      alert('Postingan berhasil dihapus.');
+      loadPosts(); // Muat ulang daftar postingan
+    }
+  }
+
+  // Fungsi untuk logout
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+    if(error) {
+        console.error('Error saat logout:', error.message);
+    } else {
+        window.location.href = 'login.html'; // Arahkan ke halaman login
+    }
+  }
+
+  // Fungsi utama yang berjalan saat halaman dimuat
+  async function initializePage() {
+    // Penjaga Gerbang: Cek apakah pengguna sudah login
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      alert('Anda harus login untuk mengakses halaman ini.');
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // Tampilkan email pengguna & muat data
+    welcomeMessage.textContent = `Selamat datang kembali, ${session.user.email}`;
+    loadPosts();
+  }
+
+  // Event Listener untuk tombol logout
+  logoutButton.addEventListener('click', handleLogout);
+
+  // Panggil fungsi inisialisasi saat DOM siap
+  document.addEventListener('DOMContentLoaded', initializePage);
+</script>
 </body>
 </html>
