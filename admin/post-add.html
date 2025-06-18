@@ -37,4 +37,151 @@
         <div class="max-w-screen-xl mx-auto">
             <form id="postForm" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 space-y-6 glass-card p-6 rounded-2xl">
-                    <input id="judul" type="text" placeholder="Ketik Judul Postingan di Sini..." class="w-full
+                    <input id="judul" type="text" placeholder="Ketik Judul Postingan di Sini..." class="w-full text-3xl lg:text-4xl font-extrabold text-white placeholder-slate-600 bg-transparent outline-none">
+                    
+                    <div id="editor-toolbar" class="flex items-center gap-1 p-2 border-y border-white/10 flex-wrap">
+                        <button type="button" data-command="bold" class="toolbar-btn p-2 rounded-md"><i class="ri-bold"></i></button>
+                        <button type="button" data-command="italic" class="toolbar-btn p-2 rounded-md"><i class="ri-italic"></i></button>
+                        <button type="button" data-command="underline" class="toolbar-btn p-2 rounded-md"><i class="ri-underline"></i></button>
+                        <button type="button" data-command="insertUnorderedList" class="toolbar-btn p-2 rounded-md"><i class="ri-list-ul"></i></button>
+                        <button type="button" data-command="insertOrderedList" class="toolbar-btn p-2 rounded-md"><i class="ri-list-ol"></i></button>
+                        <button type="button" data-command="formatBlock" data-value="blockquote" class="toolbar-btn p-2 rounded-md"><i class="ri-double-quotes-l"></i></button>
+                        <button type="button" id="addLinkBtn" class="toolbar-btn p-2 rounded-md"><i class="ri-links-line"></i></button>
+                    </div>
+                    
+                    <div id="editor-content" contenteditable="true" data-placeholder="Mulai tulis ceritamu..." class="w-full min-h-[500px] text-lg text-slate-300 bg-transparent outline-none prose prose-invert max-w-none prose-p:text-slate-300 prose-headings:text-white"></div>
+                </div>
+
+                <aside class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-6">
+                        <div class="glass-card p-5 rounded-2xl">
+                            <h3 class="font-semibold text-white mb-4">Pengaturan Postingan</h3>
+                            <div class="space-y-4">
+                                <div><label for="slug" class="text-sm font-medium text-slate-400">URL Slug</label><input id="slug" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                                <div><label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label><select id="kategori" class="form-input mt-1 w-full p-2 rounded-lg text-sm appearance-none"><option>Memuat...</option></select></div>
+                                <div>
+                                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
+                                    <select id="status" class="form-input mt-1 w-full p-2 rounded-lg text-sm appearance-none">
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                        <option value="scheduled">Scheduled</option>
+                                    </select>
+                                </div>
+                                <div id="schedule-container" class="hidden">
+                                    <label for="schedule-time" class="text-sm font-medium text-slate-400">Waktu Jadwal</label>
+                                    <input id="schedule-time" type="datetime-local" class="form-input mt-1 w-full p-2 rounded-lg text-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl">
+                            <h3 class="font-semibold text-white mb-4">Gambar Utama</h3>
+                            <input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
+                            <img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl">
+                            <h3 class="font-semibold text-white mb-4">SEO & Meta</h3>
+                            <div class="space-y-4">
+                                <div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                                <div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                                <div><label for="metaTitle" class="text-sm font-medium text-slate-400">Meta Title</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                                <div><label for="metaDescription" class="text-sm font-medium text-slate-400">Meta Description</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
+                                <div><label for="keywords" class="text-sm font-medium text-slate-400">Keywords</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ... (semua deklarasi elemen DOM sama seperti versi lengkap sebelumnya) ...
+        const scheduleContainer = document.getElementById('schedule-container');
+        const editorToolbar = document.getElementById('editor-toolbar');
+        
+        // ... (semua fungsi lain sama persis seperti versi lengkap sebelumnya) ...
+
+        // === EVENT LISTENERS & INISIALISASI ===
+        // ... (event listener untuk judul dan slug sama) ...
+        
+        // PERBAIKAN: Event listener untuk status (menampilkan/menyembunyikan jadwal)
+        statusInput.addEventListener('change', () => {
+            scheduleContainer.style.display = statusInput.value === 'scheduled' ? 'block' : 'none';
+        });
+
+        // PERBAIKAN: Event listener untuk toolbar editor
+        editorToolbar.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            e.preventDefault();
+
+            const command = button.dataset.command;
+            const value = button.dataset.value || null;
+
+            if (command) {
+                document.execCommand(command, false, value);
+            }
+        });
+
+        // PERBAIKAN: Event listener untuk tombol link
+        document.getElementById('addLinkBtn').addEventListener('click', () => {
+            const url = prompt('Masukkan URL:', 'https://');
+            if (url) {
+                document.execCommand('createLink', false, url);
+            }
+        });
+        
+        // ... (event listener untuk thumbnail sama) ...
+        
+        // PERBAIKAN: Event listener submit yang menangani status scheduled
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // ... (logika tombol loading sama) ...
+            
+            let newThumbnailUrl = isEditing && oldThumbnailPath ? supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(oldThumbnailPath).data.publicUrl : null;
+            const file = thumbnailInput.files[0];
+
+            if (file) { /* ... logika upload file sama ... */ }
+
+            // Siapkan Data Postingan (LENGKAP dengan logika schedule)
+            const postData = {
+                title: judulInput.value,
+                slug: slugInput.value || generateUniqueSlug(judulInput.value),
+                content: editorContent.innerHTML,
+                category: kategoriInput.value || null,
+                // Logika status baru
+                published: statusInput.value === 'published',
+                scheduled_time: statusInput.value === 'scheduled' ? document.getElementById('schedule-time').value : null,
+                thumbnail_url: newThumbnailUrl,
+                author: authorInput.value,
+                tags: tagsInput.value,
+                meta_title: metaTitleInput.value,
+                meta_description: metaDescriptionInput.value,
+                keywords: keywordsInput.value,
+                updated_at: new Date()
+            };
+            
+            // ... (logika simpan ke database sama) ...
+        });
+        
+        // ... (fungsi inisialisasi halaman sama) ...
+        async function initializePage() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'login.html'; return; }
+            currentUserEmail = session.user.email;
+            mainContent.classList.remove('opacity-0');
+            await Promise.all([loadCategories(), loadPostForEdit()]);
+            // Aktifkan tampilan jadwal jika status saat load adalah scheduled
+            if(statusInput.value === 'scheduled') {
+                scheduleContainer.style.display = 'block';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
