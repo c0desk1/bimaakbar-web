@@ -567,14 +567,25 @@
   }
 
   judulInput.addEventListener('input', function () {
-    const val = this.value.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+    // 1. Ubah judul menjadi slug dasar (sama seperti sebelumnya)
+    const baseSlug = this.value.trim().toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Hanya izinkan huruf, angka, spasi, strip
+      .replace(/\s+/g, '-'); // Ganti spasi dengan strip
+
+    // 2. Buat 5 karakter acak untuk memastikan keunikan
+    const randomString = Math.random().toString(36).substring(2, 7);
+
+    // 3. Gabungkan keduanya menjadi slug yang dijamin unik
+    const uniqueSlug = `${baseSlug}-${randomString}`;
+
+    // Hanya update slug jika belum pernah diubah manual oleh user
     if (!slugInput.value || slugInput.dataset.manualEdit !== 'true') {
-      slugInput.value = val;
+      slugInput.value = uniqueSlug;
     }
+
     if (!metaTitleInput.value) metaTitleInput.value = this.value;
     document.getElementById('judulError').textContent = '';
-  });
-
+});
   slugInput.addEventListener('input', function() {
     this.dataset.manualEdit = 'true';
   });
