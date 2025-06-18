@@ -1,96 +1,154 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html lang="id" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Admin</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <style>
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 2rem;
-            background-color: var(--card-background-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px var(--shadow-dark);
-        }
-        
-        .login-container h2 {
-            text-align: center;
-            color: var(--text-lighter);
-            margin-bottom: 1.5rem;
-        }
-        
-        .login-container input,
-        .login-container button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        
-        .login-container input {
-            background-color: var(--background-dark);
-            border: 1px solid var(--border-dark);
-            color: var(--text-light);
-        }
-        
-        .login-container input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 6px var(--primary-color);
-        }
-        
-        .login-container button {
-            background-color: var(--primary-color);
-            border: none;
-            color: var(--text-light);
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .login-container button:hover {
-            background-color: var(--primary-color-hover);
-        }
-        
-        .error-message {
-            color: var(--primary-color);
-            text-align: center;
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Admin</title>
+  <link rel="icon" href="assets/favicon.ico"> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    /* Variabel CSS Kustom untuk tema Dark Modern */
+    :root {
+      --bs-body-bg: #1A1A1A;
+      --bs-body-color: #E0E0E0;
+      --bs-border-color: #333333;
+      --bs-emphasis-color: #007AFF;
+      --bs-form-control-bg: #282828;
+      --bs-form-color: #E0E0E0;
+      --bs-form-control-border-color: #444444;
+      --bs-form-control-placeholder-color: #8A8A8A;
+      --bs-form-control-focus-border-color: rgba(0, 122, 255, 0.5);
+      --bs-form-control-focus-box-shadow: 0 0 0 0.25rem rgba(0, 122, 255, 0.25);
+    }
+    
+    body, html {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bs-body-bg);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      border: 1px solid var(--bs-border-color);
+      border-radius: 1rem;
+      background-color: #222222;
+    }
+
+    .form-control {
+        background-color: var(--bs-form-control-bg);
+        color: var(--bs-form-color);
+        border: 1px solid var(--bs-form-control-border-color);
+    }
+    .form-control:focus {
+        background-color: var(--bs-form-control-bg);
+        color: var(--bs-form-color);
+        border-color: var(--bs-form-control-focus-border-color);
+        box-shadow: var(--bs-form-control-focus-box-shadow);
+    }
+
+    .btn-primary {
+        background-color: var(--bs-emphasis-color);
+        border-color: var(--bs-emphasis-color);
+    }
+
+    .error-message {
+        font-size: 0.875rem;
+    }
+  </style>
 </head>
-
 <body>
-    <main class="login-container">
-        <h2>Admin Login</h2>
-        <div id="errorMsg" class="error-message">Username atau password salah.</div>
-        <input type="text" id="username" placeholder="Username" autocomplete="off" />
-        <input type="password" id="password" placeholder="Password" />
-        <button onclick="login()">Masuk</button>
-    </main>
 
-    <script>
-        function login() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const error = document.getElementById('errorMsg');
+<div class="login-box">
+  <div class="text-center mb-4">
+    <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+    <p class="text-secondary">Masuk untuk mengelola konten website.</p>
+  </div>
+  
+  <form id="loginForm">
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" placeholder="nama@contoh.com" required>
+      <label for="email">Alamat Email</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="password" class="form-control" id="password" placeholder="Password" required>
+      <label for="password">Password</label>
+    </div>
+    
+    <div id="errorMessage" class="alert alert-danger p-2 text-center error-message" style="display: none;"></div>
 
-            // Kamu sebagai user satu-satunya
-            if (username === "admin" && password === "rahasia123") {
-                localStorage.setItem("adminLogin", "true");
-                window.location.href = "dashboard.html";
-            } else {
-                error.style.display = "block";
-            }
-        }
-    </script>
+    <button id="submitButton" class="w-100 btn btn-lg btn-primary" type="submit">
+      <span id="buttonText">Masuk</span>
+      <span id="loadingSpinner" class="spinner-border spinner-border-sm" style="display: none;" role="status" aria-hidden="true"></span>
+    </button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // === Elemen DOM ===
+  const loginForm = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const errorMessageDiv = document.getElementById('errorMessage');
+  const submitButton = document.getElementById('submitButton');
+  const buttonText = document.getElementById('buttonText');
+  const loadingSpinner = document.getElementById('loadingSpinner');
+
+  // === Cek apakah pengguna sudah login, jika iya, langsung arahkan ke dashboard ===
+  const checkSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      window.location.href = 'dashboard.html'; // Arahkan ke dashboard jika sudah ada sesi
+    }
+  };
+  // Panggil fungsi ini saat halaman pertama kali dimuat
+  checkSession();
+
+
+  // === Event listener untuk form login ===
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Mencegah form dari refresh halaman
+
+    // Tampilkan loading dan nonaktifkan tombol
+    errorMessageDiv.style.display = 'none';
+    buttonText.style.display = 'none';
+    loadingSpinner.style.display = 'inline-block';
+    submitButton.disabled = true;
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    // Panggil fungsi sign-in dari Supabase
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      // Jika ada error, tampilkan pesan
+      errorMessageDiv.textContent = 'Email atau password salah. Silakan coba lagi.';
+      errorMessageDiv.style.display = 'block';
+      
+      // Kembalikan tombol ke keadaan semula
+      buttonText.style.display = 'inline-block';
+      loadingSpinner.style.display = 'none';
+      submitButton.disabled = false;
+    } else {
+      // Jika berhasil, Supabase otomatis menyimpan sesi. Arahkan ke halaman dashboard.
+      window.location.href = 'dashboard.html';
+    }
+  });
+</script>
 </body>
-
 </html>
