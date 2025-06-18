@@ -1,397 +1,197 @@
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <title>Memuat Postingan...</title>
-  <meta name="description" content="Deskripsi singkat postingan." />
-  <meta name="keywords" content="kata, kunci, seo" />
-  <meta name="author" content="Nama Penulis" />
-
-  <link rel="icon" href="assets/favicon.ico"> 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
- 
-  <style>
-    /* Variabel CSS Kustom dari halaman editor untuk konsistensi tema */
-    :root {
-      --bs-body-bg: #1A1A1A;
-      --bs-body-color: #E0E0E0;
-      --bs-border-color: #333333;
-      --bs-emphasis-color: #007AFF;
-      --bs-heading-color: #F2F2F7;
-      --bs-link-color: var(--bs-emphasis-color);
-      --bs-link-hover-color: #409CFF; 
-    }
-
-    body {
-      line-height: 1.7;
-    }
-
-    /* Header Bar */
-    .header-bar {
-      position: sticky;
-      top: 0;
-      z-index: 1020;
-      background-color: rgba(26, 26, 26, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 0.75rem 1.5rem;
-      border-bottom: 1px solid var(--bs-border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .header-bar .btn-back {
-        color: var(--bs-emphasis-color);
-        padding: 0.5rem;
-        border-radius: 999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s ease, opacity 0.2s ease;
-    }
-    .header-bar .btn-back svg {
-        width: 24px;
-        height: 24px;
-        fill: currentColor;
-    }
-    .header-bar .btn-back:hover {
-        background-color: rgba(0, 122, 255, 0.1);
-        opacity: 0.9;
-    }
-    .header-bar .post-title-header {
-        flex-grow: 1;
-        text-align: center;
-        margin-bottom: 0;
-        font-weight: 600;
-        color: var(--bs-heading-color);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding: 0 1rem;
-    }
-
-    /* Konten Artikel */
-    .post-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    #post-thumbnail {
-      width: 100%;
-      height: auto;
-      max-height: 450px;
-      object-fit: cover;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      background-color: #282828; /* Placeholder color */
-    }
-
-    .post-title-main {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--bs-heading-color);
-      margin-bottom: 0.5rem;
-    }
-
-    .post-meta {
-      color: #a0a0a0;
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-    }
-    .post-meta a {
-        color: #b0b0b0;
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    .post-meta a:hover {
-        color: var(--bs-emphasis-color);
-    }
-    .post-meta .dot {
-        margin: 0 0.5rem;
-    }
-
-    #post-content {
-      font-size: 1.1rem;
-      color: var(--bs-body-color);
-    }
-
-    /* Styling elemen di dalam konten yang di-generate dari editor */
-    #post-content h1, #post-content h2, #post-content h3, 
-    #post-content h4, #post-content h5, #post-content h6 {
-      color: var(--bs-heading-color);
-      margin-top: 2.5rem;
-      margin-bottom: 1.25rem;
-      font-weight: 600;
-    }
-
-    #post-content p {
-        margin-bottom: 1.25rem;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    #post-content a {
-      color: var(--bs-emphasis-color);
-      text-decoration: underline;
-      text-decoration-color: rgba(0, 122, 255, 0.4);
-      transition: all 0.2s;
-    }
+    <title>Memuat Postingan...</title>
+    <meta name="description" content="Sebuah artikel menarik yang sedang dimuat.">
 
-    #post-content a:hover {
-      text-decoration-color: var(--bs-emphasis-color);
-      background-color: rgba(0, 122, 255, 0.1);
-    }
-
-    #post-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      margin: 1.5rem 0;
-    }
-
-    #post-content blockquote {
-      border-left: 4px solid var(--bs-emphasis-color);
-      padding-left: 1.5rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-      color: #c0c0c0;
-    }
-
-    #post-content pre {
-      background-color: #222222;
-      border: 1px solid var(--bs-border-color);
-      padding: 1rem;
-      border-radius: 0.5rem;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: 'SF Mono', 'Menlo', 'monospace';
-      font-size: 0.9rem;
-    }
-    
-    #post-content code {
-        font-size: 0.9em;
-        padding: 0.2em 0.4em;
-        margin: 0;
-        background-color: rgba(100, 100, 100, 0.2);
-        border-radius: 3px;
-    }
-
-    #post-content pre code {
-        background: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    #post-content ul, #post-content ol {
-        padding-left: 1.5rem;
-    }
-    
-    /* Bagian Tag */
-    .post-tags-container {
-        margin-top: 3rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--bs-border-color);
-    }
-
-    .post-tags-container .tag-badge {
-        display: inline-block;
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-        background-color: #282828;
-        border: 1px solid #444;
-        color: #c0c0c0;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-    .post-tags-container .tag-badge:hover {
-        background-color: var(--bs-emphasis-color);
-        border-color: var(--bs-emphasis-color);
-        color: white;
-    }
-
-    /* Loading dan Not Found State */
-    .status-message {
-      text-align: center;
-      padding: 5rem 1rem;
-      color: #a0a0a0;
-    }
-    .status-message h2 {
-        color: var(--bs-heading-color);
-    }
-
-  </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0a0a0a; 
+            color: #a3a3a3; /* neutral-400 */
+        }
+        .sticky-header {
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.7) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Styling untuk konten dari editor */
+        .prose-styles h1, .prose-styles h2, .prose-styles h3 { color: #fafafa; /* neutral-50 */ font-weight: 700; margin-top: 2em; margin-bottom: 1em; }
+        .prose-styles p { line-height: 1.75; margin-bottom: 1.25em; }
+        .prose-styles a { color: #818cf8; /* indigo-400 */ text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+        .prose-styles a:hover { color: #a78bfa; /* violet-400 */ }
+        .prose-styles blockquote { border-left: 3px solid #6366f1; /* indigo-500 */ padding-left: 1.5rem; margin: 1.5rem 0; font-style: italic; color: #d4d4d8; /* neutral-300 */ }
+        .prose-styles img { border-radius: 0.75rem; margin: 2rem 0; }
+        .prose-styles pre { background-color: #171717; /* neutral-900 */ padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; }
+        .prose-styles code { font-family: 'JetBrains Mono', monospace; }
+        .tag-link { border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.2s ease; }
+        .tag-link:hover { border-color: #818cf8; background-color: rgba(129, 140, 248, 0.1); color: #c7d2fe; }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-	<div class="header-bar">
-		<a href="dashboard.html" class="btn-back" aria-label="Kembali">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-            </svg>
-        </a>
-		<h6 id="post-title-header" class="post-title-header">Memuat...</h6>
-        <div style="width: 44px;"></div> </div>
-
-	<main class="post-container container py-5">
-        <div id="loading" class="status-message">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-3">Sedang mengambil data postingan...</p>
-        </div>
-
-        <div id="notFound" class="status-message" style="display: none;">
-            <h2>404 - Postingan Tidak Ditemukan</h2>
-            <p>Maaf, postingan yang kamu cari tidak ada atau belum dipublikasikan.</p>
-            <a href="index.html" class="btn btn-primary rounded-pill mt-3">Kembali ke Beranda</a>
-        </div>
-
-        <article id="post-detail" style="display: none;">
-            <img id="post-thumbnail" src="" alt="Gambar Utama Postingan">
-            
-            <h1 id="post-title-main" class="post-title-main"></h1>
-
-            <div id="post-meta" class="post-meta">
-                <span id="post-author"></span>
-                <span class="dot" aria-hidden="true">•</span>
-                <span id="post-date"></span>
-                <span class="dot" aria-hidden="true">•</span>
-                <a id="post-category" href="#"></a>
-            </div>
-
-            <div id="post-content">
-                </div>
-
-            <div id="post-tags-container" class="post-tags-container" style="display: none;">
-                <h5 class="mb-3">Tags</h5>
-                <div id="post-tags">
+    <header class="sticky-header sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/index.html" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+                    <i class="ri-arrow-left-s-line"></i>
+                    <span>Kembali</span>
+                </a>
+                <div id="shareTop" class="flex items-center space-x-4">
                     </div>
             </div>
+        </div>
+    </header>
 
+    <main id="mainContent" class="opacity-0 transition-opacity duration-500">
+        <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div id="post-container">
+                <header class="mb-8">
+                    <p id="post-category" class="font-semibold text-indigo-400 uppercase tracking-wider text-sm"></p>
+                    <h1 id="post-title" class="text-3xl md:text-5xl font-extrabold text-white mt-2"></h1>
+                    <div id="post-meta" class="mt-4 text-sm text-gray-400 flex items-center space-x-4"></div>
+                </header>
+
+                <img id="post-thumbnail" src="" alt="" class="w-full rounded-2xl shadow-lg mb-8 bg-neutral-800" style="display: none;">
+
+                <div id="post-content" class="prose-styles text-lg"></div>
+
+                <div id="post-tags" class="mt-12 flex flex-wrap gap-2"></div>
+
+                <div class="mt-12 pt-8 border-t border-white/10 text-center">
+                    <p class="text-sm text-gray-400 mb-4">Suka dengan artikel ini? Bagikan!</p>
+                    <div id="shareBottom" class="flex justify-center items-center space-x-4"></div>
+                </div>
+            </div>
+            
+            <div id="notFound" class="hidden text-center py-20">
+                <h1 class="text-6xl font-black text-white">404</h1>
+                <p class="text-xl mt-4 text-gray-400">Postingan tidak ditemukan.</p>
+                <a href="/index.html" class="mt-8 inline-block bg-indigo-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-indigo-600 transition-colors">Kembali ke Beranda</a>
+            </div>
         </article>
-	</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // --- Koneksi Supabase ---
-  const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-  
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // --- Elemen DOM ---
-  const loadingDiv = document.getElementById('loading');
-  const notFoundDiv = document.getElementById('notFound');
-  const postDetailDiv = document.getElementById('post-detail');
-  
-  // --- Fungsi untuk mengambil dan menampilkan data ---
-  async function fetchPost() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const postSlug = urlParams.get('slug');
-
-    // Jika tidak ada slug di URL, tampilkan "not found"
-    if (!postSlug) {
-      showNotFound();
-      return;
-    }
-
-    try {
-      // Ambil data dari tabel 'posts' berdasarkan slug dan status 'published'
-      const { data: post, error } = await supabase
-        .from('posts')
-        .select('*') // Ambil semua kolom untuk detail
-        .eq('slug', postSlug)
-        .eq('published', true) // Hanya tampilkan yang sudah dipublikasi
-        .single(); // Kita hanya mengharapkan satu hasil
-
-      if (error || !post) {
-        console.error('Error fetching post or post not found:', error?.message);
-        showNotFound();
-        return;
-      }
-      
-      // Jika post ditemukan, tampilkan datanya
-      displayPost(post);
-
-    } catch (err) {
-      console.error('An unexpected error occurred:', err.message);
-      showNotFound();
-    }
-  }
-
-  function displayPost(post) {
-    // Sembunyikan loading, tampilkan konten post
-    loadingDiv.style.display = 'none';
-    postDetailDiv.style.display = 'block';
-
-    // --- Update Meta Tags untuk SEO ---
-    document.title = post.meta_title || post.title; // Gunakan meta title, atau fallback ke judul utama
-    document.querySelector('meta[name="description"]').setAttribute('content', post.meta_description || '');
-    document.querySelector('meta[name="keywords"]').setAttribute('content', post.keywords || (post.tags || ''));
-    document.querySelector('meta[name="author"]').setAttribute('content', post.author || 'Penulis');
-
-    // --- Isi Konten ke Elemen HTML ---
-    document.getElementById('post-title-header').textContent = post.title;
-    document.getElementById('post-title-main').textContent = post.title;
-
-    // Thumbnail
-    const thumbnailElement = document.getElementById('post-thumbnail');
-    if (post.thumbnail_url) {
-      thumbnailElement.src = post.thumbnail_url;
-      thumbnailElement.alt = post.title;
-    } else {
-      thumbnailElement.style.display = 'none'; // Sembunyikan jika tidak ada thumbnail
-    }
-
-    // Meta Info
-    document.getElementById('post-author').textContent = `Oleh ${post.author || 'Anonim'}`;
-    document.getElementById('post-date').textContent = new Date(post.created_at).toLocaleDateString('id-ID', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    const categoryEl = document.getElementById('post-category');
-    categoryEl.textContent = post.category || 'Tanpa Kategori';
-    categoryEl.href = `/category.html?name=${encodeURIComponent(post.category)}`; // Link ke halaman kategori
-
-    // Konten utama dari editor
-    document.getElementById('post-content').innerHTML = post.content;
+    </main>
     
-    // Proses dan tampilkan Tags
-    if (post.tags && post.tags.trim() !== '') {
-        const tagsContainer = document.getElementById('post-tags');
-        const tagsWrapper = document.getElementById('post-tags-container');
-        tagsWrapper.style.display = 'block'; // Tampilkan container tag
-        
-        const tagsArray = post.tags.split(',').map(tag => tag.trim());
-        
-        tagsArray.forEach(tag => {
-            if(tag) { // Pastikan tag tidak kosong
-                const tagElement = document.createElement('a');
-                tagElement.href = `/tags.html?tag=${encodeURIComponent(tag)}`; // Link ke halaman pencarian tag
-                tagElement.className = 'tag-badge';
-                tagElement.textContent = tag;
-                tagsContainer.appendChild(tagElement);
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // === Elemen DOM ===
+        const mainContent = document.getElementById('mainContent');
+        const postContainer = document.getElementById('post-container');
+        const notFoundDiv = document.getElementById('notFound');
+
+        // Fungsi untuk meng-update meta tag SEO
+        function updateMeta(post) {
+            document.title = post.meta_title || post.title;
+            document.querySelector('meta[name="description"]').setAttribute('content', post.meta_description || '');
+        }
+
+        // Fungsi untuk menampilkan postingan
+        function displayPost(post) {
+            document.getElementById('post-category').textContent = post.category || '';
+            document.getElementById('post-title').textContent = post.title;
+            document.getElementById('post-meta').innerHTML = `
+                <span>Oleh ${post.author || 'Anonim'}</span>
+                <span>•</span>
+                <span>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span>
+                <span>•</span>
+                <span class="flex items-center"><i class="ri-eye-line mr-1"></i>${post.views || 0} views</span>
+            `;
+
+            const thumbnail = document.getElementById('post-thumbnail');
+            if (post.thumbnail_url) {
+                thumbnail.src = post.thumbnail_url;
+                thumbnail.alt = post.title;
+                thumbnail.style.display = 'block';
             }
-        });
-    }
-  }
+            
+            document.getElementById('post-content').innerHTML = post.content;
 
-  function showNotFound() {
-    loadingDiv.style.display = 'none';
-    notFoundDiv.style.display = 'block';
-    postDetailDiv.style.display = 'none';
-    document.getElementById('post-title-header').textContent = 'Tidak Ditemukan';
-    document.title = "404 - Postingan Tidak Ditemukan";
-  }
+            const tagsContainer = document.getElementById('post-tags');
+            if (post.tags) {
+                post.tags.split(',').forEach(tag => {
+                    const tagEl = document.createElement('a');
+                    tagEl.href = '#'; // Nanti bisa diarahkan ke halaman tag
+                    tagEl.className = 'tag-link text-sm py-1 px-3 rounded-full';
+                    tagEl.textContent = tag.trim();
+                    tagsContainer.appendChild(tagEl);
+                });
+            }
 
-  // --- Jalankan fungsi saat DOM siap ---
-  document.addEventListener('DOMContentLoaded', fetchPost);
+            setupShareButtons();
+        }
 
-</script>
+        // Fungsi untuk setup tombol share
+        function setupShareButtons() {
+            const url = window.location.href;
+            const title = document.title;
+            const shareHTML = `
+                <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}" target="_blank" class="text-gray-400 hover:text-white"><i class="ri-twitter-x-line text-2xl"></i></a>
+                <a href="https://wa.me/?text=${encodeURIComponent(title + " " + url)}" target="_blank" class="text-gray-400 hover:text-white"><i class="ri-whatsapp-line text-2xl"></i></a>
+                <button id="copyLinkBtn" class="text-gray-400 hover:text-white"><i class="ri-links-line text-2xl"></i></button>
+            `;
+            document.getElementById('shareTop').innerHTML = shareHTML;
+            document.getElementById('shareBottom').innerHTML = shareHTML;
+            
+            document.querySelectorAll('#copyLinkBtn').forEach(btn => {
+                btn.onclick = () => {
+                    navigator.clipboard.writeText(url).then(() => alert('Link berhasil disalin!'));
+                }
+            });
+        }
+        
+        // Fungsi untuk menghitung view dengan memanggil Edge Function
+        async function countView(postId) {
+            try {
+                // Kita panggil Edge Function tanpa menunggu hasilnya, agar tidak memperlambat user
+                supabase.functions.invoke('increment-post-view', {
+                    body: { post_id: postId },
+                });
+            } catch (error) {
+                console.error("Gagal menghitung view:", error); // Gagalnya tidak perlu ditampilkan ke user
+            }
+        }
+
+        // Fungsi utama yang berjalan saat halaman dimuat
+        async function initializePage() {
+            const slug = new URLSearchParams(window.location.search).get('slug');
+            if (!slug) {
+                postContainer.style.display = 'none';
+                notFoundDiv.classList.remove('hidden');
+                mainContent.classList.remove('opacity-0');
+                return;
+            }
+
+            const { data: post, error } = await supabase
+                .from('posts')
+                .select('*')
+                .eq('slug', slug)
+                .eq('published', true)
+                .single();
+            
+            mainContent.classList.remove('opacity-0');
+            if (error || !post) {
+                postContainer.style.display = 'none';
+                notFoundDiv.classList.remove('hidden');
+            } else {
+                updateMeta(post);
+                displayPost(post);
+                // Panggil penghitung view setelah post berhasil ditampilkan
+                countView(post.id);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
 </body>
 </html>
