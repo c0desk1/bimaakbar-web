@@ -10,35 +10,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Variabel CSS Kustom untuk tema Dark Modern */
+        /* Variabel CSS Kustom untuk tema Dark Modern (Apple-like) */
         :root {
-            --bs-body-bg: #1A1A1A; /* Background utama yang lebih gelap */
-            --bs-body-color: #E0E0E0; /* Warna teks utama lebih lembut */
-            --bs-secondary-color: #B0B0B0; /* Warna teks sekunder/deskripsi */
-            --bs-border-color: #333333; /* Warna border yang lebih tegas tapi tetap gelap */
-            --bs-emphasis-color: #007AFF; /* Aksen biru yang lebih cerah, cocok untuk glow */
-            --bs-light-rgb: 45,45,45; /* Untuk background card/input yang sedikit lebih terang dari body */
+            --bs-body-bg: #1C1C1E; /* Deep dark gray for body background */
+            --bs-body-color: #E0E0E0; /* Light gray for main text */
+            --bs-secondary-color: #ABABAB; /* Slightly darker gray for secondary text */
+            --bs-border-color: #38383A; /* Subtle border color */
+            --bs-emphasis-color: #0A84FF; /* Apple-like blue accent */
+            --bs-light-rgb: 45,45,45; /* For backgrounds that are slightly lighter than body */
 
             /* Overrides for Bootstrap dark theme internals */
-            --bs-body-bg-rgb: 26,26,26;
-            --bs-border-color-rgb: 51,51,51;
-            --bs-heading-color: #F2F2F7;
+            --bs-body-bg-rgb: 28,28,30;
+            --bs-border-color-rgb: 56,56,58;
+            --bs-heading-color: #F2F2F7; /* Near white for headings */
             --bs-link-color: var(--bs-emphasis-color);
             --bs-link-hover-color: var(--bs-emphasis-color);
+
+            /* Spacing */
+            --section-padding-y: 3rem;
+            --section-padding-x: 1.5rem;
         }
 
         body {
-            padding-top: 56px; /* Untuk header sticky */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
         }
 
+        /* Header Bar*/
         .header-bar {
             position: sticky;
             top: 0;
             z-index: 10;
-            background-color: rgba(26, 26, 26, 0.9);
-            backdrop-filter: blur(8px);
-            padding: 1rem 1.5rem;
+            background-color: rgba(28, 28, 30, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 0.8rem 1.5rem;
             border-bottom: 1px solid var(--bs-border-color);
             display: flex;
             align-items: center;
@@ -48,110 +57,245 @@
             flex-grow: 1;
             text-align: center;
             margin-bottom: 0;
-            font-weight: 600;
-            color: var(--bs-heading-color);
+            font-weight: 500;
+            color: var(--bs-secondary-color);
         }
+        .header-bar .btn-back {
+            color: var(--bs-emphasis-color);
+            padding: 0.5rem;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+        .header-bar .btn-back svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .header-bar .btn-back:hover {
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+            opacity: 0.9;
+        }
+        
+        /* Close button for preview */
+        .header-bar .btn-close-preview {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 999px; /* Pill shape */
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            border-color: var(--bs-border-color);
+            color: var(--bs-secondary-color);
+            background-color: transparent;
+        }
+        .header-bar .btn-close-preview:hover {
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+            border-color: var(--bs-emphasis-color);
+            color: var(--bs-emphasis-color);
+        }
+
+        .container {
+            max-width: 960px; /* Optimal width for reading experience */
+            padding-top: var(--section-padding-y);
+            padding-bottom: var(--section-padding-y);
+        }
+
         .post-thumbnail {
             width: 100%;
-            height: 400px; /* Tinggi tetap untuk gambar utama */
-            object-fit: cover; /* Memastikan gambar menutupi area tanpa terdistorsi */
-            border-radius: var(--bs-border-radius-lg);
-            margin-bottom: 2rem;
+            height: 450px; /* Slightly taller for more impact */
+            object-fit: cover;
+            border-radius: 12px; /* More rounded corners */
+            margin-bottom: 3rem; /* More space below thumbnail */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Softer, diffused shadow */
         }
         .post-content h1, .post-content h2, .post-content h3, 
         .post-content h4, .post-content h5, .post-content h6 {
             color: var(--bs-heading-color);
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            font-weight: 600;
+            margin-top: 2.5em; /* More space above headings */
+            margin-bottom: 0.8em;
+            font-weight: 700;
+            line-height: 1.2;
         }
+        .post-content h1 { font-size: 2.8rem; }
+        .post-content h2 { font-size: 2.2rem; }
+        .post-content h3 { font-size: 1.8rem; }
+        .post-content h4 { font-size: 1.5rem; }
+        .post-content h5 { font-size: 1.25rem; }
+        .post-content h6 { font-size: 1rem; }
+
+
         .post-content p {
             line-height: 1.8;
-            margin-bottom: 1em;
+            margin-bottom: 1.5rem; /* More space between paragraphs */
             color: var(--bs-body-color);
+            font-size: 1.1rem; /* Slightly larger text for readability */
         }
         .post-content blockquote {
-            border-left: 4px solid var(--bs-emphasis-color);
+            border-left: 3px solid var(--bs-emphasis-color); /* Thinner accent line */
             padding-left: 1.5rem;
-            margin: 1.5rem 0;
+            margin: 2.5rem 0; /* More vertical space */
             font-style: italic;
             color: var(--bs-secondary-color);
+            font-size: 1.1rem;
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.05); /* Very subtle background */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-radius: 4px;
         }
         .post-content pre {
-            background-color: var(--bs-light-rgb); /* Slightly lighter background for code blocks */
-            padding: 1rem;
-            border-radius: var(--bs-border-radius);
+            background-color: #2C2C2E; /* Darker background for code blocks */
+            padding: 1.5rem;
+            border-radius: 8px;
             overflow-x: auto;
-            color: #E0E0E0; /* Light text for code */
+            color: #F2F2F7; /* Light text for code */
+            font-family: 'SF Mono', 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 2.5rem 0;
         }
         .post-content img {
             max-width: 100%;
             height: auto;
             display: block;
-            margin: 1.5rem auto;
-            border-radius: var(--bs-border-radius-sm);
+            margin: 2.5rem auto; /* Centered with more vertical space */
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Softer shadow for inline images */
         }
         .post-content ul, .post-content ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
+            margin-left: 1.8rem; /* More indentation */
+            margin-bottom: 1.5rem;
             color: var(--bs-body-color);
+            font-size: 1.1rem;
         }
         .post-content ul li, .post-content ol li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
         }
-        .post-meta {
-            font-size: 0.9rem;
-            color: var(--bs-secondary-color);
-            margin-bottom: 1.5rem;
-        }
-        .post-meta .badge {
-            font-weight: 500;
-            background-color: rgba(0, 122, 255, 0.2); /* Light blue background for badges */
+        .post-content a {
             color: var(--bs-emphasis-color);
-            padding: 0.4em 0.7em;
-            border-radius: 0.3rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
+        .post-content a:hover {
+            color: var(--bs-emphasis-color);
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
         h1.post-title {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 3.5rem; /* Larger for main title */
+            font-weight: 800; /* Extra bold */
             color: var(--bs-heading-color);
             margin-bottom: 1rem;
-            line-height: 1.2;
+            line-height: 1.1;
         }
+        .post-meta {
+            font-size: 0.95rem;
+            color: var(--bs-secondary-color);
+            margin-bottom: 2rem; /* More space below meta */
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem; /* Space between meta items */
+        }
+        .post-meta .badge {
+            font-weight: 600;
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.15); /* Subtler blue background for badges */
+            color: var(--bs-emphasis-color);
+            padding: 0.5em 0.8em;
+            border-radius: 999px; /* Pill shape for badges */
+            font-size: 0.85rem;
+        }
+        .post-meta #postTags {
+            color: var(--bs-secondary-color);
+        }
+        .post-meta #postTags span {
+            margin-right: 0.5rem;
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .container {
+                max-width: 720px;
+            }
+            h1.post-title {
+                font-size: 3rem;
+            }
+            .post-thumbnail {
+                height: 380px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .container {
+                padding-left: var(--section-padding-x);
+                padding-right: var(--section-padding-x);
+                max-width: 100%;
+            }
+            h1.post-title {
+                font-size: 2.5rem;
+            }
+            .post-thumbnail {
+                height: 300px;
+                margin-bottom: 2rem;
+            }
+            .post-content p, .post-content ul, .post-content ol, .post-content blockquote {
+                font-size: 1rem; /* Default font size on mobile */
+                line-height: 1.7;
+            }
+            .post-content h1 { font-size: 2.2rem; }
+            .post-content h2 { font-size: 1.8rem; }
+            .post-content h3 { font-size: 1.5rem; }
+            .post-content h4 { font-size: 1.3rem; }
+            .post-content h5 { font-size: 1.1rem; }
+            .post-content h6 { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 576px) {
+            .header-bar {
+                padding: 0.6rem 1rem;
+            }
+            .post-thumbnail {
+                height: 220px;
+            }
             h1.post-title {
                 font-size: 2rem;
             }
-            .post-thumbnail {
-                height: 250px;
-            }
-            .header-bar {
-                padding: 0.75rem 1rem;
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="header-bar">
-        <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="window.close()">
+        <a href="javascript:history.back()" class="btn-back">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+            </svg>
+        </a>
+        <h6>Pratinjau Postingan</h6>
+        <button class="btn btn-close-preview btn-sm" onclick="window.close()">
             <i class="bi bi-x-lg me-1"></i> Tutup
         </button>
-        <h6 class="text-secondary">Pratinjau Postingan</h6>
-        <div></div> </div>
+    </div>
 
-    <div class="container py-4">
+    <div class="container">
         <main class="post-detail">
-            <h1 class="post-title" id="postTitle">Memuat Judul...</h1>
-            <div class="post-meta mb-4">
+            <h1 class="post-title" id="postTitle"></h1>
+            <div class="post-meta">
                 <span id="postCategory" class="badge"></span>
                 <span id="postTags"></span>
-                <span class="ms-3">Oleh <span id="postAuthor"></span></span>
+                <span>Oleh <strong id="postAuthor"></strong></span>
             </div>
             
             <img id="postThumbnail" class="post-thumbnail" src="" alt="Gambar Utama Postingan" style="display: none;">
             
             <div id="postContent" class="post-content">
-                <p>Memuat konten...</p>
+                <p class="text-secondary">Memuat konten...</p>
             </div>
         </main>
     </div>
@@ -161,12 +305,18 @@
     <script>
         // Inisialisasi Supabase (gunakan detail yang sama dengan post-add.html jika diperlukan)
         const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-		const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-  
-  	const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.addEventListener('DOMContentLoaded', () => {
             const postDataString = localStorage.getItem('previewPostData');
+            const postTitleElem = document.getElementById('postTitle');
+            const postCategoryElem = document.getElementById('postCategory');
+            const postTagsElem = document.getElementById('postTags');
+            const postAuthorElem = document.getElementById('postAuthor');
+            const postContentElem = document.getElementById('postContent');
+            const postThumbnailElem = document.getElementById('postThumbnail');
+
             if (postDataString) {
                 try {
                     const postData = JSON.parse(postDataString);
@@ -177,46 +327,46 @@
                     document.getElementById('previewMetaDescription').setAttribute('content', postData.meta_description || 'Pratinjau deskripsi postingan Anda.');
                     document.getElementById('previewKeywords').setAttribute('content', postData.keywords || 'pratinjau, postingan');
 
-                    document.getElementById('postTitle').textContent = postData.judul || 'Tidak Ada Judul';
+                    postTitleElem.textContent = postData.judul || 'Tidak Ada Judul';
                     
-                    const postCategory = document.getElementById('postCategory');
                     if (postData.kategori) {
-                        postCategory.textContent = postData.kategori;
-                        postCategory.style.display = 'inline-block';
+                        postCategoryElem.textContent = postData.kategori;
+                        postCategoryElem.style.display = 'inline-block';
                     } else {
-                        postCategory.style.display = 'none';
+                        postCategoryElem.style.display = 'none';
                     }
 
-                    const postTags = document.getElementById('postTags');
                     if (postData.tag) {
-                        postTags.textContent = postData.tag.split(',').map(tag => `#${tag.trim()}`).join(' ');
-                        postTags.style.display = 'inline';
+                        postTagsElem.innerHTML = postData.tag.split(',').map(tag => `<span>#${tag.trim()}</span>`).join('');
+                        postTagsElem.style.display = 'inline';
                     } else {
-                        postTags.style.display = 'none';
+                        postTagsElem.style.display = 'none';
                     }
                     
-                    document.getElementById('postAuthor').textContent = postData.author || 'Anonim';
-                    document.getElementById('postContent').innerHTML = postData.konten || '<p>Tidak ada konten untuk pratinjau.</p>';
+                    postAuthorElem.textContent = postData.author || 'Anonim';
+                    postContentElem.innerHTML = postData.konten || '<p class="text-secondary">Tidak ada konten untuk pratinjau.</p>';
 
-                    const postThumbnail = document.getElementById('postThumbnail');
                     if (postData.thumbnail_url) {
-                        postThumbnail.src = postData.thumbnail_url;
-                        postThumbnail.style.display = 'block';
+                        postThumbnailElem.src = postData.thumbnail_url;
+                        postThumbnailElem.style.display = 'block';
                     } else {
-                        postThumbnail.style.display = 'none';
+                        postThumbnailElem.style.display = 'none';
                     }
 
                 } catch (e) {
                     console.error('Error parsing post data from localStorage:', e);
-                    document.getElementById('postContent').innerHTML = '<p class="text-danger">Gagal memuat pratinjau. Data tidak valid.</p>';
-                    document.getElementById('postTitle').textContent = 'Error Pratinjau';
+                    postContentElem.innerHTML = '<p class="text-danger">Gagal memuat pratinjau. Data tidak valid.</p>';
+                    postTitleElem.textContent = 'Error Pratinjau';
+                    postCategoryElem.style.display = 'none';
+                    postTagsElem.style.display = 'none';
+                    postAuthorElem.textContent = 'N/A';
                 }
             } else {
-                document.getElementById('postContent').innerHTML = '<p class="text-secondary">Tidak ada data pratinjau yang ditemukan. Harap buat postingan di halaman "Tambah Postingan" terlebih dahulu.</p>';
-                document.getElementById('postTitle').textContent = 'Tidak Ada Data Pratinjau';
-                document.getElementById('postCategory').style.display = 'none';
-                document.getElementById('postTags').style.display = 'none';
-                document.getElementById('postAuthor').textContent = 'N/A';
+                postContentElem.innerHTML = '<p class="text-secondary">Tidak ada data pratinjau yang ditemukan. Harap buat postingan di halaman "Tambah Postingan" terlebih dahulu.</p>';
+                postTitleElem.textContent = 'Tidak Ada Data Pratinjau';
+                postCategoryElem.style.display = 'none';
+                postTagsElem.style.display = 'none';
+                postAuthorElem.textContent = 'N/A';
             }
         });
     </script>
