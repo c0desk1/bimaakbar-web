@@ -3,47 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Detail Postingan</title>
+  
+  <title>Memuat Postingan...</title>
+  <meta name="description" content="Deskripsi singkat postingan." />
+  <meta name="keywords" content="kata, kunci, seo" />
+  <meta name="author" content="Nama Penulis" />
+
   <link rel="icon" href="assets/favicon.ico"> 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
  
   <style>
-    /* Variabel CSS Kustom untuk tema Dark Modern (disesuaikan untuk gaya Apple) */
+    /* Variabel CSS Kustom dari halaman editor untuk konsistensi tema */
     :root {
-      --bs-body-bg: #121212; /* Background lebih gelap, mendekati true black */
-      --bs-body-color: #E0E0E0; /* Warna teks utama lebih lembut */
-      --bs-secondary-color: #999999; /* Warna teks sekunder/deskripsi */
-      --bs-border-color: #282828; /* Warna border yang lebih halus */
-      --bs-emphasis-color: #007AFF; /* Aksen biru yang lebih cerah, cocok untuk glow */
-      --bs-light-rgb: 45,45,45; /* Untuk background card/input yang sedikit lebih terang dari body */
-      --bs-tertiary-bg: #1A1A1A; /* Untuk background elemen seperti komen/newsletter */
-
-      /* Overrides for Bootstrap dark theme internals */
-      --bs-body-bg-rgb: 18,18,18;
-      --bs-border-color-rgb: 40,40,40;
-      --bs-heading-color: #F2F2F7; /* Warna heading lebih terang */
+      --bs-body-bg: #1A1A1A;
+      --bs-body-color: #E0E0E0;
+      --bs-border-color: #333333;
+      --bs-emphasis-color: #007AFF;
+      --bs-heading-color: #F2F2F7;
       --bs-link-color: var(--bs-emphasis-color);
-      --bs-link-hover-color: #3399FF; /* Sedikit lebih terang dari link normal saat hover */
-      
-      /* Post Details specific */
-      --post-meta-color: #8A8A8A;
-      --post-border-radius: 0.75rem;
-      --text-max-width: 760px; /* Batasan lebar konten teks untuk readability */
+      --bs-link-hover-color: #409CFF; 
     }
 
     body {
-      padding-bottom: 0; /* Padding footer akan menangani ini */
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      line-height: 1.7;
     }
 
+    /* Header Bar */
     .header-bar {
       position: sticky;
       top: 0;
-      z-index: 10;
-      background-color: rgba(18, 18, 18, 0.9); /* Gunakan background body */
-      backdrop-filter: blur(12px); /* Efek blur yang lebih kuat */
-      padding: 1rem 1.5rem;
+      z-index: 1020;
+      background-color: rgba(26, 26, 26, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 0.75rem 1.5rem;
       border-bottom: 1px solid var(--bs-border-color);
       display: flex;
       align-items: center;
@@ -64,911 +58,340 @@
         fill: currentColor;
     }
     .header-bar .btn-back:hover {
-        background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+        background-color: rgba(0, 122, 255, 0.1);
         opacity: 0.9;
     }
-        
-    .header-bar h6 {
+    .header-bar .post-title-header {
         flex-grow: 1;
         text-align: center;
         margin-bottom: 0;
         font-weight: 600;
         color: var(--bs-heading-color);
-    }
-    /* Gaya untuk tombol share (tombol edit dihapus) */
-    .header-bar .btn-action {
-        z-index: 11;
-        margin-left: 0.5rem;
-        border: none; /* Hilangkan border */
-        background-color: transparent; /* Hilangkan background */
-        color: var(--bs-emphasis-color);
-        font-size: 1.1rem; /* Ukuran ikon lebih besar */
-        padding: 0.6rem;
-        border-radius: 0.5rem;
-        transition: background-color 0.2s ease;
-    }
-    .header-bar .btn-action:hover {
-        background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 1rem;
     }
 
-    /* Post Details Styles */
+    /* Konten Artikel */
     .post-container {
-        max-width: 900px; /* Batasi lebar container utama */
-        margin: auto; /* Pusatkan container */
-        padding: 2rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    .post-header {
-      padding-bottom: 1.5rem;
-      margin-bottom: 2rem; /* Spasi lebih lega */
-      text-align: center; /* Pusatkan header */
+    #post-thumbnail {
+      width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      background-color: #282828; /* Placeholder color */
     }
 
-    .post-title {
-      font-size: 3.2rem; /* Ukuran font lebih besar */
+    .post-title-main {
+      font-size: 2.5rem;
       font-weight: 700;
-      line-height: 1.15;
       color: var(--bs-heading-color);
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em; /* Kerning ala Apple */
+      margin-bottom: 0.5rem;
     }
 
     .post-meta {
-      font-size: 0.95rem; /* Ukuran font sedikit lebih besar */
-      color: var(--post-meta-color);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem; /* Jarak antar item meta */
-      align-items: center;
-      justify-content: center; /* Pusatkan meta */
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
     }
-
-    .post-meta .author,
-    .post-meta .category,
-    .post-meta .date {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem; /* Jarak ikon dan teks */
+    .post-meta a {
+        color: #b0b0b0;
+        text-decoration: none;
+        transition: color 0.2s;
     }
-
-    .post-meta .bi {
-        font-size: 0.9rem; /* Ukuran ikon sedikit lebih kecil dari teks */
+    .post-meta a:hover {
         color: var(--bs-emphasis-color);
     }
-
-    .post-meta .badge {
-        font-size: 0.85rem; /* Ukuran font badge sedikit lebih besar */
-        padding: 0.4em 0.8em;
-        background-color: rgba(var(--bs-emphasis-color-rgb), 0.15);
-        color: var(--bs-emphasis-color);
-        border-radius: 1rem; /* Badge lebih rounded */
-        font-weight: 500;
+    .post-meta .dot {
+        margin: 0 0.5rem;
     }
 
-    .post-thumbnail {
-      width: 100%;
-      height: 450px; /* Tinggi gambar lebih besar */
-      object-fit: cover;
-      border-radius: 1rem; /* Sudut lebih melengkung */
-      margin-bottom: 3rem; /* Spasi lebih lega */
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Bayangan lebih halus dan dalam */
-      border: 1px solid var(--bs-border-color); /* Border tipis untuk definisi */
-    }
-
-    .post-content {
-      line-height: 1.8;
-      font-size: 1.15rem; /* Ukuran font konten lebih besar */
+    #post-content {
+      font-size: 1.1rem;
       color: var(--bs-body-color);
-      max-width: var(--text-max-width); /* Batasi lebar teks */
-      margin: 0 auto 3rem auto; /* Pusatkan konten teks */
     }
 
-    .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6 {
+    /* Styling elemen di dalam konten yang di-generate dari editor */
+    #post-content h1, #post-content h2, #post-content h3, 
+    #post-content h4, #post-content h5, #post-content h6 {
       color: var(--bs-heading-color);
-      margin-top: 3.5rem; /* Spasi atas heading lebih lega */
-      margin-bottom: 1.2rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
       font-weight: 600;
-      line-height: 1.3;
-      letter-spacing: -0.015em; /* Kerning heading */
     }
 
-    .post-content p {
-      margin-bottom: 1.6rem; /* Spasi antar paragraf lebih lega */
+    #post-content p {
+        margin-bottom: 1.25rem;
     }
-
-    .post-content a {
-      color: var(--bs-link-color);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .post-content a:hover {
-      color: var(--bs-link-hover-color);
+    
+    #post-content a {
+      color: var(--bs-emphasis-color);
       text-decoration: underline;
+      text-decoration-color: rgba(0, 122, 255, 0.4);
+      transition: all 0.2s;
     }
 
-    .post-content img {
+    #post-content a:hover {
+      text-decoration-color: var(--bs-emphasis-color);
+      background-color: rgba(0, 122, 255, 0.1);
+    }
+
+    #post-content img {
       max-width: 100%;
       height: auto;
-      border-radius: 0.75rem; /* Sudut gambar dalam konten */
-      display: block;
-      margin: 2.5rem auto; /* Spasi atas bawah gambar lebih lega */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Bayangan lebih lembut */
-      border: 1px solid var(--bs-border-color); /* Border tipis */
-    }
-
-    .post-content ul, .post-content ol {
-      margin-bottom: 2rem;
-      padding-left: 2rem; /* Indentasi list */
-    }
-
-    .post-content li {
-      margin-bottom: 0.8rem; /* Spasi antar list item */
-    }
-
-    .post-content blockquote {
-      border-left: 5px solid var(--bs-emphasis-color); /* Border lebih tebal */
-      padding-left: 1.5rem;
-      margin: 3rem 0; /* Spasi lebih lega */
-      font-style: italic;
-      color: var(--bs-secondary-color);
-      background-color: rgba(var(--bs-light-rgb), 0.1); /* Background samar */
       border-radius: 0.5rem;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      margin: 1.5rem 0;
     }
 
-    .post-content pre {
-      background-color: #222222; /* Background kode lebih gelap */
-      border: 1px solid #3A3A3A; /* Border kode lebih jelas */
-      border-radius: 0.75rem;
-      padding: 1.5rem; /* Padding lebih besar */
-      overflow-x: auto;
-      margin: 3rem 0;
-      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-      font-size: 0.95rem;
-      color: #F8F8F8; /* Teks kode lebih terang */
-      line-height: 1.6;
+    #post-content blockquote {
+      border-left: 4px solid var(--bs-emphasis-color);
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #c0c0c0;
     }
 
-    .post-tags {
-      margin-top: 3rem; /* Spasi lebih lega */
-      padding-top: 2rem;
-      border-top: 1px solid var(--bs-border-color);
-      max-width: var(--text-max-width); /* Batasi lebar tag */
-      margin-left: auto;
-      margin-right: auto;
+    #post-content pre {
+      background-color: #222222;
+      border: 1px solid var(--bs-border-color);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'SF Mono', 'Menlo', 'monospace';
+      font-size: 0.9rem;
     }
-    .post-tags .badge {
-        background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
-        color: var(--bs-emphasis-color);
-        padding: 0.6em 1em; /* Padding badge lebih besar */
-        margin-right: 0.6rem;
-        margin-bottom: 0.6rem;
-        border-radius: 1.2rem; /* Badge lebih rounded */
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-
-    /* New Sections Styling */
-    .section-divider {
-        max-width: var(--text-max-width);
-        margin: 4rem auto; /* Lebih banyak spasi */
-        border-color: var(--bs-border-color);
-        opacity: 0.5;
+    
+    #post-content code {
+        font-size: 0.9em;
+        padding: 0.2em 0.4em;
+        margin: 0;
+        background-color: rgba(100, 100, 100, 0.2);
+        border-radius: 3px;
     }
 
-    .section-heading {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 600;
-        color: var(--bs-heading-color);
-        margin-bottom: 2.5rem;
-        letter-spacing: -0.01em;
+    #post-content pre code {
+        background: none;
+        padding: 0;
+        margin: 0;
     }
 
-    /* Comments Section */
-    .comments-section .comment-card {
-        background-color: var(--bs-tertiary-bg);
-        border: 1px solid var(--bs-border-color);
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+    #post-content ul, #post-content ol {
+        padding-left: 1.5rem;
     }
-    .comments-section .comment-author {
-        font-weight: 600;
-        color: var(--bs-heading-color);
-        margin-bottom: 0.2rem;
+    
+    /* Bagian Tag */
+    .post-tags-container {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--bs-border-color);
     }
-    .comments-section .comment-date {
-        font-size: 0.85rem;
-        color: var(--bs-secondary-color);
-        margin-bottom: 1rem;
-    }
-    .comments-section .comment-text {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--bs-body-color);
-    }
-    .comments-section .comment-form-wrapper {
-        background-color: var(--bs-tertiary-bg);
-        border: 1px solid var(--bs-border-color);
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        margin-top: 2.5rem;
-    }
-    .comments-section .form-control {
+
+    .post-tags-container .tag-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
         background-color: #282828;
-        border-color: #444444;
-        color: var(--bs-body-color);
+        border: 1px solid #444;
+        color: #c0c0c0;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
     }
-    .comments-section .form-control::placeholder {
-        color: var(--bs-secondary-color);
-    }
-    .comments-section .btn-primary {
+    .post-tags-container .tag-badge:hover {
         background-color: var(--bs-emphasis-color);
         border-color: var(--bs-emphasis-color);
-        border-radius: 0.5rem;
-    }
-    .comments-section .empty-state {
-        text-align: center;
-        color: var(--bs-secondary-color);
-        padding: 2rem;
-        border: 1px dashed var(--bs-border-color);
-        border-radius: 0.75rem;
-        margin-bottom: 1.5rem;
+        color: white;
     }
 
-
-    /* Related Posts Section */
-    .related-posts .card {
-        background-color: var(--bs-tertiary-bg);
-        border: 1px solid var(--bs-border-color);
-        border-radius: 0.75rem;
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        text-decoration: none;
-        color: inherit;
+    /* Loading dan Not Found State */
+    .status-message {
+      text-align: center;
+      padding: 5rem 1rem;
+      color: #a0a0a0;
     }
-    .related-posts .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-    .related-posts .card-img-top {
-        height: 180px;
-        object-fit: cover;
-    }
-    .related-posts .card-body {
-        padding: 1.2rem;
-    }
-    .related-posts .card-title {
-        font-size: 1.15rem;
-        font-weight: 600;
+    .status-message h2 {
         color: var(--bs-heading-color);
-        margin-bottom: 0.5rem;
-        line-height: 1.4;
-    }
-    .related-posts .card-text {
-        font-size: 0.9rem;
-        color: var(--bs-secondary-color);
-        line-height: 1.5;
-        display: -webkit-box;
-        -webkit-line-clamp: 3; /* Batasi 3 baris */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 1rem;
-    }
-    .related-posts .card-meta {
-        font-size: 0.8rem;
-        color: var(--post-meta-color);
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-    .related-posts .card-meta .bi {
-        font-size: 0.75rem;
-        color: var(--bs-emphasis-color);
-    }
-    .related-posts .empty-state {
-        text-align: center;
-        color: var(--bs-secondary-color);
-        padding: 2rem;
-        border: 1px dashed var(--bs-border-color);
-        border-radius: 0.75rem;
-        margin-bottom: 1.5rem;
     }
 
-    /* Newsletter Section */
-    .newsletter-section {
-        background-color: var(--bs-tertiary-bg);
-        border: 1px solid var(--bs-border-color);
-        border-radius: 1rem;
-        padding: 3rem 2rem;
-        text-align: center;
-        max-width: 600px;
-        margin: 4rem auto;
-    }
-    .newsletter-section h3 {
-        color: var(--bs-heading-color);
-        font-weight: 600;
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-        letter-spacing: -0.01em;
-    }
-    .newsletter-section p {
-        color: var(--bs-secondary-color);
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-    }
-    .newsletter-section .input-group {
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    .newsletter-section .form-control {
-        border-top-left-radius: 0.6rem;
-        border-bottom-left-radius: 0.6rem;
-        border-color: #444444;
-    }
-    .newsletter-section .btn-primary {
-        border-top-right-radius: 0.6rem;
-        border-bottom-right-radius: 0.6rem;
-    }
-
-    /* Footer */
-    .app-footer {
-        background-color: var(--bs-tertiary-bg);
-        border-top: 1px solid var(--bs-border-color);
-        padding: 2.5rem 1.5rem;
-        color: var(--bs-secondary-color);
-        font-size: 0.9rem;
-        text-align: center;
-        margin-top: 4rem; /* Spasi dari konten atas */
-    }
-    .app-footer .footer-links a {
-        color: var(--bs-secondary-color);
-        text-decoration: none;
-        margin: 0 0.8rem;
-        transition: color 0.2s ease;
-    }
-    .app-footer .footer-links a:hover {
-        color: var(--bs-link-color);
-    }
-    .app-footer p {
-        margin-top: 1rem;
-        margin-bottom: 0;
-    }
-
-
-    @media (max-width: 768px) {
-        .post-title {
-            font-size: 2.2rem;
-        }
-        .post-thumbnail {
-            height: 250px;
-            margin-bottom: 2rem;
-        }
-        .post-content {
-            font-size: 1rem;
-            max-width: 100%; /* Hapus max-width pada mobile */
-            padding: 0 1rem; /* Tambahkan padding horizontal */
-            margin-bottom: 2rem;
-        }
-        .post-header {
-            padding: 0 1rem;
-        }
-        .post-tags {
-            max-width: 100%;
-            padding: 0 1rem;
-        }
-        .section-divider {
-            margin: 3rem auto;
-        }
-        .section-heading {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
-        .comments-section .comment-form-wrapper,
-        .comments-section .comment-card {
-            padding: 1rem;
-        }
-        .newsletter-section {
-            padding: 2rem 1rem;
-            margin: 3rem auto;
-        }
-        .app-footer {
-            padding: 1.5rem 1rem;
-            margin-top: 3rem;
-        }
-        .app-footer .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        .app-footer .footer-links a {
-            margin: 0;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .post-title {
-            font-size: 1.8rem;
-            margin-bottom: 0.75rem;
-        }
-        .post-meta {
-            font-size: 0.85rem;
-            gap: 0.5rem;
-        }
-        .header-bar {
-            padding: 0.75rem 1rem;
-        }
-    }
   </style>
 </head>
 <body>
+
 	<div class="header-bar">
-		<a href="dashboard.html" class="btn-back">
+		<a href="dashboard.html" class="btn-back" aria-label="Kembali">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
             </svg>
         </a>
-		<h6 id="dynamicPageTitle">Memuat...</h6> 
-        <button type="button" class="btn btn-action" id="sharePostBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bagikan Postingan">
-            <i class="bi bi-share"></i>
-        </button>
-	</div>
+		<h6 id="post-title-header" class="post-title-header">Memuat...</h6>
+        <div style="width: 44px;"></div> </div>
 
-	<div class="container post-container">
-		<article id="postArticle">
-            <div class="text-center my-5" id="loadingSpinner">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Memuat...</span>
-                </div>
-                <p class="mt-2 text-secondary">Memuat postingan...</p>
+	<main class="post-container container py-5">
+        <div id="loading" class="status-message">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
-            <div id="postContentError" class="alert alert-danger text-center d-none" role="alert">
-                Postingan tidak ditemukan atau terjadi kesalahan saat memuat.
-            </div>
-        </article>
-
-        <hr class="section-divider">
-
-        <section class="comments-section">
-            <h2 class="section-heading">Komentar <i class="bi bi-chat-dots"></i></h2>
-            <div class="comments-list" id="commentsList">
-                <div class="empty-state" id="noCommentsYet">
-                    Belum ada komentar untuk postingan ini. Jadilah yang pertama berkomentar!
-                </div>
-            </div>
-
-            <div class="comment-form-wrapper">
-                <h4 class="text-center mb-4" style="color: var(--bs-heading-color);">Tinggalkan Komentar</h4>
-                <form id="commentForm">
-                    <div class="mb-3">
-                        <label for="commentName" class="form-label visually-hidden">Nama</label>
-                        <input type="text" class="form-control" id="commentName" placeholder="Nama Anda" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="commentEmail" class="form-label visually-hidden">Email</label>
-                        <input type="email" class="form-control" id="commentEmail" placeholder="Email Anda (tidak akan dipublikasikan)" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="commentText" class="form-label visually-hidden">Komentar</label>
-                        <textarea class="form-control" id="commentText" rows="4" placeholder="Tulis komentar Anda di sini..." required></textarea>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary rounded-pill">Kirim Komentar</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <hr class="section-divider">
-
-        <section class="related-posts">
-            <h2 class="section-heading">Postingan Terkait <i class="bi bi-journal-text"></i></h2>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="relatedPostsList">
-                <div class="col-12 empty-state" id="noRelatedPosts">
-                    Tidak ada postingan terkait yang ditemukan.
-                </div>
-            </div>
-        </section>
-
-        <hr class="section-divider">
-
-        <section class="newsletter-section">
-            <i class="bi bi-envelope-fill display-4 text-primary mb-3"></i>
-            <h3>Dapatkan Wawasan Desain Terbaru</h3>
-            <p>Berlangganan buletin kami untuk menerima pembaruan, tutorial, dan analisis tren desain langsung ke kotak masuk Anda.</p>
-            <form id="newsletterForm">
-                <div class="input-group mb-3">
-                    <label for="newsletterEmail" class="visually-hidden">Alamat Email</label>
-                    <input type="email" class="form-control" id="newsletterEmail" placeholder="Alamat email Anda" aria-label="Alamat email Anda" required>
-                    <button class="btn btn-primary" type="submit">Berlangganan</button>
-                </div>
-                <div id="newsletterMessage" class="mt-2 text-success d-none"></div>
-            </form>
-        </section>
-
-	</div> <footer class="app-footer">
-        <div class="footer-links">
-            <a href="#">Tentang Kami</a>
-            <a href="#">Kebijakan Privasi</a>
-            <a href="#">Ketentuan Layanan</a>
-            <a href="#">Kontak</a>
+            <p class="mt-3">Sedang mengambil data postingan...</p>
         </div>
-        <p>&copy; <span id="currentYear"></span> Bima Akbar. Hak Cipta Dilindungi Undang-Undang.</p>
-    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div id="notFound" class="status-message" style="display: none;">
+            <h2>404 - Postingan Tidak Ditemukan</h2>
+            <p>Maaf, postingan yang kamu cari tidak ada atau belum dipublikasikan.</p>
+            <a href="index.html" class="btn btn-primary rounded-pill mt-3">Kembali ke Beranda</a>
+        </div>
+
+        <article id="post-detail" style="display: none;">
+            <img id="post-thumbnail" src="" alt="Gambar Utama Postingan">
+            
+            <h1 id="post-title-main" class="post-title-main"></h1>
+
+            <div id="post-meta" class="post-meta">
+                <span id="post-author"></span>
+                <span class="dot" aria-hidden="true">•</span>
+                <span id="post-date"></span>
+                <span class="dot" aria-hidden="true">•</span>
+                <a id="post-category" href="#"></a>
+            </div>
+
+            <div id="post-content">
+                </div>
+
+            <div id="post-tags-container" class="post-tags-container" style="display: none;">
+                <h5 class="mb-3">Tags</h5>
+                <div id="post-tags">
+                    </div>
+            </div>
+
+        </article>
+	</main>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ===============================================
-  // SUPABASE CONFIGURATION
-  // GANTI DENGAN KUNCI SUPABASE ANDA
-  // ===============================================
+  // --- Koneksi Supabase ---
   const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
   
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // ===============================================
-  // HELPER FUNCTIONS
-  // ===============================================
+  // --- Elemen DOM ---
+  const loadingDiv = document.getElementById('loading');
+  const notFoundDiv = document.getElementById('notFound');
+  const postDetailDiv = document.getElementById('post-detail');
+  
+  // --- Fungsi untuk mengambil dan menampilkan data ---
+  async function fetchPost() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postSlug = urlParams.get('slug');
 
-  // Function to format date (example: '18 Juni 2025')
-  function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('id-ID', options);
-  }
+    // Jika tidak ada slug di URL, tampilkan "not found"
+    if (!postSlug) {
+      showNotFound();
+      return;
+    }
 
-  // Function to get post ID from URL (e.g., post.html?id=123)
-  function getPostIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id'); // Mengambil nilai dari parameter 'id'
-  }
+    try {
+      // Ambil data dari tabel 'posts' berdasarkan slug dan status 'published'
+      const { data: post, error } = await supabase
+        .from('posts')
+        .select('*') // Ambil semua kolom untuk detail
+        .eq('slug', postSlug)
+        .eq('published', true) // Hanya tampilkan yang sudah dipublikasi
+        .single(); // Kita hanya mengharapkan satu hasil
 
-  // Sanitize HTML to prevent XSS (for content loaded dynamically)
-  function sanitizeHTML(str) {
-    const div = document.createElement('div');
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-  }
-
-  // Function to generate excerpt from content
-  function generateExcerpt(content, maxLength = 150) {
-    if (!content) return '';
-    const textOnlyContent = content.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
-    if (textOnlyContent.length <= maxLength) return textOnlyContent;
-    return textOnlyContent.substring(0, maxLength) + '...';
-  }
-
-  // ===============================================
-  // RENDER DYNAMIC CONTENT
-  // ===============================================
-
-  async function loadPostDetails(postId) {
-    const postArticle = document.getElementById('postArticle');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const postContentError = document.getElementById('postContentError');
-
-    // Hide previous error/content, show loading spinner
-    postContentError.classList.add('d-none');
-    loadingSpinner.classList.remove('d-none');
-    postArticle.innerHTML = ''; // Clear previous content
-
-    if (!postId) {
-        loadingSpinner.classList.add('d-none');
-        postContentError.textContent = "ID Postingan tidak ditemukan di URL.";
-        postContentError.classList.remove('d-none');
-        document.getElementById('dynamicPageTitle').textContent = "Kesalahan";
+      if (error || !post) {
+        console.error('Error fetching post or post not found:', error?.message);
+        showNotFound();
         return;
-    }
+      }
+      
+      // Jika post ditemukan, tampilkan datanya
+      displayPost(post);
 
-    try {
-        // Fetch post data, now including meta_title, meta_description, keywords
-        const { data: post, error: postError } = await supabase
-            .from('posts') // Ganti 'posts' dengan nama tabel postingan Anda di Supabase
-            .select('id, slug, title, content, author, category, published_at, thumbnail_url, tags, meta_title, meta_description, keywords')
-            .eq('id', postId)
-            .single();
-
-        if (postError) {
-            console.error('Error fetching post:', postError.message);
-            loadingSpinner.classList.add('d-none');
-            postContentError.textContent = `Gagal memuat postingan: ${postError.message}`;
-            postContentError.classList.remove('d-none');
-            document.getElementById('dynamicPageTitle').textContent = "Kesalahan";
-            return;
-        }
-
-        if (!post) {
-            loadingSpinner.classList.add('d-none');
-            postContentError.textContent = "Postingan tidak ditemukan.";
-            postContentError.classList.remove('d-none');
-            document.getElementById('dynamicPageTitle').textContent = "Tidak Ditemukan";
-            return;
-        }
-
-        // Render post details
-        document.getElementById('dynamicPageTitle').textContent = post.meta_title || post.title;
-        // Update document title for browser tab
-        document.title = post.meta_title || post.title; 
-        // Set meta description
-        let metaDescriptionTag = document.querySelector('meta[name="description"]');
-        if (!metaDescriptionTag) {
-            metaDescriptionTag = document.createElement('meta');
-            metaDescriptionTag.name = "description";
-            document.head.appendChild(metaDescriptionTag);
-        }
-        metaDescriptionTag.content = post.meta_description || generateExcerpt(post.content, 160);
-
-        // Set meta keywords (if applicable, though less common for modern SEO)
-        let metaKeywordsTag = document.querySelector('meta[name="keywords"]');
-        if (!metaKeywordsTag) {
-            metaKeywordsTag = document.createElement('meta');
-            metaKeywordsTag.name = "keywords";
-            document.head.appendChild(metaKeywordsTag);
-        }
-        metaKeywordsTag.content = (post.keywords && post.keywords.length > 0) ? post.keywords.join(',') : '';
-
-
-        postArticle.innerHTML = `
-            <div class="post-header">
-                <h1 class="post-title" id="postTitle">${sanitizeHTML(post.title)}</h1>
-                <div class="post-meta">
-                    <span class="author"><i class="bi bi-person-circle"></i> <span id="postAuthor">${sanitizeHTML(post.author || 'Anonim')}</span></span>
-                    <span class="category"><i class="bi bi-tag-fill"></i> Kategori: <span class="badge bg-primary" id="postCategory">${sanitizeHTML(post.category || 'Umum')}</span></span>
-                    <span class="date"><i class="bi bi-calendar-check"></i> <span id="postDate">${formatDate(post.published_at)}</span></span>
-                </div>
-            </div>
-            <img src="${sanitizeHTML(post.thumbnail_url || 'https://via.placeholder.com/1200x450?text=Gambar+Utama+Postingan')}" class="post-thumbnail" alt="${sanitizeHTML(post.title)}" id="postThumbnail">
-            <div class="post-content" id="postContent">
-                ${post.content} 
-            </div>
-            <div class="post-tags" id="postTags">
-                ${(post.tags && post.tags.length > 0) ? post.tags.map(tag => `<span class="badge">${sanitizeHTML(tag)}</span>`).join('') : '<span class="text-secondary">Tidak ada tag.</span>'}
-            </div>
-        `;
-        loadingSpinner.classList.add('d-none');
-
-        // Update share link
-        document.getElementById('sharePostBtn').dataset.postTitle = post.title;
-
-        // Load comments and related posts
-        loadComments(postId);
-        loadRelatedPosts(post.category, postId); // Pass the current post's category and ID
-
-    } catch (error) {
-        console.error('Unhandled error:', error);
-        loadingSpinner.classList.add('d-none');
-        postContentError.textContent = "Terjadi kesalahan yang tidak terduga.";
-        postContentError.classList.remove('d-none');
-        document.getElementById('dynamicPageTitle').textContent = "Kesalahan";
+    } catch (err) {
+      console.error('An unexpected error occurred:', err.message);
+      showNotFound();
     }
   }
 
-  async function loadComments(postId) {
-    const commentsList = document.getElementById('commentsList');
-    const noCommentsYet = document.getElementById('noCommentsYet');
-    commentsList.innerHTML = ''; // Clear previous dummy comments
+  function displayPost(post) {
+    // Sembunyikan loading, tampilkan konten post
+    loadingDiv.style.display = 'none';
+    postDetailDiv.style.display = 'block';
 
-    try {
-        const { data: comments, error } = await supabase
-            .from('comments') // Ganti 'comments' dengan nama tabel komentar Anda
-            .select('author_name, created_at, content')
-            .eq('post_id', postId) // Filter komentar berdasarkan ID postingan
-            .order('created_at', { ascending: false }); // Urutkan dari terbaru
+    // --- Update Meta Tags untuk SEO ---
+    document.title = post.meta_title || post.title; // Gunakan meta title, atau fallback ke judul utama
+    document.querySelector('meta[name="description"]').setAttribute('content', post.meta_description || '');
+    document.querySelector('meta[name="keywords"]').setAttribute('content', post.keywords || (post.tags || ''));
+    document.querySelector('meta[name="author"]').setAttribute('content', post.author || 'Penulis');
 
-        if (error) {
-            console.error('Error fetching comments:', error.message);
-            commentsList.innerHTML = `<div class="alert alert-warning text-center">Gagal memuat komentar.</div>`;
-            return;
-        }
+    // --- Isi Konten ke Elemen HTML ---
+    document.getElementById('post-title-header').textContent = post.title;
+    document.getElementById('post-title-main').textContent = post.title;
 
-        if (comments.length === 0) {
-            // Append empty state if no comments, and ensure it's visible
-            commentsList.appendChild(noCommentsYet); 
-            noCommentsYet.classList.remove('d-none');
-        } else {
-            noCommentsYet.classList.add('d-none'); // Hide empty state if there are comments
-            comments.forEach(comment => {
-                const commentCard = `
-                    <div class="comment-card">
-                        <div class="comment-author">${sanitizeHTML(comment.author_name || 'Anonim')}</div>
-                        <div class="comment-date">${formatDate(comment.created_at)}</div>
-                        <div class="comment-text">${sanitizeHTML(comment.content)}</div>
-                    </div>
-                `;
-                commentsList.insertAdjacentHTML('beforeend', commentCard);
-            });
-        }
-    } catch (error) {
-        console.error('Unhandled error loading comments:', error);
-        commentsList.innerHTML = `<div class="alert alert-danger text-center">Terjadi kesalahan saat memuat komentar.</div>`;
+    // Thumbnail
+    const thumbnailElement = document.getElementById('post-thumbnail');
+    if (post.thumbnail_url) {
+      thumbnailElement.src = post.thumbnail_url;
+      thumbnailElement.alt = post.title;
+    } else {
+      thumbnailElement.style.display = 'none'; // Sembunyikan jika tidak ada thumbnail
     }
-  }
 
-  async function loadRelatedPosts(category, currentPostId) {
-    const relatedPostsList = document.getElementById('relatedPostsList');
-    const noRelatedPosts = document.getElementById('noRelatedPosts');
-    relatedPostsList.innerHTML = ''; // Clear previous dummy posts
+    // Meta Info
+    document.getElementById('post-author').textContent = `Oleh ${post.author || 'Anonim'}`;
+    document.getElementById('post-date').textContent = new Date(post.created_at).toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const categoryEl = document.getElementById('post-category');
+    categoryEl.textContent = post.category || 'Tanpa Kategori';
+    categoryEl.href = `/category.html?name=${encodeURIComponent(post.category)}`; // Link ke halaman kategori
 
-    try {
-        // Fetch related posts (same category, exclude current post, limit 3)
-        // Now selecting 'content' to generate excerpt
-        const { data: relatedPosts, error } = await supabase
-            .from('posts') // Ganti 'posts' dengan nama tabel postingan Anda
-            .select('id, title, author, published_at, thumbnail_url, content') // Ambil 'content'
-            .eq('category', category)
-            .neq('id', currentPostId) // Exclude the current post
-            .limit(3); // Limit to 3 related posts
-
-        if (error) {
-            console.error('Error fetching related posts:', error.message);
-            relatedPostsList.innerHTML = `<div class="col-12 alert alert-warning text-center">Gagal memuat postingan terkait.</div>`;
-            return;
-        }
-
-        if (relatedPosts.length === 0) {
-            relatedPostsList.appendChild(noRelatedPosts); // Show empty state
-            noRelatedPosts.classList.remove('d-none');
-        } else {
-            noRelatedPosts.classList.add('d-none');
-            relatedPosts.forEach(post => {
-                const excerptText = generateExcerpt(post.content, 100); // Generate excerpt from content
-                const relatedPostCard = `
-                    <div class="col">
-                        <a href="post.html?id=${post.id}" class="card h-100">
-                            <img src="${sanitizeHTML(post.thumbnail_url || 'https://via.placeholder.com/600x400?text=Gambar+Terkait')}" class="card-img-top" alt="${sanitizeHTML(post.title)}">
-                            <div class="card-body">
-                                <h5 class="card-title">${sanitizeHTML(post.title)}</h5>
-                                <p class="card-text">${sanitizeHTML(excerptText)}</p>
-                                <div class="card-meta">
-                                    <i class="bi bi-person-circle"></i> ${sanitizeHTML(post.author || 'Anonim')}
-                                    <span class="ms-auto"><i class="bi bi-calendar"></i> ${formatDate(post.published_at)}</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                `;
-                relatedPostsList.insertAdjacentHTML('beforeend', relatedPostCard);
-            });
-        }
-    } catch (error) {
-        console.error('Unhandled error loading related posts:', error);
-        relatedPostsList.innerHTML = `<div class="col-12 alert alert-danger text-center">Terjadi kesalahan saat memuat postingan terkait.</div>`;
-    }
-  }
-
-
-  // ===============================================
-  // EVENT LISTENERS AND INITIALIZATION
-  // ===============================================
-
-  // Handle Share button click
-  document.getElementById('sharePostBtn').addEventListener('click', async () => {
-      const postTitle = document.getElementById('postTitle') ? document.getElementById('postTitle').textContent : document.getElementById('dynamicPageTitle').textContent;
-      const postUrl = window.location.href;
-
-      if (navigator.share) {
-          try {
-              await navigator.share({
-                  title: postTitle,
-                  url: postUrl
-              });
-              console.log('Postingan berhasil dibagikan');
-          } catch (error) {
-              console.error('Error saat berbagi:', error);
-          }
-      } else {
-          alert(`Anda bisa berbagi postingan ini dengan menyalin tautan:\n\n${postTitle}\n${postUrl}`);
-      }
-  });
-
-  // Handle Comment Form Submission
-  document.getElementById('commentForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const postId = getPostIdFromUrl();
-      if (!postId) {
-          alert('Tidak dapat mengirim komentar: ID Postingan tidak ditemukan.');
-          return;
-      }
-
-      const authorName = document.getElementById('commentName').value;
-      const email = document.getElementById('commentEmail').value; 
-      const content = document.getElementById('commentText').value;
-
-      // Basic validation
-      if (!authorName || !content) {
-          alert('Nama dan Komentar tidak boleh kosong.');
-          return;
-      }
-
-      try {
-          const { data, error } = await supabase
-              .from('comments') 
-              .insert([
-                  { post_id: postId, author_name: authorName, email: email, content: content }
-              ]);
-
-          if (error) {
-              console.error('Error submitting comment:', error.message);
-              alert('Gagal mengirim komentar: ' + error.message);
-              return;
-          }
-
-          alert('Komentar berhasil dikirim! (Mungkin perlu persetujuan admin)');
-          document.getElementById('commentForm').reset(); // Clear form
-          loadComments(postId); // Reload comments to show new one
-      } catch (error) {
-          console.error('Unhandled error submitting comment:', error);
-          alert('Terjadi kesalahan saat mengirim komentar.');
-      }
-  });
-
-  // Handle Newsletter Form Submission
-  document.getElementById('newsletterForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const email = document.getElementById('newsletterEmail').value;
-      const newsletterMessage = document.getElementById('newsletterMessage');
-
-      if (!email) {
-          newsletterMessage.textContent = 'Email tidak boleh kosong.';
-          newsletterMessage.classList.remove('text-success', 'd-none');
-          newsletterMessage.classList.add('text-danger');
-          return;
-      }
-
-      try {
-          const { data, error } = await supabase
-              .from('subscribers') 
-              .insert([
-                  { email: email }
-              ]);
-
-          if (error && error.code === '23505') { 
-              newsletterMessage.textContent = 'Email ini sudah terdaftar.';
-              newsletterMessage.classList.remove('text-success', 'd-none');
-              newsletterMessage.classList.add('text-warning');
-          } else if (error) {
-              console.error('Error subscribing:', error.message);
-              newsletterMessage.textContent = 'Gagal berlangganan: ' + error.message;
-              newsletterMessage.classList.remove('text-success', 'd-none');
-              newsletterMessage.classList.add('text-danger');
-          } else {
-              newsletterMessage.textContent = 'Terima kasih telah berlangganan!';
-              newsletterMessage.classList.remove('d-none', 'text-danger', 'text-warning');
-              newsletterMessage.classList.add('text-success');
-              document.getElementById('newsletterForm').reset();
-          }
-      } catch (error) {
-          console.error('Unhandled error subscribing:', error);
-          newsletterMessage.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
-          newsletterMessage.classList.remove('text-success', 'd-none');
-          newsletterMessage.classList.add('text-danger');
-      }
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    initializeTooltips();
+    // Konten utama dari editor
+    document.getElementById('post-content').innerHTML = post.content;
     
-    // Set current year in footer
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // Load post details based on URL ID
-    const postId = getPostIdFromUrl();
-    loadPostDetails(postId);
-  });
-
-  // Function to initialize Tooltips Bootstrap
-  function initializeTooltips() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+    // Proses dan tampilkan Tags
+    if (post.tags && post.tags.trim() !== '') {
+        const tagsContainer = document.getElementById('post-tags');
+        const tagsWrapper = document.getElementById('post-tags-container');
+        tagsWrapper.style.display = 'block'; // Tampilkan container tag
+        
+        const tagsArray = post.tags.split(',').map(tag => tag.trim());
+        
+        tagsArray.forEach(tag => {
+            if(tag) { // Pastikan tag tidak kosong
+                const tagElement = document.createElement('a');
+                tagElement.href = `/tags.html?tag=${encodeURIComponent(tag)}`; // Link ke halaman pencarian tag
+                tagElement.className = 'tag-badge';
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+            }
+        });
+    }
   }
+
+  function showNotFound() {
+    loadingDiv.style.display = 'none';
+    notFoundDiv.style.display = 'block';
+    postDetailDiv.style.display = 'none';
+    document.getElementById('post-title-header').textContent = 'Tidak Ditemukan';
+    document.title = "404 - Postingan Tidak Ditemukan";
+  }
+
+  // --- Jalankan fungsi saat DOM siap ---
+  document.addEventListener('DOMContentLoaded', fetchPost);
+
 </script>
 </body>
 </html>
