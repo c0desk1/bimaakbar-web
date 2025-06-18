@@ -8,9 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; /* slate-50 */ }
-        .filter-btn.active { background-color: #4f46e5; color: white; }
-        .post-item:hover .actions { opacity: 1; }
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
+        .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .filter-btn.active { background-color: #4f46e5; /* indigo-600 */ color: white; }
+        .post-item:hover { background-color: rgba(255, 255, 255, 0.05); }
     </style>
 </head>
 <body class="antialiased">
@@ -20,27 +21,27 @@
             
             <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
                 <div>
-                    <a href="dashboard.html" class="text-sm text-slate-500 hover:text-slate-900 flex items-center mb-2">
+                    <a href="dashboard.html" class="text-sm text-slate-400 hover:text-white flex items-center mb-2 transition-colors">
                         <i class="ri-arrow-left-s-line mr-1"></i> Kembali ke Dashboard
                     </a>
-                    <h1 class="text-4xl font-extrabold text-slate-900">Content Studio</h1>
+                    <h1 class="text-4xl font-extrabold text-white">Content Studio</h1>
                 </div>
-                <a href="tambah_postingan.html" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center mt-4 sm:mt-0">
+                <a href="tambah_postingan.html" class="bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg hover:bg-indigo-600 transition-all flex items-center mt-4 sm:mt-0">
                     <i class="ri-add-circle-fill mr-2"></i>Buat Postingan Baru
                 </a>
             </header>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="lg:col-span-2 glass-card p-6 rounded-2xl">
                     <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-                        <div id="filter-buttons" class="flex items-center space-x-1 bg-slate-100 p-1 rounded-lg">
+                        <div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg">
                             <button data-filter="all" class="filter-btn active px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button>
-                            <button data-filter="published" class="filter-btn text-slate-600 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button>
-                            <button data-filter="draft" class="filter-btn text-slate-600 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button>
+                            <button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button>
+                            <button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button>
                         </div>
                         <div class="relative">
-                             <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                             <input id="searchInput" type="search" placeholder="Cari postingan..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                             <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                             <input id="searchInput" type="search" placeholder="Cari postingan..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
                     </div>
                     <div id="postList" class="space-y-3">
@@ -48,11 +49,11 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 class="text-xl font-semibold text-slate-800 mb-4">Kategori</h2>
+                <div class="lg:col-span-1 glass-card p-6 rounded-2xl">
+                    <h2 class="text-xl font-semibold text-white mb-4">Kategori</h2>
                     <form id="addCategoryForm" class="flex gap-2 mb-6">
-                        <input id="newCategoryName" type="text" required placeholder="Nama kategori baru" class="flex-grow px-3 py-2 bg-slate-100 border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <button type="submit" class="bg-indigo-500 text-white font-semibold p-2 rounded-lg hover:bg-indigo-600 transition"><i class="ri-add-line"></i></button>
+                        <input id="newCategoryName" type="text" required placeholder="Nama kategori baru" class="flex-grow px-3 py-2 bg-neutral-800 text-white border border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <button type="submit" class="bg-indigo-500 text-white font-semibold p-2 rounded-lg hover:bg-indigo-600 transition"><i class="ri-add-line text-xl"></i></button>
                     </form>
                     <div id="categoryList" class="space-y-2">
                         <p class="text-center text-slate-500 p-5">Memuat...</p>
@@ -81,51 +82,84 @@
         const addCategoryForm = document.getElementById('addCategoryForm');
 
         // === Fungsi-fungsi ===
-        async function loadPosts() { /* ... fungsi sama persis seperti di dashboard sebelumnya ... */ }
-        async function loadCategories() { /* ... fungsi sama persis seperti di kelola-kategori sebelumnya ... */ }
+        
+        async function loadPosts() {
+            let query = supabase.from('posts').select('id, title, published, slug').order('created_at', { ascending: false });
+            if (currentFilter === 'published') query = query.eq('published', true);
+            if (currentFilter === 'draft') query = query.eq('published', false);
+            if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
+
+            const { data: posts, error } = await query;
+            if (error) { postListContainer.innerHTML = `<p class="text-red-400 text-center">Gagal memuat.</p>`; return; }
+            if (posts.length === 0) { postListContainer.innerHTML = `<p class="text-slate-500 text-center">Tidak ada postingan.</p>`; return; }
+            
+            postListContainer.innerHTML = '';
+            posts.forEach(post => {
+                const div = document.createElement('div');
+                div.className = 'post-item p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center transition-colors';
+                div.innerHTML = `
+                    <div>
+                        <p class="font-semibold text-white">${post.title}</p>
+                        <p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p>
+                    </div>
+                    <div class="actions opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-2">
+                        <a href="post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-eye-line"></i></a>
+                        <a href="tambah_postingan.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-pencil-line"></i></a>
+                        <button onclick="deletePost('${post.id}', '${post.title.replace(/'/g, "\\'")}')" title="Hapus Post" class="text-slate-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button>
+                    </div>
+                `;
+                postListContainer.appendChild(div);
+            });
+        }
+        
+        async function loadCategories() {
+            const { data, error } = await supabase.from('categories').select('id, name').order('name');
+            if (error) { categoryListContainer.innerHTML = `<li class="text-red-400">Gagal memuat.</li>`; return; }
+            categoryListContainer.innerHTML = '';
+            data.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'p-2 bg-neutral-800/50 rounded-md flex justify-between items-center text-sm';
+                div.innerHTML = `
+                    <span class="text-slate-300">${cat.name}</span>
+                    <div class="space-x-2">
+                        <button onclick="editCategory('${cat.id}', '${cat.name.replace(/'/g, "\\'")}')" class="font-medium text-slate-500 hover:text-indigo-400">Edit</button>
+                        <button onclick="deleteCategory('${cat.id}', '${cat.name.replace(/'/g, "\\'")}')" class="font-medium text-slate-500 hover:text-red-500">Hapus</button>
+                    </div>
+                `;
+                categoryListContainer.appendChild(div);
+            });
+        }
+        
         window.deletePost = async function(id, title) { /* ... fungsi sama persis seperti di dashboard sebelumnya ... */ }
         window.editCategory = async function(id, oldName) { /* ... fungsi sama persis seperti di kelola-kategori sebelumnya ... */ }
         window.deleteCategory = async function(id, name) { /* ... fungsi sama persis seperti di kelola-kategori sebelumnya ... */ }
-
-        // Event Listener untuk form tambah kategori
+        
         addCategoryForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const newNameInput = document.getElementById('newCategoryName');
             const newName = newNameInput.value.trim();
             if (!newName) return;
             const { error } = await supabase.from('categories').insert({ name: newName });
-            if (error) {
-                alert('Gagal menambah kategori: ' + error.message);
-            } else {
-                newNameInput.value = '';
-                loadCategories();
-            }
+            if (error) { alert('Gagal menambah kategori: ' + error.message); } 
+            else { newNameInput.value = ''; loadCategories(); }
         });
 
-        // Event listener untuk filter dan search
-        searchInput.addEventListener('keyup', (e) => {
-            currentSearchTerm = e.target.value.trim();
-            loadPosts();
-        });
-
+        searchInput.addEventListener('keyup', (e) => { currentSearchTerm = e.target.value.trim(); loadPosts(); });
+        
         filterButtonsContainer.addEventListener('click', (e) => {
-            if(e.target.tagName === 'BUTTON') {
+            const button = e.target.closest('button');
+            if (button) {
                 document.querySelector('.filter-btn.active').classList.remove('active');
-                e.target.classList.add('active');
-                currentFilter = e.target.dataset.filter;
+                button.classList.add('active');
+                currentFilter = button.dataset.filter;
                 loadPosts();
             }
         });
         
-        // Inisialisasi halaman
         async function initializePage() {
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                window.location.href = 'login.html';
-                return;
-            }
+            if (!session) { window.location.href = 'login.html'; return; }
             mainContent.classList.remove('opacity-0');
-            // Muat data post dan kategori secara bersamaan
             Promise.all([loadPosts(), loadCategories()]);
         }
 
