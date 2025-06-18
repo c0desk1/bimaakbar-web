@@ -1,205 +1,188 @@
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Admin</title>
-  <link rel="icon" href="assets/favicon.ico"> 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <style>
-    :root {
-      --bs-body-bg: #1A1A1A;
-      --bs-body-color: #E0E0E0;
-      --bs-border-color: #333333;
-      --bs-emphasis-color: #007AFF;
-      --bs-card-bg: #222222;
-      --bs-card-border-color: var(--bs-border-color);
-    }
-    .status-badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.3em 0.6em;
-        border-radius: 0.375rem;
-    }
-    .status-published {
-        color: #30D158;
-        background-color: rgba(48, 209, 88, 0.15);
-    }
-    .status-draft {
-        color: #FF9F0A;
-        background-color: rgba(255, 159, 10, 0.15);
-    }
-    .table-dark-custom {
-        --bs-table-bg: var(--bs-card-bg);
-        --bs-table-border-color: var(--bs-border-color);
-        --bs-table-striped-bg: #2C2C2E;
-        --bs-table-hover-bg: #3A3A3C;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
+        .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .bottom-nav { border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .nav-item.active i, .nav-item.active span { color: #818cf8; } /* indigo-400 */
+        .glow-focus:focus-within { box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); }
+    </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-<div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
-    <div>
-        <h1 class="h3 mb-0">Dashboard Admin</h1>
-        <p id="welcomeMessage" class="text-secondary mb-0">Selamat datang kembali!</p>
-    </div>
-    <button id="logoutButton" class="btn btn-outline-danger">
-        <i class="bi bi-box-arrow-right me-2"></i>Logout
-    </button>
-  </div>
-
-  <div class="d-flex gap-2 mb-4">
-    <a href="post-add.html" class="btn btn-primary">
-        <i class="bi bi-plus-circle-fill me-2"></i>Buat Postingan Baru
-    </a>
-    <a href="post-categoryhtml" class="btn btn-secondary"> <i class="bi bi-tags-fill me-2"></i>Kelola Kategori
-    </a>
-  </div>
-
-  <div class="card" style="background-color: var(--bs-card-bg);">
-    <div class="card-header">
-      Daftar Postingan
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-dark-custom table-hover align-middle">
-                <thead>
-                    <tr>
-                        <th scope="col">Judul</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Tanggal Dibuat</th>
-                        <th scope="col" class="text-end">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="postList">
-                    <tr><td colspan="4" class="text-center p-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // === Elemen DOM ===
-  const postListBody = document.getElementById('postList');
-  const welcomeMessage = document.getElementById('welcomeMessage');
-  const logoutButton = document.getElementById('logoutButton');
-
-  // === Fungsi-fungsi ===
-
-  // Fungsi memuat semua postingan
-  async function loadPosts() {
-    const { data: posts, error } = await supabase
-      .from('posts')
-      .select('id, title, created_at, published, slug')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error memuat postingan:', error.message);
-      postListBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Gagal memuat data.</td></tr>`;
-      return;
-    }
-
-    if (posts.length === 0) {
-      postListBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Belum ada postingan. Silakan buat yang baru!</td></tr>`;
-      return;
-    }
+    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500">
+        </main>
     
-    postListBody.innerHTML = ''; // Kosongkan tabel
-    posts.forEach(post => {
-      const row = `
-        <tr>
-          <td>
-            <a href="post.html?slug=${post.slug}" target="_blank" class="text-decoration-none">${post.title}</a>
-          </td>
-          <td>
-            <span class="status-badge ${post.published ? 'status-published' : 'status-draft'}">
-              ${post.published ? 'Published' : 'Draft'}
-            </span>
-          </td>
-          <td>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'})}</td>
-          <td class="text-end">
-            <a href="post-add.html?id=${post.id}" class="btn btn-sm btn-outline-warning">Edit</a>
-            <button class="btn btn-sm btn-outline-danger ms-1" onclick="deletePost('${post.id}', '${post.title.replace(/'/g, "\\'")}')">Hapus</button>
-          </td>
-        </tr>
-      `;
-      postListBody.innerHTML += row;
-    });
-  }
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center">
+        <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
+        <button data-view="posts" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-file-text-line text-2xl"></i><span class="text-xs mt-1">Posts</span></button>
+        <button data-view="music" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-music-2-line text-2xl"></i><span class="text-xs mt-1">Music</span></button>
+        <button data-view="affiliates" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-shopping-bag-3-line text-2xl"></i><span class="text-xs mt-1">Affiliate</span></button>
+        <button id="logoutButton" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-logout-box-r-line text-2xl"></i><span class="text-xs mt-1">Logout</span></button>
+    </nav>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // === INISIALISASI & KONFIGURASI ===
+        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const app = document.getElementById('app');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        // === TEMPLATE UNTUK SETIAP "VIEW" / HALAMAN ===
+        const views = {
+            home: `
+                <div class="space-y-8">
+                    <div>
+                        <h1 id="greeting" class="text-3xl font-bold text-white"></h1>
+                        <p class="text-gray-400">Selamat datang di Content Hub Anda.</p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
+                        <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
+                        <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
+                        <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h2>
+                        <div id="popularPostsList" class="space-y-3"></div>
+                    </div>
+                </div>`,
+            posts: `
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-bold text-white">Blog Posts</h1>
+                        <a href="tambah_postingan.html" class="bg-indigo-500 text-white font-semibold py-2 px-4 rounded-xl shadow-lg hover:bg-indigo-600 transition-all flex items-center">
+                            <i class="ri-add-line mr-2"></i>Baru
+                        </a>
+                    </div>
+                    <div id="postListContainer" class="space-y-3"></div>
+                </div>`,
+            music: ``,
+            affiliates: ``
+        };
 
-  // Fungsi menghapus postingan
-  async function deletePost(id, title) {
-    if (confirm(`Apakah kamu yakin ingin menghapus postingan berjudul "${title}"?`)) {
-      // Pertama, ambil data post untuk mendapatkan URL thumbnail jika ada
-      const { data: postData, error: getError } = await supabase.from('posts').select('thumbnail_url').eq('id', id).single();
-      
-      if(getError) {
-          alert('Gagal mengambil data post untuk dihapus: ' + getError.message);
-          return;
-      }
+        // === FUNGSI-FUNGSI LOGIKA ===
+        
+        // Fungsi untuk merender view berdasarkan navigasi
+        async function renderView(viewName) {
+            app.innerHTML = views[viewName];
+            navItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.view === viewName);
+            });
 
-      // Hapus data post dari tabel
-      const { error: deleteDbError } = await supabase.from('posts').delete().eq('id', id);
-
-      if (deleteDbError) {
-        alert('Gagal menghapus postingan: ' + deleteDbError.message);
-        return;
-      }
-      
-      // Jika post berhasil dihapus & ada thumbnail_url, hapus juga filenya dari Storage
-      if (postData && postData.thumbnail_url) {
-        const filePath = new URL(postData.thumbnail_url).pathname.split('/bimaakbar.thumbnail/')[1];
-        const { error: deleteStorageError } = await supabase.storage.from('bimaakbar.thumbnail').remove([filePath]);
-        if(deleteStorageError) {
-            console.error('Gagal menghapus file di Storage, tapi post sudah terhapus dari database:', deleteStorageError.message);
+            if (viewName === 'home') await renderHomeView();
+            if (viewName === 'posts') await renderPostsView();
+            // Tambahkan panggilan render untuk view lain di sini
         }
-      }
-      
-      alert('Postingan berhasil dihapus.');
-      loadPosts(); // Muat ulang daftar postingan
-    }
-  }
 
-  // Fungsi untuk logout
-  async function handleLogout() {
-    const { error } = await supabase.auth.signOut();
-    if(error) {
-        console.error('Error saat logout:', error.message);
-    } else {
-        window.location.href = 'login.html'; // Arahkan ke halaman login
-    }
-  }
+        async function renderHomeView() {
+            // Sapaan dinamis
+            const hour = new Date().getHours();
+            let greetingText = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : (hour < 19) ? 'Selamat Sore' : 'Selamat Malam';
+            document.getElementById('greeting').textContent = greetingText;
 
-  // Fungsi utama yang berjalan saat halaman dimuat
-  async function initializePage() {
-    // Penjaga Gerbang: Cek apakah pengguna sudah login
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      alert('Anda harus login untuk mengakses halaman ini.');
-      window.location.href = 'login.html';
-      return;
-    }
-    
-    // Tampilkan email pengguna & muat data
-    welcomeMessage.textContent = `Selamat datang kembali, ${session.user.email}`;
-    loadPosts();
-  }
+            // Ambil data statistik
+            const { data: posts, error } = await supabase.from('posts').select('published, views');
+            if (error) return;
 
-  // Event Listener untuk tombol logout
-  logoutButton.addEventListener('click', handleLogout);
+            const totalViews = posts.reduce((sum, post) => sum + post.views, 0);
+            const publishedCount = posts.filter(p => p.published).length;
+            
+            document.getElementById('totalViews').textContent = totalViews;
+            document.getElementById('totalPosts').textContent = posts.length;
+            document.getElementById('publishedPosts').textContent = publishedCount;
+            document.getElementById('draftPosts').textContent = posts.length - publishedCount;
 
-  // Panggil fungsi inisialisasi saat DOM siap
-  document.addEventListener('DOMContentLoaded', initializePage);
-</script>
+            // Ambil postingan terpopuler
+            const { data: popularPosts, error: popularError } = await supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(3);
+            if (!popularError && popularPosts.length > 0) {
+                const popularList = document.getElementById('popularPostsList');
+                popularList.innerHTML = '';
+                popularPosts.forEach(post => {
+                    const postEl = document.createElement('div');
+                    postEl.className = 'glass-card p-4 rounded-2xl flex justify-between items-center';
+                    postEl.innerHTML = `<p class="font-medium text-white">${post.title}</p><p class="text-sm text-gray-400">${post.views} views</p>`;
+                    popularList.appendChild(postEl);
+                });
+            }
+        }
+        
+        async function renderPostsView() {
+            const container = document.getElementById('postListContainer');
+            container.innerHTML = `<p class="text-center">Memuat postingan...</p>`;
+            const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+            
+            if (error || posts.length === 0) {
+                container.innerHTML = `<p class="text-center">Belum ada postingan.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl flex items-center justify-between';
+                card.innerHTML = `
+                    <div>
+                        <p class="font-bold text-white">${post.title}</p>
+                        <p class="text-xs text-gray-400">${post.published ? 'Published' : 'Draft'} - ${new Date(post.created_at).toLocaleDateString('id-ID')}</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <a href="tambah_postingan.html?id=${post.id}" class="text-gray-400 hover:text-white"><i class="ri-pencil-line"></i></a>
+                        <button onclick="deletePost('${post.id}')" class="text-gray-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // Tambahkan fungsi untuk render view Musik dan Afiliasi di sini
+
+        // Fungsi hapus post
+        window.deletePost = async (id) => {
+             if (confirm('Yakin ingin menghapus post ini?')) {
+                 await supabase.from('posts').delete().eq('id', id);
+                 renderView('posts'); // Refresh view
+             }
+        }
+
+        // === INISIALISASI HALAMAN ===
+        async function initialize() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.replace('login.html');
+                return;
+            }
+            
+            document.getElementById('app').classList.remove('opacity-0');
+
+            // Setup navigasi
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const view = e.currentTarget.dataset.view;
+                    if(view) renderView(view);
+                });
+            });
+            
+            document.getElementById('logoutButton').addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.replace('login.html');
+            });
+            
+            // Render view awal
+            renderView('home');
+        }
+
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
 </body>
 </html>
