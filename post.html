@@ -1,552 +1,253 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="postPageTitle">Bima Akbar</title>
-    <link rel="icon" href="assets/logo.png" type="image/png"> <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <link rel="stylesheet" href="css/styles.css" />
-
+    <title id="postMetaTitle">Detail Postingan</title>
+    <meta name="description" id="postMetaDescription" content="Deskripsi detail postingan.">
+    <meta name="keywords" id="postKeywords" content="postingan, detail">
+    <link rel="icon" href="assets/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* CSS Variables - macOS Sequoia inspired (dark with vibrant accents) */
+        /* Variabel CSS Kustom untuk tema Dark Modern */
         :root {
-            --background-dark: #121212; /* Slightly darker than 1C1C1E for deeper contrast */
-            --card-background-dark: rgba(28, 28, 30, 0.75);
-            --border-dark: rgba(255, 255, 255, 0.1);
-            --primary-color: #0A84FF; /* Blue for primary actions/highlights */
-            --primary-color-hover: #3399FF;
-            --accent-color: #BF5AF2; /* Sequoia's vibrant purple-pink for accents */
-            --text-light: #E0E0E0;
-            --text-lighter: #FFFFFF;
-            --text-muted: #8E8E93;
-            --shadow-dark: rgba(0, 0, 0, 0.4);
-            --glass-blur: 30px;
-            --gradient-start: #007AFF; /* Primary gradient start */
-            --gradient-end: #5AC8FA; /* Primary gradient end */
-            --secondary-gradient-start: #BF5AF2; /* Accent gradient start */
-            --secondary-gradient-end: #FF2D55; /* Accent gradient end */
-        }
+            --bs-body-bg: #1A1A1A; /* Background utama yang lebih gelap */
+            --bs-body-color: #E0E0E0; /* Warna teks utama lebih lembut */
+            --bs-secondary-color: #B0B0B0; /* Warna teks sekunder/deskripsi */
+            --bs-border-color: #333333; /* Warna border yang lebih tegas tapi tetap gelap */
+            --bs-emphasis-color: #007AFF; /* Aksen biru yang lebih cerah, cocok untuk glow */
+            --bs-light-rgb: 45,45,45; /* Untuk background card/input yang sedikit lebih terang dari body */
 
-        /* General Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            /* Overrides for Bootstrap dark theme internals */
+            --bs-body-bg-rgb: 26,26,26;
+            --bs-border-color-rgb: 51,51,51;
+            --bs-heading-color: #F2F2F7;
+            --bs-link-color: var(--bs-emphasis-color);
+            --bs-link-hover-color: var(--bs-emphasis-color);
         }
 
         body {
-            font-family: -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease;
+            padding-top: 56px; /* Untuk header sticky */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
 
-        /* Loading Overlay */
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--background-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.5s ease-out;
-        }
-
-        #loadingOverlay.hidden {
-            opacity: 0;
-            pointer-events: none; /* Allow interaction with elements behind it */
-        }
-
-        /* Spinner flower (CSS for loading spinner) */
-        .spinner-flower-base {
-            position: relative;
-            width: 50px;
-            height: 50px;
-        }
-
-        .spinner-flower-large {
-            width: 80px;
-            height: 80px;
-        }
-
-        .spinner-flower-base div {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            animation: spinner-flower-dot 1.2s infinite;
-        }
-
-        .spinner-flower-large div {
-            width: 12px;
-            height: 12px;
-        }
-
-        .spinner-flower-base div:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
-        .spinner-flower-base div:nth-child(2) { top: 14%; right: 0; transform: translateY(-50%); animation-delay: 0.15s; }
-        .spinner-flower-base div:nth-child(3) { top: 50%; right: 0; transform: translateY(-50%); animation-delay: 0.3s; }
-        .spinner-flower-base div:nth-child(4) { bottom: 14%; right: 0; transform: translateY(-50%); animation-delay: 0.45s; }
-        .spinner-flower-base div:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 0.6s; }
-        .spinner-flower-base div:nth-child(6) { bottom: 14%; left: 0; transform: translateY(-50%); animation-delay: 0.75s; }
-        .spinner-flower-base div:nth-child(7) { top: 50%; left: 0; transform: translateY(-50%); animation-delay: 0.9s; }
-        .spinner-flower-base div:nth-child(8) { top: 14%; left: 0; transform: translateY(-50%); animation-delay: 1.05s; }
-
-        @keyframes spinner-flower-dot {
-            0%, 100% { transform: scale(0.5); opacity: 0.5; }
-            50% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Header (Minimal for a single post page) */
-        header {
-            background-color: var(--card-background-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            padding: 15px 30px;
-            border-bottom: 1px solid var(--border-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .header-bar {
             position: sticky;
             top: 0;
-            z-index: 100;
-        }
-
-        header .logo-container img {
-            height: 35px;
-            display: block;
-        }
-
-        header .back-button {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            font-size: 1.1em;
-            cursor: pointer;
+            z-index: 10;
+            background-color: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--bs-border-color);
             display: flex;
             align-items: center;
-            gap: 5px;
-            text-decoration: none;
-            transition: color 0.3s ease;
+            justify-content: space-between;
         }
-        header .back-button:hover {
-            color: var(--primary-color-hover);
-        }
-        header .back-button ion-icon {
-            font-size: 1.3em;
-        }
-
-        /* Main Content */
-        .post-container {
+        .header-bar h6 {
             flex-grow: 1;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 25px;
-            background-color: var(--card-background-dark);
-            border-radius: 12px;
-            box-shadow: 0 4px 8px var(--shadow-dark);
-            border: 1px solid var(--border-dark);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            display: none; /* Hidden until content is loaded */
-            animation: fadeIn 0.5s ease-out forwards;
+            text-align: center;
+            margin-bottom: 0;
+            font-weight: 600;
+            color: var(--bs-heading-color);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .post-thumbnail {
+            width: 100%;
+            height: 400px; /* Tinggi tetap untuk gambar utama */
+            object-fit: cover; /* Memastikan gambar menutupi area tanpa terdistorsi */
+            border-radius: var(--bs-border-radius-lg);
+            margin-bottom: 2rem;
         }
-
-        .post-title {
-            font-size: 2.8em;
-            color: var(--text-lighter);
-            margin-bottom: 15px;
+        .post-content h1, .post-content h2, .post-content h3, 
+        .post-content h4, .post-content h5, .post-content h6 {
+            color: var(--bs-heading-color);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+        .post-content p {
+            line-height: 1.8;
+            margin-bottom: 1em;
+            color: var(--bs-body-color);
+        }
+        .post-content blockquote {
+            border-left: 4px solid var(--bs-emphasis-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--bs-secondary-color);
+        }
+        .post-content pre {
+            background-color: var(--bs-light-rgb); /* Slightly lighter background for code blocks */
+            padding: 1rem;
+            border-radius: var(--bs-border-radius);
+            overflow-x: auto;
+            color: #E0E0E0; /* Light text for code */
+        }
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: var(--bs-border-radius-sm);
+        }
+        .post-content ul, .post-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--bs-body-color);
+        }
+        .post-content ul li, .post-content ol li {
+            margin-bottom: 0.5rem;
+        }
+        .post-meta {
+            font-size: 0.9rem;
+            color: var(--bs-secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        .post-meta .badge {
+            font-weight: 500;
+            background-color: rgba(0, 122, 255, 0.2); /* Light blue background for badges */
+            color: var(--bs-emphasis-color);
+            padding: 0.4em 0.7em;
+            border-radius: 0.3rem;
+        }
+        h1.post-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--bs-heading-color);
+            margin-bottom: 1rem;
             line-height: 1.2;
         }
-
-        .post-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border-dark);
-            padding-bottom: 15px;
-        }
-
-        .post-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        .post-meta ion-icon {
-            font-size: 1.1em;
-            color: var(--primary-color);
-        }
-
-        .post-cover {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border-dark);
-            box-shadow: 0 2px 5px var(--shadow-dark);
-        }
-
-        .post-content {
-            font-size: 1.1em;
-            color: var(--text-light);
-            margin-bottom: 30px;
-        }
-
-        .post-content p {
-            margin-bottom: 1em;
-        }
-
-        .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6 {
-            color: var(--text-lighter);
-            margin-top: 1.5em;
-            margin-bottom: 0.8em;
-            line-height: 1.3;
-        }
-        .post-content h1 { font-size: 2em; }
-        .post-content h2 { font-size: 1.7em; }
-        .post-content h3 { font-size: 1.4em; }
-
-        .post-content a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .post-content a:hover {
-            color: var(--primary-color-hover);
-            text-decoration: underline;
-        }
-
-        .post-content ul, .post-content ol {
-            margin-left: 20px;
-            margin-bottom: 1em;
-        }
-        .post-content li {
-            margin-bottom: 0.5em;
-        }
-
-        /* Hashtags */
-        .post-hashtags {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-dark);
-        }
-
-        .post-hashtags .tag {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--secondary-gradient-start), var(--secondary-gradient-end));
-            color: var(--text-lighter);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            text-decoration: none;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-        .post-hashtags .tag:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        /* Comments Section (Placeholder) */
-        .comments-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border-dark);
-        }
-
-        .comments-section h3 {
-            color: var(--text-lighter);
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
-
-        .comment-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .comment-author {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        .comment-date {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .comment-content {
-            color: var(--text-light);
-        }
-
-        .error-message, .not-found-message {
-            text-align: center;
-            font-size: 1.5em;
-            color: var(--text-muted);
-            margin-top: 50px;
-            display: none;
-        }
-        .error-message ion-icon, .not-found-message ion-icon {
-            font-size: 2em;
-            color: var(--accent-color);
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .post-container {
-                margin: 20px auto;
-                padding: 15px;
+            h1.post-title {
+                font-size: 2rem;
             }
-            .post-title {
-                font-size: 2em;
+            .post-thumbnail {
+                height: 250px;
             }
-            .post-meta {
-                flex-direction: column;
-                gap: 8px;
-            }
-            header {
-                padding: 10px 15px;
-            }
-            header .logo-container img {
-                height: 30px;
-            }
-            .comments-section h3 {
-                font-size: 1.5em;
+            .header-bar {
+                padding: 0.75rem 1rem;
             }
         }
     </style>
 </head>
-<body class="loading-post">
-    <div id="loadingOverlay">
-        <div class="spinner-flower-base spinner-flower-large" aria-hidden="true">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-        </div>
-    </div>
-
-    <header>
-        <a href="index.html" class="back-button">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-            <span>Kembali ke Beranda</span>
+<body>
+    <div class="header-bar">
+        <a href="javascript:history.back()" class="btn-back d-flex align-items-center justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6" style="width: 20px; height: 20px;">
+                <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+            </svg>
         </a>
-        <div class="logo-container">
-            <img src="assets/logo.png" alt="Logo">
-        </div>
-        <div></div> </header>
+        <h6 class="text-secondary" id="postHeaderTitle">Detail Postingan</h6>
+        <div></div> </div>
 
-    <main class="post-container" id="postContainer">
+    <div class="container py-4">
+        <main class="post-detail" id="postDetailContent">
+            <h1 class="post-title" id="postTitle">Memuat Postingan...</h1>
+            <div class="post-meta mb-4">
+                <span id="postCategory" class="badge"></span>
+                <span id="postTags"></span>
+                <span class="ms-3">Oleh <span id="postAuthor"></span></span>
+                <span class="ms-3">Dipublikasikan pada <span id="postPublishedDate"></span></span>
+            </div>
+            
+            <img id="postThumbnail" class="post-thumbnail" src="" alt="Gambar Utama Postingan" style="display: none;">
+            
+            <div id="postContent" class="post-content">
+                <p>Silakan tunggu...</p>
+            </div>
         </main>
-
-    <div id="errorMessage" class="error-message">
-        <ion-icon name="alert-circle-outline"></ion-icon>
-        <p>Terjadi kesalahan saat memuat postingan. Silakan coba lagi nanti.</p>
-    </div>
-    <div id="notFoundMessage" class="not-found-message">
-        <ion-icon name="search-outline"></ion-icon>
-        <p>Postingan tidak ditemukan.</p>
+        <div id="errorContainer" class="text-center py-5" style="display:none;">
+            <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
+            <h3 class="mt-3 text-danger">Postingan Tidak Ditemukan</h3>
+            <p class="text-secondary">Maaf, postingan yang Anda cari tidak ada atau telah dihapus.</p>
+            <a href="dashboard.html" class="btn btn-primary rounded-pill mt-3">Kembali ke Beranda</a>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // --- Firebase Configuration (from your dashboard.js) ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyDtMdCf91Ihh-SlhoZHLV4Taxg2YPmks14",
-            authDomain: "bima-akbar-web.firebaseapp.com",
-            databaseURL: "https://bima-akbar-web-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "bima-akbar-web",
-            storageBucket: "bima-akbar-web.appspot.com",
-            messagingSenderId: "521611265429",
-            appId: "1:521611265429:web:9e6c64385b5abcbad6e29c"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        // --- End Firebase Configuration ---
+        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+		const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
 
-        // --- Global Elements ---
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const postContainer = document.getElementById('postContainer');
-        const postPageTitle = document.getElementById('postPageTitle');
-        const errorMessage = document.getElementById('errorMessage');
-        const notFoundMessage = document.getElementById('notFoundMessage');
+		const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Helper function to show/hide loading overlay
-        function showLoading() {
-            loadingOverlay.classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            loadingOverlay.classList.add('hidden');
-        }
-
-        // Helper function to format date
-        function formatPostDate(timestamp) {
-            const date = new Date(timestamp);
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            return date.toLocaleDateString('id-ID', options);
-        }
-
-        // Function to load and display post content
-        async function loadPost() {
-            showLoading();
-            errorMessage.style.display = 'none';
-            notFoundMessage.style.display = 'none';
-            postContainer.style.display = 'none'; // Hide container until loaded
-
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
             const postSlug = urlParams.get('slug');
 
-            if (!postSlug) {
-                postPageTitle.textContent = "Postingan Tidak Ditemukan";
-                notFoundMessage.style.display = 'block';
-                hideLoading();
+            let query = supabase.from('posts').select('id, title, content, slug, thumbnail_url, category, tags, author, created_at, published, meta_title, meta_description, keywords');
+            
+            if (postId) {
+                query = query.eq('id', postId);
+            } else if (postSlug) {
+                query = query.eq('slug', postSlug);
+            } else {
+                showError('Parameter ID atau Slug tidak ditemukan di URL.');
                 return;
             }
 
-            try {
-                // Get all posts and find the one with the matching slug
-                // Path set to 'posts' (plural) as per your latest confirmation
-                const snapshot = await database.ref('BimaAkbar/posts').orderByChild('slug').equalTo(postSlug).limitToFirst(1).once('value');
+            // Hanya ambil postingan yang sudah dipublikasikan
+            query = query.eq('published', true).single();
 
-                if (snapshot.exists()) {
-                    let postData = null;
-                    let postId = null;
-                    snapshot.forEach(childSnapshot => {
-                        postId = childSnapshot.key; // Get the actual post ID
-                        postData = childSnapshot.val();
-                    });
+            const { data: post, error } = await query;
 
-                    if (postData) {
-                        // Increment view count
-                        if (postId) {
-                            // Path set to 'posts' (plural) for updating views
-                            const viewsRef = database.ref(`BimaAkbar/posts/${postId}/views`);
-                            viewsRef.transaction(currentViews => {
-                                return (currentViews || 0) + 1;
-                            });
-                        }
-
-                        // Update page title
-                        postPageTitle.textContent = `${postData.title || 'Untitled Post'} - Detail Postingan`;
-
-                        // Render post content
-                        let hashtagsHtml = '';
-                            let tagsArray = [];
-
-                        // Periksa apakah postData.hashtags adalah sebuah array
-                        if (Array.isArray(postData.hashtags)) {
-                            tagsArray = postData.hashtags.map(tag => String(tag).trim()).filter(tag => tag.length > 0);
-                        }
-                        // Jika bukan array, tapi mungkin string (untuk kompatibilitas data lama atau jika ada inkonsistensi)
-                        else if (postData.hashtags && typeof postData.hashtags === 'string') {
-                            tagsArray = postData.hashtags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-                        }
-
-                        // Hanya tampilkan jika ada tag yang valid
-                        if (tagsArray.length > 0) {
-                            hashtagsHtml = `
-                                <div class="post-hashtags">
-                                    ${tagsArray.map(tag => `<a href="#" class="tag">#${tag}</a>`).join('')}
-                                </div>
-                            `;
-                        }
-
-                        // Basic HTML sanitation (for real apps, use a proper library like DOMPurify)
-                        const sanitizedContent = DOMPurify.sanitize(postData.content || 'Konten belum tersedia.');
-
-                        postContainer.innerHTML = `
-                            ${postData.coverImageUrl ? `<img src="${postData.coverImageUrl}" alt="${postData.title || 'Cover Image'}" class="post-cover">` : ''}
-                            <h1 class="post-title">${postData.title || 'Untitled Post'}</h1>
-                            <div class="post-meta">
-                                <span><ion-icon name="calendar-outline"></ion-icon> ${formatPostDate(postData.timestamp || Date.now())}</span>
-                                <span><ion-icon name="layers-outline"></ion-icon> ${postData.category || 'Uncategorized'}</span>
-                                <span id="postViewsCount"><ion-icon name="eye-outline"></ion-icon> ${postData.views || 0} Views</span>
-                                <span><ion-icon name="person-outline"></ion-icon> ${postData.author || 'Admin'}</span>
-                            </div>
-                            <div class="post-content">
-                                ${sanitizedContent}
-                            </div>
-                            ${hashtagsHtml}
-                            <div class="comments-section">
-                                <h3>Komentar</h3>
-                                <p style="color: var(--text-muted); text-align: center;">Fitur komentar belum diimplementasikan.</p>
-                                </div>
-                        `;
-                        postContainer.style.display = 'block'; // Show post container
-
-                        // Update views count in real-time after incrementing (optional, for immediate feedback)
-                        const currentViewsSpan = document.getElementById('postViewsCount');
-                        if (currentViewsSpan) {
-                            currentViewsSpan.innerHTML = `<ion-icon name="eye-outline"></ion-icon> ${postData.views + 1 || 1} Views`;
-                        }
-
-                    } else {
-                        postPageTitle.textContent = "Postingan Tidak Ditemukan";
-                        notFoundMessage.style.display = 'block';
-                    }
-                } else {
-                    postPageTitle.textContent = "Postingan Tidak Ditemukan";
-                    notFoundMessage.style.display = 'block';
-                }
-            } catch (error) {
-                console.error("Error loading post:", error);
-                postPageTitle.textContent = "Terjadi Kesalahan";
-                errorMessage.style.display = 'block';
-            } finally {
-                hideLoading();
+            if (error || !post) {
+                console.error('Error fetching post:', error ? error.message : 'Post not found.');
+                showError('Postingan tidak ditemukan atau terjadi kesalahan.');
+                return;
             }
-        }
 
-        // Run when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            loadPost();
+            // Update Meta Tags
+            document.title = post.meta_title || post.title || 'Detail Postingan';
+            document.getElementById('postMetaTitle').textContent = post.meta_title || post.title || 'Detail Postingan';
+            document.getElementById('postMetaDescription').setAttribute('content', post.meta_description || 'Deskripsi detail postingan.');
+            document.getElementById('postKeywords').setAttribute('content', post.keywords || 'postingan, detail');
+
+            document.getElementById('postHeaderTitle').textContent = post.title;
+            document.getElementById('postTitle').textContent = post.title;
+            
+            const postCategory = document.getElementById('postCategory');
+            if (post.category) {
+                postCategory.textContent = post.category;
+                postCategory.style.display = 'inline-block';
+            } else {
+                postCategory.style.display = 'none';
+            }
+
+            const postTags = document.getElementById('postTags');
+            if (post.tags) {
+                postTags.textContent = post.tags.split(',').map(tag => `#${tag.trim()}`).join(' ');
+                postTags.style.display = 'inline';
+            } else {
+                postTags.style.display = 'none';
+            }
+            
+            document.getElementById('postAuthor').textContent = post.author || 'Anonim';
+            document.getElementById('postContent').innerHTML = post.content;
+
+            const publishedDate = new Date(post.created_at).toLocaleDateString('id-ID', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            });
+            document.getElementById('postPublishedDate').textContent = publishedDate;
+
+            const postThumbnail = document.getElementById('postThumbnail');
+            if (post.thumbnail_url) {
+                postThumbnail.src = post.thumbnail_url;
+                postThumbnail.style.display = 'block';
+            } else {
+                postThumbnail.style.display = 'none';
+            }
         });
 
-        // Basic DOMPurify for HTML sanitation (important for user-generated content)
-        // If DOMPurify is not loaded, define a fallback.
-        // In a real app, you'd include the DOMPurify library from a CDN.
-        if (typeof DOMPurify === 'undefined') {
-            window.DOMPurify = {
-                sanitize: function(html) {
-                    // Simple fallback for demonstration. NOT secure for production.
-                    return html
-                        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                        .replace(/onerror/gi, '')
-                        .replace(/onload/gi, '');
-                }
-            };
+        function showError(message) {
+            document.getElementById('postDetailContent').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.querySelector('#errorContainer p').textContent = message;
+            document.title = 'Error | Postingan Tidak Ditemukan';
+            document.getElementById('postHeaderTitle').textContent = 'Error';
         }
     </script>
 </body>
