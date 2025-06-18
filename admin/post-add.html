@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Postingan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; /* slate-50 */ }
+        .editor-content[contenteditable=true]:empty:before { content: attr(data-placeholder); color: #94a3b8; /* slate-400 */ font-style: italic; }
+        .glow-focus:focus-within { box-shadow: 0 0 15px rgba(99, 102, 241, 0.3); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-40 bg-white/75 backdrop-blur-sm border-b border-slate-200">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="dashboard.html" class="flex items-center gap-2 text-slate-600 hover:text-slate-900">
+                    <i class="ri-arrow-left-line"></i>
+                    <span class="font-semibold">Kembali ke Dashboard</span>
+                </a>
+                <div class="flex items-center gap-3">
+                    <button id="previewButton" class="text-sm font-semibold text-slate-600 hover:text-indigo-600">Pratinjau</button>
+                    <button id="submitButton" type="submit" form="postForm" class="bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center">
+                        <span id="buttonText">Simpan</span>
+                        <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-500">
+        <div class="max-w-screen-xl mx-auto">
+            <form id="postForm" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-6">
+                    <input id="judul" type="text" placeholder="Ketik Judul Postingan di Sini..." class="w-full text-3xl lg:text-4xl font-extrabold text-slate-800 placeholder-slate-300 bg-transparent outline-none">
+                    
+                    <div id="editor" class="mt-4 prose-lg max-w-none">
+                        <div id="editor-content" contenteditable="true" data-placeholder="Mulai tulis ceritamu..." class="w-full min-h-[400px] text-lg text-slate-700 bg-transparent outline-none"></div>
+                    </div>
+                </div>
+
+                <aside class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-6">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-slate-800 mb-4">Pengaturan Postingan</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="slug" class="text-sm font-medium text-slate-600">URL Slug</label>
+                                    <input id="slug" type="text" class="mt-1 w-full p-2 bg-slate-100 rounded-lg text-sm">
+                                </div>
+                                <div>
+                                    <label for="kategori" class="text-sm font-medium text-slate-600">Kategori</label>
+                                    <select id="kategori" class="mt-1 w-full p-2 bg-slate-100 rounded-lg text-sm">
+                                        <option>Memuat...</option>
+                                    </select>
+                                </div>
+                                 <div>
+                                    <label for="status" class="text-sm font-medium text-slate-600">Status</label>
+                                    <select id="status" class="mt-1 w-full p-2 bg-slate-100 rounded-lg text-sm">
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                            <h3 class="font-semibold text-slate-800 mb-4">Gambar Utama (Thumbnail)</h3>
+                            <input id="thumbnail" type="file" accept="image/*" class="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                            <img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
+                        </div>
+                    </div>
+                </aside>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // === ELEMEN DOM ===
+        const mainContent = document.getElementById('mainContent');
+        const postForm = document.getElementById('postForm');
+        const judulInput = document.getElementById('judul');
+        const slugInput = document.getElementById('slug');
+        const editorContent = document.getElementById('editor-content');
+        const kategoriInput = document.getElementById('kategori');
+        const statusInput = document.getElementById('status');
+        const thumbnailInput = document.getElementById('thumbnail');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const submitButton = document.getElementById('submitButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        let isEditing = false;
+        let postId = null;
+        let existingThumbnailUrl = null;
+
+        // === FUNGSI-FUNGSI ===
+        
+        // Slug generator yang dijamin unik
+        function generateUniqueSlug(title) {
+            const baseSlug = title.trim().toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-').substring(0, 60);
+            const randomString = Math.random().toString(36).substring(2, 7);
+            return `${baseSlug}-${randomString}`;
+        }
+        
+        async function loadCategories() { /* ... fungsi sama seperti sebelumnya ... */ }
+
+        async function loadPostForEdit() {
+            const params = new URLSearchParams(window.location.search);
+            postId = params.get('id');
+            if (!postId) {
+                isEditing = false;
+                return;
+            }
+
+            isEditing = true;
+            const { data, error } = await supabase.from('posts').select('*').eq('id', postId).single();
+            
+            if(data) {
+                judulInput.value = data.title;
+                slugInput.value = data.slug;
+                slugInput.dataset.manualEdit = 'true'; // Anggap sudah manual edit
+                editorContent.innerHTML = data.content;
+                kategoriInput.value = data.category;
+                statusInput.value = data.published ? 'published' : 'draft';
+                if(data.thumbnail_url){
+                    thumbnailPreview.src = data.thumbnail_url;
+                    thumbnailPreview.style.display = 'block';
+                    existingThumbnailUrl = data.thumbnail_url;
+                }
+            }
+        }
+
+        // === EVENT LISTENERS ===
+        
+        judulInput.addEventListener('input', () => {
+             if (slugInput.dataset.manualEdit !== 'true') {
+                 slugInput.value = generateUniqueSlug(judulInput.value);
+             }
+        });
+        
+        slugInput.addEventListener('input', () => {
+            slugInput.dataset.manualEdit = 'true';
+        });
+
+        thumbnailInput.addEventListener('change', () => {
+            const file = thumbnailInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    thumbnailPreview.src = e.target.result;
+                    thumbnailPreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitButton.disabled = true;
+            buttonText.textContent = 'Menyimpan...';
+            loadingSpinner.classList.remove('hidden');
+
+            // 1. Handle Upload Thumbnail jika ada file baru
+            let newThumbnailUrl = existingThumbnailUrl;
+            const file = thumbnailInput.files[0];
+            if (file) {
+                const cleanFileName = file.name.toLowerCase().replace(/[^a-z0-9_.-]/g, '_');
+                const filePath = `thumbnails/${Date.now()}_${cleanFileName}`;
+                
+                const { error: uploadError } = await supabase.storage.from('bimaakbar.thumbnail').upload(filePath, file);
+
+                if(uploadError) {
+                    alert('Gagal upload thumbnail: ' + uploadError.message);
+                    // Kembalikan tombol ke keadaan normal
+                    submitButton.disabled = false;
+                    buttonText.textContent = 'Simpan';
+                    loadingSpinner.classList.add('hidden');
+                    return;
+                }
+                newThumbnailUrl = supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(filePath).data.publicUrl;
+            }
+
+            // 2. Siapkan Data Postingan
+            const postData = {
+                title: judulInput.value,
+                slug: slugInput.value || generateUniqueSlug(judulInput.value),
+                content: editorContent.innerHTML,
+                category: kategoriInput.value,
+                published: statusInput.value === 'published',
+                thumbnail_url: newThumbnailUrl,
+                updated_at: new Date()
+                // Author dan SEO fields bisa ditambahkan di sini jika perlu
+            };
+
+            // 3. Operasi Database: UPDATE atau INSERT
+            let dbOperation;
+            if (isEditing) {
+                dbOperation = supabase.from('posts').update(postData).eq('id', postId);
+            } else {
+                dbOperation = supabase.from('posts').insert(postData);
+            }
+
+            const { error: dbError } = await dbOperation;
+
+            if (dbError) {
+                alert('Gagal menyimpan postingan: ' + dbError.message);
+            } else {
+                alert(isEditing ? 'Postingan berhasil diperbarui!' : 'Postingan berhasil disimpan!');
+                window.location.href = 'dashboard.html'; // Kembali ke dashboard setelah sukses
+            }
+            
+            submitButton.disabled = false;
+            buttonText.textContent = 'Simpan';
+            loadingSpinner.classList.add('hidden');
+        });
+
+        // === INISIALISASI HALAMAN ===
+        async function initializePage() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
+            }
+            mainContent.classList.remove('opacity-0');
+            await loadCategories();
+            await loadPostForEdit();
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
