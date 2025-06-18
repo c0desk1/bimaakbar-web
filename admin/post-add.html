@@ -4,12 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tambah Postingan</title>
-  <link rel="icon" href="assets/favicon.ico">
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  
+  <link rel="icon" href="assets/favicon.ico"> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  
+ 
   <style>
     /* Variabel CSS Kustom untuk tema Dark Modern */
     :root {
@@ -37,11 +35,11 @@
 
 
       /* Custom toolbar background color */
-      --toolbar-bg-color: #222222; /* Warna background toolbar yang sedikit berbeda */
+      --toolbar-bg-color: #222222;
 
       /* Tooltip Custom Styles */
-      --bs-tooltip-bg: #333333; /* Background tooltip */
-      --bs-tooltip-color: #F2F2F7; /* Warna teks tooltip */
+      --bs-tooltip-bg: #333333;
+      --bs-tooltip-color: #F2F2F7;
       --bs-tooltip-opacity: 0.95;
     }
 
@@ -99,8 +97,8 @@
       background: none;
       border: none;
       color: var(--bs-body-color);
-      padding: 0.6rem; /* Padding yang konsisten */
-      border-radius: var(--bs-border-radius-sm); /* Rounded corners */
+      padding: 0.6rem;
+      border-radius: var(--bs-border-radius-sm);
       transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       align-items: center;
@@ -120,31 +118,31 @@
 
     /* Gaya untuk ikon Bootstrap */
     .toolbar button .bi {
-        font-size: 20px; /* Ukuran ikon */
-        color: var(--bs-body-color); /* Warna default ikon */
+        font-size: 20px;
+        color: var(--bs-body-color);
     }
 
     /* Ubah warna ikon saat tombol di-hover/active/focus */
     .toolbar button:hover .bi {
-        color: var(--bs-body-color); /* Tetap sama saat hover jika tidak ada efek lain */
+        color: var(--bs-body-color);
     }
     .toolbar button:active .bi,
     .toolbar button:focus .bi {
-        color: var(--bs-emphasis-color); /* Warna aksen saat aktif/fokus */
+        color: var(--bs-emphasis-color);
     }
 
     /* Dropdown Toggle Kustom untuk Toolbar - Dibuat konsisten dengan tombol lain */
     .toolbar .dropdown-toggle {
-        padding: 0.6rem; /* Padding sama dengan tombol lain */
-        background-color: transparent; /* Pastikan transparan */
-        border: none; /* Hapus border bawaan */
-        color: var(--bs-body-color) !important; /* Pastikan warna teks */
+        padding: 0.6rem;
+        background-color: transparent;
+        border: none;
+        color: var(--bs-body-color) !important;
         display: flex;
         align-items: center;
-        justify-content: center; /* Pusatkan konten horizontal */
-        gap: 5px; /* Jarak antara ikon dan teks/panah */
+        justify-content: center;
+        gap: 5px;
         transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-        border-radius: var(--bs-border-radius-sm); /* Konsisten rounded dengan tombol lain */
+        border-radius: var(--bs-border-radius-sm);
     }
     .toolbar .dropdown-toggle:hover {
         background-color: rgba(var(--bs-light-rgb), 0.5);
@@ -157,14 +155,14 @@
         outline: none;
     }
     /* Khusus untuk dropdown toggle yang hanya ikon */
-    .toolbar .dropdown-toggle.icon-only::after { /* Panah dropdown bawaan Bootstrap */
-        margin-left: 0.25em; /* Sesuaikan jarak panah dari ikon */
+    .toolbar .dropdown-toggle.icon-only::after {
+        margin-left: 0.25em;
         vertical-align: middle;
-        font-size: 0.75rem; /* Ukuran panah agar tidak terlalu besar */
+        font-size: 0.75rem;
     }
     /* Untuk ikon pada dropdown item */
     .dropdown-item .bi {
-        font-size: 1rem; /* Ukuran ikon di dalam dropdown item */
+        font-size: 1rem;
         margin-right: 0.5rem;
     }
     /* Untuk spinner saat upload gambar */
@@ -178,17 +176,17 @@
         background-color: var(--bs-form-control-bg);
         color: var(--bs-form-color);
         border: 1px solid var(--bs-form-control-border-color);
-        border-radius: var(--bs-border-radius); /* Consistent with theme */
+        border-radius: var(--bs-border-radius);
         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
     .form-control::placeholder {
         color: var(--bs-form-control-placeholder-color);
-        opacity: 1; /* Ensure placeholder is visible */
+        opacity: 1;
     }
     .form-control:focus,
     .form-select:focus {
-        background-color: var(--bs-form-control-bg); /* Keep background consistent on focus */
-        color: var(--bs-form-color); /* Keep text color consistent on focus */
+        background-color: var(--bs-form-control-bg);
+        color: var(--bs-form-color);
         border-color: var(--bs-form-control-focus-border-color);
         box-shadow: var(--bs-form-control-focus-box-shadow);
         outline: 0;
@@ -201,11 +199,11 @@
         background-repeat: no-repeat;
         /* Position it correctly: 0.75rem from right, centered vertically */
         background-position: right 0.75rem center; 
-        background-size: 1rem; /* Ukuran ikon panah, bisa disesuaikan */
-        -webkit-appearance: none; /* Remove default arrow on Webkit */
-        -moz-appearance: none;    /* Remove default arrow on Firefox */
-        appearance: none;         /* Remove default arrow */
-        padding-right: 2.25rem; /* Tambah padding kanan agar teks tidak menutupi panah */
+        background-size: 1rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 2.25rem;
     }
 
     /* Style for options within the select dropdown */
@@ -226,11 +224,27 @@
       border-bottom: 1px solid var(--bs-border-color);
       display: flex;
       align-items: center;
-      justify-content: space-between; /* Untuk menempatkan tombol di kedua sisi */
+      justify-content: space-between;
     }
     .header-bar .btn-back {
-        z-index: 11;
-    }
+            color: var(--bs-emphasis-color);
+            padding: 0.5rem;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+        .header-bar .btn-back svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .header-bar .btn-back:hover {
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.1);
+            opacity: 0.9;
+        }
+        
     .header-bar h6 {
         flex-grow: 1;
         text-align: center;
@@ -241,7 +255,7 @@
     /* Gaya untuk tombol preview */
     .header-bar .btn-preview {
         z-index: 11;
-        margin-left: auto; /* Mendorong tombol ke kanan */
+        margin-left: auto;
     }
 
     .error-message { 
@@ -305,13 +319,13 @@
 </head>
 <body>
 	<div class="header-bar">
-		<a href="dashboard.html" class="btn-back d-flex align-items-center justify-content-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6" style="width: 20px; height: 20px;">
+		<a href="dashboard.html" class="btn-back">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
             </svg>
         </a>
 		<h6>Tambah Postingan</h6>
-        <button type="button" class="btn btn-outline-primary rounded-pill btn-sm btn-preview" onclick="openPreview()" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Lihat Pratinjau Postingan">
+        <button type="button" class="btn btn-outline-primary rounded-pill btn-sm btn-preview" onclick="openPreview()" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Pratinjau Postingan">
             <i class="bi bi-eye"></i>
         </button>
 	</div>
@@ -333,7 +347,7 @@
       <div class="mb-3">
         <label for="kategori" class="form-label">Kategori</label>
         <select class="form-select" id="kategori" required>
-          <option value="" disabled selected>Memuat kategori...</option>
+          <option value="" disabled selected>Memuat...</option>
         </select>
         <div class="error-message" id="kategoriError"></div>
       </div>
