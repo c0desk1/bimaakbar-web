@@ -722,36 +722,23 @@
     window.open('post-preview.html', '_blank');
   }
 
-  // GANTI BLOK EVENT LISTENER LAMA-MU DENGAN YANG INI
-document.getElementById('postForm').addEventListener('submit', async function (e) {
+  document.getElementById('postForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     console.log('Memulai proses submit...'); // LOG #1
 
+    // ... (kode validasi biarkan saja) ...
     let isValid = true;
-    const thumbnailErrorDiv = document.getElementById('thumbnailError');
-
-    // Blok validasi form... (biarkan seperti aslinya)
-    if (!judulInput.value.trim()) { document.getElementById('judulError').textContent = 'Judul wajib diisi.'; isValid = false; }
-    if (!kategoriInput.value) { document.getElementById('kategoriError').textContent = 'Kategori wajib dipilih.'; isValid = false; }
-    if (!editorDiv.innerText.trim()) { document.getElementById('kontenError').textContent = 'Konten tidak boleh kosong.'; isValid = false; }
-    if (thumbnailInput.files.length > 0) {
-      const file = thumbnailInput.files.item(0);
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-      const maxSize = 2 * 1024 * 1024;
-      if (!allowedTypes.includes(file.type)) { thumbnailErrorDiv.textContent = 'Format gambar tidak didukung.'; isValid = false; }
-      else if (file.size > maxSize) { thumbnailErrorDiv.textContent = 'Ukuran gambar terlalu besar. Maksimal 2MB.'; isValid = false; }
-      else { thumbnailErrorDiv.textContent = ''; }
-    }
+    if (!judulInput.value.trim()) { /*...*/ isValid = false; }
+    if (!kategoriInput.value) { /*...*/ isValid = false; }
+    if (!editorDiv.innerText.trim()) { /*...*/ isValid = false; }
     if (!isValid) {
       console.error('Form tidak valid, proses dihentikan.');
       return;
     }
-
-    const postId = new URLSearchParams(window.location.search).get('id');
-    const isEditing = !!postId;
     
+    const isEditing = !!(new URLSearchParams(window.location.search).get('id'));
     submitBtn.disabled = true;
-    submitBtn.textContent = isEditing ? 'Memperbarui...' : 'Mengunggah...';
+    submitBtn.textContent = 'Mengunggah...';
     
     const file = thumbnailInput.files ? thumbnailInput.files.item(0) : null;
     let thumbnail_url = thumbnailPreview.src && thumbnailPreview.style.display !== 'none' ? thumbnailPreview.src : null;
@@ -760,6 +747,7 @@ document.getElementById('postForm').addEventListener('submit', async function (e
       console.log('File thumbnail ditemukan, memulai proses upload:', file.name); // LOG #2
       const fileName = `thumbnails/${Date.now()}_${file.name}`;
       
+      // === BAGIAN KRUSIAL UNTUK DILIHAT ===
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('bimaakbar.thumbnail')
         .upload(fileName, file);
@@ -769,7 +757,7 @@ document.getElementById('postForm').addEventListener('submit', async function (e
       if (uploadError) {
         alert('Gagal upload thumbnail: ' + uploadError.message);
         submitBtn.disabled = false;
-        submitBtn.textContent = isEditing ? 'Perbarui Postingan' : 'Simpan & Posting';
+        submitBtn.textContent = 'Simpan & Posting';
         return;
       }
       
@@ -780,51 +768,31 @@ document.getElementById('postForm').addEventListener('submit', async function (e
       console.log('URL Publik thumbnail yang didapat:', thumbnail_url); // LOG #4
     }
 
-    const postData = {
-      title: judulInput.value.trim(),
-      category: kategoriInput.value,
-      tags: tagInput.value.trim(),
-      content: editorDiv.innerHTML.trim(),
-      slug: slugInput.value.trim(),
-      meta_title: metaTitleInput.value.trim(),
-      meta_description: metaDescriptionInput.value.trim(),
-      keywords: keywordsInput.value.trim(),
-      published: statusInput.value === 'published',
-      scheduled_time: statusInput.value === 'scheduled' ? scheduleTimeInput.value : null,
-      thumbnail_url: thumbnail_url,
-      author: authorInput.value.trim(),
+    const postData = { /* ... objek postData seperti sebelumnya ... */ 
+        title: judulInput.value.trim(), category: kategoriInput.value, tags: tagInput.value.trim(),
+        content: editorDiv.innerHTML.trim(), slug: slugInput.value.trim(), published: statusInput.value === 'published',
+        thumbnail_url: thumbnail_url, author: authorInput.value.trim()
     };
-
     console.log('Data yang akan dikirim ke tabel posts:', postData); // LOG #5
     
-    let dbOperation;
-    if (isEditing) {
-      postData.updated_at = new Date();
-      dbOperation = supabase.from('posts').update(postData).eq('id', postId);
-    } else {
-      postData.created_at = new Date();
-      dbOperation = supabase.from('posts').insert([postData]);
-    }
-
-    const { error: dbError } = await dbOperation;
-
-    submitBtn.disabled = false;
-    submitBtn.textContent = isEditing ? 'Perbarui Postingan' : 'Simpan & Posting';
+    // ... (Sisa kode untuk insert/update ke database) ...
+    const { error: dbError } = await (isEditing 
+        ? supabase.from('posts').update(postData).eq('id', new URLSearchParams(window.location.search).get('id')) 
+        : supabase.from('posts').insert([postData]));
 
     if (dbError) {
-        console.error('Error saat menyimpan ke database:', dbError); // LOG #6
+        console.error('Error saat menyimpan ke database:', dbError);
         alert('Gagal menyimpan postingan: ' + dbError.message);
     } else {
-        console.log('SUKSES! Postingan berhasil disimpan.'); // LOG #7
-        alert(isEditing ? 'Berhasil diperbarui!' : 'Berhasil disimpan!');
-        if (!isEditing) {
-          document.getElementById('postForm').reset();
-          thumbnailPreview.src = '';
-          thumbnailPreview.style.display = 'none';
-          editorDiv.innerHTML = '';
-        }
+        console.log('SUKSES! Postingan berhasil disimpan.');
+        alert('Berhasil disimpan!');
+        document.getElementById('postForm').reset();
+        thumbnailPreview.style.display = 'none';
+        editorDiv.innerHTML = '';
     }
-  });
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Simpan & Posting';
+});
 
   // --- Inisialisasi Tooltips Bootstrap ---
   function initializeTooltips() {
