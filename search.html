@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pencarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap'); body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }</style>
+</head>
+<body class="antialiased">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <a href="index.html" class="text-sm text-slate-400 hover:text-white flex items-center mb-8"><i class="ri-arrow-left-s-line mr-1"></i> Kembali ke Beranda</a>
+        <h1 class="text-3xl font-bold text-white mb-8">Hasil Pencarian untuk: "<span id="searchTerm" class="text-indigo-400"></span>"</h1>
+        <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <p id="loading-state" class="text-center col-span-full">Mencari...</p>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+            
+            const searchTermSpan = document.getElementById('searchTerm');
+            const resultsGrid = document.getElementById('resultsGrid');
+            const loadingState = document.getElementById('loading-state');
+
+            const query = new URLSearchParams(window.location.search).get('q');
+            
+            if (query) {
+                searchTermSpan.textContent = query;
+                document.title = `Pencarian: ${query}`;
+                
+                const { data, error } = await supabase
+                    .from('posts')
+                    .select('*')
+                    .eq('published', true)
+                    .textSearch('content', `'${query}'`); // Menggunakan textSearch yang lebih optimal
+
+                loadingState.style.display = 'none';
+                if (error || data.length === 0) {
+                    resultsGrid.innerHTML = '<p class="col-span-full text-center">Tidak ada hasil yang ditemukan.</p>';
+                    return;
+                }
+
+                resultsGrid.innerHTML = '';
+                data.forEach(post => {
+                    resultsGrid.innerHTML += `
+                        <a href="post.html?slug=${post.slug}" class="bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden block group">
+                            <div class="overflow-hidden h-48"><img loading="lazy" src="${post.thumbnail_url}" alt="${post.title}" class="w-full h-full object-cover"></div>
+                            <div class="p-6"><h4 class="font-bold text-lg text-white group-hover:text-indigo-400">${post.title}</h4></div>
+                        </a>`;
+                });
+            } else {
+                loadingState.textContent = 'Silakan masukkan kata kunci pencarian di halaman utama.';
+            }
+        });
+    </script>
+</body>
+</html>
