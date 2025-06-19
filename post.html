@@ -8,27 +8,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
-        .glass-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .prose-styles h1, .prose-styles h2, .prose-styles h3 { color: #fafafa; font-weight: 700; margin-top: 2em; margin-bottom: 1em; }
+        .glass-header { background: rgba(10,10,10,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .prose-styles h2, .prose-styles h3 { color: #fafafa; font-weight: 700; margin-top: 2em; margin-bottom: 1em; }
         .prose-styles p { line-height: 1.75; margin-bottom: 1.25em; }
-        .prose-styles a { color: #818cf8; text-decoration: underline; text-decoration-thickness: 1px; }
+        .prose-styles a { color: #818cf8; text-decoration: underline; }
         .prose-styles blockquote { border-left: 3px solid #6366f1; padding-left: 1.5rem; margin: 1.5rem 0; font-style: italic; color: #d4d4d8; }
         .prose-styles img { border-radius: 0.75rem; margin: 2rem 0; }
         .comment-card { background-color: rgba(23, 23, 23, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); }
         .comment-form textarea { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; }
-        .comment-form textarea:focus { outline: none; border-color: #6366f1; }
-        .ad-slot { border: 1px dashed rgba(255,255,255,0.2); }
+        .ad-slot-container { display: flex; justify-content: center; align-items: center; }
     </style>
 </head>
 <body class="antialiased">
 
     <header class="glass-header sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center justify-between h-16">
-            <a href="index.html" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="ri-arrow-left-s-line"></i><span>Kembali</span></a>
-            <div id="shareTop" class="flex items-center space-x-4"></div>
-        </div></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-3 items-center h-16">
+                <div class="justify-self-start"><a href="index.html" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="ri-arrow-left-s-line text-xl"></i><span class="text-sm font-semibold hidden sm:block">Kembali</span></a></div>
+                <div class="justify-self-center"><a href="index.html"><img src="assets/logo.png" alt="Logo" class="h-8 w-auto"></a></div>
+                <div class="justify-self-end"><button id="native-share-btn" title="Bagikan" class="text-gray-300 hover:text-white p-2 rounded-full hover:bg-white/10"><i class="ri-share-line text-xl"></i></button></div>
+            </div>
+        </div>
     </header>
 
     <main id="mainContent" class="opacity-0 transition-opacity duration-500">
@@ -40,13 +42,23 @@
                     <div id="post-meta" class="mt-4 text-sm text-gray-400 flex items-center space-x-4"></div>
                 </header>
 
-                <div id="ad-slot-1" class="my-8 ad-slot rounded-lg flex items-center justify-center h-24 text-slate-500 text-sm">Slot Iklan (mis: 728x90)</div>
+                <div id="ad-slot-1" class="my-8 ad-slot-container">
+                    <script type="text/javascript">
+                        atOptions = { 'key' : '33abd0e9772a23eff62a88e951d12370', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                    </script>
+                    <script type="text/javascript" src="//www.highperformanceformat.com/33abd0e9772a23eff62a88e951d12370/invoke.js"></script>
+                </div>
 
                 <img id="post-thumbnail" src="" alt="" class="w-full rounded-2xl shadow-lg mb-8 bg-neutral-800" style="display: none;">
                 <div id="post-content" class="prose-styles text-lg"></div>
                 <div id="post-tags" class="mt-12 flex flex-wrap gap-2"></div>
 
-                <div id="ad-slot-2" class="my-12 ad-slot rounded-lg flex items-center justify-center h-60 text-slate-500 text-sm">Slot Iklan (mis: 300x250)</div>
+                <div id="ad-slot-2" class="my-12 ad-slot-container">
+                    <script type="text/javascript">
+                        atOptions = { 'key' : '2cbf81c154955340571b0538f45abe56', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                    </script>
+                    <script type="text/javascript" src="//www.highperformanceformat.com/2cbf81c154955340571b0538f45abe56/invoke.js"></script>
+                </div>
             </div>
 
             <section id="comments-section" class="mt-16 pt-12 border-t border-white/10">
@@ -55,6 +67,11 @@
                 <div id="comments-list" class="space-y-6"><p>Memuat komentar...</p></div>
             </section>
             
+            <section id="related-posts" class="mt-16 pt-12 border-t border-white/10" style="display: none;">
+                <h2 class="text-2xl font-bold text-white mb-6">Baca Juga</h2>
+                <div id="related-posts-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+            </section>
+
             <div id="notFound" class="hidden text-center py-20">
                 <h1 class="text-6xl font-black text-white">404</h1>
                 <p class="text-xl mt-4 text-gray-400">Postingan tidak ditemukan.</p>
@@ -81,13 +98,7 @@
             function displayPost(post) {
                 document.getElementById('post-category').textContent = post.category || '';
                 document.getElementById('post-title').textContent = post.title;
-                document.getElementById('post-meta').innerHTML = `
-                    <span>Oleh ${post.author || 'Anonim'}</span>
-                    <span>•</span>
-                    <span>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span>
-                    <span>•</span>
-                    <span class="flex items-center"><i class="ri-eye-line mr-1"></i>${post.views || 0} views</span>
-                `;
+                document.getElementById('post-meta').innerHTML = `<span>Oleh ${post.author || 'Anonim'}</span><span>•</span><span>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span><span>•</span><span class="flex items-center"><i class="ri-eye-line mr-1"></i>${post.views || 0} views</span>`;
                 const thumbnail = document.getElementById('post-thumbnail');
                 if (post.thumbnail_url) {
                     thumbnail.src = post.thumbnail_url;
@@ -101,19 +112,23 @@
                         tagsContainer.innerHTML += `<a href="#" class="border border-white/20 text-sm py-1 px-3 rounded-full hover:bg-white/10">${tag.trim()}</a>`;
                     });
                 }
-                setupShareButtons();
             }
 
-            function setupShareButtons() {
-                const url = window.location.href;
-                const title = document.title;
-                const shareHTML = `
-                    <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}" target="_blank" class="text-gray-400 hover:text-white"><i class="ri-twitter-x-line text-2xl"></i></a>
-                    <button id="copyLinkBtn" class="text-gray-400 hover:text-white"><i class="ri-links-line text-2xl"></i></button>
-                `;
-                document.getElementById('shareTop').innerHTML = shareHTML;
-                document.querySelectorAll('#copyLinkBtn').forEach(btn => {
-                    btn.onclick = () => { navigator.clipboard.writeText(url).then(() => alert('Link berhasil disalin!'));}
+            function setupShareButton(postTitle) {
+                const shareBtn = document.getElementById('native-share-btn');
+                if (!shareBtn) return;
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = { title: postTitle, text: `Cek artikel menarik: ${postTitle}`, url: window.location.href };
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            throw new Error('Web Share not supported');
+                        }
+                    } catch (err) {
+                        console.error("Gagal share, fallback ke copy link:", err);
+                        navigator.clipboard.writeText(window.location.href).then(() => alert('Link artikel berhasil disalin!'));
+                    }
                 });
             }
             
@@ -124,15 +139,7 @@
                 if (data.length === 0) { commentsList.innerHTML = '<p class="text-slate-400">Jadilah yang pertama berkomentar!</p>'; return; }
                 commentsList.innerHTML = '';
                 data.forEach(comment => {
-                    commentsList.innerHTML += `
-                        <div class="comment-card p-4 rounded-xl flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div>
-                            <div>
-                                <p class="font-semibold text-white">${comment.author_name}</p>
-                                <p class="text-sm text-slate-300 mt-1">${comment.content}</p>
-                                <p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p>
-                            </div>
-                        </div>`;
+                    commentsList.innerHTML += `<div class="comment-card p-4 rounded-xl flex items-start gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div><div><p class="font-semibold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-1">${comment.content}</p><p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p></div></div>`;
                 });
             }
             
@@ -142,32 +149,19 @@
                 const content = form.content.value.trim();
                 const button = form.querySelector('button');
                 if (!content) return;
-                button.disabled = true;
-                button.textContent = 'Mengirim...';
-
+                button.disabled = true; button.textContent = 'Mengirim...';
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) { alert('Harus login untuk berkomentar.'); button.disabled = false; button.textContent = 'Kirim Komentar'; return; }
-                
                 const { error } = await supabase.from('comments').insert({ post_id: postId, author_name: session.user.email.split('@')[0], content: content });
-                if (error) {
-                    alert('Gagal mengirim komentar: ' + error.message);
-                } else {
-                    alert('Komentar berhasil dikirim dan sedang menunggu moderasi. Terima kasih!');
-                    form.reset();
-                }
-                button.disabled = false;
-                button.textContent = 'Kirim Komentar';
+                if (error) { alert('Gagal mengirim komentar: ' + error.message); } 
+                else { alert('Komentar berhasil dikirim dan sedang menunggu moderasi. Terima kasih!'); form.reset(); }
+                button.disabled = false; button.textContent = 'Kirim Komentar';
             }
 
             function renderCommentForm(postId, session) {
                 const container = document.getElementById('comment-form-container');
                 if (session) {
-                    container.innerHTML = `
-                        <form id="comment-form" class="comment-form space-y-3">
-                            <textarea name="content" required class="w-full p-3 rounded-lg h-24" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea>
-                            <button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button>
-                        </form>
-                    `;
+                    container.innerHTML = `<form id="comment-form" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
                     document.getElementById('comment-form').addEventListener('submit', (e) => handleCommentSubmit(e, postId));
                 } else {
                     container.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
@@ -175,17 +169,28 @@
             }
 
             async function countView(postId) {
-                try {
-                    await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } });
-                } catch (error) { console.error("Gagal menghitung view:", error); }
+                try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
+                catch (error) { console.error("Gagal menghitung view:", error); }
+            }
+
+            async function fetchAndRenderRelatedPosts(currentPost) {
+                if (!currentPost.category) return;
+                const relatedPostsContainer = document.getElementById('related-posts');
+                const relatedPostsGrid = document.getElementById('related-posts-grid');
+                const { data, error } = await supabase.from('posts').select('title, slug, thumbnail_url').eq('published', true).eq('category', currentPost.category).neq('id', currentPost.id).limit(3);
+                if (data && data.length > 0) {
+                    relatedPostsContainer.style.display = 'block';
+                    relatedPostsGrid.innerHTML = '';
+                    data.forEach(post => {
+                        relatedPostsGrid.innerHTML += `<a href="post.html?slug=${post.slug}" class="block group"><div class="overflow-hidden rounded-xl aspect-video bg-neutral-800"><img src="${post.thumbnail_url}" alt="${post.title}" class="w-full h-full object-cover"></div><h4 class="mt-3 font-semibold text-white group-hover:text-indigo-400">${post.title}</h4></a>`;
+                    });
+                }
             }
 
             async function initializePage() {
                 const slug = new URLSearchParams(window.location.search).get('slug');
                 if (!slug) { postContainer.style.display = 'none'; notFoundDiv.classList.remove('hidden'); mainContent.classList.remove('opacity-0'); return; }
-
                 const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
-                
                 if (error || !post) {
                     postContainer.style.display = 'none';
                     notFoundDiv.classList.remove('hidden');
@@ -196,6 +201,7 @@
                     renderCommentForm(post.id, session);
                     fetchAndRenderComments(post.id);
                     countView(post.id);
+                    fetchAndRenderRelatedPosts(post);
                 }
                 mainContent.classList.remove('opacity-0');
             }
