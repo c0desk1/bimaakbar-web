@@ -19,6 +19,7 @@
         .comment-card { background-color: rgba(23, 23, 23, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); }
         .comment-form textarea { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; }
         .ad-slot-container { display: flex; justify-content: center; align-items: center; min-height: 90px; }
+        .related-card:hover .related-img { transform: scale(1.05); }
     </style>
 </head>
 <body class="antialiased">
@@ -45,16 +46,8 @@
                     <h2 class="text-xl font-bold text-white mb-4 mt-0">Daftar Isi</h2>
                     <ul id="toc-list" class="space-y-2 list-disc list-inside text-indigo-300"></ul>
                 </div>
-                <div id="ad-slot-1" class="my-8 ad-slot-container">
-                    <script type="text/javascript"> atOptions = { 'key' : '33abd0e9772a23eff62a88e951d12370', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} }; </script>
-                    <script type="text/javascript" src="//www.highperformanceformat.com/33abd0e9772a23eff62a88e951d12370/invoke.js"></script>
-                </div>
                 <img id="post-thumbnail" src="" alt="" class="w-full rounded-2xl shadow-lg mb-8 bg-neutral-800" style="display: none;">
                 <div id="post-content" class="prose-styles text-lg"></div>
-                <div id="ad-slot-2" class="my-12 ad-slot-container">
-                    <script type="text/javascript"> atOptions = { 'key' : '2cbf81c154955340571b0538f45abe56', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} }; </script>
-                    <script type="text/javascript" src="//www.highperformanceformat.com/2cbf81c154955340571b0538f45abe56/invoke.js"></script>
-                </div>
             </div>
 
             <section id="comments-section" class="mt-16 pt-12 border-t border-white/10" style="display: none;">
@@ -64,9 +57,10 @@
             </section>
             
             <nav id="post-navigation" class="mt-16 pt-8 border-t border-white/10 flex justify-between gap-4"></nav>
+
             <section id="related-posts" class="mt-16 pt-12 border-t border-white/10" style="display: none;">
                 <h2 class="text-2xl font-bold text-white mb-6">Baca Juga</h2>
-                <div id="related-posts-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+                <div id="related-posts-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
             </section>
             
             <section id="newsletter" class="mt-16 pt-12 border-t border-white/10">
@@ -77,7 +71,7 @@
                     <button type="submit" class="bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-600">Daftar</button>
                 </div><p id="newsletterMessage" class="text-xs mt-2 h-4"></p></form></div>
             </section>
-
+            
             <div id="notFound" class="hidden text-center py-20">
                 <h1 class="text-6xl font-black text-white">404</h1><p class="text-xl mt-4 text-gray-400">Postingan tidak ditemukan.</p>
                 <a href="index.html" class="mt-8 inline-block bg-indigo-500 text-white font-semibold py-2 px-6 rounded-lg">Kembali ke Beranda</a>
@@ -87,196 +81,192 @@
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // === 1. INISIALISASI & KONFIGURASI ===
-        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // === 2. ELEMEN DOM ===
-        const mainContent = document.getElementById('mainContent');
-        const postContainer = document.getElementById('post-container');
-        const notFoundDiv = document.getElementById('notFound');
-        const commentsSection = document.getElementById('comments-section');
-        const commentFormContainer = document.getElementById('comment-form-container');
-        const newsletterForm = document.getElementById('newsletterForm');
-
-        // === 3. SEMUA FUNGSI LENGKAP ===
-
-        function updateMeta(post) {
-            document.title = post.meta_title || post.title;
-            const metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) metaDesc.setAttribute('content', post.meta_description || '');
-        }
-
-        function displayPost(post) {
-            document.getElementById('post-category').textContent = post.category || '';
-            document.getElementById('post-title').textContent = post.title;
-            const postMeta = document.getElementById('post-meta');
-            postMeta.innerHTML = `<span>Oleh ${post.author || 'Anonim'}</span><span>•</span><span>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span><span>•</span><span class="flex items-center"><i class="ri-eye-line mr-1"></i>${post.views || 0} views</span>`;
+        document.addEventListener('DOMContentLoaded', () => {
+            // === 1. INISIALISASI & KONFIGURASI ===
+            const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
             
-            const thumbnail = document.getElementById('post-thumbnail');
-            if (post.thumbnail_url) {
-                thumbnail.src = post.thumbnail_url;
-                thumbnail.alt = post.title;
-                thumbnail.style.display = 'block';
-            }
-            const contentEl = document.getElementById('post-content');
-            contentEl.innerHTML = post.content;
-            return contentEl;
-        }
+            // === 2. ELEMEN DOM ===
+            const mainContent = document.getElementById('mainContent');
+            const postContainer = document.getElementById('post-container');
+            const notFoundDiv = document.getElementById('notFound');
+            const commentsSection = document.getElementById('comments-section');
+            const commentFormContainer = document.getElementById('comment-form-container');
+            const newsletterForm = document.getElementById('newsletterForm');
 
-        function setupShareButton(postTitle) {
-            const shareBtn = document.getElementById('native-share-btn');
-            if (!shareBtn) return;
-            shareBtn.addEventListener('click', async () => {
-                const shareData = { title: postTitle, text: `Cek artikel menarik: ${postTitle}`, url: window.location.href };
-                try {
-                    if (navigator.share) {
-                        await navigator.share(shareData);
-                    } else {
-                        throw new Error('Web Share API tidak didukung.');
-                    }
-                } catch (err) {
-                    console.error("Gagal share, fallback ke copy link:", err);
-                    navigator.clipboard.writeText(window.location.href).then(() => alert('Link artikel berhasil disalin!'));
+            // === 3. SEMUA FUNGSI LENGKAP ===
+
+            function updateMeta(post) {
+                document.title = post.meta_title || post.title;
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) metaDesc.setAttribute('content', post.meta_description || '');
+            }
+
+            function displayPost(post) {
+                document.getElementById('post-category').textContent = post.category || '';
+                document.getElementById('post-title').textContent = post.title;
+                const postMeta = document.getElementById('post-meta');
+                postMeta.innerHTML = `<span>Oleh ${post.author || 'Anonim'}</span><span>•</span><span>${new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span><span>•</span><span class="flex items-center"><i class="ri-eye-line mr-1"></i>${post.views || 0} views</span>`;
+                const thumbnail = document.getElementById('post-thumbnail');
+                if (post.thumbnail_url) {
+                    thumbnail.src = post.thumbnail_url;
+                    thumbnail.alt = post.title;
+                    thumbnail.style.display = 'block';
                 }
-            });
-        }
-
-        function calculateReadTime(contentElement) {
-            const text = contentElement.textContent || '';
-            const wordCount = text.split(/\s+/).filter(Boolean).length;
-            const wpm = 225; // Rata-rata kecepatan membaca
-            const minutes = Math.ceil(wordCount / wpm);
-            return `<span>•</span><span>☕️ ${minutes} menit baca</span>`;
-        }
-
-        function generateTableOfContents(contentElement) {
-            const tocContainer = document.getElementById('table-of-contents');
-            const tocList = document.getElementById('toc-list');
-            const headings = contentElement.querySelectorAll('h2, h3');
-            if (headings.length < 2) { tocContainer.style.display = 'none'; return; }
-            tocList.innerHTML = '';
-            headings.forEach((heading, index) => {
-                const id = `heading-${index}`;
-                heading.id = id;
-                const listItem = document.createElement('li');
-                if (heading.tagName === 'H3') listItem.classList.add('ml-4');
-                listItem.innerHTML = `<a href="#${id}" class="hover:text-white">${heading.textContent}</a>`;
-                tocList.appendChild(listItem);
-            });
-            tocContainer.style.display = 'block';
-        }
-
-        async function fetchPrevNextPosts(currentPost) {
-            const navContainer = document.getElementById('post-navigation');
-            const [prevPostRes, nextPostRes] = await Promise.all([
-                supabase.from('posts').select('title,slug').eq('published',true).lt('created_at', currentPost.created_at).order('created_at', {ascending: false}).limit(1).single(),
-                supabase.from('posts').select('title,slug').eq('published',true).gt('created_at', currentPost.created_at).order('created_at', {ascending: true}).limit(1).single()
-            ]);
-            let navHTML = '<div></div>';
-            if(prevPostRes.data) navHTML = `<a href="post.html?slug=${prevPostRes.data.slug}" class="text-left"><p class="text-sm text-gray-400">Sebelumnya</p><p class="font-semibold text-white hover:text-indigo-400">${prevPostRes.data.title}</p></a>`;
-            if(nextPostRes.data) { navHTML += `<a href="post.html?slug=${nextPostRes.data.slug}" class="text-right"><p class="text-sm text-gray-400">Berikutnya</p><p class="font-semibold text-white hover:text-indigo-400">${nextPostRes.data.title}</p></a>`; }
-            else { navHTML += `<div></div>`; }
-            navContainer.innerHTML = navHTML;
-        }
-
-        async function fetchAndRenderComments(postId) {
-            const commentsList = document.getElementById('comments-list');
-            const { data, error } = await supabase.from('comments').select('*').eq('post_id', postId).eq('is_approved', true).order('created_at', { ascending: true });
-            if (error || !data) { commentsList.innerHTML = '<p class="text-slate-400">Gagal memuat komentar.</p>'; return; }
-            if (data.length === 0) { commentsList.innerHTML = '<p class="text-slate-400 text-sm">Jadilah yang pertama berkomentar!</p>'; return; }
-            commentsList.innerHTML = '';
-            data.forEach(comment => {
-                commentsList.innerHTML += `<div class="comment-card p-4 rounded-xl flex items-start gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div><div><p class="font-semibold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-1">${comment.content}</p><p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p></div></div>`;
-            });
-        }
-
-        commentFormContainer.addEventListener('submit', async (e) => {
-            if (e.target.id !== 'comment-form') return;
-            e.preventDefault();
-            const form = e.target;
-            const content = form.content.value.trim();
-            const button = form.querySelector('button');
-            const postId = form.dataset.postId;
-            if (!content || !postId) return;
-            button.disabled = true; button.textContent = 'Mengirim...';
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) { alert('Harus login untuk berkomentar.'); button.disabled = false; button.textContent = 'Kirim Komentar'; return; }
-            const { error } = await supabase.from('comments').insert({ post_id: postId, author_name: session.user.email.split('@')[0], content: content });
-            if (error) { alert('Gagal mengirim komentar: ' + error.message); } 
-            else { alert('Komentar berhasil dikirim dan sedang menunggu moderasi. Terima kasih!'); form.reset(); }
-            button.disabled = false; button.textContent = 'Kirim Komentar';
-        });
-
-        function renderCommentForm(postId, session) {
-            if (session) {
-                commentFormContainer.innerHTML = `<form id="comment-form" data-post-id="${postId}" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
-            } else {
-                commentFormContainer.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
-            }
-        }
-
-        async function countView(postId) {
-            try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
-            catch (error) { console.error("Gagal menghitung view:", error); }
-        }
-
-        async function handleNewsletter(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('newsletterEmail');
-            const messageEl = document.getElementById('newsletterMessage');
-            if (!emailInput || !messageEl) return;
-            const email = emailInput.value;
-            messageEl.textContent = 'Memproses...';
-            const { error } = await supabase.from('subscribers').insert({ email: email });
-            if (error) {
-                messageEl.textContent = error.code === '23505' ? 'Email ini sudah terdaftar!' : 'Gagal mendaftar.';
-            } else {
-                messageEl.textContent = 'Terima kasih telah mendaftar!';
-                emailInput.value = '';
-            }
-        }
-
-        // === 7. INISIALISASI HALAMAN UTAMA ===
-        async function initializePage() {
-            const slug = new URLSearchParams(window.location.search).get('slug');
-            if (!slug) {
-                postContainer.style.display = 'none';
-                notFoundDiv.classList.remove('hidden');
-                mainContent.classList.remove('opacity-0');
-                return;
+                const contentEl = document.getElementById('post-content');
+                contentEl.innerHTML = post.content;
+                return contentEl;
             }
 
-            const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
+            function setupShareButton(postTitle) {
+                const shareBtn = document.getElementById('native-share-btn');
+                if (!shareBtn) return;
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = { title: postTitle, text: `Cek artikel menarik: ${postTitle}`, url: window.location.href };
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            throw new Error('Web Share API tidak didukung.');
+                        }
+                    } catch (err) {
+                        navigator.clipboard.writeText(window.location.href).then(() => alert('Link artikel berhasil disalin!'));
+                    }
+                });
+            }
+
+            function calculateReadTime(contentElement) {
+                const text = contentElement.textContent || '';
+                const wordCount = text.split(/\s+/).filter(Boolean).length;
+                const wpm = 225;
+                const minutes = Math.ceil(wordCount / wpm);
+                return `<span>•</span><span>☕️ ${minutes} menit baca</span>`;
+            }
+
+            function generateTableOfContents(contentElement) {
+                const tocContainer = document.getElementById('table-of-contents');
+                const tocList = document.getElementById('toc-list');
+                if (!tocContainer || !tocList) return;
+                const headings = contentElement.querySelectorAll('h2, h3');
+                if (headings.length < 2) {
+                    tocContainer.style.display = 'none';
+                    return;
+                }
+                tocList.innerHTML = '';
+                headings.forEach((heading, index) => {
+                    const id = `heading-${index}`;
+                    heading.id = id;
+                    const listItem = document.createElement('li');
+                    if (heading.tagName === 'H3') listItem.classList.add('ml-4');
+                    listItem.innerHTML = `<a href="#${id}" class="hover:text-white">${heading.textContent}</a>`;
+                    tocList.appendChild(listItem);
+                });
+                tocContainer.style.display = 'block';
+            }
             
-            if (error || !post) {
-                postContainer.style.display = 'none';
-                notFoundDiv.classList.remove('hidden');
-            } else {
-                postContainer.style.display = 'block';
-                commentsSection.style.display = 'block';
-                
-                // Panggil semua fungsi untuk merender halaman
-                updateMeta(post);
-                const contentEl = displayPost(post);
-                setupShareButton(post.title);
-                document.getElementById('post-meta').innerHTML += calculateReadTime(contentEl);
-                generateTableOfContents(contentEl);
-                const { data: { session } } = await supabase.auth.getSession();
-                renderCommentForm(post.id, session);
-                fetchAndRenderComments(post.id);
-                fetchPrevNextPosts(post);
-                countView(post.id); // Panggil di akhir agar tidak memperlambat tampilan
+            async function fetchPrevNextPosts(currentPost) {
+                const navContainer = document.getElementById('post-navigation');
+                if (!navContainer) return;
+                const [prevPostRes, nextPostRes] = await Promise.all([
+                    supabase.from('posts').select('title,slug').eq('published',true).lt('created_at', currentPost.created_at).order('created_at', {ascending: false}).limit(1).single(),
+                    supabase.from('posts').select('title,slug').eq('published',true).gt('created_at', currentPost.created_at).order('created_at', {ascending: true}).limit(1).single()
+                ]);
+                let prevHTML = '<div></div>';
+                if(prevPostRes.data) prevHTML = `<a href="post.html?slug=${prevPostRes.data.slug}" class="text-left"><p class="text-sm text-gray-400">Sebelumnya</p><p class="font-semibold text-white hover:text-indigo-400">${prevPostRes.data.title}</p></a>`;
+                let nextHTML = '<div></div>';
+                if(nextPostRes.data) nextHTML = `<a href="post.html?slug=${nextPostRes.data.slug}" class="text-right"><p class="text-sm text-gray-400">Berikutnya</p><p class="font-semibold text-white hover:text-indigo-400">${nextPostRes.data.title}</p></a>`;
+                navContainer.innerHTML = prevHTML + nextHTML;
             }
-            mainContent.classList.remove('opacity-0');
-        }
-        
-        if(newsletterForm) newsletterForm.addEventListener('submit', handleNewsletter);
-        initializePage();
-    });
-</script>
 
+            async function fetchAndRenderComments(postId) {
+                const commentsList = document.getElementById('comments-list');
+                const { data, error } = await supabase.from('comments').select('*').eq('post_id', postId).eq('is_approved', true).order('created_at', { ascending: true });
+                if (error || !data) { commentsList.innerHTML = '<p class="text-slate-400">Gagal memuat komentar.</p>'; return; }
+                if (data.length === 0) { commentsList.innerHTML = '<p class="text-slate-400 text-sm">Jadilah yang pertama berkomentar!</p>'; return; }
+                commentsList.innerHTML = '';
+                data.forEach(comment => {
+                    commentsList.innerHTML += `<div class="comment-card p-4 rounded-xl flex items-start gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div><div><p class="font-semibold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-1">${comment.content}</p><p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p></div></div>`;
+                });
+            }
+
+            commentFormContainer.addEventListener('submit', async (e) => {
+                if (e.target.id !== 'comment-form') return;
+                e.preventDefault();
+                const form = e.target;
+                const content = form.content.value.trim();
+                const button = form.querySelector('button');
+                const postId = form.dataset.postId;
+                if (!content || !postId) return;
+                button.disabled = true; button.textContent = 'Mengirim...';
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) { alert('Harus login untuk berkomentar.'); button.disabled = false; button.textContent = 'Kirim Komentar'; return; }
+                const { error } = await supabase.from('comments').insert({ post_id: postId, author_name: session.user.email.split('@')[0], content: content });
+                if (error) { alert('Gagal mengirim komentar: ' + error.message); } 
+                else { alert('Komentar berhasil dikirim dan sedang menunggu moderasi. Terima kasih!'); form.reset(); }
+                button.disabled = false; button.textContent = 'Kirim Komentar';
+            });
+            
+            function renderCommentForm(postId, session) {
+                if (session) {
+                    commentFormContainer.innerHTML = `<form id="comment-form" data-post-id="${postId}" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24 bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
+                } else {
+                    commentFormContainer.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
+                }
+            }
+
+            async function countView(postId) {
+                try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
+                catch (error) { console.error("Gagal menghitung view:", error); }
+            }
+            
+            async function handleNewsletter(e) {
+                e.preventDefault();
+                const emailInput = document.getElementById('newsletterEmail');
+                const messageEl = document.getElementById('newsletterMessage');
+                if (!emailInput || !messageEl) return;
+                const email = emailInput.value;
+                messageEl.textContent = 'Memproses...';
+                const { error } = await supabase.from('subscribers').insert({ email: email });
+                if (error) {
+                    messageEl.textContent = error.code === '23505' ? 'Email ini sudah terdaftar!' : 'Gagal mendaftar.';
+                } else {
+                    messageEl.textContent = 'Terima kasih telah mendaftar!';
+                    emailInput.value = '';
+                }
+            }
+
+            // === 4. INISIALISASI HALAMAN UTAMA ===
+            async function initializePage() {
+                const slug = new URLSearchParams(window.location.search).get('slug');
+                if (!slug) { postContainer.style.display = 'none'; notFoundDiv.classList.remove('hidden'); mainContent.classList.remove('opacity-0'); return; }
+                const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
+                
+                if (error || !post) {
+                    postContainer.style.display = 'none';
+                    notFoundDiv.classList.remove('hidden');
+                } else {
+                    postContainer.style.display = 'block';
+                    commentsSection.style.display = 'block';
+                    
+                    updateMeta(post);
+                    const contentEl = displayPost(post);
+                    setupShareButton(post.title);
+                    
+                    document.getElementById('post-meta').innerHTML += calculateReadTime(contentEl);
+                    generateTableOfContents(contentEl);
+                    
+                    const { data: { session } } = await supabase.auth.getSession();
+                    renderCommentForm(post.id, session);
+                    
+                    fetchAndRenderComments(post.id);
+                    fetchPrevNextPosts(post);
+                    countView(post.id);
+                }
+                mainContent.classList.remove('opacity-0');
+            }
+            
+            if (newsletterForm) newsletterForm.addEventListener('submit', handleNewsletter);
+            initializePage();
+        });
+    </script>
 </body>
 </html>
