@@ -152,9 +152,29 @@
                 navContainer.innerHTML = prevHTML + nextHTML;
             }
 
-            async function fetchAndRenderComments(postId) { /* ... fungsi lengkap ... */ }
-            function renderCommentForm(postId, session) { /* ... fungsi lengkap ... */ }
-            async function countView(postId) { /* ... fungsi lengkap ... */ }
+            async function fetchAndRenderComments(postId) {
+                const commentsList = document.getElementById('comments-list');
+                const { data, error } = await supabase.from('comments').select('*').eq('post_id', postId).eq('is_approved', true).order('created_at', { ascending: true });
+                if (error || !data) { commentsList.innerHTML = '<p class="text-slate-400">Gagal memuat komentar.</p>'; return; }
+                if (data.length === 0) { commentsList.innerHTML = '<p class="text-slate-400">Jadilah yang pertama berkomentar!</p>'; return; }
+                commentsList.innerHTML = '';
+                data.forEach(comment => {
+                    commentsList.innerHTML += `<div class="comment-card p-4 rounded-xl flex items-start gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div><div><p class="font-semibold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-1">${comment.content}</p><p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p></div></div>`;
+                });
+            }
+            function renderCommentForm(postId, session) {
+                const container = document.getElementById('comment-form-container');
+                if (session) {
+                    container.innerHTML = `<form id="comment-form" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
+                    document.getElementById('comment-form').addEventListener('submit', (e) => handleCommentSubmit(e, postId));
+                } else {
+                    container.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
+                }
+            }
+            async function countView(postId) {
+                try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
+                catch (error) { console.error("Gagal menghitung view:", error); }
+            }
 
             async function handleNewsletter(e) {
                 e.preventDefault();
