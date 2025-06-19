@@ -236,35 +236,69 @@
                 else { messageEl.textContent = 'Terima kasih telah mendaftar!'; emailInput.value = ''; }
             }
 
-            async function initializePage() {
-                try {
-                    const slug = new URLSearchParams(window.location.search).get('slug');
-                    if (!slug) throw new Error("Slug tidak ditemukan.");
-                    const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
-                    if (error || !post) throw new Error("Postingan tidak ditemukan.");
-                    
-                    postContainer.style.display = 'block';
-                    if (postFooterFeatures) postFooterFeatures.style.display = 'block';
-                    
-                    updateMeta(post);
-                    const contentEl = displayPost(post);
-                    setupShareButton(post.title);
-                    
-                    const postMeta = document.getElementById('post-meta');
-                    if (postMeta) postMeta.innerHTML += calculateReadTime(contentEl);
-                    generateTableOfContents(contentEl);
-                    const { data: { session } } = await supabase.auth.getSession();
-                    renderCommentForm(post.id, session);
-                    fetchAndRenderComments(post.id);
-                    fetchPrevNextPosts(post);
-                    fetchAndRenderRelatedPosts(post);
-                    countView(post.id);
-                } catch (err) {
-                    if (notFoundDiv) { notFoundDiv.classList.remove('hidden'); const p = notFoundDiv.querySelector('p'); if (p) p.textContent = err.message; }
-                } finally {
-                    if (mainContent) mainContent.classList.remove('opacity-0');
-                }
+           async function initializePage() {
+    try {
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        if (!slug) throw new Error("Slug tidak ditemukan di URL.");
+
+        const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
+        
+        if (error || !post) {
+            throw new Error("Postingan tidak ditemukan atau belum dipublikasikan.");
+        }
+        
+        // --- PERBAIKAN UTAMA ADA DI SINI ---
+        // Tampilkan semua kontainer yang relevan setelah post berhasil ditemukan
+        document.getElementById('post-container').style.display = 'block';
+        document.getElementById('comments-section').style.display = 'block';
+        document.getElementById('post-navigation').style.display = 'flex'; // Menggunakan 'flex' agar sejajar
+        document.getElementById('related-posts').style.display = 'block';
+        document.getElementById('newsletter').style.display = 'block';
+        
+        // Lanjutkan memanggil semua fungsi untuk mengisi data
+        updateMeta(post);
+        const contentEl = displayPost(post);
+        setupShareButton(post.title);
+        
+        const postMeta = document.getElementById('post-meta');
+        if (postMeta) postMeta.innerHTML += calculateReadTime(contentEl);
+        
+        generateTableOfContents(contentEl);
+        
+        const { data: { session } } = await supabase.auth.getSession();
+        renderCommentForm(post.id, session);
+        
+        fetchAndRenderComments(post.id);
+        fetchPrevNextPosts(post);
+        fetchAndRenderRelatedPosts(post);
+        countView(post.id);
+
+    } catch (err) {
+        console.error("Gagal menginisialisasi halaman:", err);
+        const notFoundDiv = document.getElementById('notFound');
+        if (notFoundDiv) {
+            const postContainer = document.getElementById('post-container');
+            const postFooterFeatures = document.getElementById('post-footer-features'); // Jika kamu menggunakan ID ini dari versi lalu
+            
+            if(postContainer) postContainer.style.display = 'none';
+            if(postFooterFeatures) postFooterFeatures.style.display = 'none';
+            else {
+                // Sembunyikan manual jika tidak ada wrapper
+                document.getElementById('comments-section').style.display = 'none';
+                document.getElementById('post-navigation').style.display = 'none';
+                document.getElementById('related-posts').style.display = 'none';
+                document.getElementById('newsletter').style.display = 'none';
             }
+
+            notFoundDiv.classList.remove('hidden');
+            const p = notFoundDiv.querySelector('p');
+            if (p) p.textContent = err.message;
+        }
+    } finally {
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) mainContent.classList.remove('opacity-0');
+    }
+}
             
             if(commentFormContainer) commentFormContainer.addEventListener('submit', handleCommentSubmit);
             if(newsletterForm) newsletterForm.addEventListener('submit', handleNewsletter);
