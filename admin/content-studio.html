@@ -107,38 +107,61 @@
             }
 
             // --- LOGIKA UNTUK PANEL POSTINGAN ---
-            async function renderPostsPanel() {
-                tabContent.innerHTML = document.getElementById('template-posts').innerHTML;
-                const postListContainer = document.getElementById('postList');
-                let currentFilter = 'all', currentSearchTerm = '';
+           async function renderPostsPanel() {
+    tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><div class="flex flex-col md:flex-row justify-between gap-4 mb-6"><div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg"><button data-filter="all" class="filter-btn active bg-indigo-500 text-white px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button><button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button><button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button></div><div class="relative"><i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i><input id="searchInput" type="search" placeholder="Cari postingan..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div></div><div id="postList" class="space-y-3"><p class="text-center text-slate-500 p-10">Memuat...</p></div></div>`;
+    
+    const postListContainer = document.getElementById('postList');
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
 
-                async function loadPosts() {
-                    let query = supabase.from('posts').select('id, title, published, slug').order('created_at', { ascending: false });
-                    if (currentFilter === 'published') query = query.eq('published', true);
-                    if (currentFilter === 'draft') query = query.eq('published', false);
-                    if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
-                    
-                    const { data: posts, error } = await query;
-                    if (posts) {
-                        postListContainer.innerHTML = posts.length === 0 ? `<p class="text-slate-500 text-center p-10">Tidak ada postingan.</p>` : '';
-                        posts.forEach(post => {
-                            postListContainer.innerHTML += `<div class="p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center"><p class="font-semibold text-white">${post.title}</p><div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat"><i class="ri-eye-line text-slate-400 hover:text-indigo-400"></i></a><a href="post-add.html?id=${post.id}" title="Edit"><i class="ri-pencil-line text-slate-400 hover:text-indigo-400"></i></a><button onclick="window.deleteItem('posts', '${post.id}', 'posts')" title="Hapus"><i class="ri-delete-bin-line text-slate-400 hover:text-red-500"></i></button></div></div>`;
-                        });
-                    }
-                }
-                document.getElementById('searchInput').addEventListener('keyup', (e) => { currentSearchTerm = e.target.value; loadPosts(); });
-                document.getElementById('filter-buttons').addEventListener('click', (e) => {
-                    const button = e.target.closest('button');
-                    if(button) {
-                        document.querySelector('.filter-btn.active').classList.remove('active', 'bg-indigo-500', 'text-white');
-                        button.classList.add('active', 'bg-indigo-500', 'text-white');
-                        currentFilter = button.dataset.filter;
-                        loadPosts();
-                    }
-                });
-                loadPosts();
-            }
-
+    async function loadPosts() {
+        // PERBAIKAN: Ambil juga kolom 'is_featured'
+        let query = supabase.from('posts').select('id, title, published, slug, is_featured').order('created_at', { ascending: false });
+        if (currentFilter === 'published') query = query.eq('published', true);
+        if (currentFilter === 'draft') query = query.eq('published', false);
+        if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
+        
+        const { data: posts, error } = await query;
+        if (error || !posts) { postListContainer.innerHTML = `<p class="text-red-400 text-center">Gagal memuat.</p>`; return; }
+        if (posts.length === 0) { postListContainer.innerHTML = `<p class="text-slate-500 text-center p-10">Tidak ada postingan.</p>`; return; }
+        
+        postListContainer.innerHTML = '';
+        posts.forEach(post => {
+            const postEl = document.createElement('div');
+            postEl.className = 'p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center';
+            
+            // PERBAIKAN: Tombol bintang sudah ditambahkan di sini
+            postEl.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <button onclick="window.toggleFeatured('posts', '${post.id}', ${post.is_featured})" title="Jadikan Featured" class="star-btn text-xl transition-colors ${post.is_featured ? 'text-amber-400' : 'text-slate-600 hover:text-amber-400'}">
+                        <i class="ri-star-fill"></i>
+                    </button>
+                    <div>
+                        <p class="font-semibold text-white">${post.title}</p>
+                        <p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 text-lg">
+                    <a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-eye-line"></i></a>
+                    <a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-pencil-line"></i></a>
+                    <button onclick="window.deleteItem('posts', '${post.id}', 'posts')" title="Hapus Post" class="text-slate-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button>
+                </div>
+            `;
+            postListContainer.appendChild(postEl);
+        });
+    }
+    document.getElementById('searchInput').addEventListener('keyup', (e) => { currentSearchTerm = e.target.value; loadPosts(); });
+    document.getElementById('filter-buttons').addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if(button) {
+            document.querySelector('.filter-btn.active').classList.remove('active', 'bg-indigo-500');
+            button.classList.add('active', 'bg-indigo-500');
+            currentFilter = button.dataset.filter;
+            loadPosts();
+        }
+    });
+    loadPosts();
+}
             // --- LOGIKA UNTUK PANEL KATEGORI ---
             async function renderCategoriesPanel() {
                 tabContent.innerHTML = document.getElementById('template-categories').innerHTML;
