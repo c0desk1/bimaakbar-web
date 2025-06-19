@@ -185,16 +185,34 @@
 
        // GANTI FUNGSI LAMA-MU DENGAN VERSI BARU YANG SUDAH DIPERBAIKI INI
 
+// GANTI SELURUH FUNGSI fetchPrevNextPosts DENGAN VERSI FINAL INI
+
 async function fetchPrevNextPosts(currentPost) {
     const navContainer = document.getElementById('post-navigation');
     if (!navContainer) return;
-    const currentTimestamp = new Date(currentPost.created_at).toISOString();
+    const cleanTimestamp = new Date(currentPost.created_at).toISOString().split('.')[0] + "Z";
 
     const [prevPostRes, nextPostRes] = await Promise.all([
-        supabase.from('posts').select('title,slug').eq('published', true).lt('created_at', currentTimestamp).order('created_at', { ascending: false }).limit(1).single(),
-        supabase.from('posts').select('title,slug').eq('published', true).gt('created_at', currentTimestamp).order('created_at', { ascending: true }).limit(1).single()
+        // Menggunakan timestamp yang super bersih untuk query "Sebelumnya"
+        supabase.from('posts')
+          .select('title,slug')
+          .eq('published', true)
+          .lt('created_at', cleanTimestamp)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single(),
+        
+        // Menggunakan timestamp yang super bersih untuk query "Berikutnya"
+        supabase.from('posts')
+          .select('title,slug')
+          .eq('published', true)
+          .gt('created_at', cleanTimestamp)
+          .order('created_at', { ascending: true })
+          .limit(1)
+          .single()
     ]);
     
+    // Logika fallback untuk link ke Beranda
     let prevHTML = `<a href="index.html" class="text-left"><p class="text-sm text-gray-400">Semua Post</p><p class="font-semibold text-white hover:text-indigo-400"><i class="ri-apps-2-line mr-2"></i>Beranda</p></a>`;
     if (prevPostRes.data) {
         prevHTML = `<a href="post.html?slug=${prevPostRes.data.slug}" class="text-left"><p class="text-sm text-gray-400">Sebelumnya</p><p class="font-semibold text-white hover:text-indigo-400">${prevPostRes.data.title}</p></a>`;
