@@ -78,10 +78,14 @@
             </div>
         </article>
     </main>
-    <footer class="text-center py-12 border-t border-white/10 mt-20">
+   <footer class="text-center py-12 border-t border-white/10 mt-20">
         <p class="text-sm text-gray-500">&copy; 2025 Bima Akbar. All Rights Reserved.</p>
     </footer>
-    <button id="back-to-top" class="hidden fixed bottom-6 right-6 bg-indigo-500 text-white w-12 h-12 rounded-full shadow-lg hover:bg-indigo-600 transition-all z-50 justify-center items-center"><i class="ri-arrow-up-s-line text-2xl"></i></button>
+
+    <button id="back-to-top" class="hidden fixed bottom-6 right-6 bg-indigo-500 text-white w-12 h-12 rounded-full shadow-lg hover:bg-indigo-600 transition-all z-50 justify-center items-center">
+        <i class="ri-arrow-up-s-line text-2xl"></i>
+    </button>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -95,8 +99,21 @@
             const commentsSection = document.getElementById('comments-section');
             const commentFormContainer = document.getElementById('comment-form-container');
             const newsletterForm = document.getElementById('newsletterForm');
+            const backToTopBtn = document.getElementById('back-to-top');
 
-            // === 3. SEMUA FUNGSI LENGKAP ===
+
+            if(backToTopBtn) {
+                window.onscroll = () => {
+                    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                        backToTopBtn.style.display = "flex";
+                    } else {
+                        backToTopBtn.style.display = "none";
+                    }
+                };
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                });
+            }
 
             function updateMeta(post) {
                 document.title = post.meta_title || post.title;
