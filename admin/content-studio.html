@@ -174,7 +174,16 @@
             
             tabsContainer.addEventListener('click', (e) => {
                 const button = e.target.closest('button[data-tab]');
-                if (button) renderView(button.dataset.tab);
+                if (button) {
+                    document.querySelector('.tab-btn.active')?.classList.remove('active');
+                    button.classList.add('active');
+                    const tabName = button.dataset.tab;
+                    
+                    if (tabName === 'posts') renderPostsPanel();
+                    if (tabName === 'categories') renderCategoriesPanel();
+                    if (tabName === 'music') renderMusicPanel();
+                    if (tabName === 'affiliates') renderAffiliatesPanel();
+                }
             });
 
             async function initializePage() {
