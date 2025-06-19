@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bima Akbar</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <title>Bima's Corner</title>
     <meta name="description" content="Menjelajahi ide, cerita, dan berbagai hal menarik lainnya.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
@@ -15,7 +14,6 @@
         .post-card:hover .post-card-img { transform: scale(1.05); }
         .category-filter-btn { transition: all 0.2s ease-in-out; }
         .category-filter-btn.active { background-color: #4f46e5; color: #fff; }
-        .ad-slot { display: flex; justify-content: center; align-items: center; background-color: rgba(23,23,23,0.5); border: 1px dashed #3f3f46; color: #71717a; }
     </style>
 </head>
 <body class="antialiased">
@@ -39,137 +37,101 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <section id="featured-post" class="mb-20" style="display: none;"></section>
-        
-        <div class="ad-slot my-12 h-24 rounded-2xl"><p>Ad Slot 728x90</p></div>
-
         <section id="blog" class="mb-20">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <h2 class="text-3xl font-bold text-white">Tulisan Terbaru</h2>
                 <div id="category-filters" class="flex flex-wrap gap-2"></div>
             </div>
-            <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><p class="col-span-full text-center">Memuat postingan...</p></div>
         </section>
-        
-        <section id="about-me" class="mb-20">
-            <div class="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
-                <img src="assets/logo.png" alt="Bima Akbar" class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-neutral-700">
-                <div>
-                    <h3 class="text-2xl font-bold text-white">Tentang Saya</h3>
-                    <p class="mt-2 text-gray-400">Selamat datang di sudut internet saya! Saya Bima, seorang kreator digital dan musisi dari Pekanbaru. Di sini saya berbagi ide, cerita, dan hal-hal menarik yang saya temukan.</p>
-                    <div class="flex gap-4 mt-4 text-xl text-gray-400">
-                        <a href="#" class="hover:text-white"><i class="ri-instagram-line"></i></a>
-                        </div>
-                </div>
+        <section id="music" class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-8">Rilisan Musik</h2>
+            <div id="music-grid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"><p class="col-span-full text-center">Memuat rilisan musik...</p></div>
+        </section>
+        <section id="affiliate" class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-8">Rekomendasi Produk</h2>
+            <div id="affiliate-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"><p class="col-span-full text-center">Memuat produk...</p></div>
+        </section>
+        <section id="newsletter" class="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div>
+                <h3 class="text-2xl font-bold text-white">Jangan Ketinggalan Update</h3>
+                <p class="text-gray-400 mt-2 max-w-lg">Dapatkan notifikasi setiap kali ada konten baru.</p>
             </div>
+            <form id="newsletterForm" class="w-full lg:w-auto flex-shrink-0"><div class="flex flex-col sm:flex-row gap-3">
+                <input type="email" id="newsletterEmail" required placeholder="Masukkan email Anda" class="w-full lg:w-80 px-4 py-3 rounded-lg bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button type="submit" class="bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-600 transition-colors">Daftar</button>
+            </div><p id="newsletterMessage" class="text-xs mt-2 h-4"></p></form>
         </section>
+    </main>
+    <footer class="text-center py-12 border-t border-white/10 mt-20">
+        <p class="text-sm text-gray-500">&copy; 2025 Bima Akbar. All Rights Reserved.</p>
+    </footer>
+    <button id="back-to-top" class="hidden fixed bottom-6 right-6 bg-indigo-500 text-white w-12 h-12 rounded-full shadow-lg hover:bg-indigo-600 transition-all z-50 justify-center items-center"><i class="ri-arrow-up-s-line text-2xl"></i></button>
 
-        </main>
-
-    <button id="back-to-top" class="hidden fixed bottom-6 right-6 bg-indigo-500 ... "><i class="ri-arrow-up-s-line text-2xl"></i></button>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         window.onload = function() {
-            const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const backToTopBtn = document.getElementById('back-to-top');
+            const newsletterForm = document.getElementById('newsletterForm');
 
-                // === 2. ELEMEN DOM (dengan pengecekan) ===
-                const menuBtn = document.getElementById('menu-btn');
-                const mobileMenu = document.getElementById('mobile-menu');
-                const backToTopBtn = document.getElementById('back-to-top');
-                const newsletterForm = document.getElementById('newsletterForm'); // Tambahkan ini
+            if (menuBtn) { menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+            if (backToTopBtn) {
+                window.onscroll = () => { (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) ? backToTopBtn.style.display = "flex" : backToTopBtn.style.display = "none"; };
+                backToTopBtn.addEventListener('click', () => { window.scrollTo({top: 0, behavior: 'smooth'}); });
+            }
+
+            function createExcerpt(html, maxLength = 100) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                const text = tempDiv.textContent || tempDiv.innerText || '';
+                return text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
+            }
+
+            async function loadPostsAndCategories() {
                 const postsGrid = document.getElementById('posts-grid');
                 const featuredPostContainer = document.getElementById('featured-post');
                 const categoryFilters = document.getElementById('category-filters');
-                const musicGrid = document.getElementById('music-grid');
-                const affiliateGrid = document.getElementById('affiliate-grid');
-
-                // === 3. EVENT LISTENER UNTUK UI DASAR (dengan pengecekan) ===
-                if (menuBtn) {
-                    menuBtn.addEventListener('click', () => {
-                        mobileMenu.classList.toggle('hidden');
-                    });
+                
+                const { data: posts, error } = await supabase.from('posts').select('*').eq('published', true).order('created_at', { ascending: false });
+                if (error || !posts || posts.length === 0) {
+                    if(postsGrid) postsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada tulisan.</p>';
+                    if(featuredPostContainer) featuredPostContainer.style.display = 'none';
+                    return;
                 }
-
-                if (backToTopBtn) {
-                    window.onscroll = () => {
-                        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                            backToTopBtn.style.display = "flex";
-                        } else {
-                            backToTopBtn.style.display = "none";
-                        }
-                    };
-
-                    backToTopBtn.addEventListener('click', () => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    });
-                }
-
-                // === 4. FUNGSI-FUNGSI HELPERS ===
-                function createExcerpt(html, maxLength = 100) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
-                    const text = tempDiv.textContent || tempDiv.innerText || '';
-                    return text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
-                }
-
-                // === 5. FUNGSI-FUNGSI UNTUK MEMUAT & MERENDER KONTEN ===
-
-                async function loadPostsAndCategories() {
-                    if (!postsGrid || !featuredPostContainer || !categoryFilters) return; // Pastikan elemen ada
-
-                    const { data: posts, error } = await supabase.from('posts').select('*').eq('published', true).order('created_at', { ascending: false });
-
-                    if (error || !posts || posts.length === 0) {
-                        postsGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada tulisan untuk ditampilkan.</p>';
-                        featuredPostContainer.style.display = 'none';
-                        return;
-                    }
-
-                    const featuredPost = posts[0];
-                    const otherPosts = posts.slice(1);
-
-                    // Render Featured Post
+                const featuredPost = posts[0];
+                const otherPosts = posts.slice(1);
+                
+                if(featuredPostContainer) {
                     featuredPostContainer.style.display = 'block';
                     featuredPostContainer.innerHTML = `
                         <a href="post.html?slug=${featuredPost.slug}" class="block group grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                            <div class="overflow-hidden rounded-2xl aspect-video md:aspect-auto">
-                                <img loading="lazy" src="${featuredPost.thumbnail_url || 'https://via.placeholder.com/800x600.png/171717/171717'}" alt="${featuredPost.title}" class="post-card-img w-full h-full object-cover transition-transform duration-300">
-                            </div>
-                            <div>
-                                <p class="font-semibold text-indigo-400 text-sm uppercase">${featuredPost.category || 'Terbaru'}</p>
-                                <h3 class="mt-2 text-4xl font-extrabold text-white group-hover:text-indigo-400 transition-colors">${featuredPost.title}</h3>
-                                <p class="mt-4 text-gray-400">${createExcerpt(featuredPost.content, 150)}</p>
-                                <p class="text-xs text-gray-500 mt-4">${featuredPost.views || 0} views</p>
-                            </div>
+                            <div class="overflow-hidden rounded-2xl aspect-video md:aspect-auto"><img loading="lazy" src="${featuredPost.thumbnail_url || ''}" alt="${featuredPost.title}" class="post-card-img w-full h-full object-cover transition-transform duration-300"></div>
+                            <div><p class="font-semibold text-indigo-400 text-sm uppercase">${featuredPost.category || 'Terbaru'}</p><h3 class="mt-2 text-4xl font-extrabold text-white group-hover:text-indigo-400">${featuredPost.title}</h3><p class="mt-4 text-gray-400">${createExcerpt(featuredPost.content, 150)}</p><p class="text-xs text-gray-500 mt-4">${featuredPost.views || 0} views</p></div>
                         </a>`;
-
-                    // Render sisa post di grid
+                }
+                
+                if(postsGrid) {
                     postsGrid.innerHTML = '';
                     otherPosts.forEach(post => {
                         const card = document.createElement('a');
                         card.href = `post.html?slug=${post.slug}`;
                         card.className = 'post-card-item bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden block group';
                         card.setAttribute('data-category', post.category || 'tanpa-kategori');
-                        card.innerHTML = `
-                            <div class="overflow-hidden h-48"><img loading="lazy" src="${post.thumbnail_url || 'https://via.placeholder.com/400x300.png/171717/171717'}" alt="${post.title}" class="post-card-img w-full h-full object-cover transition-transform duration-300"></div>
-                            <div class="p-6">
-                                <h4 class="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors">${post.title}</h4>
-                                <p class="text-xs text-gray-500 mt-2">${post.views || 0} views</p>
-                            </div>`;
+                        card.innerHTML = `<div class="overflow-hidden h-48"><img loading="lazy" src="${post.thumbnail_url || ''}" alt="${post.title}" class="post-card-img w-full h-full object-cover"></div><div class="p-6"><h4 class="font-bold text-lg text-white group-hover:text-indigo-400">${post.title}</h4><p class="text-xs text-gray-500 mt-2">${post.views || 0} views</p></div>`;
                         postsGrid.appendChild(card);
                     });
-
-                    // Muat dan render filter kategori
-                    const { data: categories, error: catError } = await supabase.from('categories').select('name');
-                    if (catError || !categories) return;
-
-                    categoryFilters.innerHTML = '<button class="category-filter-btn active px-3 py-1.5 text-sm font-semibold rounded-full" data-category="all">Semua</button>';
+                }
+                
+                const { data: categories, error: catError } = await supabase.from('categories').select('name');
+                if (!catError && categories && categoryFilters) {
+                    categoryFilters.innerHTML = '<button class="category-filter-btn active bg-indigo-500 text-white px-3 py-1.5 text-sm font-semibold rounded-full" data-category="all">Semua</button>';
                     categories.forEach(cat => {
                         categoryFilters.innerHTML += `<button class="category-filter-btn px-3 py-1.5 text-sm font-semibold rounded-full text-gray-300 hover:bg-neutral-700" data-category="${cat.name}">${cat.name}</button>`;
                     });
-
                     document.querySelectorAll('.category-filter-btn').forEach(button => {
                         button.addEventListener('click', () => {
                             document.querySelector('.category-filter-btn.active')?.classList.remove('active', 'bg-indigo-500', 'text-white');
@@ -181,63 +143,44 @@
                         });
                     });
                 }
+            }
 
-                async function loadMusic() {
-                    if (!musicGrid) return; // Pastikan elemen ada
-                    const { data, error } = await supabase.from('music_releases').select('*').order('release_date', { ascending: false });
-                    if (error || !data || data.length === 0) { musicGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada musik.</p>'; return; }
-                    musicGrid.innerHTML = '';
-                    data.forEach(music => {
-                        musicGrid.innerHTML += `
-                            <a href="${music.spotify_url || music.apple_music_url || '#'}" target="_blank" class="post-card bg-neutral-900/50 border border-neutral-800 rounded-2xl block group flex items-center gap-4 p-4">
-                                <img loading="lazy" src="${music.cover_art_url || 'https://via.placeholder.com/64'}" alt="${music.song_title}" class="w-20 h-20 rounded-md object-cover flex-shrink-0">
-                                <div><p class="font-semibold text-white group-hover:text-indigo-400 transition-colors">${music.song_title}</p><p class="text-sm text-gray-500">${new Date(music.release_date).getFullYear()}</p></div>
-                            </a>`;
-                    });
-                }
+            async function loadMusic() {
+                const musicGrid = document.getElementById('music-grid');
+                if (!musicGrid) return;
+                const { data, error } = await supabase.from('music_releases').select('*').order('release_date', { ascending: false });
+                if (error || !data || data.length === 0) { musicGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada musik.</p>'; return; }
+                musicGrid.innerHTML = '';
+                data.forEach(music => { musicGrid.innerHTML += `<a href="${music.spotify_url || '#'}" target="_blank" class="post-card bg-neutral-900/50 border border-neutral-800 rounded-2xl block group flex items-center gap-4 p-4"><img loading="lazy" src="${music.cover_art_url || ''}" alt="${music.song_title}" class="w-20 h-20 rounded-md object-cover flex-shrink-0"><div><p class="font-semibold text-white group-hover:text-indigo-400">${music.song_title}</p><p class="text-sm text-gray-500">${new Date(music.release_date).getFullYear()}</p></div></a>`; });
+            }
 
-                async function loadAffiliates() {
-                    if (!affiliateGrid) return; // Pastikan elemen ada
-                    const { data, error } = await supabase.from('affiliate_links').select('*').order('created_at', { ascending: false });
-                    if (error || !data || data.length === 0) { affiliateGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada rekomendasi.</p>'; return; }
-                    affiliateGrid.innerHTML = '';
-                    data.forEach(item => {
-                        affiliateGrid.innerHTML += `
-                            <a href="${item.product_url}" target="_blank" class="post-card bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden block group">
-                                <div class="overflow-hidden h-40"><img loading="lazy" src="${item.product_image_url || 'https://via.placeholder.com/300'}" alt="${item.product_name}" class="post-card-img w-full h-full object-cover transition-transform duration-300"></div>
-                                <div class="p-4"><h4 class="font-semibold text-sm text-white">${item.product_name}</h4><p class="text-xs text-gray-500">${item.category || ''}</p></div>
-                            </a>`;
-                    });
-                }
+            async function loadAffiliates() {
+                const affiliateGrid = document.getElementById('affiliate-grid');
+                if (!affiliateGrid) return;
+                const { data, error } = await supabase.from('affiliate_links').select('*').order('created_at', { ascending: false });
+                if (error || !data || data.length === 0) { affiliateGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada rekomendasi.</p>'; return; }
+                affiliateGrid.innerHTML = '';
+                data.forEach(item => { affiliateGrid.innerHTML += `<a href="${item.product_url}" target="_blank" class="post-card bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden block group"><div class="overflow-hidden h-40"><img loading="lazy" src="${item.product_image_url || ''}" alt="${item.product_name}" class="post-card-img w-full h-full object-cover"></div><div class="p-4"><h4 class="font-semibold text-sm text-white">${item.product_name}</h4><p class="text-xs text-gray-500">${item.category || ''}</p></div></a>`; });
+            }
 
-                async function handleNewsletter(e) {
-                    e.preventDefault();
-                    if (!newsletterForm) return; // Pastikan elemen ada
-                    const emailInput = document.getElementById('newsletterEmail');
-                    const messageEl = document.getElementById('newsletterMessage');
-                    if (!emailInput || !messageEl) return; // Pastikan elemen ada
-                    const email = emailInput.value;
-                    messageEl.textContent = 'Memproses...';
-                    messageEl.className = 'text-xs mt-2 h-4 text-amber-400';
-                    const { error } = await supabase.from('subscribers').insert({ email: email });
-                    if (error) {
-                        messageEl.textContent = error.code === '23505' ? 'Email ini sudah terdaftar. Terima kasih!' : 'Gagal mendaftar. Coba lagi.';
-                        messageEl.className = `text-xs mt-2 h-4 ${error.code === '23505' ? 'text-green-400' : 'text-red-400'}`;
-                    } else {
-                        messageEl.textContent = 'Terima kasih telah mendaftar!';
-                        messageEl.className = 'text-xs mt-2 h-4 text-green-400';
-                        emailInput.value = '';
-                    }
-                }
+            async function handleNewsletter(e) {
+                e.preventDefault();
+                const emailInput = document.getElementById('newsletterEmail');
+                const messageEl = document.getElementById('newsletterMessage');
+                if (!emailInput || !messageEl) return;
+                const email = emailInput.value.trim();
+                if (!email) return;
+                messageEl.textContent = 'Memproses...';
+                const { error } = await supabase.from('subscribers').insert({ email: email });
+                if (error) { messageEl.textContent = error.code === '23505' ? 'Email ini sudah terdaftar!' : 'Gagal mendaftar.'; } 
+                else { messageEl.textContent = 'Terima kasih telah mendaftar!'; emailInput.value = ''; }
+            }
 
-                // === 6. PANGGIL SEMUA FUNGSI SAAT HALAMAN DIMUAT ===
-                if (newsletterForm) { // Pastikan elemen ada
-                    newsletterForm.addEventListener('submit', handleNewsletter);
-                }
-                loadPostsAndCategories();
-                loadMusic();
-                loadAffiliates();
-            };
-        </script>
-    </body>
+            if (newsletterForm) { newsletterForm.addEventListener('submit', handleNewsletter); }
+            loadPostsAndCategories();
+            loadMusic();
+            loadAffiliates();
+        };
+    </script>
+</body>
 </html>
