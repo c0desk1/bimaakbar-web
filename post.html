@@ -157,12 +157,53 @@
             tocContainer.style.display = 'block';
         }
         
-        async function fetchPrevNextPosts(currentPost) { /* ... fungsi lengkap ... */ }
+        async function fetchPrevNextPosts(currentPost) {
+            const navContainer = document.getElementById('post-navigation');
+                if (!navContainer) return;
+                const [prevPostRes, nextPostRes] = await Promise.all([
+                    supabase.from('posts').select('title,slug').eq('published',true).lt('created_at', currentPost.created_at).order('created_at', {ascending: false}).limit(1).single(),
+                    supabase.from('posts').select('title,slug').eq('published',true).gt('created_at', currentPost.created_at).order('created_at', {ascending: true}).limit(1).single()
+                ]);
+                let prevHTML = `<a href="index.html" class="text-left"><p class="text-sm text-gray-400">Semua Post</p><p class="font-semibold text-white hover:text-indigo-400"><i class="ri-apps-2-line mr-2"></i>Beranda</p></a>`;
+                if(prevPostRes.data) prevHTML = `<a href="post.html?slug=${prevPostRes.data.slug}" class="text-left"><p class="text-sm text-gray-400">Sebelumnya</p><p class="font-semibold text-white hover:text-indigo-400">${prevPostRes.data.title}</p></a>`;
+                let nextHTML = `<a href="index.html" class="text-right"><p class="text-sm text-gray-400">Semua Post</p><p class="font-semibold text-white hover:text-indigo-400">Beranda<i class="ri-apps-2-line ml-2"></i></p></a>`;
+                if(nextPostRes.data) nextHTML = `<a href="post.html?slug=${nextPostRes.data.slug}" class="text-right"><p class="text-sm text-gray-400">Berikutnya</p><p class="font-semibold text-white hover:text-indigo-400">${nextPostRes.data.title}</p></a>`;
+                navContainer.innerHTML = prevHTML + nextHTML;
+        }
         async function fetchAndRenderRelatedPosts(currentPost) { /* ... fungsi lengkap ... */ }
-        async function fetchAndRenderComments(postId) { /* ... fungsi lengkap ... */ }
-        function renderCommentForm(postId, session) { /* ... fungsi lengkap ... */ }
-        async function countView(postId) { /* ... fungsi lengkap ... */ }
-        async function handleNewsletter(e) { /* ... fungsi lengkap ... */ }
+        async function fetchAndRenderComments(postId) {
+            const commentsList = document.getElementById('comments-list');
+                if (!commentsList) return;
+                const { data, error } = await supabase.from('comments').select('*').eq('post_id', postId).eq('is_approved', true).order('created_at', { ascending: true });
+                if (error || !data) { commentsList.innerHTML = '<p class="text-slate-400">Gagal memuat komentar.</p>'; return; }
+                if (data.length === 0) { commentsList.innerHTML = '<p class="text-slate-400 text-sm">Jadilah yang pertama berkomentar!</p>'; return; }
+                commentsList.innerHTML = '';
+                data.forEach(comment => {
+                    commentsList.innerHTML += `<div class="comment-card p-4 rounded-xl flex items-start gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-white text-lg">${comment.author_name.charAt(0).toUpperCase()}</div><div><p class="font-semibold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-1">${comment.content}</p><p class="text-xs text-slate-500 mt-2">${new Date(comment.created_at).toLocaleString('id-ID')}</p></div></div>`;
+                });
+        }
+        function renderCommentForm(postId, session) {const commentFormContainer = document.getElementById('comment-form-container');
+                if(!commentFormContainer) return;
+                if (session) {
+                    commentFormContainer.innerHTML = `<form id="comment-form" data-post-id="${postId}" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24 bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
+                } else {
+                    commentFormContainer.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
+                }}
+        async function countView(postId) {
+            try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
+                catch (error) { console.error("Gagal menghitung view:", error);
+            }}
+        async function handleNewsletter(e) {
+             e.preventDefault();
+                const emailInput = document.getElementById('newsletterEmail');
+                const messageEl = document.getElementById('newsletterMessage');
+                if (!emailInput || !messageEl) return;
+                const email = emailInput.value;
+                messageEl.textContent = 'Memproses...';
+                const { error } = await supabase.from('subscribers').insert({ email: email });
+                if (error) { messageEl.textContent = error.code === '23505' ? 'Email ini sudah terdaftar!' : 'Gagal mendaftar.'; } 
+                else { messageEl.textContent = 'Terima kasih telah mendaftar!'; emailInput.value = ''; }
+        }
 
         async function initializePage() {
             try {
