@@ -14,6 +14,7 @@
         .tab-btn.active { color: #fff; border-bottom-color: #6366f1; }
         .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
         .star-btn.featured { color: #facc15; }
+        .filter-btn.active { background-color: #4f46e5; color: white; }
     </style>
 </head>
 <body class="antialiased">
@@ -28,16 +29,13 @@
                     <i class="ri-add-circle-fill mr-2"></i>Buat Postingan Baru
                 </a>
             </header>
-
             <div class="border-b border-white/10 mb-8">
                 <nav id="tabs-container" class="-mb-px flex space-x-6 overflow-x-auto">
                     <button data-tab="posts" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Postingan</button>
                     <button data-tab="categories" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Kategori</button>
-                    <button data-tab="music" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Musik</button>
-                    <button data-tab="affiliates" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Afiliasi</button>
                 </nav>
             </div>
-            <div id="tab-content"></div>
+            <div id="tab-content"><p class="text-center text-slate-500 p-10">Memuat...</p></div>
         </div>
     </div>
     
@@ -45,18 +43,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+            
             const mainContent = document.getElementById('mainContent');
             const tabsContainer = document.getElementById('tabs-container');
             const tabContent = document.getElementById('tab-content');
 
-            // === FUNGSI-FUNGSI GLOBAL ===
-            async function toggleFeatured(id) {
-                const { data: current, error: fetchError } = await supabase.from('posts').select('is_featured').eq('id', id).single();
-                if(fetchError) { alert('Gagal mendapatkan status post: ' + fetchError.message); return; }
-                const { error } = await supabase.from('posts').update({ is_featured: !current.is_featured }).eq('id', id);
+            // --- FUNGSI-FUNGSI LOGIKA (semua di dalam satu scope aman) ---
+
+            async function toggleFeatured(id, currentStatus) {
+                const { error } = await supabase.from('posts').update({ is_featured: !currentStatus }).eq('id', id);
                 if (error) alert('Gagal mengubah status featured: ' + error.message);
                 else renderPostsPanel();
             }
+
             async function deleteItem(tableName, id) {
                 if (confirm(`Yakin ingin menghapus item ini dari tabel "${tableName}"?`)) {
                     const { error } = await supabase.from(tableName).delete().eq('id', id);
@@ -68,7 +67,6 @@
                 }
             }
 
-            // === RENDER & LOGIKA SETIAP PANEL ===
             async function renderPostsPanel() {
                 tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><div class="flex flex-col md:flex-row justify-between gap-4 mb-6"><div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg"><button data-filter="all" class="filter-btn px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button><button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button><button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button></div><div class="relative"><i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i><input id="searchInput" type="search" placeholder="Cari postingan..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div></div><div id="postList" class="space-y-3"><p class="text-center text-slate-500 p-10">Memuat...</p></div></div>`;
                 const postListContainer = document.getElementById('postList');
@@ -78,19 +76,13 @@
 
                 async function loadPosts() {
                     let query = supabase.from('posts').select('id, title, published, slug, is_featured').order('created_at', { ascending: false });
-                    if (currentFilter === 'published') query = query.eq('published', true);
-                    if (currentFilter === 'draft') query = query.eq('published', false);
+                    if (currentFilter !== 'all') query = query.eq('published', currentFilter === 'published');
                     if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
                     const { data: posts, error } = await query;
                     if (!posts) { postListContainer.innerHTML = `<p class="text-slate-500 text-center p-10">Tidak ada postingan.</p>`; return; }
                     postListContainer.innerHTML = '';
                     posts.forEach(post => {
-                        const postEl = document.createElement('div');
-                        postEl.className = 'p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center';
-                        postEl.innerHTML = `
-                            <div class="flex items-center gap-3"><button data-action="toggle-featured" data-id="${post.id}" title="Jadikan Featured" class="star-btn text-xl transition-colors ${post.is_featured ? 'text-amber-400' : 'text-slate-600 hover:text-amber-400'}"><i class="ri-star-fill"></i></button><div><p class="font-semibold text-white">${post.title}</p><p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p></div></div>
-                            <div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-eye-line"></i></a><a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-pencil-line"></i></a><button data-action="delete-post" data-id="${post.id}" title="Hapus Post" class="text-slate-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`;
-                        postListContainer.appendChild(postEl);
+                        postListContainer.innerHTML += `<div class="p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-3"><button data-action="toggle-featured" data-id="${post.id}" data-status="${post.is_featured}" title="Jadikan Featured" class="star-btn text-xl transition-colors ${post.is_featured ? 'text-amber-400' : 'text-slate-600 hover:text-amber-400'}"><i class="ri-star-fill"></i></button><div><p class="font-semibold text-white">${post.title}</p><p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p></div></div><div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat"><i class="ri-eye-line text-slate-400 hover:text-indigo-400"></i></a><a href="post-add.html?id=${post.id}" title="Edit"><i class="ri-pencil-line text-slate-400 hover:text-indigo-400"></i></a><button data-action="delete-post" data-id="${post.id}" title="Hapus"><i class="ri-delete-bin-line text-slate-400 hover:text-red-500"></i></button></div></div>`;
                     });
                 }
                 searchInput.addEventListener('keyup', (e) => { currentSearchTerm = e.target.value.trim(); loadPosts(); });
@@ -106,7 +98,7 @@
                 filterButtons.querySelector(`[data-filter="${currentFilter}"]`)?.classList.add('active', 'bg-indigo-500');
                 loadPosts();
             }
-
+            
             async function renderCategoriesPanel() {
                 tabContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Kategori</h2><form id="addCategoryForm" class="flex gap-2"><input id="newCategoryName" type="text" required placeholder="Nama kategori baru" class="flex-grow p-2 form-input"><button type="submit" class="bg-indigo-500 text-white font-semibold p-2 rounded-lg hover:bg-indigo-600"><i class="ri-add-line"></i></button></form></div><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Daftar Kategori</h2><div id="categoryList" class="space-y-2"><p class="text-center p-5">Memuat...</p></div></div></div>`;
                 const categoryListContainer = document.getElementById('categoryList');
@@ -125,32 +117,32 @@
             
             function renderMusicPanel() { tabContent.innerHTML = '<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white">Manajemen Musik</h2><p class="text-slate-400 mt-2">Segera Hadir.</p></div>'; }
             function renderAffiliatesPanel() { tabContent.innerHTML = '<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white">Manajemen Afiliasi</h2><p class="text-slate-400 mt-2">Segera Hadir.</p></div>'; }
-            
-            // --- EVENT DELEGATION UNTUK SEMUA AKSI ---
+
+            async function renderView(viewName) {
+                document.querySelectorAll('.tab-btn.active').forEach(b => b.classList.remove('active'));
+                tabsContainer.querySelector(`[data-tab="${viewName}"]`)?.classList.add('active');
+                if (viewName === 'posts') await renderPostsPanel();
+                else if (viewName === 'categories') await renderCategoriesPanel();
+                else if (viewName === 'music') renderMusicPanel();
+                else if (viewName === 'affiliates') renderAffiliatesPanel();
+            }
+
+            // === EVENT DELEGATION UNTUK SEMUA AKSI ===
             tabContent.addEventListener('click', (e) => {
-                const button = e.target.closest('button');
-                if (!button || !button.dataset.action) return;
-                const action = button.dataset.action;
-                const id = button.dataset.id;
-                if (action === 'toggle-featured') {
-                    const status = button.dataset.status === 'true';
-                    toggleFeatured(id, status);
-                }
-                if (action === 'delete-post') deleteItem('posts', id, 'posts');
-                if (action === 'delete-category') deleteItem('categories', id, 'categories');
+                const button = e.target.closest('button[data-action]');
+                if (!button) return;
+
+                const { action, id, status } = button.dataset;
+
+                if (action === 'toggle-featured') toggleFeatured(id, status === 'true');
+                if (action === 'delete-post') deleteItem('posts', id);
+                if (action === 'delete-category') deleteItem('categories', id);
             });
             
-            // --- NAVIGASI & INISIALISASI ---
+            // === INISIALISASI HALAMAN ===
             tabsContainer.addEventListener('click', (e) => {
-                if(e.target.tagName === 'BUTTON' && e.target.dataset.tab) {
-                    document.querySelector('.tab-btn.active')?.classList.remove('active');
-                    e.target.classList.add('active');
-                    const tabName = e.target.dataset.tab;
-                    if (tabName === 'posts') renderPostsPanel();
-                    if (tabName === 'categories') renderCategoriesPanel();
-                    if (tabName === 'music') renderMusicPanel();
-                    if (tabName === 'affiliates') renderAffiliatesPanel();
-                }
+                const button = e.target.closest('button[data-tab]');
+                if (button) renderView(button.dataset.tab);
             });
 
             async function initializePage() {
