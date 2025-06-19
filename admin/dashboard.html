@@ -10,47 +10,53 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-item.active { color: #818cf8; }
+        .nav-item.active { color: #818cf8; /* indigo-400 */ }
         .nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500">
-        </main>
+    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500"></main>
     
     <nav class="fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center" style="border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px);">
         <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
         <a href="content-studio.html" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-pencil-ruler-2-line text-2xl"></i><span class="text-xs mt-1">Konten</span></a>
+        <button data-view="stats" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-bar-chart-2-line text-2xl"></i><span class="text-xs mt-1">Statistik</span></button>
         <button data-view="comments" class="nav-item relative flex flex-col items-center justify-center text-gray-400">
-            <i class="ri-chat-4-line text-2xl"></i>
-            <span class="text-xs mt-1">Komentar</span>
-            <span id="comment-badge" class="hidden absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#0a0a0a]"></span>
+            <i class="ri-chat-4-line text-2xl"></i><span class="text-xs mt-1">Komentar</span>
+            <span id="comment-badge" class="hidden absolute top-0 right-2 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#0a0a0a]"></span>
         </button>
-        <button data-view="music" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-music-2-line text-2xl"></i><span class="text-xs mt-1">Musik</span></button>
         <button id="logoutButton" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-logout-box-r-line text-2xl"></i><span class="text-xs mt-1">Logout</span></button>
     </nav>
     
     <template id="view-home">
         <div class="space-y-8">
             <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Content Hub Anda.</p></div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div><div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div><div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div><div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
+                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2"><h2 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h2><div id="popularPostsList" class="space-y-3"></div></div>
                 <div><h3 class="text-xl font-semibold text-white mb-4">Komposisi Post</h3><div class="glass-card p-4 rounded-2xl h-64 flex items-center justify-center"><canvas id="postStatusChart"></canvas></div></div>
             </div>
         </div>
     </template>
-
-    <template id="view-music">
-        <h1 class="text-3xl font-bold text-white mb-6">Kelola Rilisan Musik</h1>
-        <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Tambah Rilisan Baru</h2><form id="musicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4"><input name="song_title" required placeholder="Judul Lagu" class="form-input p-3 rounded-lg bg-neutral-800"><input name="release_date" type="date" class="form-input p-3 rounded-lg bg-neutral-800"><input name="cover_art_url" placeholder="URL Cover Art" class="form-input p-3 rounded-lg bg-neutral-800"><input name="spotify_url" placeholder="URL Spotify" class="form-input p-3 rounded-lg bg-neutral-800"><input name="apple_music_url" placeholder="URL Apple Music" class="form-input p-3 rounded-lg md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Musik</button></form></div>
-        <div id="musicList" class="mt-8 space-y-3"></div>
-    </template>
-    
     <template id="view-comments">
         <h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
         <div id="comments-moderation-list" class="space-y-4"></div>
+    </template>
+    <template id="view-stats">
+        <h1 class="text-3xl font-bold text-white mb-6">Statistik Detail</h1>
+        <div class="space-y-8">
+            <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2><div class="h-80"><canvas id="monthlyViewsChart"></canvas></div></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2><div class="h-80"><canvas id="postsByCategoryChart"></canvas></div></div>
+                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2><div id="topPostsList" class="space-y-3"></div></div>
+            </div>
+        </div>
     </template>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -62,63 +68,53 @@
             const app = document.getElementById('app');
             const navItems = document.querySelectorAll('.nav-item');
             const commentBadge = document.getElementById('comment-badge');
-            let postStatusChart = null;
+            let charts = {};
 
+            // --- FUNGSI RENDER UTAMA ---
             async function renderView(viewName = 'home') {
                 const template = document.getElementById(`view-${viewName}`);
                 if (template) app.innerHTML = template.innerHTML;
-                navItems.forEach(item => { item.classList.remove('active'); });
-                document.querySelector(`.nav-item[data-view="${viewName}"]`)?.classList.add('active');
+                
+                document.querySelectorAll('.nav-item.active').forEach(i => i.classList.remove('active'));
+                const newActiveItem = document.querySelector(`.nav-item[data-view="${viewName}"]`);
+                if (newActiveItem) newActiveItem.classList.add('active');
 
                 if (viewName === 'home') await renderHomeView();
-                if (viewName === 'music') await renderMusicView();
                 if (viewName === 'comments') await renderCommentsView();
+                if (viewName === 'stats') await renderStatsView();
             }
 
+            // --- FUNGSI VIEW: HOME ---
             async function renderHomeView() {
                 const hour = new Date().getHours();
                 document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+                
                 const [postsRes, popularPostsRes, totalViewsRes] = await Promise.all([
                     supabase.from('posts').select('id, published'),
-                    supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(3),
+                    supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
                     supabase.rpc('get_total_views')
                 ]);
+
                 if (!postsRes.error) {
                     const posts = postsRes.data;
                     const publishedCount = posts.filter(p => p.published).length;
+                    const draftCount = posts.length - publishedCount;
                     document.getElementById('totalPosts').textContent = posts.length;
                     document.getElementById('publishedPosts').textContent = publishedCount;
-                    document.getElementById('draftPosts').textContent = posts.length - publishedCount;
-                    updateChart(publishedCount, posts.length - publishedCount);
+                    document.getElementById('draftPosts').textContent = draftCount;
+                    createChart('postStatusChart', 'doughnut', ['Published', 'Drafts'], [publishedCount, draftCount], '', ['#22c55e', '#f59e0b']);
                 }
-                if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data; }
+                if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
                 if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
                     const list = document.getElementById('popularPostsList');
                     list.innerHTML = '';
                     popularPostsRes.data.forEach(post => {
-                        list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views} views</p></div>`;
+                        list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
                     });
                 }
             }
             
-            async function renderMusicView() {
-                const list = document.getElementById('musicList');
-                const { data, error } = await supabase.from('music_releases').select('*').order('created_at', { ascending: false });
-                if(!error && data) {
-                    list.innerHTML = '';
-                    data.forEach(item => {
-                        list.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-between">...</div>`;
-                    });
-                }
-                document.getElementById('musicForm').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const musicData = Object.fromEntries(formData.entries());
-                    await supabase.from('music_releases').insert(musicData);
-                    renderView('music');
-                });
-            }
-
+            // --- FUNGSI VIEW: KOMENTAR ---
             async function renderCommentsView() {
                 const listContainer = document.getElementById('comments-moderation-list');
                 listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat komentar...</p>`;
@@ -129,55 +125,47 @@
                 comments.forEach(comment => {
                     const card = document.createElement('div');
                     card.className = 'glass-card p-4 rounded-xl';
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-bold text-white">${comment.author_name}</p>
-                                <p class="text-sm text-slate-300 mt-2">${comment.content}</p>
-                            </div>
-                            <div class="flex space-x-2 flex-shrink-0 ml-4">
-                                <button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button>
-                                <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button>
-                            </div>
-                        </div>
-                        <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
-                            Pada artikel: <a href="post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title}</a>
-                        </div>`;
+                    card.innerHTML = `<div class="flex justify-between items-start"><div><p class="font-bold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-2">${comment.content}</p></div><div class="flex space-x-2 flex-shrink-0 ml-4"><button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button><button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button></div></div><div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">Pada artikel: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title}</a></div>`;
                     listContainer.appendChild(card);
                 });
             }
-
-            window.approveComment = async (commentId) => {
-                const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
-                if (error) alert('Gagal menyetujui komentar: ' + error.message);
-                else { renderView('comments'); checkPendingComments(); }
-            }
-
-            window.deleteComment = async (commentId) => {
-                if (confirm('Yakin ingin menghapus komentar ini?')) {
-                    const { error } = await supabase.from('comments').delete().eq('id', commentId);
-                    if (error) alert('Gagal menghapus komentar: ' + error.message);
-                    else { renderView('comments'); checkPendingComments(); }
-                }
-            }
             
-            function updateChart(published, drafts) {
-                const chartEl = document.getElementById('postStatusChart');
-                if(!chartEl) return;
-                if (postStatusChart) postStatusChart.destroy();
-                postStatusChart = new Chart(chartEl.getContext('2d'), { type: 'doughnut', data: { labels: ['Published', 'Drafts'], datasets: [{ data: [published, drafts], backgroundColor: ['#22c55e', '#f59e0b'], borderColor: '#171717', borderWidth: 4 }] }, options: { responsive: true, cutout: '70%', plugins: { legend: { display: false } } } });
+            // --- FUNGSI VIEW: STATISTIK ---
+            async function renderStatsView() {
+                const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
+                if (error || !posts) return;
+                const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
+                const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
+                const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+                
+                createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
+                createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
+                
+                const topPostsList = document.getElementById('topPostsList');
+                topPostsList.innerHTML = '';
+                topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
+            }
+
+            // --- FUNGSI-FUNGSI HELPERS ---
+            window.approveComment = async (commentId) => { const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId); if (error) alert('Gagal: ' + error.message); else { renderView('comments'); checkPendingComments(); } }
+            window.deleteComment = async (commentId) => { if (confirm('Yakin?')) { const { error } = await supabase.from('comments').delete().eq('id', commentId); if (error) alert('Gagal: ' + error.message); else { renderView('comments'); checkPendingComments(); } } }
+            
+            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
+                const chartEl = document.getElementById(canvasId);
+                if (!chartEl) return;
+                if (charts[canvasId]) charts[canvasId].destroy();
+                const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a3a3a3' } }, y: { ticks: { color: '#a3a3a3' }, beginAtZero: true } }};
+                if (type === 'doughnut') { chartOptions.scales = {}; chartOptions.plugins.legend = { display: true, position: 'bottom', labels: { color: '#a3a3a3' } }; }
+                charts[canvasId] = new Chart(chartEl.getContext('2d'), { type, data: { labels, datasets: [{ label, data, backgroundColor: bgColors, borderColor: '#6366f1', tension: 0.3, fill: type === 'line' }] }, options: chartOptions });
             }
 
             async function checkPendingComments() {
                 const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
-                if (count > 0) {
-                    commentBadge.textContent = count > 9 ? '9+' : count;
-                    commentBadge.classList.remove('hidden');
-                } else {
-                    commentBadge.classList.add('hidden');
-                }
+                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
+                else { commentBadge.classList.add('hidden'); }
             }
 
+            // --- INISIALISASI HALAMAN ---
             async function initializePage() {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) { window.location.replace('login.html'); return; }
@@ -186,17 +174,16 @@
                 navItems.forEach(item => {
                     item.addEventListener('click', (e) => {
                         const view = e.currentTarget.dataset.view;
-                        if(view) renderView(view);
+                        if (view) renderView(view);
                     });
                 });
-                
                 document.getElementById('logoutButton').addEventListener('click', async () => { await supabase.auth.signOut(); window.location.replace('login.html'); });
                 
-                renderView('home');
+                await renderView('home');
                 checkPendingComments();
                 setInterval(checkPendingComments, 60000);
             }
-
+            
             initializePage();
         });
     </script>
