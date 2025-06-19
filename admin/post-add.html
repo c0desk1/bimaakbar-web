@@ -4,184 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor Postingan</title>
+    <link href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
-        .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .form-input { background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; }
-        .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
-        .editor-content[contenteditable=true]:empty:before { content: attr(data-placeholder); color: #4b5563; font-style: italic; }
-        .toolbar-btn { transition: background-color 0.2s ease; }
-        .toolbar-btn:hover { background-color: rgba(255,255,255,0.1); }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3;}
+        .glass-card { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
+        .form-input:focus { outline: none; border-color: #6366f1; }
+        select option { background: #171717; color: #e5e7eb; }
+    
+    select.form-input {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 2.5rem;
+        }
+
+    input[type="datetime-local"].form-input {
+        color-scheme: dark;
+    }
+    
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    
+        /* === KODE BARU UNTUK TOOLBAR & EDITOR === */
+        .sun-editor { border: none !important; }
+        .se-wrapper {
+            background: transparent !important;
+            overflow: hidden;
+        }
+        .se-toolbar-container {
+            background: rgba(28, 28, 31, 0.7) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 0.5rem !important;
+        }
+        .se-btn, .se-btn-more { color: #a3a3a3 !important; }
+        .se-btn:hover, .se-btn:focus, .se-btn.active { background-color: rgba(79, 70, 229, 0.2) !important; color: #c7d2fe !important; }
+        .sun-editor-editable {
+            background: #18181b !important;
+            color: #d4d4d8 !important;
+            font-size: 1.125rem;
+            line-height: 1.75;
+        }
+        .se-dialog { background-color: #1f2937 !important; color: #d1d5db !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; }
+        .se-dialog-header { background-color: #1f2937 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;}
+        .se-dialog-form .se-input-form { background-color: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; }
+        .se-dialog-form .se-btn-primary { background-color: #4f46e5 !important; color: #fff !important; border: none !important; }
+        .se-list-inner { background-color: #374151 !important; border: 1px solid rgba(255,255,255,0.2) !important;}
+        .se-list-inner ul li button:hover { background-color: #4f46e5 !important; color: #fff !important; }
     </style>
 </head>
 <body class="antialiased">
+	<header class="sticky top-0 z-40" style="background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+	    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+	        <div class="flex items-center justify-between h-16">
+	            <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
+	                <i class="ri-arrow-left-line"></i>
+	                <span class="font-semibold text-sm">Kembali ke Studio</span>
+	            </a>
+	            <button id="submitButton" type="submit" form="postForm" class="bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center gap-2">
+	                <i id="saveIcon" class="ri-save-3-fill"></i>
+	                <span id="buttonText">Simpan</span>
+	                <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+	            </button>
+	        </div>
+	    </div>
+	</header>
 
-    <header class="sticky top-0 z-40" style="background: linear-gradient(180deg, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
-                    <i class="ri-arrow-left-line"></i><span class="font-semibold">Kembali</span>
-                </a>
-                <button id="submitButton" type="submit" form="postForm" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-xl shadow-lg hover:bg-indigo-600 transition-colors flex items-center">
-                    <span id="buttonText">Simpan</span>
-                    <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
+    <main class="p-4 sm:p-6 lg:p-8">
+        <form id="postForm" class="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6 glass-card p-4 sm:p-6 rounded-2xl">
+                <input id="judul" type="text" placeholder="Judul Postingan" class="w-full text-3xl lg:text-4xl font-extrabold text-white placeholder-slate-600 bg-transparent outline-none">
+                <hr class="border-white/10">
+                <div class="rounded-lg overflow-hidden">
+                    <textarea id="editor"></textarea>
+                </div>
+            </div>
+
+<aside class="lg:col-span-1">
+    <div class="sticky top-8 space-y-6">
+        <div class="glass-card p-5 rounded-2xl">
+            <h3 class="font-semibold text-white mb-4">Pengaturan Postingan</h3>
+            <div class="space-y-4">
+                <div>
+                    <label for="slug" class="text-sm font-medium text-slate-400">URL Slug</label>
+                    <input id="slug" type="text" class="form-input mt-1 w-full p-2">
+                </div>
+                <div>
+                    <label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label>
+                    <select id="kategori" class="form-input mt-1 w-full p-2"></select>
+                </div>
+                <div>
+                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
+                    <select id="status" class="form-input mt-1 w-full p-2">
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                        <option value="scheduled">Scheduled</option>
+                    </select>
+                </div>
+                <div id="schedule-container" class="hidden">
+                            <label for="schedule-time" class="text-sm font-medium text-slate-400">Waktu Jadwal</label>
+                            <div class="relative mt-1">
+                                <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                   <i class="ri-calendar-2-line text-slate-400"></i>
+                                </div>
+                            </div>
+                        </div>
             </div>
         </div>
-    </header>
+        <div class="glass-card p-5 rounded-2xl">
+			<h3 class="font-semibold text-white mb-4">Thumbnail</h3>
+			<input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
+			<img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
+		</div>
+		<div class="glass-card p-5 rounded-2xl">
+			<h3 class="font-semibold text-white mb-4">SEO & Meta</h3>
+			<div class="space-y-4">
+				<div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+				<div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+				<div><label for="metaTitle" class="text-sm font-medium text-slate-400">Meta Title</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+				<div><label for="metaDescription" class="text-sm font-medium text-slate-400">Meta Description</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
+				<div><label for="keywords" class="text-sm font-medium text-slate-400">Keywords</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+			</div>
+		</div>
+	</div>
+</aside>
 
-    <main id="mainContent" class="p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-500">
-        <div class="max-w-screen-xl mx-auto">
-            <form id="postForm" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 space-y-6 glass-card p-6 rounded-2xl">
-                    <input id="judul" type="text" placeholder="Ketik Judul Postingan di Sini..." class="w-full text-3xl lg:text-4xl font-extrabold text-white placeholder-slate-600 bg-transparent outline-none">
-                    
-                    <div id="editor-toolbar" class="flex items-center gap-1 p-2 border-y border-white/10 flex-wrap">
-                        <button type="button" data-command="bold" class="toolbar-btn p-2 rounded-md"><i class="ri-bold"></i></button>
-                        <button type="button" data-command="italic" class="toolbar-btn p-2 rounded-md"><i class="ri-italic"></i></button>
-                        <button type="button" data-command="underline" class="toolbar-btn p-2 rounded-md"><i class="ri-underline"></i></button>
-                        <button type="button" data-command="insertUnorderedList" class="toolbar-btn p-2 rounded-md"><i class="ri-list-ul"></i></button>
-                        <button type="button" data-command="insertOrderedList" class="toolbar-btn p-2 rounded-md"><i class="ri-list-ol"></i></button>
-                        <button type="button" data-command="formatBlock" data-value="blockquote" class="toolbar-btn p-2 rounded-md"><i class="ri-double-quotes-l"></i></button>
-                        <button type="button" id="addLinkBtn" class="toolbar-btn p-2 rounded-md"><i class="ri-links-line"></i></button>
-                    </div>
-                    
-                    <div id="editor-content" contenteditable="true" data-placeholder="Mulai tulis ceritamu..." class="w-full min-h-[500px] text-lg text-slate-300 bg-transparent outline-none prose prose-invert max-w-none prose-p:text-slate-300 prose-headings:text-white"></div>
-                </div>
-
-                <aside class="lg:col-span-1">
-                    <div class="sticky top-24 space-y-6">
-                        <div class="glass-card p-5 rounded-2xl">
-                            <h3 class="font-semibold text-white mb-4">Pengaturan Postingan</h3>
-                            <div class="space-y-4">
-                                <div><label for="slug" class="text-sm font-medium text-slate-400">URL Slug</label><input id="slug" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-                                <div><label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label><select id="kategori" class="form-input mt-1 w-full p-2 rounded-lg text-sm appearance-none"><option>Memuat...</option></select></div>
-                                <div>
-                                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
-                                    <select id="status" class="form-input mt-1 w-full p-2 rounded-lg text-sm appearance-none">
-                                        <option value="draft">Draft</option>
-                                        <option value="published">Published</option>
-                                        <option value="scheduled">Scheduled</option>
-                                    </select>
-                                </div>
-                                <div id="schedule-container" class="hidden">
-                                    <label for="schedule-time" class="text-sm font-medium text-slate-400">Waktu Jadwal</label>
-                                    <input id="schedule-time" type="datetime-local" class="form-input mt-1 w-full p-2 rounded-lg text-sm">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="glass-card p-5 rounded-2xl">
-                            <h3 class="font-semibold text-white mb-4">Gambar Utama</h3>
-                            <input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
-                            <img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
-                        </div>
-                        <div class="glass-card p-5 rounded-2xl">
-                            <h3 class="font-semibold text-white mb-4">SEO & Meta</h3>
-                            <div class="space-y-4">
-                                <div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-                                <div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-                                <div><label for="metaTitle" class="text-sm font-medium text-slate-400">Meta Title</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-                                <div><label for="metaDescription" class="text-sm font-medium text-slate-400">Meta Description</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
-                                <div><label for="keywords" class="text-sm font-medium text-slate-400">Keywords</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
-            </form>
-        </div>
+        </form>
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
     <script>
-        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // ... (semua deklarasi elemen DOM sama seperti versi lengkap sebelumnya) ...
-        const scheduleContainer = document.getElementById('schedule-container');
-        const editorToolbar = document.getElementById('editor-toolbar');
-        
-        // ... (semua fungsi lain sama persis seperti versi lengkap sebelumnya) ...
-
-        // === EVENT LISTENERS & INISIALISASI ===
-        // ... (event listener untuk judul dan slug sama) ...
-        
-        // PERBAIKAN: Event listener untuk status (menampilkan/menyembunyikan jadwal)
-        statusInput.addEventListener('change', () => {
-            scheduleContainer.style.display = statusInput.value === 'scheduled' ? 'block' : 'none';
-        });
-
-        // PERBAIKAN: Event listener untuk toolbar editor
-        editorToolbar.addEventListener('click', (e) => {
-            const button = e.target.closest('button');
-            if (!button) return;
-            e.preventDefault();
-
-            const command = button.dataset.command;
-            const value = button.dataset.value || null;
-
-            if (command) {
-                document.execCommand(command, false, value);
+        // Menunggu seluruh halaman HTML siap, baru jalankan semua JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+    
+            // === 1. INISIALISASI & KONFIGURASI ===
+            const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+            // === 2. DEKLARASI VARIABEL ===
+            let editor;
+            let isEditing = false;
+            let postId = null;
+            let oldThumbnailPath = null;
+            let currentUserEmail = '';
+    
+            // === 3. ELEMEN DOM (Lengkap) ===
+            const mainContent = document.getElementById('mainContent');
+            const postForm = document.getElementById('postForm');
+            const judulInput = document.getElementById('judul');
+            const slugInput = document.getElementById('slug');
+            const kategoriInput = document.getElementById('kategori');
+            const statusInput = document.getElementById('status');
+            const scheduleContainer = document.getElementById('schedule-container');
+            const scheduleTimeInput = document.getElementById('schedule-time');
+            const thumbnailInput = document.getElementById('thumbnail');
+            const thumbnailPreview = document.getElementById('thumbnailPreview');
+            const authorInput = document.getElementById('author');
+            const tagsInput = document.getElementById('tags');
+            const metaTitleInput = document.getElementById('metaTitle');
+            const metaDescriptionInput = document.getElementById('metaDescription');
+            const keywordsInput = document.getElementById('keywords'); 
+            const submitButton = document.getElementById('submitButton');
+            const saveIcon = document.getElementById('saveIcon');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+    
+            // === 4. FUNGSI-FUNGSI ===
+            function generateUniqueSlug(title) {
+                const baseSlug = title.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').substring(0, 60);
+                const randomString = Math.random().toString(36).substring(2, 7);
+                return `${baseSlug}-${randomString}`;
             }
-        });
-
-        // PERBAIKAN: Event listener untuk tombol link
-        document.getElementById('addLinkBtn').addEventListener('click', () => {
-            const url = prompt('Masukkan URL:', 'https://');
-            if (url) {
-                document.execCommand('createLink', false, url);
+    
+            async function loadCategories() {
+                kategoriInput.innerHTML = '<option value="">Memuat...</option>';
+                const { data, error } = await supabase.from('categories').select('name').order('name');
+                if (error || !data) {
+                    kategoriInput.innerHTML = '<option value="">Gagal memuat</option>';
+                    return;
+                }
+                if (data.length === 0) {
+                    kategoriInput.innerHTML = '<option value="">Belum ada kategori</option>';
+                    return;
+                }
+                
+                kategoriInput.innerHTML = '<option value="">Pilih Kategori</option>';
+                data.forEach(cat => {
+                    kategoriInput.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+                });
             }
-        });
-        
-        // ... (event listener untuk thumbnail sama) ...
-        
-        // PERBAIKAN: Event listener submit yang menangani status scheduled
-        postForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            // ... (logika tombol loading sama) ...
-            
-            let newThumbnailUrl = isEditing && oldThumbnailPath ? supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(oldThumbnailPath).data.publicUrl : null;
-            const file = thumbnailInput.files[0];
-
-            if (file) { /* ... logika upload file sama ... */ }
-
-            // Siapkan Data Postingan (LENGKAP dengan logika schedule)
-            const postData = {
-                title: judulInput.value,
-                slug: slugInput.value || generateUniqueSlug(judulInput.value),
-                content: editorContent.innerHTML,
-                category: kategoriInput.value || null,
-                // Logika status baru
-                published: statusInput.value === 'published',
-                scheduled_time: statusInput.value === 'scheduled' ? document.getElementById('schedule-time').value : null,
-                thumbnail_url: newThumbnailUrl,
-                author: authorInput.value,
-                tags: tagsInput.value,
-                meta_title: metaTitleInput.value,
-                meta_description: metaDescriptionInput.value,
-                keywords: keywordsInput.value,
-                updated_at: new Date()
-            };
-            
-            // ... (logika simpan ke database sama) ...
-        });
-        
-        // ... (fungsi inisialisasi halaman sama) ...
-        async function initializePage() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) { window.location.href = 'login.html'; return; }
-            currentUserEmail = session.user.email;
-            mainContent.classList.remove('opacity-0');
-            await Promise.all([loadCategories(), loadPostForEdit()]);
-            // Aktifkan tampilan jadwal jika status saat load adalah scheduled
-            if(statusInput.value === 'scheduled') {
-                scheduleContainer.style.display = 'block';
+    
+            async function loadPostForEdit() {
+                postId = new URLSearchParams(window.location.search).get('id');
+                if (!postId) {
+                    isEditing = false;
+                    authorInput.value = currentUserEmail.split('@')[0];
+                    return;
+                }
+    
+                isEditing = true;
+                document.title = 'Edit Postingan';
+                const { data, error } = await supabase.from('posts').select('*').eq('id', postId).single();
+                if (error) {
+                    alert('Gagal memuat data postingan.');
+                    window.location.href = 'content-studio.html';
+                    return;
+                }
+                
+                judulInput.value = data.title || '';
+                slugInput.value = data.slug || '';
+                slugInput.dataset.manualEdit = 'true';
+                editor.setContents(data.content || '');
+                kategoriInput.value = data.category || '';
+                authorInput.value = data.author || '';
+                tagsInput.value = data.tags || '';
+                metaTitleInput.value = data.meta_title || '';
+                metaDescriptionInput.value = data.meta_description || '';
+                keywordsInput.value = data.keywords || '';
+                
+                if (data.published) {
+                    statusInput.value = 'published';
+                } else if (data.scheduled_time) {
+                    statusInput.value = 'scheduled';
+                    scheduleTimeInput.value = new Date(data.scheduled_time).toISOString().slice(0, 16);
+                } else {
+                    statusInput.value = 'draft';
+                }
+                statusInput.dispatchEvent(new Event('change'));
+    
+                if (data.thumbnail_url) {
+                    thumbnailPreview.src = data.thumbnail_url;
+                    thumbnailPreview.style.display = 'block';
+                    try {
+                        oldThumbnailPath = new URL(data.thumbnail_url).pathname.split('/bimaakbar.thumbnail/')[1];
+                    } catch (e) { console.warn("URL thumbnail lama tidak valid.", e); }
+                }
             }
-        }
-        document.addEventListener('DOMContentLoaded', initializePage);
+    
+            // === 5. EVENT LISTENERS ===
+            judulInput.addEventListener('input', () => { if (slugInput.dataset.manualEdit !== 'true') slugInput.value = generateUniqueSlug(judulInput.value); });
+            slugInput.addEventListener('input', () => { slugInput.dataset.manualEdit = 'true'; });
+            thumbnailInput.addEventListener('change', (e) => { thumbnailPreview.src = URL.createObjectURL(e.target.files[0]); thumbnailPreview.style.display = 'block'; });
+            statusInput.addEventListener('change', () => { scheduleContainer.style.display = statusInput.value === 'scheduled' ? 'block' : 'none'; });
+    
+            postForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                saveIcon.style.display = 'none';
+                loadingSpinner.style.display = 'block';
+                submitButton.disabled = true;
+    
+                let newThumbnailUrl = isEditing && oldThumbnailPath ? supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(oldThumbnailPath).data.publicUrl : null;
+                const file = thumbnailInput.files[0];
+    
+                if (file) {
+                    const cleanFileName = file.name.toLowerCase().replace(/[^a-z0-9_.-]/g, '_');
+                    const filePath = `thumbnails/${Date.now()}_${cleanFileName}`;
+                    const { error: uploadError } = await supabase.storage.from('bimaakbar.thumbnail').upload(filePath, file, { upsert: true });
+    
+                    if (uploadError) {
+                        alert('Gagal upload thumbnail: ' + uploadError.message);
+                        saveIcon.style.display = 'block';
+                        loadingSpinner.style.display = 'none';
+                        submitButton.disabled = false;
+                        return;
+                    }
+                    newThumbnailUrl = supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(filePath).data.publicUrl;
+                    if (isEditing && oldThumbnailPath && oldThumbnailPath !== filePath) {
+                        await supabase.storage.from('bimaakbar.thumbnail').remove([oldThumbnailPath]);
+                    }
+                }
+    
+                const postData = {
+                    title: judulInput.value,
+                    slug: slugInput.value || generateUniqueSlug(judulInput.value),
+                    content: editor.getContents(true),
+                    category: kategoriInput.value || null,
+                    published: statusInput.value === 'published',
+                    scheduled_time: statusInput.value === 'scheduled' ? scheduleTimeInput.value : null,
+                    thumbnail_url: newThumbnailUrl,
+                    author: authorInput.value,
+                    tags: tagsInput.value,
+                    meta_title: metaTitleInput.value,
+                    meta_description: metaDescriptionInput.value,
+                    keywords: keywordsInput.value,
+                    updated_at: new Date()
+                };
+                
+                const { error: dbError } = await (isEditing 
+                    ? supabase.from('posts').update(postData).eq('id', postId) 
+                    : supabase.from('posts').insert(postData));
+    
+                if (dbError) {
+                    alert('Gagal menyimpan postingan: ' + dbError.message);
+                } else {
+                    alert(isEditing ? 'Postingan berhasil diperbarui!' : 'Postingan berhasil disimpan!');
+                    window.location.href = 'content-studio.html';
+                }
+                
+                saveIcon.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+                submitButton.disabled = false;
+            });
+    
+            // === 6. INISIALISASI HALAMAN UTAMA ===
+            async function initializePage() {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                currentUserEmail = session.user.email;
+                
+                editor = SUNEDITOR.create('editor', {
+                    buttonList: [
+                        ['formatBlock'],
+                        ['image', 'link'],
+                        ['bold', 'underline', 'italic'],
+                        ['align', 'list'],          
+                        ['codeView', 'fullScreen'],
+                        ['undo', 'redo']
+                    ],
+                    width: '100%', minHeight: '500px',
+                    placeholder: 'Mulai tulis di sini...'
+                });
+    
+                editor.onload = async () => {
+                    await Promise.all([loadCategories(), loadPostForEdit()]);
+                };
+            }
+    
+            initializePage();
+        });
     </script>
 </body>
 </html>
