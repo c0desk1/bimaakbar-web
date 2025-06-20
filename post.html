@@ -286,13 +286,86 @@
         }
         
         function renderCommentForm(postId, session) {
-            if (!commentFormContainer) return;
+            let formHTML = '';
             if (session) {
-                commentFormContainer.innerHTML = `<form id="comment-form" data-post-id="${postId}" class="comment-form space-y-3"><textarea name="content" required class="w-full p-3 rounded-lg h-24 bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tulis komentarmu sebagai ${session.user.email.split('@')[0]}..."></textarea><button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button></form>`;
+                // Tampilan jika PENGGUNA SUDAH LOGIN
+                formHTML = `
+                    <form id="comment-form" data-post-id="${postId}" class="comment-form space-y-3">
+                        <p class="text-sm text-slate-400">Anda berkomentar sebagai <span class="font-semibold text-white">${session.user.email.split('@')[0]}</span>.</p>
+                        <textarea name="content" required class="w-full p-3 rounded-lg h-24 bg-neutral-800 text-white border border-neutral-700" placeholder="Tulis komentarmu di sini..."></textarea>
+                        <button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button>
+                    </form>
+                `;
             } else {
-                commentFormContainer.innerHTML = `<div class="text-center p-4 border border-dashed border-white/10 rounded-xl"><p><a href="login.html" class="font-semibold text-indigo-400 hover:underline">Login</a> untuk meninggalkan komentar.</p></div>`;
+                // Tampilan jika PENGUNJUNG TAMU (ANONIM)
+                formHTML = `
+                    <form id="comment-form" data-post-id="${postId}" class="comment-form space-y-4">
+                        <p class="text-sm text-slate-400">Email Anda tidak akan dipublikasikan.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input name="author_name" required class="form-input w-full p-2.5 bg-neutral-800 rounded-lg" placeholder="Nama (wajib)">
+                            <input name="author_email" type="email" required class="form-input w-full p-2.5 bg-neutral-800 rounded-lg" placeholder="Email (wajib)">
+                        </div>
+                        <textarea name="content" required class="w-full p-3 rounded-lg h-24 bg-neutral-800 text-white border border-neutral-700" placeholder="Tulis komentarmu di sini..."></textarea>
+                        <button type="submit" class="bg-indigo-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-600">Kirim Komentar</button>
+                    </form>
+                `;
             }
+            commentFormContainer.innerHTML = formHTML;
         }
+        
+        commentFormContainer.addEventListener('submit', async (e) => {
+            if (e.target.id !== 'comment-form') return;
+            e.preventDefault();
+            
+            const form = e.target;
+            const content = form.content.value.trim();
+            const button = form.querySelector('button');
+            const postId = form.dataset.postId;
+
+            if (!content) return;
+            button.disabled = true;
+            button.textContent = 'Mengirim...';
+
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            let commentData = {};
+
+            if (session) {
+                // Jika ada sesi (user login)
+                commentData = {
+                    post_id: postId,
+                    author_name: session.user.email.split('@')[0],
+                    content: content,
+                    user_id: session.user.id
+                };
+            } else {
+                // Jika tidak ada sesi (tamu)
+                const guestName = form.author_name.value.trim();
+                const guestEmail = form.author_email.value.trim();
+                if (!guestName || !guestEmail) {
+                    alert("Nama dan Email wajib diisi.");
+                    button.disabled = false; button.textContent = 'Kirim Komentar';
+                    return;
+                }
+                commentData = {
+                    post_id: postId,
+                    author_name: guestName,
+                    author_email: guestEmail,
+                    content: content
+                };
+            }
+            
+            const { error } = await supabase.from('comments').insert(commentData);
+
+            if (error) {
+                alert('Gagal mengirim komentar: ' + error.message);
+            } else {
+                alert('Komentar berhasil dikirim dan sedang menunggu moderasi. Terima kasih!');
+                form.reset();
+            }
+            button.disabled = false;
+            button.textContent = 'Kirim Komentar';
+        });
 
         async function countView(postId) {
             try { await supabase.functions.invoke('increment-post-view', { body: { post_id: postId } }); } 
