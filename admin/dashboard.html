@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <script src="config.js"></script> 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
@@ -15,6 +16,18 @@
         .nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
         .comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
         .comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
+        .skeleton-pulse {
+            display: block;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem; /* rounded-2xl */
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .5;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -34,7 +47,7 @@
     
     <template id="view-home">
         <div class="space-y-8">
-            <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Content Hub Anda.</p></div>
+            <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Studio.</p></div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
                 <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
@@ -74,7 +87,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
             
             const app = document.getElementById('app');
             const navItems = document.querySelectorAll('.nav-item');
@@ -99,6 +112,7 @@
             async function renderHomeView() {
                 const hour = new Date().getHours();
                 document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+                document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
                 
                 const [postsRes, popularPostsRes, totalViewsRes] = await Promise.all([
                     supabase.from('posts').select('id, published'),
@@ -132,7 +146,7 @@
                 let currentFilter = 'pending'; // Default tab
 
                 async function loadComments(filter) {
-                    listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat...</p>`;
+                    listContainer.innerHTML = getCommentSkeletonHTML();
                     let query = supabase.from('comments').select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)').order('created_at', { ascending: false });
 
                     if (filter === 'pending') {
@@ -168,7 +182,8 @@
                             </div>
                             <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
                                 Pada: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
-                            </div>`;
+                            </div>
+                            <div id="reply-form-container-${comment.id}" class="mt-4"></div> `;
                         listContainer.appendChild(card);
                     });
                 }
@@ -187,59 +202,123 @@
                 await loadComments('pending');
             }
             
-            // --- FUNGSI VIEW: STATISTIK ---
             async function renderStatsView() {
-                const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
-                if (error || !posts) return;
-                const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
-                const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
-                const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
-                
-                createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
-                createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
-                
-                const topPostsList = document.getElementById('topPostsList');
-                topPostsList.innerHTML = '';
-                topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
-            }
+    const monthlyViewsContainer = document.querySelector('#monthlyViewsChart').parentElement;
+    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
+    const topPostsListContainer = document.getElementById('topPostsList');
 
-            // --- FUNGSI-FUNGSI HELPERS ---
+    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+    topPostsListContainer.innerHTML = `
+        <div class="space-y-3">
+            <div class="h-10 w-full skeleton-pulse"></div>
+            <div class="h-10 w-full skeleton-pulse"></div>
+            <div class="h-10 w-full skeleton-pulse"></div>
+            <div class="h-10 w-full skeleton-pulse"></div>
+        </div>`;
+
+    const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
+    
+    if (error || !posts) {
+        monthlyViewsContainer.innerHTML = '<p class="text-red-400 text-center">Gagal memuat data.</p>';
+        categoryChartContainer.innerHTML = '';
+        topPostsListContainer.innerHTML = '';
+        return;
+    }
+
+    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
+    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
+    topPostsListContainer.innerHTML = '';
+
+    const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
+    const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
+    const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+    
+    createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
+    createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
+    
+    const topPostsList = document.getElementById('topPostsList');
+    topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
+}
+
+
             window.approveComment = async (commentId) => {
-            const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
-            if (error) alert('Gagal: ' + error.message);
-            else { renderView('comments'); checkPendingComments(); }
-        }
-            window.deleteComment = async (commentId) => {
-            if (confirm('Yakin ingin menghapus komentar ini secara permanen?')) {
-                const { error } = await supabase.from('comments').delete().eq('id', commentId);
-                if (error) alert('Gagal menghapus: ' + error.message);
-                else { renderView('comments'); checkPendingComments(); }
-            }
-        }
-        window.replyToComment = async (parentCommentId, postId) => {
-            const replyContent = prompt("Masukkan balasan Anda:");
-            if (replyContent && replyContent.trim() !== "") {
-                const { data: { user } } = await supabase.auth.getUser();
-                const adminName = user.email.split('@')[0] + " (Admin)";
+    			const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
+    			if (error) {
+    				showToast('Gagal menyetujui: ' + error.message, 'error');
+				} else {
+    				showToast('Komentar berhasil disetujui!');
+				}
+			}
 
-                const { error } = await supabase.from('comments').insert({
-                    post_id: postId,
-                    parent_id: parentCommentId,
-                    content: replyContent,
-                    author_name: adminName,
-                    is_approved: true, // Balasan admin langsung disetujui
-                    user_id: user.id
-                });
+            window.deleteComment = (commentId) => {
+    			showConfirmationModal(async () => {
+        			const { error } = await supabase.from('comments').delete().eq('id', commentId);
+        			if (error) {
+            			showToast('Gagal menghapus: ' + error.message);
+        			} else {
+    					showToast('Komentar berhasil dihapus!');
+					}
+    			});
+			}
+		window.replyToComment = async (parentCommentId, postId) => {
+    		const existingForm = document.getElementById('active-reply-form');
+    			if (existingForm) {
+        			existingForm.remove();
+    			}
 
-                if (error) {
-                    alert("Gagal mengirim balasan: " + error.message);
-                } else {
-                    alert("Balasan berhasil terkirim!");
-                    await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
-                    renderView('comments');
-                }
-            }
-        }
+    			const container = document.getElementById(`reply-form-container-${parentCommentId}`);
+    			if (!container) return;
+
+			    const formHTML = `
+			        <form id="active-reply-form" class="space-y-3 glass-card p-3 rounded-lg border-indigo-400/50">
+			            <textarea id="reply-textarea" class="w-full bg-neutral-900/50 p-2 rounded-md text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="Tulis balasan Anda sebagai Admin..."></textarea>
+			            <div class="flex justify-end space-x-2">
+			                <button type="button" id="cancel-reply-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
+			                <button type="submit" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Kirim Balasan</button>
+			            </div>
+			        </form>`;
+
+    				container.innerHTML = formHTML;
+    				document.getElementById('reply-textarea').focus();
+    
+    				document.getElementById('active-reply-form').addEventListener('submit', async (e) => {
+        			e.preventDefault();
+        			const replyContent = document.getElementById('reply-textarea').value;
+        			const submitButton = e.target.querySelector('button[type="submit"]');
+
+        			if (replyContent && replyContent.trim() !== "") {
+            			submitButton.disabled = true;
+            			submitButton.textContent = 'Mengirim...';
+
+            			const { data: { user } } = await supabase.auth.getUser();
+            			const adminName = user.email.split('@')[0] + " (Admin)";
+
+            			const { error } = await supabase.from('comments').insert({
+                			post_id: postId,
+                			parent_id: parentCommentId,
+                			content: replyContent,
+                			author_name: adminName,
+                			is_approved: true,
+                			user_id: user.id
+            			});
+
+            			if (error) {
+                			showToast("Gagal mengirim balasan: " + error.message);
+                			submitButton.disabled = false;
+                			submitButton.textContent = 'Kirim Balasan';
+            			} else {
+            				showToast("Balasan berhasil dikirim!");
+                		// Jika ingin lebih cepat, bisa tambahkan: document.getElementById('active-reply-form').remove();
+               		await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
+            		}
+        		}
+    		});
+
+    		document.getElementById('cancel-reply-btn').addEventListener('click', () => {
+        		document.getElementById('active-reply-form').remove();
+    		});
+		}
             
             function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
                 const chartEl = document.getElementById(canvasId);
@@ -255,28 +334,166 @@
                 if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
                 else { commentBadge.classList.add('hidden'); }
             }
+            
+            function listenForCommentChanges() {
+                console.log('Realtime listener untuk komentar diaktifkan.');
+                supabase.channel('public:comments')
+                    .on(
+                        'postgres_changes',
+                        { event: '*', schema: 'public', table: 'comments' },
+                        (payload) => {
+                            console.log('Perubahan terdeteksi pada tabel komentar!', payload);
+                            checkPendingComments(); 
+                            
+                            const isOnCommentView = document.getElementById('comments-list');
+                            if (isOnCommentView) {
+                                console.log('Merefresh daftar komentar...');
+                                renderView('comments');
+                            }
+                        }
+                    )
+                    .subscribe((status) => {
+                        if (status === 'SUBSCRIBED') {
+                            console.log('Berhasil terhubung ke channel realtime Supabase!');
+                        }
+                    });
+            }
+            
+            const confirmationModal = document.getElementById('confirmation-modal');
+        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+
+        	function showConfirmationModal(onConfirm) {
+            	confirmationModal.classList.remove('hidden');
+            
+            	const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
+            	confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
+            
+            	newConfirmBtn.addEventListener('click', () => {
+                	onConfirm();
+                	hideConfirmationModal();
+            	});
+       	}
+
+        	function hideConfirmationModal() {
+            	confirmationModal.classList.add('hidden');
+        	}
+        
+        function showToast(message, type = 'success') {
+                const toastContainer = document.getElementById('toast-container');
+
+                const toast = document.createElement('div');
+                const bgColor = type === 'success' ? 'bg-green-500/80' : 'bg-red-500/80';
+                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+
+                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card transition-all duration-300 transform translate-x-full animate-slide-in`;
+                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+
+
+                toast.innerHTML = `
+                    <span>${icon}</span>
+                    <p>${message}</p>
+                `;
+
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    // Tunggu animasi fade-out selesai sebelum menghapus elemen
+                    toast.addEventListener('transitionend', () => toast.remove());
+                }, 4000);
+            }
+            
+            function getCommentSkeletonHTML() {
+                let skeletonHTML = '<div class="space-y-4">';
+                for (let i = 0; i < 3; i++) {
+                    skeletonHTML += '<div class="w-full h-28 skeleton-pulse"></div>';
+                }
+                skeletonHTML += '</div>';
+                return skeletonHTML;
+            }
+            
+            function getPopularPostsSkeletonHTML() {
+                let skeletonHTML = '<div class="space-y-3">';
+                for (let i = 0; i < 4; i++) {
+                    skeletonHTML += '<div class="w-full h-12 skeleton-pulse"></div>';
+                }
+                skeletonHTML += '</div>';
+                return skeletonHTML;
+            }
+            
+            function getStatsSkeletonHTML() {
+                return `
+                    <div class="space-y-8">
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2>
+                            <div class="h-80 skeleton-pulse"></div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="glass-card p-6 rounded-2xl">
+                                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
+                                <div class="h-80 skeleton-pulse"></div>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl">
+                                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
+                                <div class="space-y-3">
+                                    <div class="h-10 w-full skeleton-pulse"></div>
+                                    <div class="h-10 w-full skeleton-pulse"></div>
+                                    <div class="h-10 w-full skeleton-pulse"></div>
+                                    <div class="h-10 w-full skeleton-pulse"></div>
+                                    <div class="h-10 w-full skeleton-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            
 
             // --- INISIALISASI HALAMAN ---
             async function initializePage() {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session) { window.location.replace('login.html'); return; }
-                
-                app.classList.remove('opacity-0');
-                navItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        const view = e.currentTarget.dataset.view;
-                        if (view) renderView(view);
-                    });
-                });
-                document.getElementById('logoutButton').addEventListener('click', async () => { await supabase.auth.signOut(); window.location.replace('login.html'); });
-                
-                await renderView('home');
-                checkPendingComments();
-                setInterval(checkPendingComments, 60000);
-            }
-            
+    			const { data: { session } } = await supabase.auth.getSession();
+   		 	if (!session) { window.location.replace('login.html'); return; }
+    
+    			app.classList.remove('opacity-0');
+    
+    			navItems.forEach(item => {
+        			item.addEventListener('click', (e) => {
+            			const view = e.currentTarget.dataset.view;
+            			if (view) renderView(view);
+        			});
+    			});
+
+    			document.getElementById('logoutButton').addEventListener('click', async () => { 
+        			await supabase.auth.signOut(); 
+        			window.location.replace('login.html'); 
+    			});
+
+    			cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
+    			confirmationModal.addEventListener('click', (e) => {
+        			if (e.target === confirmationModal) {
+            			hideConfirmationModal();
+        			}
+    			});
+    
+    			await renderView('home');
+    			checkPendingComments();
+    			listenForCommentChanges();
+			}
             initializePage();
         });
     </script>
+    <div id="confirmation-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="glass-card w-full max-w-sm p-6 rounded-2xl border-red-500/50 text-center">
+            <h3 class="text-xl font-bold text-white mb-2">Konfirmasi Hapus</h3>
+            <p id="modal-text" class="text-slate-300 text-sm mb-6">Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex justify-center space-x-4">
+                <button id="cancel-delete-btn" class="py-2 px-5 rounded-full text-sm font-semibold hover:bg-neutral-700 transition-colors">Batal</button>
+                <button id="confirm-delete-btn" class="bg-red-600 hover:bg-red-700 text-white py-2 px-5 rounded-full text-sm font-bold transition-colors">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+	<div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
 </body>
 </html>
