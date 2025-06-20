@@ -12,488 +12,694 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-item.active { color: #818cf8; /* indigo-400 */ }
+        .nav-item.active { color: #818cf8; }
         .nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
         .comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
         .comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
-        .skeleton-pulse {
-            display: block;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 1rem; /* rounded-2xl */
-            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-            50% {
-                opacity: .5;
-            }
-        }
+        .skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 50% { opacity: .5; } }
     </style>
 </head>
 <body class="min-h-screen">
+	
+	<header class="py-3 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
+    	<div class="flex items-center justify-between">
+        	<div id="user-name-header" class="text-lg font-semibold text-white"></div>
+        	<div class="relative">
+            	<button id="avatar-button" class="block">
+                	<img id="user-avatar-img" src="" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover ring-2 ring-offset-2 ring-offset-[#0a0a0a] ring-indigo-500">
+            	</button>
+            	<div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-neutral-800 border border-white/10 rounded-lg shadow-lg py-1 z-50">
+                	<a href="#" id="logout-btn-dropdown" class="flex items-center w-full px-4 py-2 text-sm text-red-400 hover:bg-red-500/20">
+                    	<i class="ri-logout-box-r-line mr-2"></i>Logout
+                	</a>
+            	</div>
+        	</div>
+    	</div>
+	</header>
 
-    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500"></main>
+	
+    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500"></main>   
     
-    <nav class="fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center" style="border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px);">
-        <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
-        <a href="content-studio.html" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-pencil-ruler-2-line text-2xl"></i><span class="text-xs mt-1">Konten</span></a>
-        <button data-view="stats" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-bar-chart-2-line text-2xl"></i><span class="text-xs mt-1">Statistik</span></button>
-        <button data-view="comments" class="nav-item relative flex flex-col items-center justify-center text-gray-400">
-            <i class="ri-chat-4-line text-2xl"></i><span class="text-xs mt-1">Komentar</span>
-            <span id="comment-badge" class="hidden absolute top-0 right-2 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#0a0a0a]"></span>
-        </button>
-        <button id="logoutButton" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-logout-box-r-line text-2xl"></i><span class="text-xs mt-1">Logout</span></button>
-    </nav>
+	    <nav class="fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center" style="border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px);">
+		    <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
+		    <a href="content-studio.html" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-pencil-ruler-2-line text-2xl"></i><span class="text-xs mt-1">Konten</span></a>
+		    <button data-view="stats" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-bar-chart-2-line text-2xl"></i><span class="text-xs mt-1">Statistik</span></button>
+		    <button data-view="comments" class="nav-item relative flex flex-col items-center justify-center text-gray-400">
+		        <i class="ri-chat-4-line text-2xl"></i><span class="text-xs mt-1">Komentar</span>
+		        <span id="comment-badge" class="hidden absolute top-0 right-2 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#0a0a0a]"></span>
+		    </button>
+		    <button data-view="settings" class="nav-item flex flex-col items-center justify-center text-gray-400"><i class="ri-settings-3-line text-2xl"></i><span class="text-xs mt-1">Pengaturan</span></button>
+		</nav>
+	
+    	<template id="view-home">
+	        <div class="space-y-8">
+	            <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Studio.</p></div>
+	            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+	                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
+	                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
+	                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
+	                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
+	            </div>
+	            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+	    			<div class="lg:col-span-2">
+	        			<h2 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h2>
+	        			<div id="popularPostsList" class="space-y-3"></div>
+	    			</div>
+	    			<div>
+	        			<h3 class="text-xl font-semibold text-white mb-4">Aktivitas Terbaru</h3>
+	        			<div id="recentActivityList" class="space-y-3"></div>
+	    			</div>
+				</div>
+	        </div>
+    	</template>
     
-    <template id="view-home">
-        <div class="space-y-8">
-            <div><h1 id="greeting" class="text-3xl font-bold text-white"></h1><p class="text-gray-400">Selamat datang di Studio.</p></div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Views</p><p id="totalViews" class="text-2xl font-bold text-white">...</p></div>
-                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Total Posts</p><p id="totalPosts" class="text-2xl font-bold text-white">...</p></div>
-                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Published</p><p id="publishedPosts" class="text-2xl font-bold text-green-400">...</p></div>
-                <div class="glass-card p-4 rounded-2xl"><p class="text-sm text-gray-400">Drafts</p><p id="draftPosts" class="text-2xl font-bold text-amber-400">...</p></div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2"><h2 class="text-xl font-semibold text-white mb-4">Postingan Terpopuler</h2><div id="popularPostsList" class="space-y-3"></div></div>
-                <div><h3 class="text-xl font-semibold text-white mb-4">Komposisi Post</h3><div class="glass-card p-4 rounded-2xl h-64 flex items-center justify-center"><canvas id="postStatusChart"></canvas></div></div>
-            </div>
-        </div>
-    </template>
-    <template id="view-comments">
-        <h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
-        <div class="border-b border-white/10 mb-6">
-            <nav id="comment-tabs" class="-mb-px flex space-x-6">
-                <button data-filter="pending" class="comment-tab-btn py-3 px-1 text-sm font-semibold">Perlu Persetujuan</button>
-                <button data-filter="all" class="comment-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Semua Komentar</button>
-            </nav>
-        </div>
-        <div id="comments-list" class="space-y-4">
-            <p class="text-center text-slate-400 p-8">Memuat komentar...</p>
-        </div>
-    </template>
-    <template id="view-stats">
-        <h1 class="text-3xl font-bold text-white mb-6">Statistik Detail</h1>
-        <div class="space-y-8">
-            <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2><div class="h-80"><canvas id="monthlyViewsChart"></canvas></div></div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2><div class="h-80"><canvas id="postsByCategoryChart"></canvas></div></div>
-                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2><div id="topPostsList" class="space-y-3"></div></div>
-            </div>
-        </div>
-    </template>
+	    <template id="view-comments">
+	    	<h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
+	    	<div class="border-b border-white/10 mb-6">
+	        	<nav id="comment-tabs" class="-mb-px flex space-x-6">
+	            	<button data-filter="pending" class="comment-tab-btn py-3 px-1 text-sm font-semibold">Perlu Persetujuan</button>
+	            	<button data-filter="all" class="comment-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Semua Komentar</button>
+	        	</nav>
+	    	</div>
+	    	<div id="comments-list" class="space-y-4"></div>
+	    	<div id="pagination-controls" class="hidden mt-8 flex justify-between items-center">
+	        	<button id="prev-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Sebelumnya</button>
+	        	<span id="page-info" class="text-sm text-slate-400"></span>
+	        	<button id="next-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Berikutnya</button>
+	    	</div>
+		</template>
+
+	    <template id="view-stats">
+	        <h1 class="text-3xl font-bold text-white mb-6">Statistik Detail</h1>
+	        <div class="space-y-8">
+	            <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2><div class="h-80"><canvas id="monthlyViewsChart"></canvas></div></div>
+	            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+	                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2><div class="h-80"><canvas id="postsByCategoryChart"></canvas></div></div>
+	                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2><div id="topPostsList" class="space-y-3"></div></div>
+	            </div>
+	        </div>
+	    </template>
+	
+		<template id="view-settings">
+		    <h1 class="text-3xl font-bold text-white mb-6">Pengaturan</h1>
+		    <div class="space-y-8">
+		        <div class="glass-card p-6 rounded-2xl">
+		            <h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
+		            <p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
+		            <div class="flex items-center space-x-4">
+		                <img id="settings-avatar" src="" class="w-16 h-16 rounded-full object-cover">
+		                <div>
+		                    <p id="settings-username" class="font-bold text-white">Nama Pengguna</p>
+		                    <p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <div class="glass-card p-6 rounded-2xl">
+		            <h2 class="text-lg font-semibold text-white mb-1">Tampilan</h2>
+		            <p class="text-sm text-slate-400 mb-4">Kustomisasi tampilan dashboard.</p>
+		            <p class="text-slate-200">Opsi untuk Light/Dark Mode akan muncul di sini nanti.</p>
+		        </div>
+		    </div>
+		</template>
+
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
-            
-            const app = document.getElementById('app');
-            const navItems = document.querySelectorAll('.nav-item');
-            const commentBadge = document.getElementById('comment-badge');
-            let charts = {};
-
-            // --- FUNGSI RENDER UTAMA ---
-            async function renderView(viewName = 'home') {
-                const template = document.getElementById(`view-${viewName}`);
-                if (template) app.innerHTML = template.innerHTML;
-                
-                document.querySelectorAll('.nav-item.active').forEach(i => i.classList.remove('active'));
-                const newActiveItem = document.querySelector(`.nav-item[data-view="${viewName}"]`);
-                if (newActiveItem) newActiveItem.classList.add('active');
-
-                if (viewName === 'home') await renderHomeView();
-                if (viewName === 'comments') await renderCommentsView();
-                if (viewName === 'stats') await renderStatsView();
-            }
-
-            // --- FUNGSI VIEW: HOME ---
-            async function renderHomeView() {
-                const hour = new Date().getHours();
-                document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
-                document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
-                
-                const [postsRes, popularPostsRes, totalViewsRes] = await Promise.all([
-                    supabase.from('posts').select('id, published'),
-                    supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
-                    supabase.rpc('get_total_views')
-                ]);
-
-                if (!postsRes.error) {
-                    const posts = postsRes.data;
-                    const publishedCount = posts.filter(p => p.published).length;
-                    const draftCount = posts.length - publishedCount;
-                    document.getElementById('totalPosts').textContent = posts.length;
-                    document.getElementById('publishedPosts').textContent = publishedCount;
-                    document.getElementById('draftPosts').textContent = draftCount;
-                    createChart('postStatusChart', 'doughnut', ['Published', 'Drafts'], [publishedCount, draftCount], '', ['#22c55e', '#f59e0b']);
-                }
-                if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
-                if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
-                    const list = document.getElementById('popularPostsList');
-                    list.innerHTML = '';
-                    popularPostsRes.data.forEach(post => {
-                        list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
-                    });
-                }
-            }
-            
-            // --- FUNGSI VIEW: KOMENTAR ---
-            async function renderCommentsView() {
-                const listContainer = document.getElementById('comments-list');
-                const tabsContainer = document.getElementById('comment-tabs');
-                let currentFilter = 'pending'; // Default tab
-
-                async function loadComments(filter) {
-                    listContainer.innerHTML = getCommentSkeletonHTML();
-                    let query = supabase.from('comments').select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)').order('created_at', { ascending: false });
-
-                    if (filter === 'pending') {
-                        query = query.eq('is_approved', false);
-                    }
-                    
-                    const { data: comments, error } = await query;
-
-                    if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat.</p>`; return; }
-                    if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">👍 Tidak ada komentar di tab ini.</p>`; return; }
-
-                    listContainer.innerHTML = '';
-                    comments.forEach(comment => {
-                        const card = document.createElement('div');
-                        card.className = 'glass-card p-4 rounded-xl';
-                        
-                        let actionButtons = `<button onclick="window.replyToComment('${comment.id}', '${comment.post_id}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 text-xs font-bold py-1 px-3 rounded-full">Balas</button>
-                                           <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button>`;
-                        
-                        if (!comment.is_approved) {
-                            actionButtons = `<button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button>` + actionButtons;
-                        }
-
-                        card.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-bold text-white">${comment.author_name} <span class="text-xs font-normal ${comment.is_approved ? 'text-green-400' : 'text-amber-400'}">(${comment.is_approved ? 'Disetujui' : 'Menunggu'})</span></p>
-                                    <p class="text-sm text-slate-300 mt-2 break-words">${comment.content}</p>
-                                </div>
-                                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 ml-4">
-                                    ${actionButtons}
-                                </div>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
-                                Pada: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
-                            </div>
-                            <div id="reply-form-container-${comment.id}" class="mt-4"></div> `;
-                        listContainer.appendChild(card);
-                    });
-                }
-
-                tabsContainer.addEventListener('click', (e) => {
-                    const button = e.target.closest('button');
-                    if (button) {
-                        currentFilter = button.dataset.filter;
-                        document.querySelector('.comment-tab-btn.active').classList.remove('active');
-                        button.classList.add('active');
-                        loadComments(currentFilter);
-                    }
-                });
-
-                tabsContainer.querySelector('[data-filter="pending"]').classList.add('active');
-                await loadComments('pending');
-            }
-            
-            async function renderStatsView() {
-    const monthlyViewsContainer = document.querySelector('#monthlyViewsChart').parentElement;
-    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
-    const topPostsListContainer = document.getElementById('topPostsList');
-
-    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-    topPostsListContainer.innerHTML = `
-        <div class="space-y-3">
-            <div class="h-10 w-full skeleton-pulse"></div>
-            <div class="h-10 w-full skeleton-pulse"></div>
-            <div class="h-10 w-full skeleton-pulse"></div>
-            <div class="h-10 w-full skeleton-pulse"></div>
-        </div>`;
-
-    const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
+	    <div id="confirmation-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+	        <div class="glass-card w-full max-w-sm p-6 rounded-2xl border-red-500/50 text-center">
+	            <h3 class="text-xl font-bold text-white mb-2">Konfirmasi Hapus</h3>
+	            <p id="modal-text" class="text-slate-300 text-sm mb-6">Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.</p>
+	            <div class="flex justify-center space-x-4">
+	                <button id="cancel-delete-btn" class="py-2 px-5 rounded-full text-sm font-semibold hover:bg-neutral-700 transition-colors">Batal</button>
+	                <button id="confirm-delete-btn" class="bg-red-600 hover:bg-red-700 text-white py-2 px-5 rounded-full text-sm font-bold transition-colors">Ya, Hapus</button>
+	            </div>
+	        </div>
+	    </div>
+	    
+		<div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
     
-    if (error || !posts) {
-        monthlyViewsContainer.innerHTML = '<p class="text-red-400 text-center">Gagal memuat data.</p>';
-        categoryChartContainer.innerHTML = '';
-        topPostsListContainer.innerHTML = '';
-        return;
-    }
-
-    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
-    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
-    topPostsListContainer.innerHTML = '';
-
-    const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
-    const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
-    const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
-    
-    createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
-    createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
-    
-    const topPostsList = document.getElementById('topPostsList');
-    topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
-}
-
-
-            window.approveComment = async (commentId) => {
-    			const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
-    			if (error) {
-    				showToast('Gagal menyetujui: ' + error.message, 'error');
-				} else {
-    				showToast('Komentar berhasil disetujui!');
+	    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	    <script>
+	        document.addEventListener('DOMContentLoaded', () => {
+	            const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+	            
+	            const app = document.getElementById('app');
+	            const navItems = document.querySelectorAll('.nav-item');
+	            const commentBadge = document.getElementById('comment-badge');
+	            let charts = {};
+	
+	            // --- FUNGSI RENDER UTAMA ---
+	            async function renderView(viewName = 'home') {
+	                const template = document.getElementById(`view-${viewName}`);
+	                if (template) app.innerHTML = template.innerHTML;
+	                
+	                document.querySelectorAll('.nav-item.active').forEach(i => i.classList.remove('active'));
+	                const newActiveItem = document.querySelector(`.nav-item[data-view="${viewName}"]`);
+	                if (newActiveItem) newActiveItem.classList.add('active');
+	
+	                if (viewName === 'home') await renderHomeView();
+	                if (viewName === 'comments') await renderCommentsView();
+	                if (viewName === 'stats') await renderStatsView();
+					if (viewName === 'settings') await renderSettingsView();
+	            }
+	
+	            // --- FUNGSI VIEW: HOME ---
+	            async function renderHomeView() {
+	                const hour = new Date().getHours();
+	                document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+	                document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
+	                
+	                const [postsRes, popularPostsRes, totalViewsRes, _] = await Promise.all([
+	        			supabase.from('posts').select('id, published'),
+	        			supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
+	        			supabase.rpc('get_total_views'),
+	        			renderRecentActivity()
+	    			]);
+	
+	                if (!postsRes.error) {
+	                    const posts = postsRes.data;
+	                    const publishedCount = posts.filter(p => p.published).length;
+	                    const draftCount = posts.length - publishedCount;
+	                    document.getElementById('totalPosts').textContent = posts.length;
+	                    document.getElementById('publishedPosts').textContent = publishedCount;
+	                    document.getElementById('draftPosts').textContent = draftCount;
+	                    createChart('postStatusChart', 'doughnut', ['Published', 'Drafts'], [publishedCount, draftCount], '', ['#22c55e', '#f59e0b']);
+	                }
+	                if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
+	                if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
+	                    const list = document.getElementById('popularPostsList');
+	                    list.innerHTML = '';
+	                    popularPostsRes.data.forEach(post => {
+	                        list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
+	                    });
+	                }
+	            }
+	            
+	            // --- FUNGSI VIEW: KOMENTAR ---
+	            async function renderCommentsView() {
+				    let currentPage = 1;
+				    const commentsPerPage = 5;
+				    let currentFilter = 'pending';
+				
+				    const listContainer = document.getElementById('comments-list');
+				    const tabsContainer = document.getElementById('comment-tabs');
+				    const paginationControls = document.getElementById('pagination-controls');
+				    const prevPageBtn = document.getElementById('prev-page-btn');
+				    const nextPageBtn = document.getElementById('next-page-btn');
+				    const pageInfo = document.getElementById('page-info');
+				
+				    async function loadComments(page, filter) {
+				        listContainer.innerHTML = getCommentSkeletonHTML();
+				        paginationControls.classList.add('hidden');
+				
+				        const from = (page - 1) * commentsPerPage;
+				        const to = from + commentsPerPage - 1;
+				
+				        let query = supabase.from('comments')
+				            .select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)', { count: 'exact' }) // {count: 'exact'} untuk mendapatkan total data
+				            .order('created_at', { ascending: false })
+				            .range(from, to);
+				
+				        if (filter === 'pending') {
+				            query = query.eq('is_approved', false);
+				        }
+				        
+				        const { data: comments, error, count: totalComments } = await query;
+				
+				        if (error) {
+				            listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`;
+				            return;
+				        }
+				
+				        if (comments.length === 0) {
+				            listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">Tidak ada komentar di tab ini.</p>`;
+				            return;
+				        }
+				
+				        listContainer.innerHTML = '';
+				        comments.forEach(comment => {
+				            const card = document.createElement('div');
+				            card.className = 'glass-card p-4 rounded-xl';
+				            
+				            let actionButtons = `<button onclick="window.replyToComment('${comment.id}', '${comment.post_id}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 text-xs font-bold py-1 px-3 rounded-full">Balas</button>
+				                               <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button>`;
+				            
+				            if (!comment.is_approved) {
+				                actionButtons = `<button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button>` + actionButtons;
+				            }
+				
+				            card.innerHTML = `
+				                <div class="flex justify-between items-start">
+				                    <div>
+				                        <p class="font-bold text-white">${comment.author_name} <span class="text-xs font-normal ${comment.is_approved ? 'text-green-400' : 'text-amber-400'}">(${comment.is_approved ? 'Disetujui' : 'Menunggu'})</span></p>
+				                        <p class="text-sm text-slate-300 mt-2 break-words">${comment.content}</p>
+				                    </div>
+				                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 ml-4">
+				                        ${actionButtons}
+				                    </div>
+				                </div>
+				                <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+				                    Pada: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
+				                </div>
+				                <div id="reply-form-container-${comment.id}" class="mt-4"></div>`;
+				            listContainer.appendChild(card);
+				        });
+				
+				        const totalPages = Math.ceil(totalComments / commentsPerPage);
+				        pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
+				        
+				        prevPageBtn.disabled = currentPage === 1;
+				        nextPageBtn.disabled = currentPage >= totalPages;
+				
+				        if (totalPages > 1) {
+				            paginationControls.classList.remove('hidden');
+				        }
+				    }
+				
+				    tabsContainer.addEventListener('click', (e) => {
+				        const button = e.target.closest('button');
+				        if (button && button.dataset.filter !== currentFilter) {
+				            currentFilter = button.dataset.filter;
+				            currentPage = 1; // Reset ke halaman pertama saat filter berubah
+				            document.querySelector('.comment-tab-btn.active').classList.remove('active');
+				            button.classList.add('active');
+				            loadComments(currentPage, currentFilter);
+				        }
+				    });
+				
+				    prevPageBtn.addEventListener('click', () => {
+				        if (currentPage > 1) {
+				            currentPage--;
+				            loadComments(currentPage, currentFilter);
+				        }
+				    });
+				
+				    nextPageBtn.addEventListener('click', () => {
+				        currentPage++;
+				        loadComments(currentPage, currentFilter);
+				    });
+				
+				    tabsContainer.querySelector('[data-filter="pending"]').classList.add('active');
+				    await loadComments(currentPage, currentFilter);
 				}
-			}
-
-            window.deleteComment = (commentId) => {
-    			showConfirmationModal(async () => {
-        			const { error } = await supabase.from('comments').delete().eq('id', commentId);
-        			if (error) {
-            			showToast('Gagal menghapus: ' + error.message);
-        			} else {
-    					showToast('Komentar berhasil dihapus!');
+	
+	            
+	            async function renderStatsView() {
+				    const monthlyViewsContainer = document.querySelector('#monthlyViewsChart').parentElement;
+				    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
+				    const topPostsListContainer = document.getElementById('topPostsList');
+				
+				    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+				    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+				    topPostsListContainer.innerHTML = `
+				        <div class="space-y-3">
+				            <div class="h-10 w-full skeleton-pulse"></div>
+				            <div class="h-10 w-full skeleton-pulse"></div>
+				            <div class="h-10 w-full skeleton-pulse"></div>
+				            <div class="h-10 w-full skeleton-pulse"></div>
+				        </div>
+					`;
+				
+				    const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
+				    
+				    if (error || !posts) {
+				        monthlyViewsContainer.innerHTML = '<p class="text-red-400 text-center">Gagal memuat data.</p>';
+				        categoryChartContainer.innerHTML = '';
+				        topPostsListContainer.innerHTML = '';
+				        return;
+				    }
+				
+				    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
+				    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
+				    topPostsListContainer.innerHTML = '';
+				
+				    const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
+				    const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
+				    const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+				    
+				    createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
+				    createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
+				    
+				    const topPostsList = document.getElementById('topPostsList');
+				    topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
+				}
+	
+	
+	            window.approveComment = async (commentId) => {
+	    			const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
+	    			if (error) {
+	    				showToast('Gagal menyetujui: ' + error.message, 'error');
+					} else {
+	    				showToast('Komentar berhasil disetujui!');
 					}
-    			});
+				}
+	
+	            window.deleteComment = (commentId) => {
+	    			showConfirmationModal(async () => {
+	        			const { error } = await supabase.from('comments').delete().eq('id', commentId);
+	        			if (error) {
+	            			showToast('Gagal menghapus: ' + error.message);
+	        			} else {
+	    					showToast('Komentar berhasil dihapus!');
+						}
+	    			});
+				}
+			window.replyToComment = async (parentCommentId, postId) => {
+	    		const existingForm = document.getElementById('active-reply-form');
+	    			if (existingForm) {
+	        			existingForm.remove();
+	    			}
+	
+	    			const container = document.getElementById(`reply-form-container-${parentCommentId}`);
+	    			if (!container) return;
+	
+				    const formHTML = `
+				        <form id="active-reply-form" class="space-y-3 glass-card p-3 rounded-lg border-indigo-400/50">
+				            <textarea id="reply-textarea" class="w-full bg-neutral-900/50 p-2 rounded-md text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="Tulis balasan Anda sebagai Admin..."></textarea>
+				            <div class="flex justify-end space-x-2">
+				                <button type="button" id="cancel-reply-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
+				                <button type="submit" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Kirim Balasan</button>
+				            </div>
+				        </form>`;
+	
+	    				container.innerHTML = formHTML;
+	    				document.getElementById('reply-textarea').focus();
+	    
+	    				document.getElementById('active-reply-form').addEventListener('submit', async (e) => {
+	        			e.preventDefault();
+	        			const replyContent = document.getElementById('reply-textarea').value;
+	        			const submitButton = e.target.querySelector('button[type="submit"]');
+	
+	        			if (replyContent && replyContent.trim() !== "") {
+	            			submitButton.disabled = true;
+	            			submitButton.textContent = 'Mengirim...';
+	
+	            			const { data: { user } } = await supabase.auth.getUser();
+	            			const adminName = user.email.split('@')[0] + " (Admin)";
+	
+	            			const { error } = await supabase.from('comments').insert({
+	                			post_id: postId,
+	                			parent_id: parentCommentId,
+	                			content: replyContent,
+	                			author_name: adminName,
+	                			is_approved: true,
+	                			user_id: user.id
+	            			});
+	
+	            			if (error) {
+	                			showToast("Gagal mengirim balasan: " + error.message);
+	                			submitButton.disabled = false;
+	                			submitButton.textContent = 'Kirim Balasan';
+	            			} else {
+	            				showToast("Balasan berhasil dikirim!");
+								document.getElementById('active-reply-form').remove();
+	               		await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
+	            		}
+	        		}
+	    		});
+	
+	    		document.getElementById('cancel-reply-btn').addEventListener('click', () => {
+	        		document.getElementById('active-reply-form').remove();
+	    		});
 			}
-		window.replyToComment = async (parentCommentId, postId) => {
-    		const existingForm = document.getElementById('active-reply-form');
-    			if (existingForm) {
-        			existingForm.remove();
-    			}
+	            
+	            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
+	                const chartEl = document.getElementById(canvasId);
+	                if (!chartEl) return;
+	                if (charts[canvasId]) charts[canvasId].destroy();
+	                const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a3a3a3' } }, y: { ticks: { color: '#a3a3a3' }, beginAtZero: true } }};
+	                if (type === 'doughnut') { chartOptions.scales = {}; chartOptions.plugins.legend = { display: true, position: 'bottom', labels: { color: '#a3a3a3' } }; }
+	                charts[canvasId] = new Chart(chartEl.getContext('2d'), { type, data: { labels, datasets: [{ label, data, backgroundColor: bgColors, borderColor: '#6366f1', tension: 0.3, fill: type === 'line' }] }, options: chartOptions });
+	            }
+	
+	            async function checkPendingComments() {
+	                const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
+	                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
+	                else { commentBadge.classList.add('hidden'); }
+	            }
+	            
+	            function listenForCommentChanges() {
+	                console.log('Realtime listener untuk komentar diaktifkan.');
+	                supabase.channel('public:comments')
+	                    .on(
+	                        'postgres_changes',
+	                        { event: '*', schema: 'public', table: 'comments' },
+	                        (payload) => {
+	                            console.log('Perubahan terdeteksi pada tabel komentar!', payload);
+	                            checkPendingComments(); 
+	                            
+	                            const isOnCommentView = document.getElementById('comments-list');
+	                            if (isOnCommentView) {
+	                                console.log('Merefresh daftar komentar...');
+	                                renderView('comments');
+	                            }
+	                        }
+	                    )
+	                    .subscribe((status) => {
+	                        if (status === 'SUBSCRIBED') {
+	                            console.log('Berhasil terhubung ke channel realtime Supabase!');
+	                        }
+	                    });
+	            }
+	            
+	            const confirmationModal = document.getElementById('confirmation-modal');
+	        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+	        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+	
+	        	function showConfirmationModal(onConfirm) {
+	            	confirmationModal.classList.remove('hidden');
+	            
+	            	const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
+	            	confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
+	            
+	            	newConfirmBtn.addEventListener('click', () => {
+	                	onConfirm();
+	                	hideConfirmationModal();
+	            	});
+	       	}
+	
+	        	function hideConfirmationModal() {
+	            	confirmationModal.classList.add('hidden');
+	        	}
+	        
+	        function showToast(message, type = 'success') {
+	                const toastContainer = document.getElementById('toast-container');
+	
+	                const toast = document.createElement('div');
+	                const bgColor = type === 'success' ? 'bg-green-500/80' : 'bg-red-500/80';
+	                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+	
+	                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card transition-all duration-300 transform translate-x-full animate-slide-in`;
+	                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+	
+	
+	                toast.innerHTML = `
+	                    <span>${icon}</span>
+	                    <p>${message}</p>
+	                `;
+	
+	                toastContainer.appendChild(toast);
+	
+	                setTimeout(() => {
+	                    toast.classList.add('opacity-0');
+	                    toast.addEventListener('transitionend', () => toast.remove());
+	                }, 4000);
+	            }
+	            
+	            function getCommentSkeletonHTML() {
+	                let skeletonHTML = '<div class="space-y-4">';
+	                for (let i = 0; i < 3; i++) {
+	                    skeletonHTML += '<div class="w-full h-28 skeleton-pulse"></div>';
+	                }
+	                skeletonHTML += '</div>';
+	                return skeletonHTML;
+	            }
+	            
+	            function getPopularPostsSkeletonHTML() {
+	                let skeletonHTML = '<div class="space-y-3">';
+	                for (let i = 0; i < 4; i++) {
+	                    skeletonHTML += '<div class="w-full h-12 skeleton-pulse"></div>';
+	                }
+	                skeletonHTML += '</div>';
+	                return skeletonHTML;
+	            }
+	            
+	            function getStatsSkeletonHTML() {
+	                return `
+	                    <div class="space-y-8">
+	                        <div class="glass-card p-6 rounded-2xl">
+	                            <h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2>
+	                            <div class="h-80 skeleton-pulse"></div>
+	                        </div>
+	                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+	                            <div class="glass-card p-6 rounded-2xl">
+	                                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
+	                                <div class="h-80 skeleton-pulse"></div>
+	                            </div>
+	                            <div class="glass-card p-6 rounded-2xl">
+	                                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
+	                                <div class="space-y-3">
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                `;
+	            }
+	            
+	            async function renderRecentActivity() {
+	    			const listContainer = document.getElementById('recentActivityList');
+	    			if (!listContainer) return;
+	
+	    			listContainer.innerHTML = `
+	        		<div class="space-y-3">
+	            		<div class="h-14 w-full skeleton-pulse"></div>
+	            		<div class="h-14 w-full skeleton-pulse"></div>
+	            		<div class="h-14 w-full skeleton-pulse"></div>
+	            		<div class="h-14 w-full skeleton-pulse"></div>
+	        		</div>
+	    			`;
+	
+	    			const [recentCommentsRes, recentPostsRes] = await Promise.all([
+	        			supabase.from('comments').select('id, content, author_name, created_at, posts(title)')
+	            		.order('created_at', { ascending: false }).limit(5),
+	        			supabase.from('posts').select('id, title, created_at, published')
+	            		.order('created_at', { ascending: false }).limit(5)
+	    			]);
+	
+	    			let activities = [];
+	
+	    			if (!recentCommentsRes.error) {
+	        			recentCommentsRes.data.forEach(item => {
+	            			activities.push({
+	                			type: 'comment',
+	                			content: `Komentar dari <strong>${item.author_name}</strong> di "${item.posts.title}"`,
+	                			date: new Date(item.created_at)
+	            			});
+	        			});
+	    			}
+	
+	    			if (!recentPostsRes.error) {
+	        			recentPostsRes.data.forEach(item => {
+	            			activities.push({
+	                			type: 'post',
+	                			content: `Postingan <strong>"${item.title}"</strong> telah ${item.published ? 'dipublikasikan' : 'dibuat (draft)'}.`,
+	                			date: new Date(item.created_at)
+	            			});
+	        			});
+	    			}
+	
+	    			activities.sort((a, b) => b.date - a.date);
+	
+	    			const latestActivities = activities.slice(0, 5);
+	    
+	    			if (latestActivities.length > 0) {
+	        			listContainer.innerHTML = '';
+	        			latestActivities.forEach(item => {
+	            			const icon = item.type === 'comment' 
+	                		? '<i class="ri-chat-4-line text-indigo-400"></i>'
+	                		: '<i class="ri-file-text-line text-green-400"></i>';
+	
+	            		listContainer.innerHTML += `
+	                	<div class="glass-card p-3 rounded-xl flex items-start space-x-3 text-sm">
+	                    	<div class="flex-shrink-0 mt-1">${icon}</div>
+	                    	<div>
+	                        	<p class="text-slate-200">${item.content}</p>
+	                        	<p class="text-xs text-slate-400 mt-1">${item.date.toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+	                    	</div>
+	                	</div>
+	            		`;
+	        		});
+	    			} else {
+	       	 		listContainer.innerHTML = '<p class="text-sm text-slate-500 text-center p-4">Belum ada aktivitas.</p>';
+	    			}
+				}
+				
+				async function renderSettingsView() {
+    				const { data: { user } } = await supabase.auth.getUser();
+    				if(user) {
+        				const userName = user.user_metadata.full_name || user.email.split('@')[0];
+        				const userEmail = user.email;
 
-    			const container = document.getElementById(`reply-form-container-${parentCommentId}`);
-    			if (!container) return;
-
-			    const formHTML = `
-			        <form id="active-reply-form" class="space-y-3 glass-card p-3 rounded-lg border-indigo-400/50">
-			            <textarea id="reply-textarea" class="w-full bg-neutral-900/50 p-2 rounded-md text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="Tulis balasan Anda sebagai Admin..."></textarea>
-			            <div class="flex justify-end space-x-2">
-			                <button type="button" id="cancel-reply-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
-			                <button type="submit" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Kirim Balasan</button>
-			            </div>
-			        </form>`;
-
-    				container.innerHTML = formHTML;
-    				document.getElementById('reply-textarea').focus();
-    
-    				document.getElementById('active-reply-form').addEventListener('submit', async (e) => {
-        			e.preventDefault();
-        			const replyContent = document.getElementById('reply-textarea').value;
-        			const submitButton = e.target.querySelector('button[type="submit"]');
-
-        			if (replyContent && replyContent.trim() !== "") {
-            			submitButton.disabled = true;
-            			submitButton.textContent = 'Mengirim...';
-
-            			const { data: { user } } = await supabase.auth.getUser();
-            			const adminName = user.email.split('@')[0] + " (Admin)";
-
-            			const { error } = await supabase.from('comments').insert({
-                			post_id: postId,
-                			parent_id: parentCommentId,
-                			content: replyContent,
-                			author_name: adminName,
-                			is_approved: true,
-                			user_id: user.id
-            			});
-
-            			if (error) {
-                			showToast("Gagal mengirim balasan: " + error.message);
-                			submitButton.disabled = false;
-                			submitButton.textContent = 'Kirim Balasan';
-            			} else {
-            				showToast("Balasan berhasil dikirim!");
-                		// Jika ingin lebih cepat, bisa tambahkan: document.getElementById('active-reply-form').remove();
-               		await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
-            		}
-        		}
-    		});
-
-    		document.getElementById('cancel-reply-btn').addEventListener('click', () => {
-        		document.getElementById('active-reply-form').remove();
-    		});
-		}
-            
-            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
-                const chartEl = document.getElementById(canvasId);
-                if (!chartEl) return;
-                if (charts[canvasId]) charts[canvasId].destroy();
-                const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a3a3a3' } }, y: { ticks: { color: '#a3a3a3' }, beginAtZero: true } }};
-                if (type === 'doughnut') { chartOptions.scales = {}; chartOptions.plugins.legend = { display: true, position: 'bottom', labels: { color: '#a3a3a3' } }; }
-                charts[canvasId] = new Chart(chartEl.getContext('2d'), { type, data: { labels, datasets: [{ label, data, backgroundColor: bgColors, borderColor: '#6366f1', tension: 0.3, fill: type === 'line' }] }, options: chartOptions });
-            }
-
-            async function checkPendingComments() {
-                const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
-                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
-                else { commentBadge.classList.add('hidden'); }
-            }
-            
-            function listenForCommentChanges() {
-                console.log('Realtime listener untuk komentar diaktifkan.');
-                supabase.channel('public:comments')
-                    .on(
-                        'postgres_changes',
-                        { event: '*', schema: 'public', table: 'comments' },
-                        (payload) => {
-                            console.log('Perubahan terdeteksi pada tabel komentar!', payload);
-                            checkPendingComments(); 
-                            
-                            const isOnCommentView = document.getElementById('comments-list');
-                            if (isOnCommentView) {
-                                console.log('Merefresh daftar komentar...');
-                                renderView('comments');
-                            }
-                        }
-                    )
-                    .subscribe((status) => {
-                        if (status === 'SUBSCRIBED') {
-                            console.log('Berhasil terhubung ke channel realtime Supabase!');
-                        }
-                    });
-            }
-            
-            const confirmationModal = document.getElementById('confirmation-modal');
-        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-
-        	function showConfirmationModal(onConfirm) {
-            	confirmationModal.classList.remove('hidden');
-            
-            	const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
-            	confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
-            
-            	newConfirmBtn.addEventListener('click', () => {
-                	onConfirm();
-                	hideConfirmationModal();
-            	});
-       	}
-
-        	function hideConfirmationModal() {
-            	confirmationModal.classList.add('hidden');
-        	}
+        				document.getElementById('settings-username').textContent = userName;
+        				document.getElementById('settings-email').textContent = userEmail;
         
-        function showToast(message, type = 'success') {
-                const toastContainer = document.getElementById('toast-container');
+        				const avatar = document.getElementById('settings-avatar');
+        				if(avatar) avatar.src = 'assets/logo.png';
+    				}
+				}	            
+	
+	            // --- INISIALISASI HALAMAN ---
+	            async function initializePage() {
+				    const { data: { session } } = await supabase.auth.getSession();
+				    if (!session) {
+				        window.location.replace('login.html');
+				        return;
+				    }
+				    
+				    const { data: { user } } = await supabase.auth.getUser();
+				    if (user) {
+				        const userNameElement = document.getElementById('user-name-header');
+				        if (userNameElement) {
+				            userNameElement.textContent = user.user_metadata.full_name || user.email.split('@')[0];
+				        }
+				
+				        const avatarImgElement = document.getElementById('user-avatar-img');
+				        if (avatarImgElement) {
+				            avatarImgElement.src = 'assets/logo.jpg';
+				        }
+				        
+				        const avatarButton = document.getElementById('avatar-button');
+				        const dropdown = document.getElementById('profile-dropdown');
+				        const logoutBtn = document.getElementById('logout-btn-dropdown');
+				        
+				        avatarButton.addEventListener('click', (e) => {
+				            e.stopPropagation();
+				            dropdown.classList.toggle('hidden');
+				        });
+				
+				        logoutBtn.addEventListener('click', async (e) => {
+				            e.preventDefault();
+				            await supabase.auth.signOut();
+				            window.location.replace('login.html');
+				        });
+				    }
+				    
+				    window.addEventListener('click', () => {
+				        const dropdown = document.getElementById('profile-dropdown');
+				        if (dropdown && !dropdown.classList.contains('hidden')) {
+				            dropdown.classList.add('hidden');
+				        }
+				    });
+				
+				    app.classList.remove('opacity-0');
+				
+				    navItems.forEach(item => {
+				        item.addEventListener('click', (e) => {
+				            const view = e.currentTarget.dataset.view;
+				            if (view) renderView(view);
+				        });
+				    });
+				    
+				    cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
+				    confirmationModal.addEventListener('click', (e) => {
+				        if (e.target === confirmationModal) {
+				            hideConfirmationModal();
+				        }
+				    });
+				    
+				    await renderView('home');
+				    checkPendingComments();
+				    listenForCommentChanges();
+				}
 
-                const toast = document.createElement('div');
-                const bgColor = type === 'success' ? 'bg-green-500/80' : 'bg-red-500/80';
-                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
-
-                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card transition-all duration-300 transform translate-x-full animate-slide-in`;
-                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
-
-
-                toast.innerHTML = `
-                    <span>${icon}</span>
-                    <p>${message}</p>
-                `;
-
-                toastContainer.appendChild(toast);
-
-                setTimeout(() => {
-                    toast.classList.add('opacity-0');
-                    // Tunggu animasi fade-out selesai sebelum menghapus elemen
-                    toast.addEventListener('transitionend', () => toast.remove());
-                }, 4000);
-            }
-            
-            function getCommentSkeletonHTML() {
-                let skeletonHTML = '<div class="space-y-4">';
-                for (let i = 0; i < 3; i++) {
-                    skeletonHTML += '<div class="w-full h-28 skeleton-pulse"></div>';
-                }
-                skeletonHTML += '</div>';
-                return skeletonHTML;
-            }
-            
-            function getPopularPostsSkeletonHTML() {
-                let skeletonHTML = '<div class="space-y-3">';
-                for (let i = 0; i < 4; i++) {
-                    skeletonHTML += '<div class="w-full h-12 skeleton-pulse"></div>';
-                }
-                skeletonHTML += '</div>';
-                return skeletonHTML;
-            }
-            
-            function getStatsSkeletonHTML() {
-                return `
-                    <div class="space-y-8">
-                        <div class="glass-card p-6 rounded-2xl">
-                            <h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2>
-                            <div class="h-80 skeleton-pulse"></div>
-                        </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="glass-card p-6 rounded-2xl">
-                                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
-                                <div class="h-80 skeleton-pulse"></div>
-                            </div>
-                            <div class="glass-card p-6 rounded-2xl">
-                                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
-                                <div class="space-y-3">
-                                    <div class="h-10 w-full skeleton-pulse"></div>
-                                    <div class="h-10 w-full skeleton-pulse"></div>
-                                    <div class="h-10 w-full skeleton-pulse"></div>
-                                    <div class="h-10 w-full skeleton-pulse"></div>
-                                    <div class="h-10 w-full skeleton-pulse"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            
-
-            // --- INISIALISASI HALAMAN ---
-            async function initializePage() {
-    			const { data: { session } } = await supabase.auth.getSession();
-   		 	if (!session) { window.location.replace('login.html'); return; }
-    
-    			app.classList.remove('opacity-0');
-    
-    			navItems.forEach(item => {
-        			item.addEventListener('click', (e) => {
-            			const view = e.currentTarget.dataset.view;
-            			if (view) renderView(view);
-        			});
-    			});
-
-    			document.getElementById('logoutButton').addEventListener('click', async () => { 
-        			await supabase.auth.signOut(); 
-        			window.location.replace('login.html'); 
-    			});
-
-    			cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
-    			confirmationModal.addEventListener('click', (e) => {
-        			if (e.target === confirmationModal) {
-            			hideConfirmationModal();
-        			}
-    			});
-    
-    			await renderView('home');
-    			checkPendingComments();
-    			listenForCommentChanges();
-			}
-            initializePage();
-        });
-    </script>
-    <div id="confirmation-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="glass-card w-full max-w-sm p-6 rounded-2xl border-red-500/50 text-center">
-            <h3 class="text-xl font-bold text-white mb-2">Konfirmasi Hapus</h3>
-            <p id="modal-text" class="text-slate-300 text-sm mb-6">Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.</p>
-            <div class="flex justify-center space-x-4">
-                <button id="cancel-delete-btn" class="py-2 px-5 rounded-full text-sm font-semibold hover:bg-neutral-700 transition-colors">Batal</button>
-                <button id="confirm-delete-btn" class="bg-red-600 hover:bg-red-700 text-white py-2 px-5 rounded-full text-sm font-bold transition-colors">Ya, Hapus</button>
-            </div>
-        </div>
-    </div>
-	<div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
-</body>
+	            initializePage();
+	        });
+	    </script>
+	</body>
 </html>
