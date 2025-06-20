@@ -13,6 +13,8 @@
         .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .nav-item.active { color: #818cf8; /* indigo-400 */ }
         .nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
+        .comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
+        .comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -47,7 +49,15 @@
     </template>
     <template id="view-comments">
         <h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
-        <div id="comments-moderation-list" class="space-y-4"></div>
+        <div class="border-b border-white/10 mb-6">
+            <nav id="comment-tabs" class="-mb-px flex space-x-6">
+                <button data-filter="pending" class="comment-tab-btn py-3 px-1 text-sm font-semibold">Perlu Persetujuan</button>
+                <button data-filter="all" class="comment-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Semua Komentar</button>
+            </nav>
+        </div>
+        <div id="comments-list" class="space-y-4">
+            <p class="text-center text-slate-400 p-8">Memuat komentar...</p>
+        </div>
     </template>
     <template id="view-stats">
         <h1 class="text-3xl font-bold text-white mb-6">Statistik Detail</h1>
@@ -117,38 +127,65 @@
             
             // --- FUNGSI VIEW: KOMENTAR ---
             async function renderCommentsView() {
-            const listContainer = document.getElementById('comments-moderation-list');
-            if (!listContainer) return;
+                const listContainer = document.getElementById('comments-list');
+                const tabsContainer = document.getElementById('comment-tabs');
+                let currentFilter = 'pending'; // Default tab
 
-            listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat komentar...</p>`;
-            const { data: comments, error } = await supabase.from('comments').select('id, created_at, content, author_name, post_id, posts(title, slug)').eq('is_approved', false).order('created_at', { ascending: true });
-            
-            if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`; return; }
-            if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">👍 Semua komentar sudah dimoderasi!</p>`; return; }
-            
-            listContainer.innerHTML = '';
-            comments.forEach(comment => {
-                const card = document.createElement('div');
-                card.className = 'glass-card p-4 rounded-xl';
-                // PERUBAHAN: Menambahkan kembali tombol Balas & Hapus yang berfungsi
-                card.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-bold text-white">${comment.author_name}</p>
-                            <p class="text-sm text-slate-300 mt-2 break-words">${comment.content}</p>
-                        </div>
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 ml-4 text-xs font-bold">
-                            <button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 py-1 px-3 rounded-full">Setujui</button>
-                            <button onclick="window.replyToComment('${comment.id}', '${comment.post_id}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 py-1 px-3 rounded-full">Balas</button>
-                            <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 py-1 px-3 rounded-full">Hapus</button>
-                        </div>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
-                        Pada artikel: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
-                    </div>`;
-                listContainer.appendChild(card);
-            });
-        }
+                async function loadComments(filter) {
+                    listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat...</p>`;
+                    let query = supabase.from('comments').select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)').order('created_at', { ascending: false });
+
+                    if (filter === 'pending') {
+                        query = query.eq('is_approved', false);
+                    }
+                    
+                    const { data: comments, error } = await query;
+
+                    if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat.</p>`; return; }
+                    if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">👍 Tidak ada komentar di tab ini.</p>`; return; }
+
+                    listContainer.innerHTML = '';
+                    comments.forEach(comment => {
+                        const card = document.createElement('div');
+                        card.className = 'glass-card p-4 rounded-xl';
+                        
+                        let actionButtons = `<button onclick="window.replyToComment('${comment.id}', '${comment.post_id}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 text-xs font-bold py-1 px-3 rounded-full">Balas</button>
+                                           <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button>`;
+                        
+                        if (!comment.is_approved) {
+                            actionButtons = `<button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button>` + actionButtons;
+                        }
+
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-white">${comment.author_name} <span class="text-xs font-normal ${comment.is_approved ? 'text-green-400' : 'text-amber-400'}">(${comment.is_approved ? 'Disetujui' : 'Menunggu'})</span></p>
+                                    <p class="text-sm text-slate-300 mt-2 break-words">${comment.content}</p>
+                                </div>
+                                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 ml-4">
+                                    ${actionButtons}
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+                                Pada: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
+                            </div>`;
+                        listContainer.appendChild(card);
+                    });
+                }
+
+                tabsContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (button) {
+                        currentFilter = button.dataset.filter;
+                        document.querySelector('.comment-tab-btn.active').classList.remove('active');
+                        button.classList.add('active');
+                        loadComments(currentFilter);
+                    }
+                });
+
+                tabsContainer.querySelector('[data-filter="pending"]').classList.add('active');
+                await loadComments('pending');
+            }
             
             // --- FUNGSI VIEW: STATISTIK ---
             async function renderStatsView() {
