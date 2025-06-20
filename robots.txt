@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bimaakbar.netlify.app/sitemap.xml
+Sitemap: https://wgcslximcxnprmfqtsoh.supabase.co/functions/v1/sitemap
