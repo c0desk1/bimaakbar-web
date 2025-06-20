@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub</title>
+    <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
@@ -116,19 +117,38 @@
             
             // --- FUNGSI VIEW: KOMENTAR ---
             async function renderCommentsView() {
-                const listContainer = document.getElementById('comments-moderation-list');
-                listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat komentar...</p>`;
-                const { data: comments, error } = await supabase.from('comments').select('id, created_at, content, author_name, posts(title, slug)').eq('is_approved', false).order('created_at', { ascending: true });
-                if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`; return; }
-                if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">👍 Semua komentar sudah dimoderasi!</p>`; return; }
-                listContainer.innerHTML = '';
-                comments.forEach(comment => {
-                    const card = document.createElement('div');
-                    card.className = 'glass-card p-4 rounded-xl';
-                    card.innerHTML = `<div class="flex justify-between items-start"><div><p class="font-bold text-white">${comment.author_name}</p><p class="text-sm text-slate-300 mt-2">${comment.content}</p></div><div class="flex space-x-2 flex-shrink-0 ml-4"><button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 text-xs font-bold py-1 px-3 rounded-full">Setujui</button><button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 text-xs font-bold py-1 px-3 rounded-full">Hapus</button></div></div><div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">Pada artikel: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title}</a></div>`;
-                    listContainer.appendChild(card);
-                });
-            }
+            const listContainer = document.getElementById('comments-moderation-list');
+            if (!listContainer) return;
+
+            listContainer.innerHTML = `<p class="text-center text-slate-400 p-8">Memuat komentar...</p>`;
+            const { data: comments, error } = await supabase.from('comments').select('id, created_at, content, author_name, post_id, posts(title, slug)').eq('is_approved', false).order('created_at', { ascending: true });
+            
+            if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`; return; }
+            if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">👍 Semua komentar sudah dimoderasi!</p>`; return; }
+            
+            listContainer.innerHTML = '';
+            comments.forEach(comment => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-xl';
+                // PERUBAHAN: Menambahkan kembali tombol Balas & Hapus yang berfungsi
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold text-white">${comment.author_name}</p>
+                            <p class="text-sm text-slate-300 mt-2 break-words">${comment.content}</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 flex-shrink-0 ml-4 text-xs font-bold">
+                            <button onclick="window.approveComment('${comment.id}')" class="bg-green-500/20 text-green-400 hover:bg-green-500/40 py-1 px-3 rounded-full">Setujui</button>
+                            <button onclick="window.replyToComment('${comment.id}', '${comment.post_id}')" class="bg-blue-500/20 text-blue-400 hover:bg-blue-500/40 py-1 px-3 rounded-full">Balas</button>
+                            <button onclick="window.deleteComment('${comment.id}')" class="bg-red-500/20 text-red-400 hover:bg-red-500/40 py-1 px-3 rounded-full">Hapus</button>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+                        Pada artikel: <a href="/post.html?slug=${comment.posts.slug}" target="_blank" class="text-indigo-400 hover:underline">${comment.posts.title || 'Tanpa Judul'}</a>
+                    </div>`;
+                listContainer.appendChild(card);
+            });
+        }
             
             // --- FUNGSI VIEW: STATISTIK ---
             async function renderStatsView() {
@@ -147,8 +167,42 @@
             }
 
             // --- FUNGSI-FUNGSI HELPERS ---
-            window.approveComment = async (commentId) => { const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId); if (error) alert('Gagal: ' + error.message); else { renderView('comments'); checkPendingComments(); } }
-            window.deleteComment = async (commentId) => { if (confirm('Yakin?')) { const { error } = await supabase.from('comments').delete().eq('id', commentId); if (error) alert('Gagal: ' + error.message); else { renderView('comments'); checkPendingComments(); } } }
+            window.approveComment = async (commentId) => {
+            const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
+            if (error) alert('Gagal: ' + error.message);
+            else { renderView('comments'); checkPendingComments(); }
+        }
+            window.deleteComment = async (commentId) => {
+            if (confirm('Yakin ingin menghapus komentar ini secara permanen?')) {
+                const { error } = await supabase.from('comments').delete().eq('id', commentId);
+                if (error) alert('Gagal menghapus: ' + error.message);
+                else { renderView('comments'); checkPendingComments(); }
+            }
+        }
+        window.replyToComment = async (parentCommentId, postId) => {
+            const replyContent = prompt("Masukkan balasan Anda:");
+            if (replyContent && replyContent.trim() !== "") {
+                const { data: { user } } = await supabase.auth.getUser();
+                const adminName = user.email.split('@')[0] + " (Admin)";
+
+                const { error } = await supabase.from('comments').insert({
+                    post_id: postId,
+                    parent_id: parentCommentId,
+                    content: replyContent,
+                    author_name: adminName,
+                    is_approved: true, // Balasan admin langsung disetujui
+                    user_id: user.id
+                });
+
+                if (error) {
+                    alert("Gagal mengirim balasan: " + error.message);
+                } else {
+                    alert("Balasan berhasil terkirim!");
+                    await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
+                    renderView('comments');
+                }
+            }
+        }
             
             function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
                 const chartEl = document.getElementById(canvasId);
