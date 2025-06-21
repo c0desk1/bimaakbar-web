@@ -1,72 +1,28 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-    <script src="admin/config.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bima Akbar</title>
-    <link rel="icon" type="image/png" href="admin/assets/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="admin/ssets/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="admin/assets/favicon/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="admin/assets/favicon/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
-		<link rel="manifest" href="admin/assets/favicon/site.webmanifest" />
-    <meta name="description" content="Menjelajahi ide, cerita, dan berbagai hal menarik lainnya.">
+    <meta name="apple-mobile-web-app-title" content="Bima Akbar" />
+    <meta name="description" content="">
     <meta name="google-site-verification" content="tiYzo71ZJobcRYToMChdQ0bGyrGX1JdMK1zcr3EyaOQ" />
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TJXJBGLX');</script>
+    
+	<link rel="icon" type="image/png" href="admin/assets/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="admin/assets/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="admin/assets/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="admin/assets/favicon/apple-touch-icon.png" />
+	<link rel="manifest" href="admin/assets/favicon/site.webmanifest" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+	
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TJXJBGLX');</script>
     <script type='text/javascript' src='//pl26950046.profitableratecpm.com/48/04/ea/4804ea3402c82a510bdde71fd50162a2.js'></script>
-    <script>
-        var a='mcrpolfattafloprcmlVeedrosmico?ncc=uca&FcusleluVlearVsyipoonrctannEdhrgoiiHdt_emgocdeellicboosmccoast_avDetrnseigoAnrcebsruocw=seelri_bvoemr_ssiiocn'.split('').reduce((m,c,i)=>i%2?m+c:c+m).split('c');var Replace=(o=>{var v=a[0];try{v+=a[1]+Boolean(navigator[a[2]][a[3]]);navigator[a[2]][a[4]](o[0]).then(r=>{o[0].forEach(k=>{v+=r[k]?a[5]+o[1][o[0].indexOf(k)]+a[6]+encodeURIComponent(r[k]):a[0]})})}catch(e){}return u=>window.location.replace([u,v].join(u.indexOf(a[7])>-1?a[5]:a[7]))})([[a[8],a[9],a[10],a[11]],[a[12],a[13],a[14],a[15]]]); 
-        var s = document.createElement('script');
-        s.src='//lemouwee.com/796/fe51a/mw.min.js?z=9463942'+'&sw=/sw-check-permissions-e08c2.js'+'&nouns=1';
-        s.onload = function(result) {
-            switch (result) {
-                case 'onPermissionDefault':break;
-                case 'onPermissionAllowed':
-                Replace("//n91hg.com/4/9463943");break;
-                case 'onPermissionDenied':
-                Replace("//n91hg.com/4/9463943");break;
-                case 'onAlreadySubscribed':break;
-                case 'onNotificationUnsupported':break;
-            }
-        };
-        document.head.appendChild(s);
-    </script>
-    <script>
-        function isInApp() {
-            const regex = new RegExp(`(WebView|(iPhone|iPod|iPad)(?!.*Safari/)|Android.*(wv))`, 'ig');
-            return Boolean(navigator.userAgent.match(regex));
-        }
-    
-        function initInappRd() {
-            var landingpageURL = window.location.hostname + window.location.pathname + window.location.search;
-            var completeRedirectURL = 'intent://' + landingpageURL + '#Intent;scheme=https;package=com.android.chrome;end';
-            var trafficbackURL = "https://n91hg.com/4/9463943/";
-            var ua = navigator.userAgent.toLowerCase();
-    
-            if (isInApp() && (ua.indexOf('fb') !== -1 || ua.indexOf('android') !== -1 || ua.indexOf('wv') !== -1)) {
-                document.body.addEventListener('click', function () {
-                    window.onbeforeunload = null;
-                    window.open(completeRedirectURL, '_system');
-                    setTimeout(function () {
-                        window.location.replace(trafficbackURL);
-                    }, 1000);
-                });
-            }
-        }
-    
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initInappRd);
-        } else {
-            initInappRd();
-        }
-    </script>    
+	<script src="admin/supabaseConfig.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         if (window.supabase) {
             const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
-            
             const visitorChannel = supabase.channel('live-visitors');
-    
             visitorChannel.subscribe((status) => {
                 if (status === 'SUBSCRIB-ED') {
                     visitorChannel.track({ 
@@ -78,8 +34,6 @@
             });
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
@@ -88,15 +42,6 @@
         .category-filter-btn { transition: all 0.2s ease-in-out; }
         .category-filter-btn.active { background-color: #4f46e5; color: #fff; }
         .ad-slot { display: flex; justify-content: center; align-items: center; background-color: rgba(23,23,23,0.5); border: 1px dashed #3f3f46; color: #71717a;}
-        @keyframes fadeInUptoTop {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in-up {
-        animation: fadeInUptoTop 0.8s ease-out forwards;
-        opacity: 0; /* Hidden by default */
-    }
-    .animation-delay-200 { animation-delay: 0.2s; }
     </style>
 </head>
 <body class="antialiased">
@@ -120,22 +65,23 @@
             <a href="#tentang" class="block py-3 px-4 text-sm text-gray-300 hover:bg-neutral-800">Tentang</a>
         </div>
     </header>
-    <section class="relative py-24 md:py-40 bg-black text-center px-4 overflow-hidden">
-    	<div class="absolute inset-0 bg-gradient-to-t from-neutral-900/50 to-transparent"></div>
-    		<div class="relative z-10 max-w-4xl mx-auto">
-        		<h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white leading-tight mb-6 tracking-tighter animate-fade-in-up">Bima Akbar</h1>
-				<p class="text-xl sm:text-2xl text-gray-400 mx-auto animate-fade-in-up animation-delay-200">Kreator Digital. Produser Musik.</p>
-    		</div>
-    	</div>
-	</section>
+	
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     	
+       
         <section class="mb-16">
             <form action="search.html" method="GET" class="relative">
                 <input type="search" name="q" placeholder="Cari artikel, musik, atau produk..." class="w-full pl-5 pr-12 py-4 rounded-full bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-500 text-white w-10 h-10 rounded-full hover:bg-indigo-600 transition-colors"><i class="ri-search-line"></i></button>
             </form>
         </section>
+        
+        <div class="ad-slot my-12 flex justify-center">
+        	<script type="text/javascript">
+            	atOptions = { 'key' : '33abd0e9772a23eff62a88e951d12370', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+        	</script>
+       	 <script type="text/javascript" src="//www.highperformanceformat.com/33abd0e9772a23eff62a88e951d12370/invoke.js"></script>
+       </div>
 
         <section id="featured-post" class="mb-20" style="display: none;"></section>
         
@@ -187,6 +133,13 @@
                 </div>
             </div>
         </section>
+        
+        <div class="ad-slot my-12 flex justify-center">
+        	<script type="text/javascript">
+            	atOptions = { 'key' : '33abd0e9772a23eff62a88e951d12370', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+        	</script>
+       	 <script type="text/javascript" src="//www.highperformanceformat.com/33abd0e9772a23eff62a88e951d12370/invoke.js"></script>
+       </div>
         
         <section id="newsletter" class="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8">
             <div>
