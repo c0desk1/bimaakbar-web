@@ -117,7 +117,7 @@
 			                    </select>
 			                </div>
 			                <div id="schedule-container" class="hidden">
-			                            <label for="schedule-time" class="text-sm font-medium text-slate-400">Jadwal</label>
+			                           <label for="schedule-time" class="text-sm font-medium text-slate-400">Jadwal</label>
 			                            <div class="relative mt-1">
 			                                <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
 			                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -136,7 +136,15 @@
 						<h3 class="font-semibold text-white mb-4">Meta</h3>
 						<div class="space-y-4">
 							<div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-							<div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+							
+							<div>
+								<label for="tags" class="text-sm font-medium text-slate-400">Tags</label>
+    							<div id="tagsContainer" class="flex flex-wrap gap-2 p-2 form-input mt-1 w-full min-h-[42px] items-center">
+        							<input type="text" id="tagInput" class="flex-grow bg-transparent text-white outline-none placeholder-slate-500" placeholder="Tambahkan tag...">
+    							</div>
+    							<input type="hidden" id="hiddenTagsInput" name="tags">
+							</div>
+
 							<div><label for="metaTitle" class="text-sm font-medium text-slate-400">Judul</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
 							<div><label for="metaDescription" class="text-sm font-medium text-slate-400">Deskripsi</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
 							<div><label for="keywords" class="text-sm font-medium text-slate-400">Kata Kunci</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
@@ -147,13 +155,19 @@
 
         </form>
     </main>
-   
+   <div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+            
+            // Deklarasi Elemen DOM untuk Tags
+            const tagsContainer = document.getElementById('tagsContainer');
+            const tagInput = document.getElementById('tagInput');
+            const hiddenTagsInput = document.getElementById('hiddenTagsInput');
+            let currentTags = new Set();
     
             let editor;
             let isEditing = false;
@@ -161,7 +175,7 @@
             let oldThumbnailPath = null;
             let currentUserEmail = '';
     
-            const mainContent = document.getElementById('mainContent');
+            // const mainContent = document.getElementById('mainContent'); // Ini sepertinya tidak dipakai, bisa dihapus
             const postForm = document.getElementById('postForm');
             const judulInput = document.getElementById('judul');
             const slugInput = document.getElementById('slug');
@@ -172,15 +186,111 @@
             const thumbnailInput = document.getElementById('thumbnail');
             const thumbnailPreview = document.getElementById('thumbnailPreview');
             const authorInput = document.getElementById('author');
-            const tagsInput = document.getElementById('tags');
             const metaTitleInput = document.getElementById('metaTitle');
             const metaDescriptionInput = document.getElementById('metaDescription');
             const keywordsInput = document.getElementById('keywords'); 
             const submitButton = document.getElementById('submitButton');
             const saveIcon = document.getElementById('saveIcon');
             const loadingSpinner = document.getElementById('loadingSpinner');
-    
-            // === 4. FUNGSI-FUNGSI ===
+
+            async function showToast(message, type = 'success', errorObject = null) {
+                const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    console.warn("Toast container not found. Messages will only appear in console.");
+                    console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
+                    return;
+                }
+
+                const toast = document.createElement('div');
+                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+            
+                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
+                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+                toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
+                toastContainer.appendChild(toast);
+            
+                if (type === 'error' && errorObject) {
+                    console.error("Mencatat error ke database:", errorObject);
+                    const { data: { user } } = await supabase.auth.getUser();
+                    supabase.from('error_logs').insert({
+                        error_message: errorObject.message,
+                        error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
+                        location: "Client-Side Post Editor", // Lokasi spesifik
+                        user_id: user?.id,
+                        user_email: user?.email
+                    }).then(() => console.log('Error logged.'));
+                }
+            
+                setTimeout(() => {
+                    toast.classList.remove('animate-slide-in');
+                    toast.classList.add('opacity-0');
+                }, 4000);
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000 + 350);
+            }
+
+            async function logActivity(action, details = {}) {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (!user) {
+                        console.warn('Tidak dapat mencatat aktivitas: Pengguna tidak terautentikasi.');
+                        return;
+                    }
+                    
+                    const { error } = await supabase.from('activity_logs').insert({
+                        user_id: user.id,
+                        user_email: user.email,
+                        action: action,
+                        details: details
+                    });
+
+                    if (error) {
+                        console.error('Gagal mencatat aktivitas:', error.message);
+                    }
+                } catch (e) {
+                    console.error('Error saat mencoba mencatat aktivitas:', e);
+                }
+            }
+
+            function renderTags() {
+                tagsContainer.querySelectorAll('.tag-chip').forEach(chip => chip.remove());
+                currentTags.forEach(tag => {
+                    const tagChip = document.createElement('span');
+                    tagChip.className = 'tag-chip inline-flex items-center bg-indigo-500/20 text-indigo-300 text-xs font-semibold px-2.5 py-0.5 rounded-full mr-1 mb-1';
+                    tagChip.innerHTML = `
+                        ${tag}
+                        <button type="button" class="ml-1 -mr-0.5 h-4 w-4 inline-flex items-center justify-center rounded-full text-indigo-300 hover:bg-indigo-500/40 hover:text-white" data-tag="${tag}">
+                            <i class="ri-close-line text-xs"></i>
+                        </button>
+                    `;
+                    tagsContainer.insertBefore(tagChip, tagInput);
+
+                    tagChip.querySelector('button').addEventListener('click', (e) => {
+                        removeTag(e.currentTarget.dataset.tag);
+                    });
+                });
+                updateHiddenTagsInput();
+            }
+
+            function addTag(tag) {
+                tag = tag.trim().toLowerCase();
+                if (tag && !currentTags.has(tag)) {
+                    currentTags.add(tag);
+                    renderTags();
+                }
+                tagInput.value = '';
+            }
+
+            function removeTag(tag) {
+                currentTags.delete(tag);
+                renderTags();
+            }
+
+            function updateHiddenTagsInput() {
+                hiddenTagsInput.value = Array.from(currentTags).join(',');
+            }
+
             function generateUniqueSlug(title) {
                 const baseSlug = title.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').substring(0, 60);
                 const randomString = Math.random().toString(36).substring(2, 7);
@@ -192,6 +302,7 @@
                 const { data, error } = await supabase.from('categories').select('name').order('name');
                 if (error || !data) {
                     kategoriInput.innerHTML = '<option value="">Gagal memuat</option>';
+                    showToast('Gagal memuat kategori untuk postingan.', 'error', error);
                     return;
                 }
                 if (data.length === 0) {
@@ -205,19 +316,21 @@
                 });
             }
     
-            async function loadPostForEdit() {
+                        async function loadPostForEdit() {
                 postId = new URLSearchParams(window.location.search).get('id');
+                
                 if (!postId) {
                     isEditing = false;
-                    authorInput.value = currentUserEmail.split('@')[0];
+                    authorInput.value = window.currentUser?.user_metadata?.full_name || window.currentUser?.email.split('@')[0] || '';
                     return;
                 }
     
                 isEditing = true;
                 document.title = 'Edit Postingan';
+                
                 const { data, error } = await supabase.from('posts').select('*').eq('id', postId).single();
                 if (error) {
-                    alert('Gagal memuat data postingan.');
+                    showToast('Gagal memuat data postingan untuk diedit: ' + error.message, 'error', error);
                     window.location.href = 'content-studio.html';
                     return;
                 }
@@ -227,8 +340,17 @@
                 slugInput.dataset.manualEdit = 'true';
                 editor.setContents(data.content || '');
                 kategoriInput.value = data.category || '';
-                authorInput.value = data.author || '';
-                tagsInput.value = data.tags || '';
+                
+                authorInput.value = data.author || window.currentUser?.user_metadata?.full_name || window.currentUser?.email.split('@')[0] || '';
+                
+				currentTags.clear();
+                if (data.tags) {
+                    data.tags.split(',').forEach(tag => {
+                        if (tag.trim()) currentTags.add(tag.trim());
+                    });
+                }
+                renderTags();
+
                 metaTitleInput.value = data.meta_title || '';
                 metaDescriptionInput.value = data.meta_description || '';
                 keywordsInput.value = data.keywords || '';
@@ -248,11 +370,29 @@
                     thumbnailPreview.style.display = 'block';
                     try {
                         oldThumbnailPath = new URL(data.thumbnail_url).pathname.split('/bimaakbar.thumbnail/')[1];
-                    } catch (e) { console.warn("URL thumbnail lama tidak valid.", e); }
+                    } catch (e) { 
+                        console.warn("URL thumbnail lama tidak valid atau tidak dari bucket bimaakbar.thumbnail:", e); 
+                        oldThumbnailPath = null;
+                    }
                 }
             }
     
-            // === 5. EVENT LISTENERS ===
+            tagInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    addTag(tagInput.value);
+                } else if (e.key === 'Backspace' && tagInput.value === '') {
+                    if (currentTags.size > 0) {
+                        const lastTag = Array.from(currentTags).pop();
+                        removeTag(lastTag);
+                    }
+                }
+            });
+            
+            tagsContainer.addEventListener('click', () => {
+                tagInput.focus();
+            });
+
             judulInput.addEventListener('input', () => { if (slugInput.dataset.manualEdit !== 'true') slugInput.value = generateUniqueSlug(judulInput.value); });
             slugInput.addEventListener('input', () => { slugInput.dataset.manualEdit = 'true'; });
             thumbnailInput.addEventListener('change', (e) => { thumbnailPreview.src = URL.createObjectURL(e.target.files[0]); thumbnailPreview.style.display = 'block'; });
@@ -273,7 +413,7 @@
                     const { error: uploadError } = await supabase.storage.from('bimaakbar.thumbnail').upload(filePath, file, { upsert: true });
     
                     if (uploadError) {
-                        alert('Gagal upload thumbnail: ' + uploadError.message);
+                        showToast('Gagal upload thumbnail: ' + uploadError.message, 'error', uploadError); // Ganti alert
                         saveIcon.style.display = 'block';
                         loadingSpinner.style.display = 'none';
                         submitButton.disabled = false;
@@ -284,23 +424,25 @@
                         await supabase.storage.from('bimaakbar.thumbnail').remove([oldThumbnailPath]);
                     }
                 }
-    
+                
+                const finalSlug = slugInput.value || generateUniqueSlug(judulInput.value); 
+
                 const postData = {
                     title: judulInput.value,
-                    slug: slugInput.value || generateUniqueSlug(judulInput.value),
+                    slug: finalSlug,
                     content: editor.getContents(true),
                     category: kategoriInput.value || null,
                     published: statusInput.value === 'published',
                     scheduled_time: statusInput.value === 'scheduled' ? scheduleTimeInput.value : null,
                     thumbnail_url: newThumbnailUrl,
                     author: authorInput.value,
-                    tags: tagsInput.value,
+                    tags: hiddenTagsInput.value,
                     meta_title: metaTitleInput.value,
                     meta_description: metaDescriptionInput.value,
                     keywords: keywordsInput.value,
                     updated_at: new Date(),
                     og_image_url: newThumbnailUrl,
-                    og_url: `${window.location.origin}/post.html?slug=${finalSlug}`,
+                    og_url: `https://bimaakbar.netlify.app/post.html?slug=${finalSlug}`,
                     og_type: 'article'
                 };
                 
@@ -309,9 +451,16 @@
                     : supabase.from('posts').insert(postData));
     
                 if (dbError) {
-                    alert('Gagal menyimpan postingan: ' + dbError.message);
+                    showToast('Gagal menyimpan postingan: ' + dbError.message, 'error', dbError);
                 } else {
-                    alert(isEditing ? 'Postingan berhasil diperbarui!' : 'Postingan berhasil disimpan!');
+                    showToast(isEditing ? 'Postingan berhasil diperbarui!' : 'Postingan berhasil disimpan!');
+
+                    if (isEditing) {
+                        logActivity('UPDATE_POST', { postId: postId, title: judulInput.value });
+                    } else {
+                        logActivity('CREATE_POST', { title: judulInput.value, slug: finalSlug });
+                    }
+
                     window.location.href = 'content-studio.html';
                 }
                 
@@ -320,16 +469,22 @@
                 submitButton.disabled = false;
             });
             
-            
-    
-            // === 6. INISIALISASI HALAMAN UTAMA ===
-            async function initializePage() {
+           async function initializePage() {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) {
                     window.location.href = 'login.html';
                     return;
                 }
-                currentUserEmail = session.user.email;
+                
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                if (userError || !user) {
+                    showToast('Gagal mendapatkan data pengguna: ' + (userError?.message || 'Unknown error'), 'error', userError);
+                    window.location.href = 'login.html'; 
+                    return;
+                }
+                
+                currentUserEmail = user.email; 
+                window.currentUser = user;
 
                 editor = SUNEDITOR.create('editor', {
                     buttonList: [
@@ -377,8 +532,7 @@
         			} catch (error) {
             			console.error('Gagal upload gambar ke Supabase:', error.message);
             			core.callPlugin('image', 'onImageUploadFail', xmlHttpRequest, info, core, error.message);
-            			
-						alert('Gagal mengupload gambar: ' + error.message);
+            			showToast('Gagal mengupload gambar ke editor: ' + error.message, 'error', error); // Ganti alert
         				}
     				}
                 });
