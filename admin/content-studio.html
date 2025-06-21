@@ -15,8 +15,6 @@
     <script src="supabaseConfig.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        @keyframes pulse { 50% { opacity: .5; } }
-        @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         .glass-card { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
@@ -44,11 +42,14 @@
         .animate-slide-in {
             animation: slide-in 0.3s ease-out forwards;
         }
-        .glass-card.toast-message {
+        .toast-message {
             background-color: rgba(23, 23, 23, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        @keyframes pulse { 50% { opacity: .5; } }
+        @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     </style>
 </head>
 <body class="antialiased">
@@ -129,9 +130,7 @@
         </div>
     </div>
     <div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
@@ -184,23 +183,28 @@
             }
             async function showToast(message, type = 'success', errorObject = null) {
                 const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    console.warn("Toast container not found. Messages will only appear in console.");
+                    console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
+                    return;
+                }
+        
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
             
-                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
+                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
                 toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
                 toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
                 toastContainer.appendChild(toast);
             
                 if (type === 'error' && errorObject) {
                     console.error("Mencatat error ke database:", errorObject);
-                    const { data: { user } } = await supabase.auth.getUser();
                     supabase.from('error_logs').insert({
                         error_message: errorObject.message,
                         error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
-                        location: "Client-Side Content Studio",
-                        user_id: user?.id,
-                        user_email: user?.email
+                        location: "Client-Side Post Studio",
+                        user_id: null,
+                        user_email: null
                     }).then(() => console.log('Error logged.'));
                 }
             
@@ -212,7 +216,6 @@
                     toast.remove();
                 }, 4000 + 350);
             }
-
             
             function showConfirmationModal(onConfirm, message = "Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.") {
                 modalText.textContent = message;
@@ -459,9 +462,18 @@
                         if (post.published) {
                             statusText = 'Published';
                             statusColorClass = 'text-green-400';
-                        } else if (post.scheduled_time && new Date(post.scheduled_time) > new Date()) {
-                            statusText = `Scheduled (${new Date(post.scheduled_time).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' })})`;
-                            statusColorClass = 'text-blue-400';
+                        } else if (post.scheduled_time) {
+                            const scheduledDate = new Date(post.scheduled_time);
+                            const now = new Date();
+
+                            if (scheduledDate > now) {
+                                statusText = `Scheduled (${scheduledDate.toLocaleDateString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' })})`;
+                                statusColorClass = 'text-blue-400';
+                            } else {
+
+                                statusText = `Scheduled (Lewat)`;
+                                statusColorClass = 'text-red-400';
+                            }
                         } else {
                             statusText = 'Draft';
                             statusColorClass = 'text-amber-400';
@@ -886,16 +898,37 @@
 
             window.deleteItem = async (tableName, id) => {
                 showConfirmationModal(async () => {
-                    const { error } = await supabase.from(tableName).delete().eq('id', id);
-                    if (error) {
-                        showToast(`Gagal menghapus item dari ${tableName}: ` + error.message, 'error', error);
-                    } else {
-                        showToast('Item berhasil dihapus!');
-                        logActivity('DELETE_MUSIC_RELEASE', { musicId: id });
-                        logActivity('DELETE_AFFILIATE_LINK', { affiliateId: id });
-                        const activeTab = tabsContainer.querySelector('.tab-btn.active').dataset.tab;
-                        if (activeTab === 'music') renderMusicPanel();
-                        if (activeTab === 'affiliates') renderAffiliatesPanel();
+                    let itemName = 'Unknown Item';
+                    let logAction = `DELETE_${tableName.toUpperCase()}_ITEM`;
+
+                    try {
+                        const { data: itemData, error: fetchDataError } = await supabase.from(tableName).select('*').eq('id', id).single();
+                        if (!fetchDataError && itemData) {
+                            if (tableName === 'music_releases') {
+                                itemName = itemData.song_title || 'Unknown Music';
+                                logAction = 'DELETE_MUSIC_RELEASE';
+                            } else if (tableName === 'affiliate_links') {
+                                itemName = itemData.product_name || 'Unknown Affiliate Link';
+                                logAction = 'DELETE_AFFILIATE_LINK';
+                            }
+                        } else {
+                            console.warn(`Could not fetch details for item ${id} from ${tableName} for logging.`);
+                        }
+
+                        const { error: deleteError } = await supabase.from(tableName).delete().eq('id', id);
+
+                        if (deleteError) {
+                            showToast(`Gagal menghapus ${itemName} dari ${tableName}: ` + deleteError.message, 'error', deleteError);
+                        } else {
+                            showToast(`${itemName} berhasil dihapus!`);
+                            logActivity(logAction, { id: id, name: itemName, tableName: tableName });
+                            const activeTab = tabsContainer.querySelector('.tab-btn.active').dataset.tab;
+                            if (activeTab === 'music') renderMusicPanel();
+                            if (activeTab === 'affiliates') renderAffiliatesPanel();
+                        }
+                    } catch (e) {
+                        showToast(`Terjadi kesalahan tak terduga saat menghapus item: ${e.message}`, 'error', e);
+                        console.error("Error uncaught in deleteItem promise:", e);
                     }
                 }, `Yakin ingin menghapus item ini dari ${tableName}?`);
             }
