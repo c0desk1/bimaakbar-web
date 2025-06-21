@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 	<head>
-    	<meta charset="UTF-8">
-    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="config.js"></script> 
     	<title>Dashboard</title>
-
     	<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
 		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
@@ -13,14 +12,14 @@
 		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
 		<link rel="manifest" href="assets/favicon/site.webmanifest" />
 
-    	<script src="config.js"></script> 
-
     	<script src="https://cdn.tailwindcss.com"></script>
     	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
 
     	<style>
        		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
 			@keyframes pulse { 50% { opacity: .5; } }
+			@keyframes blink { 50% { opacity: 0.3; } }
+		
         	body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         	.glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         	.nav-item.active { color: #818cf8; }
@@ -28,7 +27,8 @@
         	.comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
         	.comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
         	.settings-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
-        	.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        	.blinking-dot { animation: blink 1.5s ease-in-out infinite; }
+			.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     	</style>
 	</head>
 	<body class="min-h-screen">
@@ -36,6 +36,10 @@
 		<header class="py-3 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
 			<div class="flex items-center justify-between">
 				<div id="user-name-header" class="text-lg font-semibold text-white"></div>
+				<div id="live-presence-indicator" class="flex items-center space-x-2 bg-neutral-800/50 py-1 px-3 rounded-full">
+					<div id="live-dot" class="w-2 h-2 rounded-full bg-green-500"></div>
+					<span id="live-count" class="text-xs font-medium text-slate-300"></span>
+				</div>
 				<div class="relative">
 					<button id="avatar-button" class="block">
 						<img id="user-avatar-img" src="" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover ring-2 ring-offset-2 ring-offset-[#0a0a0a] ring-indigo-500">
@@ -1131,6 +1135,35 @@
         				}
 				    });
 				}
+				function initializePresenceListener() {
+    				console.log("Menginisialisasi listener untuk Presence...");
+    				const liveCountElement = document.getElementById('live-count');
+    				const liveDotElement = document.getElementById('live-dot');
+
+					const channel = supabase.channel('live-visitors');
+
+					channel.on('presence', { event: 'sync' }, () => {
+						const presences = channel.presenceState();
+						const count = Object.keys(presences).length;
+						
+						console.log('Data presence disinkronkan, jumlah pengunjung:', count);
+						liveCountElement.textContent = `${count} Pengunjung`;
+		
+						if(count > 0) {
+							liveDotElement.classList.add('blinking-dot');
+						} else {
+							liveDotElement.classList.remove('blinking-dot');
+						}
+					});
+
+					channel.subscribe(async (status) => {
+						if (status === 'SUBSCRIBED') {
+							console.log('Berhasil terhubung ke channel Presence.');
+							await channel.track({ online_at: new Date().toISOString() });
+							return;
+						}
+					});
+				}
 
 	            async function initializePage() {
 				    const { data: { session } } = await supabase.auth.getSession();
@@ -1234,6 +1267,7 @@
 				    await renderView('home');
 				    checkPendingComments();
 				    listenForCommentChanges();
+					initializePresenceListener();
 				}
 
 	            initializePage();
