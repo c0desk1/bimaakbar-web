@@ -163,6 +163,7 @@
             }
 
             cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
+            
             confirmationModal.addEventListener('click', (e) => {
                 if (e.target === confirmationModal) {
                     hideConfirmationModal();
@@ -192,7 +193,6 @@
                 editCoverArtUrlInput.value = data.cover_art_url || '';
                 editSpotifyUrlInput.value = data.spotify_url || '';
                 editAppleMusicUrlInput.value = data.apple_music_url || '';
-
                 editMusicModal.classList.remove('hidden');
             };
 
@@ -405,7 +405,22 @@
                     posts.forEach(post => {
                         const postEl = document.createElement('div');
                         postEl.className = 'p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center';
-                        postEl.innerHTML = `<div><p class="font-semibold text-white">${post.title}</p><p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'} ${post.category ? ` • ${post.category}` : ''}</p></div><div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-eye-line"></i></a><a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-pencil-line"></i></a><button onclick="window.deletePost('${post.id}')" title="Hapus Post" class="text-slate-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`;
+                        postEl.innerHTML = `
+						<div>
+							<p class="font-semibold text-white">${post.title}</p>
+							<p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'} ${post.category ? ` • ${post.category}` : ''}</p>
+						</div>
+						<div class="flex items-center space-x-2 text-lg">
+								<a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400">
+									<i class="ri-eye-line"></i>
+								</a>
+								<a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400">
+									<i class="ri-pencil-line"></i>
+								</a>
+							<button onclick="window.deletePost('${post.id}')" title="Hapus Post" class="text-slate-400 hover:text-red-500">
+								<i class="ri-delete-bin-line"></i>
+							</button>
+						</div>`;
                         postListContainer.appendChild(postEl);
                     });
                 }
