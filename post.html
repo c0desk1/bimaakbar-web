@@ -167,12 +167,12 @@
             </section>
             <section id="newsletter" class="mt-16 pt-12 border-t border-white/10">
                 <div class="bg-neutral-900/50 rounded-2xl p-8 text-center">
-                    <h3 class="text-2xl font-bold text-white"><span class="skeleton-pulse h-8 w-2/3 mx-auto"></span></h3>
-                    <p class="text-gray-400 mt-2 max-w-lg mx-auto"><span class="skeleton-pulse h-4 w-full"></span></p>
+                    <h3 id="newsletter-title" class="text-2xl font-bold text-white"><span class="skeleton-pulse h-8 w-2/3 mx-auto"></span></h3>
+                    <p id="newsletter-description" class="text-gray-400 mt-2 max-w-lg mx-auto"><span class="skeleton-pulse h-4 w-full"></span></p>
                     <form id="newsletterForm" class="mt-6 max-w-md mx-auto">
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="email" id="newsletterEmail" placeholder="Masukkan email Anda" class="w-full px-4 py-3 rounded-lg bg-neutral-800 text-white border border-neutral-700 skeleton-pulse">
-                            <button type="submit" class="bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-600 skeleton-pulse"></button>
+                            <input id="newsletterEmail" class="w-full px-4 py-3 rounded-lg bg-neutral-800 text-white border border-neutral-700 skeleton-pulse">
+                            <button id="newsletterSubmitBtn" class="bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-600 skeleton-pulse"></button>
                         </div>
                         <p id="newsletterMessage" class="text-xs mt-2 h-4"></p>
                     </form>
@@ -202,6 +202,29 @@
             const relatedPosts = document.getElementById('related-posts');
             const newsletterForm = document.getElementById('newsletterForm');
             const backToTopBtn = document.getElementById('back-to-top');
+            const newsletterTitle = document.getElementById('newsletter-title');
+            const newsletterDescription = document.getElementById('newsletter-description');
+            const newsletterEmailInput = document.getElementById('newsletterEmail');
+            const newsletterSubmitBtn = document.getElementById('newsletterSubmitBtn');
+
+            function clearNewsletterSkeleton() {
+            // Isi teks asli dan hapus skeleton span
+            if (newsletterTitle) newsletterTitle.innerHTML = 'Suka dengan Tulisan Ini?';
+            if (newsletterDescription) newsletterDescription.innerHTML = 'Dapatkan notifikasi setiap kali ada konten baru.';
+            
+            // Atur atribut untuk input dan button
+            if (newsletterEmailInput) {
+                newsletterEmailInput.setAttribute('type', 'email');
+                newsletterEmailInput.setAttribute('placeholder', 'Masukkan email Anda');
+                newsletterEmailInput.setAttribute('required', '');
+                newsletterEmailInput.classList.remove('skeleton-pulse');
+            }
+            if (newsletterSubmitBtn) {
+                newsletterSubmitBtn.setAttribute('type', 'submit');
+                newsletterSubmitBtn.textContent = 'Daftar';
+                newsletterSubmitBtn.classList.remove('skeleton-pulse');
+            }
+        }
         
             // === FUNGSI showToast (Untuk feedback UI) ===
             async function showToast(message, type = 'success', errorObject = null) {
@@ -563,9 +586,8 @@
                     // mainContent.classList.remove('opacity-0'); // Ini bisa dihapus jika Anda ingin skeleton langsung terlihat
         
                     const { data: post, error } = await supabase.from('posts').select('*').eq('slug', slug).eq('published', true).single();
-                    if (error || !post) throw new Error("Postingan tidak ditemukan atau belum dipublikasikan.");
-                    
-                    // ==== SETELAH DATA DIMUAT, TAMPILKAN KONTEN ASLI DAN HAPUS SKELETON ====
+                    if (error || !post) throw new Error("Postingan tidak ditemukan atau belum dipublikasikan."); 
+
                     postContainer.style.display = 'block';
         
                     updateSeoMeta(post);
@@ -584,6 +606,7 @@
                     fetchPrevNextPosts(post);
                     fetchAndRenderRelatedPosts(post);
                     countView(post.id);
+                    clearNewsletterSkeleton();
         
                 } catch (err) {
                     console.error("Gagal menginisialisasi halaman:", err);
