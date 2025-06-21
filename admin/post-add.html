@@ -75,13 +75,10 @@
 	<header class="sticky top-0 z-40" style="background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
 	    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 	        <div class="flex items-center justify-between h-16">
-	            <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
-	                <i class="ri-arrow-left-line"></i>
-	                <span class="font-semibold text-sm">Kembali ke Studio</span>
-	            </a>
+	            <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"><i class="ri-arrow-left-line text-xl"></i></a>
 	            <button id="submitButton" type="submit" form="postForm" class="bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center gap-2">
 	                <i id="saveIcon" class="ri-save-3-fill"></i>
-	                <span id="buttonText">Simpan</span>
+	                <span id="buttonText">Posting</span>
 	                <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
 	            </button>
 	        </div>
@@ -98,60 +95,62 @@
                 </div>
             </div>
 
-<aside class="lg:col-span-1">
-    <div class="sticky top-8 space-y-6">
-        <div class="glass-card p-5 rounded-2xl">
-            <h3 class="font-semibold text-white mb-4">Pengaturan Postingan</h3>
-            <div class="space-y-4">
-                <div>
-                    <label for="slug" class="text-sm font-medium text-slate-400">URL Slug</label>
-                    <input id="slug" type="text" class="form-input mt-1 w-full p-2">
-                </div>
-                <div>
-                    <label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label>
-                    <select id="kategori" class="form-input mt-1 w-full p-2"></select>
-                </div>
-                <div>
-                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
-                    <select id="status" class="form-input mt-1 w-full p-2">
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                        <option value="scheduled">Scheduled</option>
-                    </select>
-                </div>
-                <div id="schedule-container" class="hidden">
-                            <label for="schedule-time" class="text-sm font-medium text-slate-400">Waktu Jadwal</label>
-                            <div class="relative mt-1">
-                                <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                   <i class="ri-calendar-2-line text-slate-400"></i>
-                                </div>
-                            </div>
-                        </div>
-            </div>
-        </div>
-        <div class="glass-card p-5 rounded-2xl">
-			<h3 class="font-semibold text-white mb-4">Thumbnail</h3>
-			<input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
-			<img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
-		</div>
-		<div class="glass-card p-5 rounded-2xl">
-			<h3 class="font-semibold text-white mb-4">SEO & Meta</h3>
-			<div class="space-y-4">
-				<div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-				<div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-				<div><label for="metaTitle" class="text-sm font-medium text-slate-400">Meta Title</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-				<div><label for="metaDescription" class="text-sm font-medium text-slate-400">Meta Description</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
-				<div><label for="keywords" class="text-sm font-medium text-slate-400">Keywords</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-			</div>
-		</div>
-	</div>
-</aside>
+			<aside class="lg:col-span-1">
+			    <div class="sticky top-8 space-y-6">
+			        <div class="glass-card p-5 rounded-2xl">
+			            <h3 class="font-semibold text-white mb-4">Pengaturan</h3>
+			            <div class="space-y-4">
+			                <div>
+			                    <label for="slug" class="text-sm font-medium text-slate-400">Slug</label>
+			                    <input id="slug" type="text" class="form-input mt-1 w-full p-2">
+			                </div>
+			                <div>
+			                    <label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label>
+			                    <select id="kategori" class="form-input mt-1 w-full p-2"></select>
+			                </div>
+			                <div>
+			                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
+			                    <select id="status" class="form-input mt-1 w-full p-2">
+			                        <option value="draft">Draft</option>
+			                        <option value="published">Published</option>
+			                        <option value="scheduled">Scheduled</option>
+			                    </select>
+			                </div>
+			                <div id="schedule-container" class="hidden">
+			                            <label for="schedule-time" class="text-sm font-medium text-slate-400">Jadwal</label>
+			                            <div class="relative mt-1">
+			                                <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
+			                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+			                                   <i class="ri-calendar-2-line text-slate-400"></i>
+			                                </div>
+			                            </div>
+			                        </div>
+			            </div>
+			        </div>
+			        <div class="glass-card p-5 rounded-2xl">
+						<h3 class="font-semibold text-white mb-4">Thumbnail</h3>
+						<input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
+						<img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
+					</div>
+					<div class="glass-card p-5 rounded-2xl">
+						<h3 class="font-semibold text-white mb-4">Meta</h3>
+						<div class="space-y-4">
+							<div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+							<div><label for="tags" class="text-sm font-medium text-slate-400">Tags (pisahkan koma)</label><input id="tags" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+							<div><label for="metaTitle" class="text-sm font-medium text-slate-400">Judul</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+							<div><label for="metaDescription" class="text-sm font-medium text-slate-400">Deskripsi</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
+							<div><label for="keywords" class="text-sm font-medium text-slate-400">Kata Kunci</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+						</div>
+					</div>
+				</div>
+			</aside>
 
         </form>
     </main>
+   
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
@@ -299,7 +298,10 @@
                     meta_title: metaTitleInput.value,
                     meta_description: metaDescriptionInput.value,
                     keywords: keywordsInput.value,
-                    updated_at: new Date()
+                    updated_at: new Date(),
+                    og_image_url: newThumbnailUrl,
+                    og_url: `https://bimaakbar.netlify.app/post.html?slug=${slugInput.value || generateUniqueSlug(judulInput.value)}`,
+                    og_type: 'article'
                 };
                 
                 const { error: dbError } = await (isEditing 
@@ -317,6 +319,8 @@
                 loadingSpinner.style.display = 'none';
                 submitButton.disabled = false;
             });
+            
+            
     
             // === 6. INISIALISASI HALAMAN UTAMA ===
             async function initializePage() {
@@ -326,25 +330,64 @@
                     return;
                 }
                 currentUserEmail = session.user.email;
-                
+
                 editor = SUNEDITOR.create('editor', {
                     buttonList: [
                         ['formatBlock'],
-                        ['image', 'link'],
-                        ['bold', 'underline', 'italic'],
+                        ['image', 'link'], ['bold', 'underline', 'italic'],
                         ['align', 'list'],          
                         ['codeView', 'fullScreen'],
                         ['undo', 'redo']
                     ],
                     width: '100%', minHeight: '500px',
-                    placeholder: 'Mulai tulis di sini...'
+                    placeholder: 'Mulai tulis di sini...',
+                    plugins: [], imageUploadUrl: '',
+                    imageUploadHeader: {},
+                    imageUploadHandler: async (xmlHttpRequest, info, core) => {
+        			
+					const formData = info.formData;
+        			const files = formData.getAll('image');
+        			const uploadPromises = [];
+
+        			for (const file of files) {
+            			if (file instanceof File) {
+                			const cleanFileName = file.name.toLowerCase().replace(/[^a-z0-9_.-]/g, '_');
+                			const filePath = `editor_images/${Date.now()}_${cleanFileName}`;
+
+                			uploadPromises.push(
+                    			supabase.storage.from('bimaakbar.thumbnail').upload(filePath, file, { upsert: true })
+                        		.then(response => {
+                            		if (response.error) throw response.error;
+                            		const { data: publicUrlData } = supabase.storage.from('bimaakbar.thumbnail').getPublicUrl(filePath);
+                            		if (!publicUrlData || !publicUrlData.publicUrl) {
+                                		throw new Error('Gagal mendapatkan URL publik untuk gambar.');
+                            		}
+                            		return publicUrlData.publicUrl;
+                        		})
+                			);
+            			}
+        			}
+
+        			try {
+            			const imageUrls = await Promise.all(uploadPromises);
+            			imageUrls.forEach(url => {
+                			core.insertHTML(`<img src="${url}" style="max-width: 100%; height: auto;">`, true);
+            			});
+            			core.callPlugin('image', 'onImageUpload', xmlHttpRequest, info, core);
+        			} catch (error) {
+            			console.error('Gagal upload gambar ke Supabase:', error.message);
+            			core.callPlugin('image', 'onImageUploadFail', xmlHttpRequest, info, core, error.message);
+            			
+						alert('Gagal mengupload gambar: ' + error.message);
+        				}
+    				}
                 });
+                
     
                 editor.onload = async () => {
                     await Promise.all([loadCategories(), loadPostForEdit()]);
                 };
             }
-    
             initializePage();
         });
     </script>
