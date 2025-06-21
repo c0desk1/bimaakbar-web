@@ -494,7 +494,7 @@
                     }
 
                     if (statusInput.value === 'scheduled') {
-                        successMessage = `Postingan berhasil dijadwalkan untuk ${new Date(scheduleTimeInput.value).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}!`;
+                        successMessage = `Postingan berhasil dijadwalkan untuk ${new Date(scheduleTimeInput.value).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}!`; // <-- Tambahan timeZone
                         logAction = isEditing ? 'UPDATE_SCHEDULED_POST' : 'CREATE_SCHEDULED_POST';
                         logDetails.scheduledTime = scheduleTimeInput.value;
                     }
