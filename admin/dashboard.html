@@ -3,18 +3,24 @@
 	<head>
     	<meta charset="UTF-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     	<title>Dashboard</title>
+
     	<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
 		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
 		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
 		<link rel="manifest" href="assets/favicon/site.webmanifest" />
+
     	<script src="config.js"></script> 
+
     	<script src="https://cdn.tailwindcss.com"></script>
     	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+
     	<style>
        		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+			@keyframes pulse { 50% { opacity: .5; } }
         	body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
         	.glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         	.nav-item.active { color: #818cf8; }
@@ -23,7 +29,6 @@
         	.comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
         	.settings-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
         	.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        	@keyframes pulse { 50% { opacity: .5; } }
     	</style>
 	</head>
 	<body class="min-h-screen">
@@ -80,19 +85,31 @@
     	</template>
     
 	    <template id="view-comments">
-	    	<h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
-	    	<div class="border-b border-white/10 mb-6">
-	        	<nav id="comment-tabs" class="-mb-px flex space-x-6">
-	            	<button data-filter="pending" class="comment-tab-btn py-3 px-1 text-sm font-semibold">Perlu Persetujuan</button>
-	            	<button data-filter="all" class="comment-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Semua Komentar</button>
-	        	</nav>
-	    	</div>
-	    	<div id="comments-list" class="space-y-4"></div>
-	    	<div id="pagination-controls" class="hidden mt-8 flex justify-between items-center">
-	        	<button id="prev-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Sebelumnya</button>
-	        	<span id="page-info" class="text-sm text-slate-400"></span>
-	        	<button id="next-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Berikutnya</button>
-	    	</div>
+			<h1 class="text-3xl font-bold text-white mb-6">Moderasi Komentar</h1>
+			<div class="border-b border-white/10 mb-6">
+				<nav id="comment-tabs" class="-mb-px flex space-x-6">
+					<button data-filter="pending" class="comment-tab-btn py-3 px-1 text-sm font-semibold">Perlu Persetujuan</button>
+					<button data-filter="all" class="comment-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Semua Komentar</button>
+				</nav>
+			</div>
+			<form id="comment-search-form" class="mb-6">
+				<div class="relative">
+					<input type="search" id="comment-search-input" placeholder="Cari berdasarkan nama atau isi komentar..." class="w-full bg-neutral-800/50 text-white p-3 pl-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+						<i class="ri-search-line text-gray-400"></i>
+					</div>
+				</div>
+			</form>
+			<div id="comments-list" class="space-y-4"></div>
+			<div id="pagination-controls" class="hidden mt-8 flex justify-between items-center">
+				<button id="prev-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
+					&larr; Sebelumnya
+				</button>
+				<span id="page-info" class="text-sm text-slate-400"></span>
+				<button id="next-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
+					Berikutnya &rarr;
+				</button>
+			</div>
 		</template>
 
 	    <template id="view-stats">
@@ -136,7 +153,7 @@
 		
 		    <div>
 		        <div id="tab-content-profile" class="tab-content space-y-8">
-		            <div class="glass-card p-6 rounded-2xl">
+					<div class="glass-card p-6 rounded-2xl">
 						<h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
 						<p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
 						
@@ -170,16 +187,14 @@
 							<p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
 						</div>
 					</div>
-					<div id="tab-content-profile" class="tab-content space-y-8">
-						<div class="glass-card p-6 rounded-2xl">
-							<h2 class="text-lg font-semibold text-white mb-1">Keamanan</h2>
-							<p class="text-sm text-slate-400 mb-4">Kelola keamanan akun Anda.</p>
-							<button id="change-password-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">
-								Ubah Password
-							</button>
-						</div>
+					<div class="glass-card p-6 rounded-2xl">
+						<h2 class="text-lg font-semibold text-white mb-1">Keamanan</h2>
+						<p class="text-sm text-slate-400 mb-4">Kelola keamanan akun Anda.</p>
+						<button id="change-password-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">
+							Ubah Password
+						</button>
 					</div>
-		        </div>	
+				</div>
 		        <div id="tab-content-activity" class="tab-content hidden space-y-4"></div>
 		        <div id="tab-content-error" class="tab-content hidden space-y-4"></div>
 		    </div>
@@ -246,77 +261,83 @@
 	
 	            // --- FUNGSI VIEW: HOME ---
 	            async function renderHomeView() {
-	                const hour = new Date().getHours();
-	                document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
-	                document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
-	                
-	                const [postsRes, popularPostsRes, totalViewsRes, _] = await Promise.all([
-	        			supabase.from('posts').select('id, published'),
-	        			supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
-	        			supabase.rpc('get_total_views'),
-	        			renderRecentActivity()
-	    			]);
-	
-	                if (!postsRes.error) {
-	                    const posts = postsRes.data;
-	                    const publishedCount = posts.filter(p => p.published).length;
-	                    const draftCount = posts.length - publishedCount;
-	                    document.getElementById('totalPosts').textContent = posts.length;
-	                    document.getElementById('publishedPosts').textContent = publishedCount;
-	                    document.getElementById('draftPosts').textContent = draftCount;
-	                    createChart('postStatusChart', 'doughnut', ['Published', 'Drafts'], [publishedCount, draftCount], '', ['#22c55e', '#f59e0b']);
-	                }
-	                if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
-	                if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
-	                    const list = document.getElementById('popularPostsList');
-	                    list.innerHTML = '';
-	                    popularPostsRes.data.forEach(post => {
-	                        list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
-	                    });
-	                }
-	            }
+					const hour = new Date().getHours();
+					document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+					document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
+					
+					// Set stat cards ke mode loading
+					document.getElementById('totalViews').textContent = '...';
+					document.getElementById('totalPosts').textContent = '...';
+					document.getElementById('publishedPosts').textContent = '...';
+					document.getElementById('draftPosts').textContent = '...';
+
+					const [postsRes, popularPostsRes, totalViewsRes, _] = await Promise.all([
+						supabase.from('posts').select('id, published'),
+						supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
+						supabase.rpc('get_total_views'),
+						renderRecentActivity()
+					]);
+
+					if (!postsRes.error && postsRes.data) {
+						const posts = postsRes.data;
+						document.getElementById('totalPosts').textContent = posts.length;
+						document.getElementById('publishedPosts').textContent = posts.filter(p => p.published).length;
+						document.getElementById('draftPosts').textContent = posts.length - posts.filter(p => p.published).length;
+					}
+					if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
+					
+					if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
+						const list = document.getElementById('popularPostsList');
+						list.innerHTML = '';
+						popularPostsRes.data.forEach(post => {
+							list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
+						});
+					} else if (document.getElementById('popularPostsList')) {
+						document.getElementById('popularPostsList').innerHTML = '<p class="text-sm text-slate-500">Belum ada postingan populer.</p>';
+					}
+				}
 	            
 	            // --- FUNGSI VIEW: KOMENTAR ---
 	            async function renderCommentsView() {
 				    let currentPage = 1;
 				    const commentsPerPage = 5;
 				    let currentFilter = 'pending';
+					let currentSearchTerm = '';
 				
 				    const listContainer = document.getElementById('comments-list');
 				    const tabsContainer = document.getElementById('comment-tabs');
+					const searchForm = document.getElementById('comment-search-form');
+					const searchInput = document.getElementById('comment-search-input');
 				    const paginationControls = document.getElementById('pagination-controls');
 				    const prevPageBtn = document.getElementById('prev-page-btn');
 				    const nextPageBtn = document.getElementById('next-page-btn');
 				    const pageInfo = document.getElementById('page-info');
 				
 				    // --- FUNGSI KOMENTAR: LOADS ---
-					async function loadComments(page, filter) {
-				        listContainer.innerHTML = getCommentSkeletonHTML();
-				        paginationControls.classList.add('hidden');
-				
-				        const from = (page - 1) * commentsPerPage;
-				        const to = from + commentsPerPage - 1;
-				
-				        let query = supabase.from('comments')
-				            .select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)', { count: 'exact' }) // {count: 'exact'} untuk mendapatkan total data
-				            .order('created_at', { ascending: false })
-				            .range(from, to);
-				
-				        if (filter === 'pending') {
-				            query = query.eq('is_approved', false);
-				        }
+					async function loadComments(page, filter, searchTerm) {
+						listContainer.innerHTML = getCommentSkeletonHTML();
+						paginationControls.classList.add('hidden');
+
+						const from = (page - 1) * commentsPerPage;
+						const to = from + commentsPerPage - 1;
+
+						let query = supabase.from('comments')
+							.select('id, created_at, content, author_name, is_approved, post_id, posts(title, slug)', { count: 'exact' })
+							.order('created_at', { ascending: false })
+							.range(from, to);
+
+						if (filter === 'pending') {
+							query = query.eq('is_approved', false);
+						}
+
+						if (searchTerm) {
+							query = query.or(`author_name.ilike.%${searchTerm}%,content.ilike.%${searchTerm}%`);
+						}
 				        
 				        const { data: comments, error, count: totalComments } = await query;
 				
-				        if (error) {
-				            listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`;
-				            return;
-				        }
-				
-				        if (comments.length === 0) {
-				            listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">Tidak ada komentar di tab ini.</p>`;
-				            return;
-				        }
+				        if (error) { listContainer.innerHTML = `<p class="text-center text-red-400">Gagal memuat komentar.</p>`; return; }
+        				if (comments.length === 0) { listContainer.innerHTML = `<p class="text-center text-slate-500 p-8">Tidak ada komentar yang cocok.</p>`; return; }
 				
 				        listContainer.innerHTML = '';
 				        comments.forEach(comment => {
@@ -357,6 +378,16 @@
 				            paginationControls.classList.remove('hidden');
 				        }
 				    }
+
+					searchForm.addEventListener('submit', (e) => {
+       					 e.preventDefault();
+						const searchTerm = searchInput.value.trim();
+						if (searchTerm !== currentSearchTerm) {
+							currentSearchTerm = searchTerm;
+							currentPage = 1;
+							loadComments(currentPage, currentFilter, currentSearchTerm);
+						}
+					});
 				
 				    tabsContainer.addEventListener('click', (e) => {
 				        const button = e.target.closest('button');
@@ -370,19 +401,19 @@
 				    });
 				
 				    prevPageBtn.addEventListener('click', () => {
-				        if (currentPage > 1) {
-				            currentPage--;
-				            loadComments(currentPage, currentFilter);
-				        }
-				    });
+        				if (currentPage > 1) {
+            				currentPage--;
+            				loadComments(currentPage, currentFilter, currentSearchTerm);
+        					}
+    				});
 				
 				    nextPageBtn.addEventListener('click', () => {
-				        currentPage++;
-				        loadComments(currentPage, currentFilter);
-				    });
+        				currentPage++;
+        				loadComments(currentPage, currentFilter, currentSearchTerm);
+    				});
 				
 				    tabsContainer.querySelector('[data-filter="pending"]').classList.add('active');
-				    await loadComments(currentPage, currentFilter);
+    				await loadComments(currentPage, currentFilter, currentSearchTerm);
 				}
 
 				window.approveComment = async (commentId) => {
