@@ -21,7 +21,6 @@
         .glass-card { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
         .tab-btn.active { color: #fff; border-bottom-color: #6366f1; }
-        .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
         .skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         select.form-input {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
@@ -156,8 +155,8 @@
                     const { error } = await supabase.from('activity_logs').insert({
                         user_id: user.id,
                         user_email: user.email,
-                        action: action, // Contoh: 'CREATE_POST', 'UPDATE_POST', 'DELETE_POST', 'ADD_CATEGORY'
-                        details: details // Objek JSON dengan detail tambahan (misal: { postId: 'xyz', title: 'abc' })
+                        action: action,
+                        details: details
                     });
 
                     if (error) {
@@ -369,10 +368,11 @@
                 tabContent.innerHTML = `
                 <div class="glass-card p-6 rounded-2xl">
                     <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-                        <div class="flex flex-wrap items-center gap-4"> <div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg">
+                        <div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg">
                                 <button data-filter="all" class="filter-btn active px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button>
                                 <button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button>
                                 <button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button>
+                                <button data-filter="scheduled" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Scheduled</button> </div>
                             </div>
                             <div class="relative">
                                 <select id="categoryFilter" class="form-input w-40 pr-8 py-2 text-sm">
@@ -410,15 +410,25 @@
                 }
 
                 async function loadPosts() {
-                    let query = supabase.from('posts').select('id, title, published, slug, category').order('created_at', { ascending: false });
+                    let query = supabase.from('posts').select('id, title, published, slug, category, scheduled_time').order('created_at', { ascending: false });
                     postListContainer.innerHTML = getPostListSkeletonHTML(); 
                     
                     if (currentFilter === 'published') query = query.eq('published', true);
-                    if (currentFilter === 'draft') query = query.eq('published', false);
+                    if (currentFilter === 'draft') {
+                        
+                        query = query.eq('published', false).is('scheduled_time', null);
+                    }
+
+                    if (currentFilter === 'scheduled') {
+                        
+                        query = query.eq('published', false).not('scheduled_time', 'is', null).gt('scheduled_time', new Date().toISOString());
+                    }
+
                     if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
                     if (currentCategory) query = query.eq('category', currentCategory);
                     
 					const { data: posts, error } = await query;
+                   
                     if (error || !posts) { 
                         postListContainer.innerHTML = `<p class="text-red-400 text-center">Gagal memuat.</p>`; 
                         showToast('Gagal memuat postingan.', 'error', error);
@@ -430,22 +440,37 @@
                     posts.forEach(post => {
                         const postEl = document.createElement('div');
                         postEl.className = 'p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center';
+                        
+                        let statusText = '';
+                        let statusColorClass = '';
+
+                        if (post.published) {
+                            statusText = 'Published';
+                            statusColorClass = 'text-green-400';
+                        } else if (post.scheduled_time && new Date(post.scheduled_time) > new Date()) {
+                            statusText = `Scheduled (${new Date(post.scheduled_time).toLocaleDateString('id-ID', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })})`;
+                            statusColorClass = 'text-blue-400';
+                        } else {
+                            statusText = 'Draft';
+                            statusColorClass = 'text-amber-400';
+                        }
+
                         postEl.innerHTML = `
-						<div>
-							<p class="font-semibold text-white">${post.title}</p>
-							<p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'} ${post.category ? ` • ${post.category}` : ''}</p>
-						</div>
-						<div class="flex items-center space-x-2 text-lg">
-								<a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400">
-									<i class="ri-eye-line"></i>
-								</a>
-								<a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400">
-									<i class="ri-pencil-line"></i>
-								</a>
-							<button onclick="window.deletePost('${post.id}')" title="Hapus Post" class="text-slate-400 hover:text-red-500">
-								<i class="ri-delete-bin-line"></i>
-							</button>
-						</div>`;
+                        <div>
+                            <p class="font-semibold text-white">${post.title}</p>
+                            <p class="text-xs ${statusColorClass}">${statusText} ${post.category ? ` • ${post.category}` : ''}</p>
+                        </div>
+                        <div class="flex items-center space-x-2 text-lg">
+                                <a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400">
+                                    <i class="ri-eye-line"></i>
+                                </a>
+                                <a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400">
+                                    <i class="ri-pencil-line"></i>
+                                </a>
+                            <button onclick="window.deletePost('${post.id}')" title="Hapus Post" class="text-slate-400 hover:text-red-500">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>`;
                         postListContainer.appendChild(postEl);
                     });
                 }
@@ -459,7 +484,7 @@
                 document.getElementById('filter-buttons').addEventListener('click', (e) => {
                     const button = e.target.closest('button');
                     if(button) {
-                        document.querySelector('.filter-btn.active').classList.remove('active', 'bg-indigo-500');
+                        document.querySelector('#filter-buttons .filter-btn.active').classList.remove('active', 'bg-indigo-500'); // Hapus class dari yang aktif sebelumnya
                         button.classList.add('active', 'bg-indigo-500');
                         currentFilter = button.dataset.filter;
                         loadPosts();
