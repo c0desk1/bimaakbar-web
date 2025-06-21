@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="config.js"></script> 
+		<script src="supabaseConfig.js"></script> 
     	<title>Dashboard</title>
     	<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
@@ -255,6 +255,9 @@
 	            const app = document.getElementById('app');
 	            const navItems = document.querySelectorAll('.nav-item');
 	            const commentBadge = document.getElementById('comment-badge');
+				const confirmationModal = document.getElementById('confirmation-modal');
+	        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+	        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 	            let charts = {};
 	
 	            // --- FUNGSI RENDER UTAMA ---
@@ -682,10 +685,6 @@
 				    });
 				}
 	            
-	            const confirmationModal = document.getElementById('confirmation-modal');
-	        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-	        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-	
 	        	function showConfirmationModal(onConfirm) {
 	            	confirmationModal.classList.remove('hidden');
 	            
@@ -726,9 +725,14 @@
 				    }
 				
 				    setTimeout(() => {
-				        toast.classList.add('opacity-0');
-				        toast.addEventListener('transitionend', () => toast.remove());
-				    }, 4000);
+						toast.classList.remove('animate-slide-in');
+						toast.classList.add('opacity-0');
+					}, 4000);
+					
+					setTimeout(() => {
+						toast.remove();
+					}, 4000 + 350);
+			
 				}
 
 	            
@@ -855,7 +859,7 @@
 				}
 				
 				async function loadActivityLogs(page = 1) {
-				    const logsPerPage = 15;
+				    const logsPerPage = 10;
 				    const container = document.getElementById('tab-content-activity');
 				    container.innerHTML = getActivityLogSkeletonHTML();
 				
@@ -878,18 +882,58 @@
 				
 				    container.innerHTML = '';
 				    logs.forEach(log => {
-				        let icon = '<i class="ri-question-mark-line"></i>';
+				        let icon = '<i class="ri-question-mark-line text-slate-400"></i>'; // Default icon
 				        let actionText = `Aksi tidak dikenal: ${log.action}`;
 				
 				        if (log.action === 'APPROVED_COMMENT') {
 				            icon = '<i class="ri-check-double-line text-green-400"></i>';
-				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong>: <i>"${log.details.comment_content}..."</i>`;
-				        }
-				
-						if (log.action === 'DELETE_COMMENT') {
-				            icon = '<i class="ri-check-double-line text-green-400"></i>';
-				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong>: <i>"${log.details.comment_content}..."</i>`;
-				        }
+				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
+				        } else if (log.action === 'DELETE_COMMENT') {
+				            icon = '<i class="ri-chat-delete-line text-red-400"></i>'; // Icon delete comment
+				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
+				        } else if (log.action === 'CREATE_POST') {
+                            icon = '<i class="ri-file-add-line text-indigo-400"></i>'; // Icon add post
+                            actionText = `Anda membuat postingan baru: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'UPDATE_POST') {
+                            icon = '<i class="ri-file-edit-line text-blue-400"></i>'; // Icon edit post
+                            actionText = `Anda memperbarui postingan: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'DELETE_POST') {
+                            icon = '<i class="ri-file-forbid-line text-red-400"></i>'; // Icon delete post
+                            actionText = `Anda menghapus postingan: <strong>"${log.details.title || log.details.postId}"</strong>`;
+                        } else if (log.action === 'ADD_CATEGORY') {
+                            icon = '<i class="ri-folder-add-line text-purple-400"></i>'; // Icon add category
+                            actionText = `Anda menambahkan kategori baru: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'UPDATE_CATEGORY') {
+                            icon = '<i class="ri-folder-edit-line text-orange-400"></i>'; // Icon edit category
+                            actionText = `Anda memperbarui kategori: <strong>"${log.details.newName}"</strong>`;
+                        } else if (log.action === 'DELETE_CATEGORY') {
+                            icon = '<i class="ri-folder-reduce-line text-red-400"></i>'; // Icon delete category
+                            actionText = `Anda menghapus kategori: <strong>"${log.details.name || log.details.categoryId}"</strong>`;
+                        } else if (log.action === 'ADD_MUSIC_RELEASE') {
+                            icon = '<i class="ri-music-fill text-green-400"></i>'; // Icon add music
+                            actionText = `Anda menambahkan rilisan musik: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'UPDATE_MUSIC_RELEASE') {
+                            icon = '<i class="ri-album-line text-blue-400"></i>'; // Icon update music
+                            actionText = `Anda memperbarui rilisan musik: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'DELETE_MUSIC_RELEASE') {
+                            icon = '<i class="ri-album-line text-red-400"></i>'; // Icon delete music
+                            actionText = `Anda menghapus rilisan musik: <strong>"${log.details.title || log.details.musicId}"</strong>`;
+                        } else if (log.action === 'ADD_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-m text-purple-400"></i>'; // Icon add affiliate
+                            actionText = `Anda menambahkan link afiliasi: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'UPDATE_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-m text-orange-400"></i>'; // Icon update affiliate
+                            actionText = `Anda memperbarui link afiliasi: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'DELETE_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-unlink-m text-red-400"></i>'; // Icon delete affiliate
+                            actionText = `Anda menghapus link afiliasi: <strong>"${log.details.name || log.details.affiliateId}"</strong>`;
+                        } else if (log.action === 'UPDATE_PROFILE') { // Contoh dari Dashboard.html Settings
+                            icon = '<i class="ri-user-settings-line text-teal-400"></i>';
+                            actionText = `Anda memperbarui profil Anda.`;
+                        } else if (log.action === 'CHANGE_PASSWORD') { // Contoh dari Dashboard.html Settings
+                            icon = '<i class="ri-lock-2-line text-yellow-400"></i>';
+                            actionText = `Anda mengubah password Anda.`;
+                        }
 				
 				        container.innerHTML += `
 				            <div class="glass-card p-3 rounded-xl flex items-start space-x-4 text-sm">
@@ -901,18 +945,17 @@
 				            </div>
 				        `;
 				    });
-				    
-				    // Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
+				// Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
 				}
-				
-				async function loadErrorLogs(page = 1) {
+
+								async function loadErrorLogs(page = 1) {
 				    const logsPerPage = 15;
 				    const container = document.getElementById('tab-content-error');
-				    container.innerHTML = getActivityLogSkeletonHTML(); // Kita bisa pakai skeleton yang sama
-				
+				    container.innerHTML = getActivityLogSkeletonHTML(); // Gunakan skeleton loading
+
 				    const from = (page - 1) * logsPerPage;
 				    const to = from + logsPerPage - 1;
-				
+
 				    const { data: logs, error, count: totalLogs } = await supabase.from('error_logs')
 				        .select('*', { count: 'exact' })
 				        .order('created_at', { ascending: false })
@@ -920,28 +963,63 @@
 				    
 				    if (error) {
 				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log error.</p>';
+				        // Tidak perlu showToast di sini karena sudah ada di showToast yang memicu log ini
 				        return;
 				    }
 				    if (logs.length === 0) {
-				        container.innerHTML = '<p class="text-center text-slate-500 p-8">Tidak ada error yang tercatat. Sistem bersih!</p>';
+				        container.innerHTML = '<p class="text-center text-slate-500 p-8"><i class="ri-check-line mr-2"></i>Tidak ada error yang tercatat. Sistem bersih!</p>';
 				        return;
 				    }
-				
+
 				    container.innerHTML = '';
 				    logs.forEach(log => {
+				        // Format detail error agar lebih mudah dibaca, bisa custom tergantung struktur error_details
+				        let formattedDetails = '';
+				        if (log.error_details) {
+				            try {
+				                const details = log.error_details; // Sudah JSONB, jadi sudah objek
+				                if (details.code) formattedDetails += `<strong>Code:</strong> ${details.code}<br>`;
+				                if (details.details) formattedDetails += `<strong>Details:</strong> ${details.details}<br>`;
+				                if (details.hint) formattedDetails += `<strong>Hint:</strong> ${details.hint}<br>`;
+				                // Jika ada property lain yang ingin ditampilkan
+				                if (details.message && !details.details) formattedDetails += `<strong>Message:</strong> ${details.message}<br>`; // Jika message terpisah dari details
+				                if (details.location) formattedDetails += `<strong>Source:</strong> ${details.location}<br>`; // Jika location ada di details
+				                
+				                // Jika masih ada data JSON yang kompleks, tampilkan dalam <pre>
+				                const remainingDetails = { ...details };
+				                delete remainingDetails.code;
+				                delete remainingDetails.details;
+				                delete remainingDetails.hint;
+				                delete remainingDetails.message;
+				                delete remainingDetails.location; // Hapus yang sudah ditampilkan
+
+				                if (Object.keys(remainingDetails).length > 0) {
+				                    formattedDetails += `<details class="mt-2 text-xs text-slate-400"><summary>Lihat Detail JSON Lengkap</summary><pre class="whitespace-pre-wrap p-2 bg-neutral-900/50 rounded-md font-mono">${JSON.stringify(remainingDetails, null, 2)}</pre></details>`;
+				                }
+				            } catch (e) {
+				                console.error("Error parsing error_details:", e);
+				                formattedDetails = `<pre class="whitespace-pre-wrap">${JSON.stringify(log.error_details, null, 2)}</pre>`; // Fallback ke JSON mentah
+				            }
+				        } else {
+				            formattedDetails = '<i>Tidak ada detail error.</i>';
+				        }
+
 				        container.innerHTML += `
 				            <div class="glass-card p-4 rounded-xl text-sm break-words">
-				                <div class="flex justify-between items-start">
-				                    <p class="font-bold text-red-400">${log.error_message || 'Error tidak diketahui'}</p>
-				                    <p class="text-xs text-slate-400 flex-shrink-0 ml-4">${new Date(log.created_at).toLocaleDateString('id-ID')}</p>
+				                <div class="flex justify-between items-start mb-2">
+				                    <div>
+				                        <p class="font-bold text-red-400"><i class="ri-bug-line mr-2"></i>${log.error_message || 'Error tidak diketahui'}</p>
+				                        <p class="text-xs text-slate-500 mt-1">Dicatat dari: ${log.user_email || 'Tidak Diketahui'} di ${log.location || 'Client-Side'}</p>
+				                    </div>
+				                    <p class="text-xs text-slate-400 flex-shrink-0 ml-4">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
 				                </div>
-				                <div class="mt-2 text-xs bg-neutral-900/50 p-2 rounded-md font-mono">
-				                    <pre class="whitespace-pre-wrap">${JSON.stringify(log.error_details, null, 2)}</pre>
+				                <div class="text-xs text-slate-300">
+				                    ${formattedDetails}
 				                </div>
-				                <p class="text-xs text-slate-500 mt-2">Dicatat dari: ${log.user_email}</p>
 				            </div>
 				        `;
 				    });
+				    // Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
 				}
 				
 				async function renderSettingsView() {
