@@ -41,6 +41,26 @@
         };
         document.head.appendChild(s);
     </script>
+	<script>
+    // Pastikan Supabase client sudah dibuat sebelumnya
+    if (window.supabase) {
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+        
+        // Nama channel harus SAMA PERSIS dengan yang ada di dashboard
+        const visitorChannel = supabase.channel('live-visitors');
+
+        visitorChannel.subscribe((status) => {
+            if (status === 'SUBSCRIB-ED') {
+                // Saat berhasil terhubung, lacak kehadiran pengguna ini
+                visitorChannel.track({ 
+                    user_id: `visitor-${Math.random()}`, // Beri ID acak untuk setiap pengunjung
+                    online_at: new Date().toISOString() 
+                });
+                console.log('Presence berhasil dilacak.');
+            }
+        });
+    }
+</script>
 </head>
 <body class="antialiased">
     <noscript>
