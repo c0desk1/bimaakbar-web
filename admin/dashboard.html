@@ -136,7 +136,7 @@
 						<p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
 						
 						<div class="flex items-center space-x-4 mb-6">
-							<img id="settings-avatar" src="" class="w-16 h-16 rounded-full object-cover">
+							<img id="settings-avatar" src="assets/avatar.jpg" class="w-16 h-16 rounded-full object-cover">
 							<div>
 								<p class="font-bold text-white">Foto Profil</p>
 								<p class="text-sm text-slate-300">Ganti foto profil Anda.</p>
@@ -902,9 +902,12 @@
     					avatarUploadInput.click();
 					});
 
+					
 					avatarUploadInput.addEventListener('change', async (e) => {
 						const file = e.target.files[0];
 						if (!file) return;
+
+						console.log("1. File dipilih:", file.name);
 
 						const maxSize = 2 * 1024 * 1024;
 						if (file.size > maxSize) {
@@ -919,29 +922,38 @@
 						const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
 
 						try {
-							const { error: uploadError } = await supabase.storage
+							const { data: uploadData, error: uploadError } = await supabase.storage
 								.from('avatars')
 								.upload(filePath, file, { upsert: true });
-
 							if (uploadError) throw uploadError;
+							console.log("2. Upload ke Storage SUKSES.");
 
 							const { data: urlData } = supabase.storage
 								.from('avatars')
 								.getPublicUrl(filePath);
+							console.log("3. Hasil getPublicUrl():", urlData);
 							
 							const publicUrl = urlData.publicUrl;
+							if (!publicUrl) {
+								throw new Error("URL Publik tidak ditemukan setelah upload. Cek policy SELECT di bucket Anda.");
+							}
 
-							const { error: updateError } = await supabase.auth.updateUser({
+							const { data: updateUserResponse, error: updateError } = await supabase.auth.updateUser({
 								data: { avatar_url: publicUrl }
 							});
-
 							if (updateError) throw updateError;
+							console.log("4. Update metadata user SUKSES.");
+
+							const updatedAvatarUrl = updateUserResponse.user.user_metadata.avatar_url;
+							console.log("5. Mencoba menampilkan gambar dari URL:", updatedAvatarUrl);
 							
-							headerAvatarImg.src = publicUrl;
-							settingsAvatarImg.src = publicUrl;
+							headerAvatarImg.src = updatedAvatarUrl;
+							settingsAvatarImg.src = updatedAvatarUrl;
 							showToast('Foto profil berhasil diperbarui!');
+							console.log("6. UI berhasil di-update.");
 
 						} catch (error) {
+							console.error("Terjadi error di tengah proses:", error);
 							showToast('Gagal mengubah foto profil.', 'error', error);
 						} finally {
 							changeAvatarBtn.disabled = false;
