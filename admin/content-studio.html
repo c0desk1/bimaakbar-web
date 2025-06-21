@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Studio</title>
     <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
-		<link rel="manifest" href="assets/favicon/site.webmanifest" />
+	<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
+	<link rel="manifest" href="assets/favicon/site.webmanifest" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <script src="supabaseConfig.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
@@ -19,23 +20,24 @@
         .tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
         .tab-btn.active { color: #fff; border-bottom-color: #6366f1; }
         .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
-        .form-input:focus { outline: none; border-color: #6366f1; }
-        .star-btn.featured { color: #facc15; }
-        .filter-btn.active { background-color: #4f46e5; color: white; }
     </style>
 </head>
 <body class="antialiased">
     <div id="mainContent" class="min-h-screen p-4 sm:p-6 lg:p-8 opacity-0 transition-opacity duration-500">
         <div class="max-w-screen-xl mx-auto">
-            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-                <div>
-                    <a href="dashboard.html" class="text-sm text-slate-400 hover:text-white flex items-center mb-2"><i class="ri-arrow-left-s-line mr-1"></i> Kembali ke Dashboard</a>
-                    <h1 class="text-4xl font-extrabold text-white">Content Studio</h1>
-                </div>
-                <a href="post-add.html" class="bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl shadow-lg hover:bg-indigo-600 flex items-center mt-4 sm:mt-0">
-                    <i class="ri-add-circle-fill mr-2"></i>Buat Postingan Baru
-                </a>
+            
+			<header class="py-3 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
+				<div class="flex items-center justify-between">
+					<div class="justify-self-start">
+                    	<a href="dashboard.html" class="flex items-center space-x-2 text-gray-300 hover:text-white"><i class="ri-arrow-left-s-line text-xl"></i></a>
+                	</div>
+                	<h1 class="justify-self-center text-lg font-semibold text-white h-8 w-auto">Content Studio</h1>
+                	<div class="justify-self-end">
+                		<a href="post-add.html" class="bg-indigo-500 text-white font-bold rounded-xl pr-2 pl-2 px-1 py-1 shadow-lg hover:bg-indigo-600 flex items-center"><i class="ri-add-circle-line text-xl"></i></a>
+               	</div>
+               </div>
             </header>
+
             <div class="border-b border-white/10 mb-8">
                 <nav id="tabs-container" class="-mb-px flex space-x-6 overflow-x-auto">
                     <button data-tab="posts" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Postingan</button>
@@ -44,144 +46,146 @@
                     <button data-tab="affiliates" class="tab-btn py-4 px-1 text-sm font-medium whitespace-nowrap">Afiliasi</button>
                 </nav>
             </div>
-            <div id="tab-content"><p class="text-center text-slate-500 p-10">Memuat...</p></div>
+            
+            <div id="tab-content"></div>
+            
         </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+            
             const mainContent = document.getElementById('mainContent');
             const tabsContainer = document.getElementById('tabs-container');
             const tabContent = document.getElementById('tab-content');
 
-            // --- FUNGSI-FUNGSI UTAMA ---
-            async function deleteItem(tableName, id) {
-                if (confirm('Yakin ingin menghapus item ini?')) {
-                    const { error } = await supabase.from(tableName).delete().eq('id', id);
-                    if (error) { alert('Gagal menghapus: ' + error.message); }
-                    else {
-                        const activeTab = tabsContainer.querySelector('.tab-btn.active')?.dataset.tab;
-                        if (activeTab) renderView(activeTab);
-                    }
-                }
-            }
-
-            async function toggleFeatured(id, currentStatus) {
-                const { error } = await supabase.from('posts').update({ is_featured: !currentStatus }).eq('id', id);
-                if (error) { alert('Gagal mengubah status featured: ' + error.message); }
-                else { renderPostsPanel(); }
-            }
 
             async function renderPostsPanel() {
-                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><div class="flex flex-col md:flex-row justify-between gap-4 mb-6"><div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg"><button data-filter="all" class="filter-btn px-4 py-1.5 text-sm font-semibold rounded-md">Semua</button><button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md">Published</button><button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md">Draft</button></div><div class="relative"><i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i><input id="searchInput" type="search" placeholder="Cari..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white rounded-lg"></div></div><div id="postList" class="space-y-3"></div></div>`;
+                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><div class="flex flex-col md:flex-row justify-between gap-4 mb-6"><div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg"><button data-filter="all" class="filter-btn active px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button><button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button><button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button></div><div class="relative"><i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i><input id="searchInput" type="search" placeholder="Cari postingan..." class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></div></div><div id="postList" class="space-y-3"><p class="text-center text-slate-500 p-10">Memuat...</p></div></div>`;
+                
                 const postListContainer = document.getElementById('postList');
-                const searchInput = document.getElementById('searchInput');
-                const filterButtons = document.getElementById('filter-buttons');
                 let currentFilter = 'all'; let currentSearchTerm = '';
+
                 async function loadPosts() {
-                    let query = supabase.from('posts').select('id, title, published, slug, is_featured').order('created_at', { ascending: false });
-                    if (currentFilter !== 'all') query = query.eq('published', currentFilter === 'published');
+                    let query = supabase.from('posts').select('id, title, published, slug').order('created_at', { ascending: false });
+                    if (currentFilter === 'published') query = query.eq('published', true);
+                    if (currentFilter === 'draft') query = query.eq('published', false);
                     if (currentSearchTerm) query = query.ilike('title', `%${currentSearchTerm}%`);
-                    const { data: posts } = await query;
-                    postListContainer.innerHTML = !posts || posts.length === 0 ? `<p class="text-center p-10 text-slate-500">Tidak ada postingan.</p>` : '';
-                    if(posts) posts.forEach(post => {
-                        postListContainer.innerHTML += `<div class="p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-3"><button data-action="toggle-featured" data-id="${post.id}" data-status="${post.is_featured}" class="text-xl ${post.is_featured ? 'text-amber-400' : 'text-slate-600 hover:text-amber-400'}"><i class="ri-star-fill"></i></button><div><p class="font-semibold text-white">${post.title}</p><p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p></div></div><div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank"><i class="ri-eye-line text-slate-400 hover:text-indigo-400"></i></a><a href="post-add.html?id=${post.id}"><i class="ri-pencil-line text-slate-400 hover:text-indigo-400"></i></a><button data-action="delete-post" data-id="${post.id}"><i class="ri-delete-bin-line text-slate-400 hover:text-red-500"></i></button></div></div>`;
+                    
+					const { data: posts, error } = await query;
+                    if (error || !posts) { postListContainer.innerHTML = `<p class="text-red-400 text-center">Gagal memuat.</p>`; return; }
+                    if (posts.length === 0) { postListContainer.innerHTML = `<p class="text-slate-500 text-center p-10">Tidak ada postingan.</p>`; return; }
+                    postListContainer.innerHTML = '';
+                    posts.forEach(post => {
+                        const postEl = document.createElement('div');
+                        postEl.className = 'p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center';
+                        postEl.innerHTML = `<div><p class="font-semibold text-white">${post.title}</p><p class="text-xs ${post.published ? 'text-green-400' : 'text-amber-400'}">${post.published ? 'Published' : 'Draft'}</p></div><div class="flex items-center space-x-2 text-lg"><a href="/post.html?slug=${post.slug}" target="_blank" title="Lihat Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-eye-line"></i></a><a href="post-add.html?id=${post.id}" title="Edit Post" class="text-slate-400 hover:text-indigo-400"><i class="ri-pencil-line"></i></a><button onclick="window.deletePost('${post.id}')" title="Hapus Post" class="text-slate-400 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`;
+                        postListContainer.appendChild(postEl);
                     });
                 }
-                searchInput.addEventListener('keyup', e => { currentSearchTerm = e.target.value; loadPosts(); });
-                filterButtons.addEventListener('click', e => {
+                document.getElementById('searchInput').addEventListener('keyup', (e) => { currentSearchTerm = e.target.value; loadPosts(); });
+                document.getElementById('filter-buttons').addEventListener('click', (e) => {
                     const button = e.target.closest('button');
                     if(button) {
-                        filterButtons.querySelector('.active')?.classList.remove('active', 'bg-indigo-500');
+                        document.querySelector('.filter-btn.active').classList.remove('active', 'bg-indigo-500');
                         button.classList.add('active', 'bg-indigo-500');
                         currentFilter = button.dataset.filter;
                         loadPosts();
                     }
                 });
-                filterButtons.querySelector(`[data-filter="${currentFilter}"]`)?.classList.add('active', 'bg-indigo-500');
+                window.deletePost = async (id) => { if (confirm('Yakin ingin hapus postingan ini?')) { await supabase.from('posts').delete().eq('id', id); loadPosts(); } }
                 loadPosts();
             }
-            
+
             async function renderCategoriesPanel() {
-                tabContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Kategori</h2><form id="addCategoryForm" class="flex gap-2"><input id="newCategoryName" type="text" required placeholder="Nama kategori baru" class="flex-grow p-2 form-input"><button type="submit" class="bg-indigo-500 text-white font-semibold p-2 rounded-lg hover:bg-indigo-600"><i class="ri-add-line"></i></button></form></div><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Daftar Kategori</h2><div id="categoryList" class="space-y-2"><p class="text-center p-5">Memuat...</p></div></div></div>`;
+                tabContent.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Kategori</h2><form id="addCategoryForm" class="flex gap-2"><input id="newCategoryName" type="text" required placeholder="Nama kategori baru" class="flex-grow p-2 bg-neutral-800 text-white rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"><button type="submit" class="bg-indigo-500 text-white font-semibold p-2 rounded-lg"><i class="ri-add-line"></i></button></form></div><div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Daftar Kategori</h2><div id="categoryList" class="space-y-2"></div></div></div>`;
+                
                 const categoryListContainer = document.getElementById('categoryList');
                 async function loadCategories() {
-                    const { data } = await supabase.from('categories').select('id, name').order('name');
-                    categoryListContainer.innerHTML = !data || data.length === 0 ? '<p class="text-sm text-center py-4">Belum ada kategori.</p>' : '';
-                    if(data) data.forEach(cat => { categoryListContainer.innerHTML += `<div class="p-2 bg-neutral-800/50 rounded-md flex justify-between items-center text-sm"><span class="text-slate-300">${cat.name}</span><button data-action="delete-category" data-id="${cat.id}" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
+                    const { data, error } = await supabase.from('categories').select('id, name').order('name');
+                    categoryListContainer.innerHTML = '';
+                    data.forEach(cat => { categoryListContainer.innerHTML += `<div class="p-2 bg-neutral-800/50 rounded-md flex justify-between items-center text-sm"><span class="text-slate-300">${cat.name}</span><button onclick="window.deleteCategory('${cat.id}')" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
                 }
                 document.getElementById('addCategoryForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const newName = document.getElementById('newCategoryName').value.trim();
-                    if (newName) { await supabase.from('categories').insert({ name: newName }); e.target.reset(); loadCategories(); }
+                    if (!newName) return;
+                    await supabase.from('categories').insert({ name: newName });
+                    document.getElementById('newCategoryName').value = '';
+                    loadCategories();
                 });
+                window.deleteCategory = async (id) => {
+                    if (confirm('Yakin ingin hapus kategori ini?')) {
+                        await supabase.from('categories').delete().eq('id', id);
+                        loadCategories();
+                    }
+                }
                 loadCategories();
             }
 
             async function renderMusicPanel() {
-                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Rilisan Musik Baru</h2><form id="addMusicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"><input name="song_title" required placeholder="Judul Lagu" class="form-input p-3"><input name="release_date" type="date" class="form-input p-3"><input name="cover_art_url" type="url" placeholder="URL Cover Art" class="form-input p-3"><input name="spotify_url" type="url" placeholder="URL Spotify" class="form-input p-3"><input name="apple_music_url" type="url" placeholder="URL Apple Music" class="form-input p-3 md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Musik</button></form><hr class="border-white/10"><h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Rilisan</h2><div id="musicList" class="space-y-3"></div></div>`;
+                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Rilisan Musik Baru</h2><form id="addMusicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"><input name="song_title" required placeholder="Judul Lagu" class="form-input p-3"><input name="release_date" type="date" class="form-input p-3"><input name="cover_art_url" placeholder="URL Cover Art" class="form-input p-3"><input name="spotify_url" type="url" placeholder="URL Spotify" class="form-input p-3"><input name="apple_music_url" type="url" placeholder="URL Apple Music" class="form-input p-3 md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Musik</button></form><hr class="border-white/10"><h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Rilisan</h2><div id="musicList" class="space-y-3"></div></div>`;
+                
                 const musicListContainer = document.getElementById('musicList');
                 async function loadMusic() {
-                    const { data } = await supabase.from('music_releases').select('*').order('release_date', { ascending: false });
-                    musicListContainer.innerHTML = !data || data.length === 0 ? '<p class="text-slate-500 text-sm text-center py-4">Belum ada rilisan musik.</p>' : '';
-                    if(data) data.forEach(item => { musicListContainer.innerHTML += `<div class="p-3 bg-neutral-800/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-4"><img src="${item.cover_art_url || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-md object-cover flex-shrink-0"><p class="font-semibold text-white">${item.song_title}</p></div><button data-action="delete-music" data-id="${item.id}" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
+                    const { data, error } = await supabase.from('music_releases').select('*').order('release_date', { ascending: false });
+                    musicListContainer.innerHTML = '';
+                    if(data) data.forEach(item => { musicListContainer.innerHTML += `<div class="p-3 bg-neutral-800/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-4"><img src="${item.cover_art_url || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-md object-cover"><p class="font-semibold text-white">${item.song_title}</p></div><button onclick="window.deleteItem('music_releases', '${item.id}')" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
                 }
                 document.getElementById('addMusicForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
                     const musicData = Object.fromEntries(formData.entries());
-                    if (musicData.release_date === '') delete musicData.release_date;
                     await supabase.from('music_releases').insert(musicData);
-                    e.target.reset(); loadMusic();
+                    e.target.reset();
+                    loadMusic();
                 });
                 loadMusic();
             }
 
             async function renderAffiliatesPanel() {
-                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Link Afiliasi</h2><form id="addAffiliateForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"><input name="product_name" required placeholder="Nama Produk" class="form-input p-3"><input name="category" placeholder="Kategori Produk" class="form-input p-3"><input name="product_url" required type="url" placeholder="URL Afiliasi" class="form-input p-3 md:col-span-2"><input name="product_image_url" type="url" placeholder="URL Gambar Produk" class="form-input p-3 md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Link</button></form><hr class="border-white/10"><h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Link</h2><div id="affiliateList" class="space-y-3"></div></div>`;
+                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Link Afiliasi Baru</h2><form id="addAffiliateForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"><input name="product_name" required placeholder="Nama Produk" class="form-input p-3"><input name="category" placeholder="Kategori Produk" class="form-input p-3"><input name="product_url" required type="url" placeholder="URL Afiliasi" class="form-input p-3 md:col-span-2"><input name="product_image_url" placeholder="URL Gambar Produk" class="form-input p-3 md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Link</button></form><hr class="border-white/10"><h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Link</h2><div id="affiliateList" class="space-y-3"></div></div>`;
+
                 const affiliateListContainer = document.getElementById('affiliateList');
                 async function loadAffiliates() {
-                    const { data } = await supabase.from('affiliate_links').select('*').order('created_at', { ascending: false });
-                    affiliateListContainer.innerHTML = !data || data.length === 0 ? '<p class="text-slate-500 text-sm text-center py-4">Belum ada link.</p>' : '';
-                    if(data) data.forEach(item => { affiliateListContainer.innerHTML += `<div class="p-3 bg-neutral-800/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-4"><img src="${item.product_image_url || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-md object-cover"><p class="font-semibold text-white">${item.product_name}</p></div><button data-action="delete-affiliate" data-id="${item.id}" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
+                    const { data, error } = await supabase.from('affiliate_links').select('*').order('created_at', { ascending: false });
+                    affiliateListContainer.innerHTML = '';
+                    if(data) data.forEach(item => { affiliateListContainer.innerHTML += `<div class="p-3 bg-neutral-800/50 rounded-lg flex justify-between items-center"><div class="flex items-center gap-4"><img src="${item.product_image_url || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-md object-cover"><p class="font-semibold text-white">${item.product_name}</p></div><button onclick="window.deleteItem('affiliate_links', '${item.id}')" class="text-slate-500 hover:text-red-500"><i class="ri-delete-bin-line"></i></button></div>`; });
                 }
                 document.getElementById('addAffiliateForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
                     const affiliateData = Object.fromEntries(formData.entries());
                     await supabase.from('affiliate_links').insert(affiliateData);
-                    e.target.reset(); loadAffiliates();
+                    e.target.reset();
+                    loadAffiliates();
                 });
                 loadAffiliates();
             }
 
-            async function renderView(viewName) {
-                document.querySelectorAll('.tab-btn.active').forEach(b => b.classList.remove('active'));
-                tabsContainer.querySelector(`[data-tab="${viewName}"]`)?.classList.add('active');
-                if (viewName === 'posts') await renderPostsPanel();
-                else if (viewName === 'categories') await renderCategoriesPanel();
-                else if (viewName === 'music') await renderMusicPanel();
-                else if (viewName === 'affiliates') await renderAffiliatesPanel();
+            window.deleteItem = async (tableName, id) => {
+                if (confirm('Yakin ingin menghapus item ini?')) {
+                    await supabase.from(tableName).delete().eq('id', id);
+                    const activeTab = tabsContainer.querySelector('.tab-btn.active').dataset.tab;
+                    if (activeTab === 'music') renderMusicPanel();
+                    if (activeTab === 'affiliates') renderAffiliatesPanel();
+                }
             }
-
-            tabContent.addEventListener('click', (e) => {
-                const button = e.target.closest('button[data-action]');
-                if (!button) return;
-                const { action, id, status } = button.dataset;
-                if (action === 'toggle-featured') toggleFeatured(id, status === 'true');
-                if (action === 'delete-post') deleteItem('posts', id);
-                if (action === 'delete-category') deleteItem('categories', id);
-                if (action === 'delete-music') deleteItem('music_releases', id, 'music');
-                if (action === 'delete-affiliate') deleteItem('affiliate_links', id, 'affiliates');
-            });
             
             tabsContainer.addEventListener('click', (e) => {
-                const button = e.target.closest('button[data-tab]');
-                if (button) renderView(button.dataset.tab);
+                if(e.target.tagName === 'BUTTON') {
+                    document.querySelector('.tab-btn.active')?.classList.remove('active');
+                    e.target.classList.add('active');
+                    const tabName = e.target.dataset.tab;
+                    if (tabName === 'posts') renderPostsPanel();
+                    if (tabName === 'categories') renderCategoriesPanel();
+                    if (tabName === 'music') renderMusicPanel();
+                    if (tabName === 'affiliates') renderAffiliatesPanel();
+                }
             });
-
+            
             async function initializePage() {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) { window.location.href = 'login.html'; return; }
