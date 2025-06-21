@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 	<head>
-    		<meta charset="UTF-8">
-    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    		<title>Dashboard</title>
-    		<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    		<script src="config.js"></script> 
-    		<script src="https://cdn.tailwindcss.com"></script>
-    		<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
-    		<style>
-	       		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-	        	body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
-	        	.glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-	        	.nav-item.active { color: #818cf8; }
-	       	 	.nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
-	        	.comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
-	        	.comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
-	        	.settings-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
-	        	.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-	        	@keyframes pulse { 50% { opacity: .5; } }
-	    	</style>
+    	<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Dashboard</title>
+    	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    	<script src="config.js"></script> 
+    	<script src="https://cdn.tailwindcss.com"></script>
+    	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    	<style>
+       		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        	body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
+        	.glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        	.nav-item.active { color: #818cf8; }
+       	 	.nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
+        	.comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
+        	.comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
+        	.settings-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
+        	.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        	@keyframes pulse { 50% { opacity: .5; } }
+    	</style>
 	</head>
 	<body class="min-h-screen">
 	
@@ -132,16 +132,48 @@
 		    <div>
 		        <div id="tab-content-profile" class="tab-content space-y-8">
 		            <div class="glass-card p-6 rounded-2xl">
-		                <h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
-		                <p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
-		                <div class="flex items-center space-x-4">
-		                    <img id="settings-avatar" src="assets/avatar.jpg" class="w-16 h-16 rounded-full object-cover">
-		                    <div>
-		                        <p id="settings-username" class="font-bold text-white">Nama Pengguna</p>
-		                        <p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
-		                    </div>
-		                </div>
-		            </div>
+						<h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
+						<p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
+						
+						<div class="flex items-center space-x-4 mb-6">
+							<img id="settings-avatar" src="assets/avatar.jpg" class="w-16 h-16 rounded-full object-cover">
+							<div>
+								<p class="font-bold text-white">Foto Profil</p>
+								<p class="text-sm text-slate-300">Ganti foto profil Anda.</p>
+								<button id="change-avatar-btn" class="mt-2 bg-neutral-700 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-neutral-600">Ubah Foto</button>
+								<input type="file" id="avatar-upload-input" class="hidden" accept="image/png, image/jpeg">
+							</div>
+						</div>
+					
+						<div class="border-t border-white/10 pt-4">
+							<div class="flex justify-between items-center">
+								<div>
+									<p class="font-bold text-white">Nama Tampilan</p>
+									<p id="settings-username" class="text-sm text-slate-300"></p>
+									<input id="edit-name-input" type="text" class="hidden bg-neutral-700 text-white p-2 rounded-md w-full" />
+								</div>
+								<button id="edit-name-btn" class="bg-indigo-500/20 text-indigo-300 text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-500/40">Edit</button>
+							</div>
+							<div id="edit-name-actions" class="hidden flex justify-end space-x-2 mt-3">
+								<button id="cancel-edit-name-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
+								<button id="save-name-btn" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Simpan</button>
+							</div>
+						</div>
+					
+						<div class="border-t border-white/10 pt-4 mt-4">
+							<p class="font-bold text-white">Email</p>
+							<p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
+						</div>
+					</div>
+					<div id="tab-content-profile" class="tab-content space-y-8">
+						<div class="glass-card p-6 rounded-2xl">
+							<h2 class="text-lg font-semibold text-white mb-1">Keamanan</h2>
+							<p class="text-sm text-slate-400 mb-4">Kelola keamanan akun Anda.</p>
+							<button id="change-password-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">
+								Ubah Password
+							</button>
+						</div>
+					</div>
 		        </div>	
 		        <div id="tab-content-activity" class="tab-content hidden space-y-4"></div>
 		        <div id="tab-content-error" class="tab-content hidden space-y-4"></div>
@@ -158,6 +190,26 @@
 	            </div>
 	        </div>
 	    </div>
+
+		<div id="change-password-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+			<div class="glass-card w-full max-w-sm p-6 rounded-2xl">
+				<h3 class="text-xl font-bold text-white mb-4">Ubah Password Baru</h3>
+				<form id="change-password-form" class="space-y-4">
+					<div>
+						<label for="new-password" class="block text-sm font-medium text-slate-300 mb-1">Password Baru</label>
+						<input type="password" id="new-password" class="w-full bg-neutral-700 text-white p-2 rounded-md" required minlength="6">
+					</div>
+					<div>
+						<label for="confirm-password" class="block text-sm font-medium text-slate-300 mb-1">Konfirmasi Password Baru</label>
+						<input type="password" id="confirm-password" class="w-full bg-neutral-700 text-white p-2 rounded-md" required minlength="6">
+					</div>
+					<div class="flex justify-end space-x-3 pt-4">
+						<button type="button" id="cancel-password-change-btn" class="py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700">Batal</button>
+						<button type="submit" id="save-password-change-btn" class="bg-indigo-500 text-white py-2 px-5 rounded-lg text-sm font-bold hover:bg-indigo-600">Simpan Password</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	    
 		<div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
     
@@ -826,15 +878,142 @@
 				}
 				
 				async function renderSettingsView() {
-				    const { data: { user } } = await supabase.auth.getUser();
-				    if (user) {
-				        const userName = user.user_metadata.full_name || user.email.split('@')[0];
-				        document.getElementById('settings-username').textContent = userName;
-				        document.getElementById('settings-email').textContent = user.email;
-				        const avatar = document.getElementById('settings-avatar');
-				        if (avatar) avatar.src = 'assets/avatar.jpg';
-				    }
-				
+					const { data: { user } } = await supabase.auth.getUser();
+					
+					const settingsUsername = document.getElementById('settings-username');
+					const settingsEmail = document.getElementById('settings-email');
+					const settingsAvatar = document.getElementById('settings-avatar');
+					const editNameInput = document.getElementById('edit-name-input');
+					const editNameBtn = document.getElementById('edit-name-btn');
+					const editNameActions = document.getElementById('edit-name-actions');
+					const cancelEditNameBtn = document.getElementById('cancel-edit-name-btn');
+					const saveNameBtn = document.getElementById('save-name-btn');
+					const changeAvatarBtn = document.getElementById('change-avatar-btn');
+					const avatarUploadInput = document.getElementById('avatar-upload-input');
+					const headerAvatarImg = document.getElementById('user-avatar-img');
+					const settingsAvatarImg = document.getElementById('settings-avatar');
+					const changePasswordBtn = document.getElementById('change-password-btn');
+					const changePasswordModal = document.getElementById('change-password-modal');
+
+					let currentUser = user;
+					let currentName = '';
+
+					changeAvatarBtn.addEventListener('click', () => {
+    					avatarUploadInput.click();
+					});
+
+					avatarUploadInput.addEventListener('change', async (e) => {
+						const file = e.target.files[0];
+						if (!file) return;
+
+						const maxSize = 2 * 1024 * 1024;
+						if (file.size > maxSize) {
+							showToast('Ukuran file terlalu besar (maks 2MB).', 'error');
+							return;
+						}
+
+						changeAvatarBtn.disabled = true;
+						changeAvatarBtn.textContent = 'Mengupload...';
+
+						const fileExt = file.name.split('.').pop();
+						const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
+
+						try {
+							const { error: uploadError } = await supabase.storage
+								.from('avatars')
+								.upload(filePath, file, { upsert: true });
+
+							if (uploadError) throw uploadError;
+
+							const { data: urlData } = supabase.storage
+								.from('avatars')
+								.getPublicUrl(filePath);
+							
+							const publicUrl = urlData.publicUrl;
+
+							const { error: updateError } = await supabase.auth.updateUser({
+								data: { avatar_url: publicUrl }
+							});
+
+							if (updateError) throw updateError;
+							
+							headerAvatarImg.src = publicUrl;
+							settingsAvatarImg.src = publicUrl;
+							showToast('Foto profil berhasil diperbarui!');
+
+						} catch (error) {
+							showToast('Gagal mengubah foto profil.', 'error', error);
+						} finally {
+							changeAvatarBtn.disabled = false;
+							changeAvatarBtn.textContent = 'Ubah Foto';
+							avatarUploadInput.value = '';
+						}
+					});
+
+					if (currentUser) {
+						currentName = currentUser.user_metadata.full_name || currentUser.email.split('@')[0];
+						settingsUsername.textContent = currentName;
+						settingsEmail.textContent = currentUser.email;
+						if (settingsAvatar) settingsAvatar.src = 'assets/logo.png';
+					}
+
+					function toggleNameEditMode(isEditing) {
+						if (isEditing) {
+							settingsUsername.classList.add('hidden');
+							editNameBtn.classList.add('hidden');
+							editNameInput.classList.remove('hidden');
+							editNameActions.classList.remove('hidden');
+							editNameInput.value = currentName;
+							editNameInput.focus();
+						} else {
+							settingsUsername.classList.remove('hidden');
+							editNameBtn.classList.remove('hidden');
+							editNameInput.classList.add('hidden');
+							editNameActions.classList.add('hidden');
+						}
+					}
+
+					editNameBtn.addEventListener('click', () => {
+						toggleNameEditMode(true);
+					});
+
+					cancelEditNameBtn.addEventListener('click', () => {
+						toggleNameEditMode(false);
+					});
+
+					saveNameBtn.addEventListener('click', async () => {
+						const newName = editNameInput.value.trim();
+						
+						if (!newName || newName === currentName) {
+							toggleNameEditMode(false);
+							return;
+						}
+
+						saveNameBtn.disabled = true;
+						saveNameBtn.textContent = 'Menyimpan...';
+
+						const { data: updatedUser, error } = await supabase.auth.updateUser({
+							data: { full_name: newName }
+						});
+
+						if (error) {
+							showToast('Gagal memperbarui nama.', 'error', error);
+						} else {
+							showToast('Nama berhasil diperbarui!');
+							currentName = updatedUser.user.user_metadata.full_name;
+							settingsUsername.textContent = currentName;
+							document.getElementById('user-name-header').textContent = currentName;
+							toggleNameEditMode(false);
+						}
+
+						saveNameBtn.disabled = false;
+						saveNameBtn.textContent = 'Simpan';
+					});
+					
+					changePasswordBtn.addEventListener('click', () => {
+    					changePasswordModal.classList.remove('hidden');
+					});
+
 				    const tabsContainer = document.getElementById('settings-tabs');
 				    const tabButtons = tabsContainer.querySelectorAll('.settings-tab-btn');
 				    const tabContents = document.querySelectorAll('.tab-content');
@@ -931,6 +1110,47 @@
 				            hideConfirmationModal();
 				        }
 				    });
+
+					const changePasswordModal = document.getElementById('change-password-modal');
+					const cancelPasswordChangeBtn = document.getElementById('cancel-password-change-btn');
+					const changePasswordForm = document.getElementById('change-password-form');
+
+					cancelPasswordChangeBtn.addEventListener('click', () => {
+						changePasswordModal.classList.add('hidden');
+						changePasswordForm.reset();
+					});
+
+					changePasswordForm.addEventListener('submit', async (e) => {
+						e.preventDefault();
+						const newPassword = document.getElementById('new-password').value;
+						const confirmPassword = document.getElementById('confirm-password').value;
+						const saveBtn = document.getElementById('save-password-change-btn');
+
+						if (newPassword.length < 6) {
+							showToast('Password baru harus minimal 6 karakter.', 'error');
+							return;
+						}
+						if (newPassword !== confirmPassword) {
+							showToast('Konfirmasi password tidak cocok.', 'error');
+							return;
+						}
+
+						saveBtn.disabled = true;
+						saveBtn.textContent = 'Menyimpan...';
+
+						const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+						if (error) {
+							showToast('Gagal mengubah password: ' + error.message, 'error', error);
+						} else {
+							showToast('Password berhasil diubah!');
+							changePasswordModal.classList.add('hidden');
+							changePasswordForm.reset();
+						}
+
+						saveBtn.disabled = false;
+						saveBtn.textContent = 'Simpan Password';
+					});
 				    
 				    await renderView('home');
 				    checkPendingComments();
