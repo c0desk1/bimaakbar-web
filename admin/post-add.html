@@ -459,7 +459,16 @@
                     content: editor.getContents(true),
                     category: kategoriInput.value || null,
                     published: statusInput.value === 'published',
-                    scheduled_time: statusInput.value === 'scheduled' ? scheduleTimeInput.value : null,
+
+                    scheduled_time: statusInput.value === 'scheduled' ? 
+                                    (() => {
+                                        const localDateTimeString = scheduleTimeInput.value;
+                                        if (!localDateTimeString) return null;
+                                        const localDate = new Date(localDateTimeString);
+                                        const d = new Date(localDateTimeString); 
+                                        return d.toISOString();
+                                    })() : null,
+                                    
                     thumbnail_url: newThumbnailUrl,
                     author: authorInput.value,
                     tags: hiddenTagsInput.value,
@@ -494,7 +503,7 @@
                     }
 
                     if (statusInput.value === 'scheduled') {
-                        successMessage = `Postingan berhasil dijadwalkan untuk ${new Date(scheduleTimeInput.value).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}!`; // <-- Tambahan timeZone
+                        successMessage = `Postingan berhasil dijadwalkan untuk ${new Date(scheduleTimeInput.value).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}!`;
                         logAction = isEditing ? 'UPDATE_SCHEDULED_POST' : 'CREATE_SCHEDULED_POST';
                         logDetails.scheduledTime = scheduleTimeInput.value;
                     }
