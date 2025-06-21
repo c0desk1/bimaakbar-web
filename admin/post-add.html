@@ -4,72 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor Postingan</title>
-	<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
-		<link rel="manifest" href="assets/favicon/site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Bima Akbar" />
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+	<link rel="manifest" href="assets/favicon/site.webmanifest" />
     <link href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="supabaseConfig.js"></script>
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    
-    body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3;}
-        .glass-card { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
-        .form-input:focus { outline: none; border-color: #6366f1; }
-        select option { background: #171717; color: #e5e7eb; }
-    
-    select.form-input {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            padding-right: 2.5rem;
-        }
-
-    input[type="datetime-local"].form-input {
-        color-scheme: dark;
-    }
-    
-    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-            opacity: 0;
-            cursor: pointer;
-        }
-
-    
-        /* === KODE BARU UNTUK TOOLBAR & EDITOR === */
-        .sun-editor { border: none !important; }
-        .se-wrapper {
-            background: transparent !important;
-            overflow: hidden;
-        }
-        .se-toolbar-container {
-            background: rgba(28, 28, 31, 0.7) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            padding: 0.5rem !important;
-        }
-        .se-btn, .se-btn-more { color: #a3a3a3 !important; }
-        .se-btn:hover, .se-btn:focus, .se-btn.active { background-color: rgba(79, 70, 229, 0.2) !important; color: #c7d2fe !important; }
-        .sun-editor-editable {
-            background: #18181b !important;
-            color: #d4d4d8 !important;
-            font-size: 1.125rem;
-            line-height: 1.75;
-        }
-        .se-dialog { background-color: #1f2937 !important; color: #d1d5db !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; }
-        .se-dialog-header { background-color: #1f2937 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;}
-        .se-dialog-form .se-input-form { background-color: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; }
-        .se-dialog-form .se-btn-primary { background-color: #4f46e5 !important; color: #fff !important; border: none !important; }
-        .se-list-inner { background-color: #374151 !important; border: 1px solid rgba(255,255,255,0.2) !important;}
-        .se-list-inner ul li button:hover { background-color: #4f46e5 !important; color: #fff !important; }
+	    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+	    
+	    body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3;}
+	        .glass-card { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+	        .form-input { background-color: rgba(38, 38, 38, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; border-radius: 0.5rem; }
+	        .form-input:focus { outline: none; border-color: #6366f1; }
+	        select option { background: #171717; color: #e5e7eb; }
+	    
+	   	 select.form-input {
+	            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+	            background-position: right 0.5rem center;
+	            background-repeat: no-repeat;
+	            background-size: 1.5em 1.5em;
+	            -webkit-appearance: none;
+	            -moz-appearance: none;
+	            appearance: none;
+	            padding-right: 2.5rem;
+	        }
+	
+	  	  input[type="datetime-local"].form-input {
+	        	color-scheme: dark;
+	    	}
+	    
+	    	input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+	            opacity: 0;
+	            cursor: pointer;
+	        }
+	
+	        .sun-editor { border: none !important; }
+	        .se-wrapper {
+	            background: transparent !important;
+	            overflow: hidden;
+	        }
+	        .se-toolbar-container {
+	            background: rgba(28, 28, 31, 0.7) !important;
+	            backdrop-filter: blur(12px) !important;
+	            -webkit-backdrop-filter: blur(12px) !important;
+	            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+	            padding: 0.5rem !important;
+	        }
+	        .se-btn, .se-btn-more { color: #a3a3a3 !important; }
+	        .se-btn:hover, .se-btn:focus, .se-btn.active { background-color: rgba(79, 70, 229, 0.2) !important; color: #c7d2fe !important; }
+	        .sun-editor-editable {
+	            background: #18181b !important;
+	            color: #d4d4d8 !important;
+	            font-size: 1.125rem;
+	            line-height: 1.75;
+	        }
+	        .se-dialog { background-color: #1f2937 !important; color: #d1d5db !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; }
+	        .se-dialog-header { background-color: #1f2937 !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;}
+	        .se-dialog-form .se-input-form { background-color: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; }
+	        .se-dialog-form .se-btn-primary { background-color: #4f46e5 !important; color: #fff !important; border: none !important; }
+	        .se-list-inner { background-color: #374151 !important; border: 1px solid rgba(255,255,255,0.2) !important;}
+	        .se-list-inner ul li button:hover { background-color: #4f46e5 !important; color: #fff !important; }
     </style>
 </head>
 <body class="antialiased">
@@ -154,22 +153,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
     <script>
-        // Menunggu seluruh halaman HTML siap, baru jalankan semua JavaScript
         document.addEventListener('DOMContentLoaded', () => {
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
     
-            // === 1. INISIALISASI & KONFIGURASI ===
-            const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-            // === 2. DEKLARASI VARIABEL ===
             let editor;
             let isEditing = false;
             let postId = null;
             let oldThumbnailPath = null;
             let currentUserEmail = '';
     
-            // === 3. ELEMEN DOM (Lengkap) ===
             const mainContent = document.getElementById('mainContent');
             const postForm = document.getElementById('postForm');
             const judulInput = document.getElementById('judul');
