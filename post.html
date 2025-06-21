@@ -1,47 +1,21 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-	<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "s2uafa8c8p");
-</script>
+    <script src="admin/config.js"></script>
+	<meta charset="UTF-8">
     <meta name="google-site-verification" content="tiYzo71ZJobcRYToMChdQ0bGyrGX1JdMK1zcr3EyaOQ" />
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TJXJBGLX');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bima Akbar</title>
-	<link rel="icon" type="image/png" href="admin/assets/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="admin/assets/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="admin/assets/favicon/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="admin/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
-		<link rel="manifest" href="admin/assets/favicon/site.webmanifest" />
+		<link rel="manifest" href="assets/favicon/site.webmanifest" />
     <meta name="description">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
-	<script>
-    // Pastikan Supabase client sudah dibuat sebelumnya
-    if (window.supabase) {
-        const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
-        
-        // Nama channel harus SAMA PERSIS dengan yang ada di dashboard
-        const visitorChannel = supabase.channel('live-visitors');
-
-        visitorChannel.subscribe((status) => {
-            if (status === 'SUBSCRIB-ED') {
-                // Saat berhasil terhubung, lacak kehadiran pengguna ini
-                visitorChannel.track({ 
-                    user_id: `visitor-${Math.random()}`, // Beri ID acak untuk setiap pengunjung
-                    online_at: new Date().toISOString() 
-                });
-                console.log('Presence berhasil dilacak.');
-            }
-        });
-    }
-</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
@@ -57,6 +31,7 @@
         .ad-slot { display: flex; justify-content: center; align-items: center; background-color: rgba(23,23,23,0.5); border: 1px dashed #3f3f46; color: #71717a; }
         .ad-slot-2 { display: flex; justify-content: center; align-items: center; background-color: rgba(23,23,23,0.5); border: 1px dashed #3f3f46; color: #71717a; }
     </style>
+    
 </head>
 <body class="antialiased">
     <noscript>
@@ -136,10 +111,9 @@
     <button id="back-to-top" class="hidden fixed bottom-6 right-6 bg-indigo-500 text-white w-12 h-12 rounded-full shadow-lg hover:bg-indigo-600 transition-all z-50 justify-center items-center"><i class="ri-arrow-up-s-line text-2xl"></i></button>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const supabase = window.supabase.createClient('https://wgcslximcxnprmfqtsoh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk');
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
         const mainContent = document.getElementById('mainContent');
         const postContainer = document.getElementById('post-container');
         const notFoundDiv = document.getElementById('notFound');
