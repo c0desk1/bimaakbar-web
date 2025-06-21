@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="supabaseConfig.js"></script>
+    
     <style>
 	    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 	    
@@ -30,7 +31,7 @@
 	        .form-input:focus { outline: none; border-color: #6366f1; }
 	        
 	        select option { background: #171717; color: #e5e7eb; }
-	
+	    
 	   	    select.form-input {
 	            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
 	            background-position: right 0.5rem center;
@@ -52,7 +53,7 @@
 	            cursor: pointer;
 	        }
 	        
-
+	        /* Styling untuk SunEditor */
 	        .sun-editor { border: none !important; }
 	        .se-wrapper { background: transparent !important; overflow: hidden; }
 	        .se-toolbar-container {
@@ -77,10 +78,9 @@
 	        .se-list-inner { background-color: #374151 !important; border: 1px solid rgba(255,255,255,0.2) !important;}
 	        .se-list-inner ul li button:hover { background-color: #4f46e5 !important; color: #fff !important; }
 
-
-            
-            @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            /* Styles untuk Toast Message */
             .animate-slide-in { animation: slide-in 0.3s ease-out forwards; }
+            @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
             .toast-message {
                 background-color: rgba(23, 23, 23, 0.7);
                 backdrop-filter: blur(12px);
@@ -90,18 +90,18 @@
     </style>
 </head>
 <body class="antialiased">
-	<header class="sticky top-0 z-40" style="background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-	    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-	        <div class="flex items-center justify-between h-16">
-	            <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"><i class="ri-arrow-left-line text-xl"></i></a>
-	            <button id="submitButton" type="submit" form="postForm" class="bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center gap-2">
-	                <i id="saveIcon" class="ri-save-3-fill"></i>
-	                <span id="buttonText">Posting</span>
-	                <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-	            </button>
-	        </div>
-	    </div>
-	</header>
+    <header class="sticky top-0 z-40" style="background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="content-studio.html" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"><i class="ri-arrow-left-line text-xl"></i></a>
+                <button id="submitButton" type="submit" form="postForm" class="bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md hover:bg-indigo-700 transition-colors flex items-center gap-2">
+                    <i id="saveIcon" class="ri-save-3-fill"></i>
+                    <span id="buttonText">Posting</span>
+                    <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
     <main class="p-4 sm:p-6 lg:p-8">
         <form id="postForm" class="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -113,63 +113,62 @@
                 </div>
             </div>
 
-			<aside class="lg:col-span-1">
-			    <div class="sticky top-8 space-y-6">
-			        <div class="glass-card p-5 rounded-2xl">
-			            <h3 class="font-semibold text-white mb-4">Pengaturan</h3>
-			            <div class="space-y-4">
-			                <div>
-			                    <label for="slug" class="text-sm font-medium text-slate-400">Slug</label>
-			                    <input id="slug" type="text" class="form-input mt-1 w-full p-2">
-			                </div>
-			                <div>
-			                    <label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label>
-			                    <select id="kategori" class="form-input mt-1 w-full p-2"></select>
-			                </div>
-			                <div>
-			                    <label for="status" class="text-sm font-medium text-slate-400">Status</label>
-			                    <select id="status" class="form-input mt-1 w-full p-2">
-			                        <option value="draft">Draft</option>
-			                        <option value="published">Published</option>
-			                        <option value="scheduled">Scheduled</option>
-			                    </select>
-			                </div>
-			                <div id="schedule-container" class="hidden">
-			                           <label for="schedule-time" class="text-sm font-medium text-slate-400">Jadwal</label>
-			                            <div class="relative mt-1">
-			                                <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
-			                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-			                                   <i class="ri-calendar-2-line text-slate-400"></i>
-			                                </div>
-			                            </div>
-			                        </div>
-			            </div>
-			        </div>
-			        <div class="glass-card p-5 rounded-2xl">
-						<h3 class="font-semibold text-white mb-4">Thumbnail</h3>
-						<input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
-						<img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
-					</div>
-					<div class="glass-card p-5 rounded-2xl">
-						<h3 class="font-semibold text-white mb-4">Meta</h3>
-						<div class="space-y-4">
-							<div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-							
-							<div>
-    							<label for="tags" class="text-sm font-medium text-slate-400">Tags</label>
-    							<div id="tagsContainer" class="flex flex-wrap gap-2 p-2 form-input mt-1 w-full min-h-[42px] items-center">
-        							<input type="text" id="tagInput" class="flex-grow bg-transparent text-white outline-none placeholder-slate-500" placeholder="Tambahkan tag...">
-    							</div>
-    							<input type="hidden" id="hiddenTagsInput" name="tags">
-							</div>
-							<div><label for="metaTitle" class="text-sm font-medium text-slate-400">Judul</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-							<div><label for="metaDescription" class="text-sm font-medium text-slate-400">Deskripsi</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
-							<div><label for="keywords" class="text-sm font-medium text-slate-400">Kata Kunci</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
-						</div>
-					</div>
-				</div>
-			</aside>
-
+            <aside class="lg:col-span-1">
+                <div class="sticky top-8 space-y-6">
+                    <div class="glass-card p-5 rounded-2xl">
+                        <h3 class="font-semibold text-white mb-4">Pengaturan</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="slug" class="text-sm font-medium text-slate-400">Slug</label>
+                                <input id="slug" type="text" class="form-input mt-1 w-full p-2">
+                            </div>
+                            <div>
+                                <label for="kategori" class="text-sm font-medium text-slate-400">Kategori</label>
+                                <select id="kategori" class="form-input mt-1 w-full p-2"></select>
+                            </div>
+                            <div>
+                                <label for="status" class="text-sm font-medium text-slate-400">Status</label>
+                                <select id="status" class="form-input mt-1 w-full p-2">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+                            <div id="schedule-container" class="hidden">
+                                <label for="schedule-time" class="text-sm font-medium text-slate-400">Jadwal</label>
+                                <div class="relative mt-1">
+                                    <input id="schedule-time" type="datetime-local" class="form-input w-full p-2">
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <i class="ri-calendar-2-line text-slate-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl">
+                        <h3 class="font-semibold text-white mb-4">Thumbnail</h3>
+                        <input id="thumbnail" type="file" accept="image/*" class="text-sm w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-indigo-500/10 file:text-indigo-300 hover:file:bg-indigo-500/20">
+                        <img id="thumbnailPreview" src="" class="mt-4 rounded-lg w-full object-cover" style="display: none;">
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl">
+                        <h3 class="font-semibold text-white mb-4">Meta</h3>
+                        <div class="space-y-4">
+                            <div><label for="author" class="text-sm font-medium text-slate-400">Penulis</label><input id="author" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                            
+                            <div>
+                                <label for="tags" class="text-sm font-medium text-slate-400">Tags</label>
+                                <div id="tagsContainer" class="flex flex-wrap gap-2 p-2 form-input mt-1 w-full min-h-[42px] items-center">
+                                    <input type="text" id="tagInput" class="flex-grow bg-transparent text-white outline-none placeholder-slate-500" placeholder="Tambahkan tag...">
+                                </div>
+                                <input type="hidden" id="hiddenTagsInput" name="tags">
+                            </div>
+                            <div><label for="metaTitle" class="text-sm font-medium text-slate-400">Judul</label><input id="metaTitle" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                            <div><label for="metaDescription" class="text-sm font-medium text-slate-400">Deskripsi</label><textarea id="metaDescription" rows="3" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></textarea></div>
+                            <div><label for="keywords" class="text-sm font-medium text-slate-400">Kata Kunci</label><input id="keywords" type="text" class="form-input mt-1 w-full p-2 rounded-lg text-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </form>
     </main>
     
@@ -179,14 +178,17 @@
     <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
     
     <script>
+        // Supabase Config
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+
         document.addEventListener('DOMContentLoaded', () => {
             const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
             
-            // Deklarasi Elemen DOM untuk Tags (INI SUDAH BENAR)
+            // Deklarasi Elemen DOM untuk Tags
             const tagsContainer = document.getElementById('tagsContainer');
-            const tagInput = document.getElementById('tagInput'); // Ini merujuk ke input teks untuk menambah tag
-            const hiddenTagsInput = document.getElementById('hiddenTagsInput'); // Ini untuk nilai string yang disimpan
-            let currentTags = new Set(); // Menggunakan Set untuk menyimpan tags unik
+            const tagInput = document.getElementById('tagInput');
+            const hiddenTagsInput = document.getElementById('hiddenTagsInput');
+            let currentTags = new Set();
     
             let editor;
             let isEditing = false;
@@ -215,10 +217,16 @@
             // === FUNGSI showToast (Untuk feedback UI) ===
             async function showToast(message, type = 'success', errorObject = null) {
                 const toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    console.warn("Toast container not found. Messages will only appear in console.");
+                    console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
+                    return;
+                }
+
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
             
-                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
+                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
                 toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
                 toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
                 toastContainer.appendChild(toast);
@@ -366,7 +374,7 @@
                         if (tag.trim()) currentTags.add(tag.trim());
                     });
                 }
-                renderTags(); // Panggil renderTags di sini setelah memuat tags yang ada
+                renderTags();
 
                 metaTitleInput.value = data.meta_title || '';
                 metaDescriptionInput.value = data.meta_description || '';
@@ -395,7 +403,6 @@
             }
     
             // === EVENT LISTENERS ===
-            // Event Listeners untuk Tags
             tagInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ',') {
                     e.preventDefault();
@@ -412,7 +419,6 @@
                 tagInput.focus();
             });
 
-            // Event Listeners lainnya untuk form
             judulInput.addEventListener('input', () => { if (slugInput.dataset.manualEdit !== 'true') slugInput.value = generateUniqueSlug(judulInput.value); });
             slugInput.addEventListener('input', () => { slugInput.dataset.manualEdit = 'true'; });
             thumbnailInput.addEventListener('change', (e) => { thumbnailPreview.src = URL.createObjectURL(e.target.files[0]); thumbnailPreview.style.display = 'block'; });
@@ -473,13 +479,29 @@
                 if (dbError) {
                     showToast('Gagal menyimpan postingan: ' + dbError.message, 'error', dbError);
                 } else {
-                    showToast(isEditing ? 'Postingan berhasil diperbarui!' : 'Postingan berhasil disimpan!');
-                    // Panggil logActivity setelah sukses menyimpan
+                    let successMessage = '';
+                    let logAction = '';
+                    let logDetails = {};
+
                     if (isEditing) {
-                        logActivity('UPDATE_POST', { postId: postId, title: judulInput.value });
+                        successMessage = 'Postingan berhasil diperbarui!';
+                        logAction = 'UPDATE_POST';
+                        logDetails = { postId: postId, title: judulInput.value };
                     } else {
-                        logActivity('CREATE_POST', { title: judulInput.value, slug: finalSlug });
+                        successMessage = 'Postingan berhasil disimpan!';
+                        logAction = 'CREATE_POST';
+                        logDetails = { title: judulInput.value, slug: finalSlug };
                     }
+
+                    if (statusInput.value === 'scheduled') {
+                        successMessage = `Postingan berhasil dijadwalkan untuk ${new Date(scheduleTimeInput.value).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}!`;
+                        logAction = isEditing ? 'UPDATE_SCHEDULED_POST' : 'CREATE_SCHEDULED_POST';
+                        logDetails.scheduledTime = scheduleTimeInput.value;
+                    }
+
+                    showToast(successMessage);
+                    logActivity(logAction, logDetails);
+
                     window.location.href = 'content-studio.html';
                 }
                 
@@ -517,8 +539,11 @@
                     ],
                     width: '100%', minHeight: '500px',
                     placeholder: 'Mulai tulis di sini...'
-                    // Tidak ada 'plugins' atau 'imageUploadHandler' yang bermasalah di sini lagi
-                    // Jika Anda ingin mengaktifkan kembali SunEditor Image Upload, Anda perlu menambahkan kembali imageUploadHandler yang benar di sini.
+                    // Image upload handler belum diaktifkan di versi ini
+                    // Untuk mengaktifkannya, tambahkan:
+                    // imageUploadUrl: '',
+                    // imageUploadHeader: {},
+                    // imageUploadHandler: async (xmlHttpRequest, info, core) => { ... }
                 });
                 
                 editor.onload = async () => {
