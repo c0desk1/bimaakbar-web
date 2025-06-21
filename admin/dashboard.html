@@ -966,7 +966,11 @@
 						currentName = currentUser.user_metadata.full_name || currentUser.email.split('@')[0];
 						settingsUsername.textContent = currentName;
 						settingsEmail.textContent = currentUser.email;
-						if (settingsAvatar) settingsAvatar.src = 'assets/logo.png';
+						
+						const settingsAvatar = document.getElementById('settings-avatar');
+						if (settingsAvatar && currentUser.user_metadata.avatar_url) {
+							settingsAvatar.src = currentUser.user_metadata.avatar_url;
+						}
 					}
 
 					function toggleNameEditMode(isEditing) {
@@ -1079,10 +1083,10 @@
 				            userNameElement.textContent = user.user_metadata.full_name || user.email.split('@')[0];
 				        }
 				
-				        const avatarImgElement = document.getElementById('user-avatar-img');
-				        if (avatarImgElement) {
-				            avatarImgElement.src = 'assets/avatar.jpg';
-				        }
+						const headerAvatarImg = document.getElementById('user-avatar-img');
+						if (headerAvatarImg && user.user_metadata.avatar_url) {
+							headerAvatarImg.src = user.user_metadata.avatar_url;
+						}
 				        
 				        const avatarButton = document.getElementById('avatar-button');
 				        const dropdown = document.getElementById('profile-dropdown');
