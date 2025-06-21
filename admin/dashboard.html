@@ -16,7 +16,7 @@
     	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
 
     	<style>
-       		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
 			@keyframes pulse { 50% { opacity: .5; } }
 			@keyframes blink { 50% { opacity: 0.3; } }
 			@keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -711,12 +711,12 @@
 	        	}
 	        
 	        	async function showToast(message, type = 'success', errorObject = null) {
-                const toastContainer = document.getElementById('toast-container');
-                if (!toastContainer) {
-                    console.warn("Toast container not found. Messages will only appear in console.");
-                    console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
-                    return;
-                }
+                	const toastContainer = document.getElementById('toast-container');
+                	if (!toastContainer) {
+                    	console.warn("Toast container not found. Messages will only appear in console.");
+                    	console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
+                    	return;
+                	}
         
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
@@ -728,6 +728,7 @@
             
                 if (type === 'error' && errorObject) {
                     console.error("Mencatat error ke database:", errorObject);
+                    const { data: { user } } = await supabase.auth.getUser();
                     supabase.from('error_logs').insert({
                         error_message: errorObject.message,
                         error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
@@ -994,7 +995,7 @@
 				        let formattedDetails = '';
 				        if (log.error_details) {
 				            try {
-				                const details = log.error_details; // Sudah JSONB, jadi sudah objek
+				                const details = log.error_details;
 				                if (details.code) formattedDetails += `<strong>Code:</strong> ${details.code}<br>`;
 				                if (details.details) formattedDetails += `<strong>Details:</strong> ${details.details}<br>`;
 				                if (details.hint) formattedDetails += `<strong>Hint:</strong> ${details.hint}<br>`;
@@ -1008,7 +1009,7 @@
 				                delete remainingDetails.details;
 				                delete remainingDetails.hint;
 				                delete remainingDetails.message;
-				                delete remainingDetails.location; // Hapus yang sudah ditampilkan
+				                delete remainingDetails.location;
 
 				                if (Object.keys(remainingDetails).length > 0) {
 				                    formattedDetails += `<details class="mt-2 text-xs text-slate-400"><summary>Lihat Detail JSON Lengkap</summary><pre class="whitespace-pre-wrap p-2 bg-neutral-900/50 rounded-md font-mono">${JSON.stringify(remainingDetails, null, 2)}</pre></details>`;
