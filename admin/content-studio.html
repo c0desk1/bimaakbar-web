@@ -144,6 +144,29 @@
             const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
             const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
             const modalText = document.getElementById('modal-text');
+            
+            async function logActivity(action, details = {}) {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    if (!user) {
+                        console.warn('Tidak dapat mencatat aktivitas: Pengguna tidak terautentikasi.');
+                        return;
+                    }
+                    
+                    const { error } = await supabase.from('activity_logs').insert({
+                        user_id: user.id,
+                        user_email: user.email,
+                        action: action, // Contoh: 'CREATE_POST', 'UPDATE_POST', 'DELETE_POST', 'ADD_CATEGORY'
+                        details: details // Objek JSON dengan detail tambahan (misal: { postId: 'xyz', title: 'abc' })
+                    });
+
+                    if (error) {
+                        console.error('Gagal mencatat aktivitas:', error.message);
+                    }
+                } catch (e) {
+                    console.error('Error saat mencoba mencatat aktivitas:', e);
+                }
+            }
 
             function showConfirmationModal(onConfirm, message = "Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.") {
                 modalText.textContent = message;
@@ -226,6 +249,7 @@
                     showToast('Gagal menyimpan perubahan: ' + error.message, 'error', error);
                 } else {
                     showToast('Rilisan musik berhasil diperbarui!');
+                    logActivity('UPDATE_MUSIC_RELEASE', { musicId: musicId, title: updatedMusicData.song_title });
                     closeEditMusicModal();
                     renderMusicPanel();
                 }
@@ -288,6 +312,7 @@
                     showToast('Gagal menyimpan perubahan: ' + error.message, 'error', error);
                 } else {
                     showToast('Link afiliasi berhasil diperbarui!');
+                    logActivity('UPDATE_AFFILIATE_LINK', { affiliateId: affiliateId, name: updatedAffiliateData.product_name });
                     closeEditAffiliateModal();
                     renderAffiliatesPanel();
                 }
@@ -451,6 +476,7 @@
                             showToast('Gagal menghapus postingan: ' + error.message, 'error', error);
                         } else {
                             showToast('Postingan berhasil dihapus!');
+                            logActivity('DELETE_POST', { postId: id });
                             loadPosts(); 
                         }
                     }, 'Yakin ingin menghapus postingan ini?');
@@ -516,6 +542,7 @@
                         showToast('Gagal menambahkan kategori: ' + error.message, 'error', error);
                     } else {
                         showToast('Kategori berhasil ditambahkan!');
+                        logActivity('ADD_CATEGORY', { name: newName });
                         document.getElementById('newCategoryName').value = '';
                         loadCategories();
                     }
@@ -584,6 +611,7 @@
                         showToast('Gagal memperbarui kategori: ' + updateError.message, 'error', updateError);
                     } else {
                         showToast('Kategori berhasil diperbarui!');
+                        logActivity('UPDATE_CATEGORY', { categoryId: id, newName: newName });
                         const nameDisplay = item.querySelector('.category-name-display');
                         nameDisplay.textContent = newName;
                         window.cancelEditCategory(id);
@@ -601,6 +629,7 @@
                             showToast('Gagal menghapus kategori: ' + error.message, 'error', error);
                         } else {
                             showToast('Kategori berhasil dihapus!');
+                            logActivity('DELETE_CATEGORY', { categoryId: id });
                             loadCategories(); 
                         }
                     }, 'Yakin ingin menghapus kategori ini?');
@@ -755,13 +784,20 @@
                 });
 
                 document.getElementById('addMusicForm').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const musicData = Object.fromEntries(formData.entries());
-                    await supabase.from('music_releases').insert(musicData);
-                    e.target.reset();
-                    loadMusic();
-                });
+            		e.preventDefault();
+            		const formData = new FormData(e.target);
+            		const musicData = Object.fromEntries(formData.entries());
+            		const { error } = await supabase.from('music_releases').insert(musicData);
+
+            		if (error) {
+                		showToast('Gagal menambahkan rilisan musik: ' + error.message, 'error', error); // Pesan Error
+            		} else {
+                		showToast('Rilisan musik berhasil ditambahkan!');
+                		logActivity('ADD_MUSIC_RELEASE', { title: musicData.song_title });
+                		e.target.reset();
+                		loadMusic();
+            		}
+        		});
                 loadMusic();
             }
 
@@ -794,13 +830,20 @@
                     });
                 }
                 document.getElementById('addAffiliateForm').addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const affiliateData = Object.fromEntries(formData.entries());
-                    await supabase.from('affiliate_links').insert(affiliateData);
-                    e.target.reset();
-                    loadAffiliates();
-                });
+            		e.preventDefault();
+            		const formData = new FormData(e.target);
+            		const affiliateData = Object.fromEntries(formData.entries());
+            		const { error } = await supabase.from('affiliate_links').insert(affiliateData);
+
+            		if (error) {
+                		showToast('Gagal menambahkan link afiliasi: ' + error.message, 'error', error);
+            		} else {
+                		showToast('Link afiliasi berhasil ditambahkan!');
+                		logActivity('ADD_AFFILIATE_LINK', { name: affiliateData.product_name });
+                		e.target.reset();
+                		loadAffiliates();
+            		}
+        		});
                 loadAffiliates();
             }
 
@@ -811,6 +854,8 @@
                         showToast(`Gagal menghapus item dari ${tableName}: ` + error.message, 'error', error);
                     } else {
                         showToast('Item berhasil dihapus!');
+                        logActivity('DELETE_MUSIC_RELEASE', { musicId: id });
+                        logActivity('DELETE_AFFILIATE_LINK', { affiliateId: id });
                         const activeTab = tabsContainer.querySelector('.tab-btn.active').dataset.tab;
                         if (activeTab === 'music') renderMusicPanel();
                         if (activeTab === 'affiliates') renderAffiliatesPanel();
