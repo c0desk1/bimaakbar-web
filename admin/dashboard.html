@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <script src="config.js"></script> 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
-        .glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-item.active { color: #818cf8; }
-        .nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
-        .comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
-        .comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
-        .skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 50% { opacity: .5; } }
-    </style>
-</head>
-<body class="min-h-screen">
+	<head>
+    	<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Dashboard</title>
+    	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    	<script src="config.js"></script> 
+    	<script src="https://cdn.tailwindcss.com"></script>
+    	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    	<style>
+       		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        	body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #a3a3a3; }
+        	.glass-card { background-color: rgba(23, 23, 23, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        	.nav-item.active { color: #818cf8; }
+       	 	.nav-item .badge { transform: scale(0.9) translate(50%, -50%); }
+        	.comment-tab-btn { border-bottom: 2px solid transparent; transition: all 0.2s ease; }
+        	.comment-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
+        	.settings-tab-btn.active { color: #fff; border-bottom-color: #818cf8; }
+        	.skeleton-pulse { display: block; background-color: rgba(255, 255, 255, 0.1); border-radius: 1rem; animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        	@keyframes pulse { 50% { opacity: .5; } }
+    	</style>
+	</head>
+	<body class="min-h-screen">
 	
-	<header class="py-3 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
-    	<div class="flex items-center justify-between">
-        	<div id="user-name-header" class="text-lg font-semibold text-white"></div>
-        	<div class="relative">
-            	<button id="avatar-button" class="block">
-                	<img id="user-avatar-img" src="" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover ring-2 ring-offset-2 ring-offset-[#0a0a0a] ring-indigo-500">
-            	</button>
-            	<div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-neutral-800 border border-white/10 rounded-lg shadow-lg py-1 z-50">
-                	<a href="#" id="logout-btn-dropdown" class="flex items-center w-full px-4 py-2 text-sm text-red-400 hover:bg-red-500/20">
-                    	<i class="ri-logout-box-r-line mr-2"></i>Logout
-                	</a>
-            	</div>
-        	</div>
-    	</div>
-	</header>
+		<header class="py-3 px-4 sm:px-6 lg:px-8 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
+			<div class="flex items-center justify-between">
+				<div id="user-name-header" class="text-lg font-semibold text-white"></div>
+				<div class="relative">
+					<button id="avatar-button" class="block">
+						<img id="user-avatar-img" src="" alt="Foto Profil" class="w-10 h-10 rounded-full object-cover ring-2 ring-offset-2 ring-offset-[#0a0a0a] ring-indigo-500">
+					</button>
+					<div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-neutral-800 border border-white/10 rounded-lg shadow-lg py-1 z-50">
+						<a href="#" id="logout-btn-dropdown" class="flex items-center w-full px-4 py-2 text-sm text-red-400 hover:bg-red-500/20">
+							<i class="ri-logout-box-r-line mr-2"></i>Logout
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
 
-	
-    <main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500"></main>   
+    	<main id="app" class="pb-24 px-4 pt-8 opacity-0 transition-opacity duration-500"></main>   
     
 	    <nav class="fixed bottom-0 left-0 right-0 h-20 flex justify-around items-center" style="border-top: 1px solid rgba(255, 255, 255, 0.1); background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%); backdrop-filter: blur(12px);">
 		    <button data-view="home" class="nav-item flex flex-col items-center justify-center text-gray-400 active"><i class="ri-dashboard-3-line text-2xl"></i><span class="text-xs mt-1">Home</span></button>
@@ -91,40 +91,63 @@
 		</template>
 
 	    <template id="view-stats">
-	        <h1 class="text-3xl font-bold text-white mb-6">Statistik Detail</h1>
-	        <div class="space-y-8">
-	            <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2><div class="h-80"><canvas id="monthlyViewsChart"></canvas></div></div>
-	            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-	                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2><div class="h-80"><canvas id="postsByCategoryChart"></canvas></div></div>
-	                <div class="glass-card p-6 rounded-2xl"><h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2><div id="topPostsList" class="space-y-3"></div></div>
-	            </div>
-	        </div>
-	    </template>
-	
-		<template id="view-settings">
-		    <h1 class="text-3xl font-bold text-white mb-6">Pengaturan</h1>
+		    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+		        <h1 class="text-3xl font-bold text-white">Statistik Detail</h1> 
+		        <div id="date-filter-buttons" class="flex items-center space-x-2 mt-4 sm:mt-0 bg-neutral-800/50 p-1 rounded-lg">
+		            <button data-range="7" class="date-filter-btn px-3 py-1 text-sm rounded-md">7 Hari</button>
+		            <button data-range="30" class="date-filter-btn px-3 py-1 text-sm rounded-md active">30 Hari</button>
+		            <button data-range="all" class="date-filter-btn px-3 py-1 text-sm rounded-md">Semua</button>
+		        </div>
+		    </div>
+		
 		    <div class="space-y-8">
 		        <div class="glass-card p-6 rounded-2xl">
-		            <h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
-		            <p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
-		            <div class="flex items-center space-x-4">
-		                <img id="settings-avatar" src="" class="w-16 h-16 rounded-full object-cover">
-		                <div>
-		                    <p id="settings-username" class="font-bold text-white">Nama Pengguna</p>
-		                    <p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
-		                </div>
-		            </div>
+		            <h2 class="text-lg font-semibold text-white mb-4">Tren Views Harian</h2>
+		            <div class="h-80"><canvas id="monthlyViewsChart"></canvas></div>
 		        </div>
-		
-		        <div class="glass-card p-6 rounded-2xl">
-		            <h2 class="text-lg font-semibold text-white mb-1">Tampilan</h2>
-		            <p class="text-sm text-slate-400 mb-4">Kustomisasi tampilan dashboard.</p>
-		            <p class="text-slate-200">Opsi untuk Light/Dark Mode akan muncul di sini nanti.</p>
+		        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+		            <div class="glass-card p-6 rounded-2xl">
+		                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
+		                <div class="h-80"><canvas id="postsByCategoryChart"></canvas></div>
+		            </div>
+		            <div class="glass-card p-6 rounded-2xl">
+		                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
+		                <div id="topPostsList" class="space-y-3"></div>
+		            </div>
 		        </div>
 		    </div>
 		</template>
 
-    
+	
+		<template id="view-settings">
+		    <h1 class="text-3xl font-bold text-white mb-6">Pengaturan & Log</h1>
+		    <div class="border-b border-white/10 mb-6">
+		        <nav id="settings-tabs" class="-mb-px flex space-x-6">
+		            <button data-tab="profile" class="settings-tab-btn py-3 px-1 text-sm font-semibold active">Profil</button>
+		            <button data-tab="activity" class="settings-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Log Aktivitas</button>
+		            <button data-tab="error" class="settings-tab-btn py-3 px-1 text-sm font-semibold text-gray-400">Log Error</button>
+		        </nav>
+		    </div>
+		
+		    <div>
+		        <div id="tab-content-profile" class="tab-content space-y-8">
+		            <div class="glass-card p-6 rounded-2xl">
+		                <h2 class="text-lg font-semibold text-white mb-1">Profil Anda</h2>
+		                <p class="text-sm text-slate-400 mb-4">Pengaturan terkait akun Anda.</p>
+		                <div class="flex items-center space-x-4">
+		                    <img id="settings-avatar" src="assets/avatar.jpg" class="w-16 h-16 rounded-full object-cover">
+		                    <div>
+		                        <p id="settings-username" class="font-bold text-white">Nama Pengguna</p>
+		                        <p id="settings-email" class="text-sm text-slate-300">email@pengguna.com</p>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>	
+		        <div id="tab-content-activity" class="tab-content hidden space-y-4"></div>
+		        <div id="tab-content-error" class="tab-content hidden space-y-4"></div>
+		    </div>
+		</template>
+
 	    <div id="confirmation-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
 	        <div class="glass-card w-full max-w-sm p-6 rounded-2xl border-red-500/50 text-center">
 	            <h3 class="text-xl font-bold text-white mb-2">Konfirmasi Hapus</h3>
@@ -209,7 +232,8 @@
 				    const nextPageBtn = document.getElementById('next-page-btn');
 				    const pageInfo = document.getElementById('page-info');
 				
-				    async function loadComments(page, filter) {
+				    // --- FUNGSI KOMENTAR: LOADS ---
+					async function loadComments(page, filter) {
 				        listContainer.innerHTML = getCommentSkeletonHTML();
 				        paginationControls.classList.add('hidden');
 				
@@ -281,7 +305,7 @@
 				        const button = e.target.closest('button');
 				        if (button && button.dataset.filter !== currentFilter) {
 				            currentFilter = button.dataset.filter;
-				            currentPage = 1; // Reset ke halaman pertama saat filter berubah
+				            currentPage = 1;
 				            document.querySelector('.comment-tab-btn.active').classList.remove('active');
 				            button.classList.add('active');
 				            loadComments(currentPage, currentFilter);
@@ -303,53 +327,11 @@
 				    tabsContainer.querySelector('[data-filter="pending"]').classList.add('active');
 				    await loadComments(currentPage, currentFilter);
 				}
-	
-	            
-	            async function renderStatsView() {
-				    const monthlyViewsContainer = document.querySelector('#monthlyViewsChart').parentElement;
-				    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
-				    const topPostsListContainer = document.getElementById('topPostsList');
-				
-				    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-				    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-				    topPostsListContainer.innerHTML = `
-				        <div class="space-y-3">
-				            <div class="h-10 w-full skeleton-pulse"></div>
-				            <div class="h-10 w-full skeleton-pulse"></div>
-				            <div class="h-10 w-full skeleton-pulse"></div>
-				            <div class="h-10 w-full skeleton-pulse"></div>
-				        </div>
-					`;
-				
-				    const { data: posts, error } = await supabase.from('posts').select('title, category, views, created_at').order('created_at');
-				    
-				    if (error || !posts) {
-				        monthlyViewsContainer.innerHTML = '<p class="text-red-400 text-center">Gagal memuat data.</p>';
-				        categoryChartContainer.innerHTML = '';
-				        topPostsListContainer.innerHTML = '';
-				        return;
-				    }
-				
-				    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
-				    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
-				    topPostsListContainer.innerHTML = '';
-				
-				    const monthlyViews = posts.reduce((acc, p) => { const month = new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' }); acc[month] = (acc[month] || 0) + (p.views || 0); return acc; }, {});
-				    const postsByCategory = posts.reduce((acc, p) => { const category = p.category || 'Lainnya'; acc[category] = (acc[category] || 0) + 1; return acc; }, {});
-				    const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
-				    
-				    createChart('monthlyViewsChart', 'line', Object.keys(monthlyViews), Object.values(monthlyViews), 'Total Views');
-				    createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
-				    
-				    const topPostsList = document.getElementById('topPostsList');
-				    topPosts.forEach(p => { topPostsList.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; });
-				}
-	
-	
-	            window.approveComment = async (commentId) => {
+
+				window.approveComment = async (commentId) => {
 	    			const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
 	    			if (error) {
-	    				showToast('Gagal menyetujui: ' + error.message, 'error');
+    					showToast('Gagal menyetujui: ' + error.message, 'error', error);
 					} else {
 	    				showToast('Komentar berhasil disetujui!');
 					}
@@ -359,81 +341,72 @@
 	    			showConfirmationModal(async () => {
 	        			const { error } = await supabase.from('comments').delete().eq('id', commentId);
 	        			if (error) {
-	            			showToast('Gagal menghapus: ' + error.message);
-	        			} else {
+    						showToast('Gagal menghapus: ' + error.message, 'error', error);
+						} else {
 	    					showToast('Komentar berhasil dihapus!');
 						}
 	    			});
 				}
-			window.replyToComment = async (parentCommentId, postId) => {
-	    		const existingForm = document.getElementById('active-reply-form');
-	    			if (existingForm) {
-	        			existingForm.remove();
-	    			}
+				window.replyToComment = async (parentCommentId, postId) => {
+	    			const existingForm = document.getElementById('active-reply-form');
+	    				if (existingForm) {
+	        				existingForm.remove();
+	    				}
 	
-	    			const container = document.getElementById(`reply-form-container-${parentCommentId}`);
-	    			if (!container) return;
+	    				const container = document.getElementById(`reply-form-container-${parentCommentId}`);
+	    				if (!container) return;
 	
-				    const formHTML = `
-				        <form id="active-reply-form" class="space-y-3 glass-card p-3 rounded-lg border-indigo-400/50">
-				            <textarea id="reply-textarea" class="w-full bg-neutral-900/50 p-2 rounded-md text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="Tulis balasan Anda sebagai Admin..."></textarea>
-				            <div class="flex justify-end space-x-2">
-				                <button type="button" id="cancel-reply-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
-				                <button type="submit" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Kirim Balasan</button>
-				            </div>
-				        </form>`;
+				    	const formHTML = `
+				        	<form id="active-reply-form" class="space-y-3 glass-card p-3 rounded-lg border-indigo-400/50">
+				            	<textarea id="reply-textarea" class="w-full bg-neutral-900/50 p-2 rounded-md text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" rows="3" placeholder="Tulis balasan Anda sebagai Admin..."></textarea>
+				            	<div class="flex justify-end space-x-2">
+				                	<button type="button" id="cancel-reply-btn" class="text-xs font-semibold py-1 px-3 rounded-full hover:bg-neutral-700">Batal</button>
+				                	<button type="submit" class="bg-indigo-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-indigo-600">Kirim Balasan</button>
+				            	</div>
+				        	</form>`;
 	
 	    				container.innerHTML = formHTML;
 	    				document.getElementById('reply-textarea').focus();
 	    
 	    				document.getElementById('active-reply-form').addEventListener('submit', async (e) => {
-	        			e.preventDefault();
-	        			const replyContent = document.getElementById('reply-textarea').value;
-	        			const submitButton = e.target.querySelector('button[type="submit"]');
+	        				e.preventDefault();
+	        				const replyContent = document.getElementById('reply-textarea').value;
+	        				const submitButton = e.target.querySelector('button[type="submit"]');
 	
-	        			if (replyContent && replyContent.trim() !== "") {
-	            			submitButton.disabled = true;
-	            			submitButton.textContent = 'Mengirim...';
+	        				if (replyContent && replyContent.trim() !== "") {
+	            				submitButton.disabled = true;
+	            				submitButton.textContent = 'Mengirim...';
 	
-	            			const { data: { user } } = await supabase.auth.getUser();
-	            			const adminName = user.email.split('@')[0] + " (Admin)";
+	            				const { data: { user } } = await supabase.auth.getUser();
+	            				const adminName = user.email.split('@')[0] + " (Admin)";
 	
-	            			const { error } = await supabase.from('comments').insert({
-	                			post_id: postId,
-	                			parent_id: parentCommentId,
-	                			content: replyContent,
-	                			author_name: adminName,
-	                			is_approved: true,
-	                			user_id: user.id
-	            			});
+	            				const { error } = await supabase.from('comments').insert({
+	                				post_id: postId,
+	                				parent_id: parentCommentId,
+	                				content: replyContent,
+	                				author_name: adminName,
+	                				is_approved: true,
+	                				user_id: user.id
+	            				});
 	
-	            			if (error) {
-	                			showToast("Gagal mengirim balasan: " + error.message);
-	                			submitButton.disabled = false;
-	                			submitButton.textContent = 'Kirim Balasan';
-	            			} else {
-	            				showToast("Balasan berhasil dikirim!");
-								document.getElementById('active-reply-form').remove();
-	               		await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
-	            		}
-	        		}
-	    		});
+	            				if (error) {
+    								showToast("Gagal mengirim balasan: " + error.message, 'error', error);
+	                				submitButton.disabled = false;
+	                				submitButton.textContent = 'Kirim Balasan';
+	            				} else {
+	            					showToast("Balasan berhasil dikirim!");
+									document.getElementById('active-reply-form').remove();
+	               				await supabase.from('comments').update({ is_approved: true }).eq('id', parentCommentId);
+	            				}
+	        				}
+	    				});
 	
-	    		document.getElementById('cancel-reply-btn').addEventListener('click', () => {
-	        		document.getElementById('active-reply-form').remove();
-	    		});
-			}
-	            
-	            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
-	                const chartEl = document.getElementById(canvasId);
-	                if (!chartEl) return;
-	                if (charts[canvasId]) charts[canvasId].destroy();
-	                const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a3a3a3' } }, y: { ticks: { color: '#a3a3a3' }, beginAtZero: true } }};
-	                if (type === 'doughnut') { chartOptions.scales = {}; chartOptions.plugins.legend = { display: true, position: 'bottom', labels: { color: '#a3a3a3' } }; }
-	                charts[canvasId] = new Chart(chartEl.getContext('2d'), { type, data: { labels, datasets: [{ label, data, backgroundColor: bgColors, borderColor: '#6366f1', tension: 0.3, fill: type === 'line' }] }, options: chartOptions });
-	            }
+	    				document.getElementById('cancel-reply-btn').addEventListener('click', () => {
+	        			document.getElementById('active-reply-form').remove();
+	    			});
+				}
 	
-	            async function checkPendingComments() {
+				async function checkPendingComments() {
 	                const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
 	                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
 	                else { commentBadge.classList.add('hidden'); }
@@ -462,6 +435,133 @@
 	                        }
 	                    });
 	            }
+
+	            // --- FUNGSI VIEW: STATISTIK ---
+	            async function renderStatsView() {
+				    let currentRange = 30;
+				
+				    const dateFilterButtons = document.getElementById('date-filter-buttons');
+				    const monthlyViewsContainer = document.querySelector('#monthlyViewsChart').parentElement;
+				    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
+				    const topPostsListContainer = document.getElementById('topPostsList');
+				
+				    async function loadStatsForRange(days) {
+					    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+					    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
+					    topPostsListContainer.innerHTML = `<div class="space-y-3"><div class="h-10 w-full skeleton-pulse"></div><div class="h-10 w-full skeleton-pulse"></div><div class="h-10 w-full skeleton-pulse"></div></div>`;
+					
+					    let startDate = new Date('1970-01-01');
+					    if (days !== 'all') {
+					        startDate = new Date();
+					        startDate.setDate(startDate.getDate() - days);
+					    }
+					    
+					    const { data: posts, error } = await supabase.from('posts')
+					        .select('title, category, views, created_at')
+					        .gte('created_at', startDate.toISOString());
+					
+					    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
+					    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
+					    
+					    if (error || !posts) {
+					        topPostsListContainer.innerHTML = '<p class="text-red-400">Gagal memuat data.</p>';
+					        return;
+					    }
+					
+					    const dailyViewsAggregated = posts.reduce((acc, p) => {
+					        if (p.views > 0) {
+					             const date = new Date(p.created_at).toISOString().split('T')[0]; // Gunakan format YYYY-MM-DD untuk pengurutan
+					             acc[date] = (acc[date] || 0) + p.views;
+					        }
+					        return acc;
+					    }, {});
+					
+					    const sortedDailyViews = Object.entries(dailyViewsAggregated)
+					    .sort((a, b) => new Date(a[0]) - new Date(b[0]));
+					    
+					    const dailyLabels = sortedDailyViews.map(entry => new Date(entry[0]).toLocaleDateString('id-ID', { month: 'short', day: 'numeric' }));
+					    const dailyData = sortedDailyViews.map(entry => entry[1]);
+					
+					    createChart('monthlyViewsChart', 'line', dailyLabels, dailyData, 'Total Views');
+				
+				        const postsByCategory = posts.reduce((acc, p) => {
+				            const category = p.category || 'Lainnya';
+				            acc[category] = (acc[category] || 0) + 1;
+				            return acc;
+				        }, {});
+				        createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
+				        
+				        const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+				        topPostsListContainer.innerHTML = '';
+				        if(topPosts.length > 0) {
+				            topPosts.forEach(p => { 
+				                topPostsListContainer.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; 
+				            });
+				        } else {
+				            topPostsListContainer.innerHTML = '<p class="text-slate-500 text-sm text-center">Tidak ada data untuk periode ini.</p>';
+				        }
+				    }
+				
+				    dateFilterButtons.addEventListener('click', (e) => {
+				        const button = e.target.closest('button');
+				        if (button) {
+				            const range = button.dataset.range === 'all' ? 'all' : parseInt(button.dataset.range, 10);
+				            if(range !== currentRange) {
+				                currentRange = range;
+				                
+				                document.querySelector('.date-filter-btn.active').classList.remove('active');
+				                button.classList.add('active');
+				                
+				                loadStatsForRange(currentRange);
+				            }
+				        }
+				    });
+				
+				    if (!document.querySelector('style#dynamic-styles')) {
+				        const style = document.createElement('style');
+				        style.id = 'dynamic-styles';
+				        style.innerHTML = `.date-filter-btn.active { background-color: #818cf8; color: #fff; }`;
+				        document.head.appendChild(style);
+				    }
+				    
+				    await loadStatsForRange(currentRange);
+				}
+	            
+	            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
+				    const chartEl = document.getElementById(canvasId);
+				    if (!chartEl) return;
+				    if (charts[canvasId]) charts[canvasId].destroy();
+				
+				    let chartBackgroundColor = bgColors;
+				    let fill = type !== 'line';
+				    if (type === 'line') {
+				        fill = true;
+				        chartBackgroundColor = 'rgba(99, 102, 241, 0.2)';
+				    }
+				
+				    const chartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#a3a3a3' } }, y: { ticks: { color: '#a3a3a3' }, beginAtZero: true } }};
+				    if (type === 'doughnut' || type === 'pie') {
+				        chartOptions.scales = {};
+				        chartOptions.plugins.legend = { display: true, position: 'bottom', labels: { color: '#a3a3a3' } };
+				        chartBackgroundColor = ['#22c55e', '#f59e0b', '#818cf8', '#ef4444', '#f97316'];
+				    }
+				
+				    charts[canvasId] = new Chart(chartEl.getContext('2d'), {
+				        type,
+				        data: {
+				            labels,
+				            datasets: [{
+				                label,
+				                data,
+				                backgroundColor: chartBackgroundColor,
+				                borderColor: '#818cf8',
+				                tension: 0.3,
+				                fill: fill
+				            }]
+				        },
+				        options: chartOptions
+				    });
+				}
 	            
 	            const confirmationModal = document.getElementById('confirmation-modal');
 	        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
@@ -477,35 +577,41 @@
 	                	onConfirm();
 	                	hideConfirmationModal();
 	            	});
-	       	}
+	       		}
 	
 	        	function hideConfirmationModal() {
 	            	confirmationModal.classList.add('hidden');
 	        	}
 	        
-	        function showToast(message, type = 'success') {
-	                const toastContainer = document.getElementById('toast-container');
-	
-	                const toast = document.createElement('div');
-	                const bgColor = type === 'success' ? 'bg-green-500/80' : 'bg-red-500/80';
-	                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
-	
-	                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card transition-all duration-300 transform translate-x-full animate-slide-in`;
-	                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
-	
-	
-	                toast.innerHTML = `
-	                    <span>${icon}</span>
-	                    <p>${message}</p>
-	                `;
-	
-	                toastContainer.appendChild(toast);
-	
-	                setTimeout(() => {
-	                    toast.classList.add('opacity-0');
-	                    toast.addEventListener('transitionend', () => toast.remove());
-	                }, 4000);
-	            }
+	        	async function showToast(message, type = 'success', errorObject = null) {
+				    const toastContainer = document.getElementById('toast-container');
+				    const toast = document.createElement('div');
+				    const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+				
+				    toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card transition-all duration-300 transform translate-x-full animate-slide-in`;
+				    toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+				    toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
+				    toastContainer.appendChild(toast);
+				
+				    if (type === 'error' && errorObject) {
+				        console.error("Mencatat error ke database:", errorObject);
+				        const { data: { user } } = await supabase.auth.getUser();
+				        
+				        supabase.from('error_logs').insert({
+				            error_message: errorObject.message,
+				            error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
+				            location: "Client-Side Action",
+				            user_id: user?.id,
+				            user_email: user?.email
+				        }).then();
+				    }
+				
+				    setTimeout(() => {
+				        toast.classList.add('opacity-0');
+				        toast.addEventListener('transitionend', () => toast.remove());
+				    }, 4000);
+				}
+
 	            
 	            function getCommentSkeletonHTML() {
 	                let skeletonHTML = '<div class="space-y-4">';
@@ -557,12 +663,12 @@
 	    			if (!listContainer) return;
 	
 	    			listContainer.innerHTML = `
-	        		<div class="space-y-3">
-	            		<div class="h-14 w-full skeleton-pulse"></div>
-	            		<div class="h-14 w-full skeleton-pulse"></div>
-	            		<div class="h-14 w-full skeleton-pulse"></div>
-	            		<div class="h-14 w-full skeleton-pulse"></div>
-	        		</div>
+	        			<div class="space-y-3">
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	        			</div>
 	    			`;
 	
 	    			const [recentCommentsRes, recentPostsRes] = await Promise.all([
@@ -606,35 +712,168 @@
 	                		: '<i class="ri-file-text-line text-green-400"></i>';
 	
 	            		listContainer.innerHTML += `
-	                	<div class="glass-card p-3 rounded-xl flex items-start space-x-3 text-sm">
-	                    	<div class="flex-shrink-0 mt-1">${icon}</div>
-	                    	<div>
-	                        	<p class="text-slate-200">${item.content}</p>
-	                        	<p class="text-xs text-slate-400 mt-1">${item.date.toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-	                    	</div>
-	                	</div>
+	                		<div class="glass-card p-3 rounded-xl flex items-start space-x-3 text-sm">
+	                    		<div class="flex-shrink-0 mt-1">${icon}</div>
+	                    		<div>
+	                        		<p class="text-slate-200">${item.content}</p>
+	                        		<p class="text-xs text-slate-400 mt-1">${item.date.toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+	                    		</div>
+	                		</div>
 	            		`;
 	        		});
 	    			} else {
-	       	 		listContainer.innerHTML = '<p class="text-sm text-slate-500 text-center p-4">Belum ada aktivitas.</p>';
+	       	 			listContainer.innerHTML = '<p class="text-sm text-slate-500 text-center p-4">Belum ada aktivitas.</p>';
 	    			}
+				}
+
+				function getActivityLogSkeletonHTML() {
+				    let skeletonHTML = '<div class="space-y-4">';
+				    for (let i = 0; i < 5; i++) {
+				        skeletonHTML += '<div class="w-full h-16 skeleton-pulse"></div>';
+				    }
+				    skeletonHTML += '</div>';
+				    return skeletonHTML;
+				}
+				
+				async function loadActivityLogs(page = 1) {
+				    const logsPerPage = 15;
+				    const container = document.getElementById('tab-content-activity');
+				    container.innerHTML = getActivityLogSkeletonHTML();
+				
+				    const from = (page - 1) * logsPerPage;
+				    const to = from + logsPerPage - 1;
+				
+				    const { data: logs, error, count: totalLogs } = await supabase.from('activity_logs')
+				        .select('*', { count: 'exact' })
+				        .order('created_at', { ascending: false })
+				        .range(from, to);
+				    
+				    if (error) {
+				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log aktivitas.</p>';
+				        return;
+				    }
+				    if (logs.length === 0) {
+				        container.innerHTML = '<p class="text-center text-slate-500 p-8">👍 Belum ada aktivitas yang tercatat.</p>';
+				        return;
+				    }
+				
+				    container.innerHTML = '';
+				    logs.forEach(log => {
+				        let icon = '<i class="ri-question-mark-line"></i>';
+				        let actionText = `Aksi tidak dikenal: ${log.action}`;
+				
+				        if (log.action === 'APPROVED_COMMENT') {
+				            icon = '<i class="ri-check-double-line text-green-400"></i>';
+				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong>: <i>"${log.details.comment_content}..."</i>`;
+				        }
+				
+						if (log.action === 'DELETE_COMMENT') {
+				            icon = '<i class="ri-check-double-line text-green-400"></i>';
+				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong>: <i>"${log.details.comment_content}..."</i>`;
+				        }
+				
+				        container.innerHTML += `
+				            <div class="glass-card p-3 rounded-xl flex items-start space-x-4 text-sm">
+				                <div class="flex-shrink-0 mt-1 text-xl">${icon}</div>
+				                <div>
+				                    <p class="text-slate-200">${actionText}</p>
+				                    <p class="text-xs text-slate-400 mt-1">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+				                </div>
+				            </div>
+				        `;
+				    });
+				    
+				    // Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
+				}
+				
+				async function loadErrorLogs(page = 1) {
+				    const logsPerPage = 15;
+				    const container = document.getElementById('tab-content-error');
+				    container.innerHTML = getActivityLogSkeletonHTML(); // Kita bisa pakai skeleton yang sama
+				
+				    const from = (page - 1) * logsPerPage;
+				    const to = from + logsPerPage - 1;
+				
+				    const { data: logs, error, count: totalLogs } = await supabase.from('error_logs')
+				        .select('*', { count: 'exact' })
+				        .order('created_at', { ascending: false })
+				        .range(from, to);
+				    
+				    if (error) {
+				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log error.</p>';
+				        return;
+				    }
+				    if (logs.length === 0) {
+				        container.innerHTML = '<p class="text-center text-slate-500 p-8">Tidak ada error yang tercatat. Sistem bersih!</p>';
+				        return;
+				    }
+				
+				    container.innerHTML = '';
+				    logs.forEach(log => {
+				        container.innerHTML += `
+				            <div class="glass-card p-4 rounded-xl text-sm break-words">
+				                <div class="flex justify-between items-start">
+				                    <p class="font-bold text-red-400">${log.error_message || 'Error tidak diketahui'}</p>
+				                    <p class="text-xs text-slate-400 flex-shrink-0 ml-4">${new Date(log.created_at).toLocaleDateString('id-ID')}</p>
+				                </div>
+				                <div class="mt-2 text-xs bg-neutral-900/50 p-2 rounded-md font-mono">
+				                    <pre class="whitespace-pre-wrap">${JSON.stringify(log.error_details, null, 2)}</pre>
+				                </div>
+				                <p class="text-xs text-slate-500 mt-2">Dicatat dari: ${log.user_email}</p>
+				            </div>
+				        `;
+				    });
 				}
 				
 				async function renderSettingsView() {
-    				const { data: { user } } = await supabase.auth.getUser();
-    				if(user) {
-        				const userName = user.user_metadata.full_name || user.email.split('@')[0];
-        				const userEmail = user.email;
+				    const { data: { user } } = await supabase.auth.getUser();
+				    if (user) {
+				        const userName = user.user_metadata.full_name || user.email.split('@')[0];
+				        document.getElementById('settings-username').textContent = userName;
+				        document.getElementById('settings-email').textContent = user.email;
+				        const avatar = document.getElementById('settings-avatar');
+				        if (avatar) avatar.src = 'assets/avatar.jpg';
+				    }
+				
+				    const tabsContainer = document.getElementById('settings-tabs');
+				    const tabButtons = tabsContainer.querySelectorAll('.settings-tab-btn');
+				    const tabContents = document.querySelectorAll('.tab-content');
+				    let activityLogLoaded = false;
+					let errorLogLoaded = false;
+				
+				    tabsContainer.addEventListener('click', (e) => {
+				        const button = e.target.closest('button');
+				        if (!button) return;
+				
+				        const tabToActivate = button.dataset.tab;
+				
+				        tabButtons.forEach(btn => {
+				            btn.classList.remove('active');
+				            btn.classList.add('text-gray-400');
+				        });
+				        button.classList.add('active');
+				        button.classList.remove('text-gray-400');
+				
+				        tabContents.forEach(content => {
+				            if (content.id === `tab-content-${tabToActivate}`) {
+				                content.classList.remove('hidden');
+				            } else {
+				                content.classList.add('hidden');
+				            }
+				        });
+				
+				        if (tabToActivate === 'activity' && !activityLogLoaded) {
+				            loadActivityLogs();
+				            activityLogLoaded = true;
+				        }
+						
+						if (tabToActivate === 'error' && !errorLogLoaded) {
+            				loadErrorLogs();
+            				errorLogLoaded = true;
+        				}
+				    });
+				}
 
-        				document.getElementById('settings-username').textContent = userName;
-        				document.getElementById('settings-email').textContent = userEmail;
-        
-        				const avatar = document.getElementById('settings-avatar');
-        				if(avatar) avatar.src = 'assets/logo.png';
-    				}
-				}	            
-	
-	            // --- INISIALISASI HALAMAN ---
 	            async function initializePage() {
 				    const { data: { session } } = await supabase.auth.getSession();
 				    if (!session) {
@@ -651,7 +890,7 @@
 				
 				        const avatarImgElement = document.getElementById('user-avatar-img');
 				        if (avatarImgElement) {
-				            avatarImgElement.src = 'assets/logo.jpg';
+				            avatarImgElement.src = 'assets/avatar.jpg';
 				        }
 				        
 				        const avatarButton = document.getElementById('avatar-button');
