@@ -300,7 +300,7 @@
                     keywords: keywordsInput.value,
                     updated_at: new Date(),
                     og_image_url: newThumbnailUrl,
-                    og_url: `https://bimaakbar.netlify.app/post.html?slug=${slugInput.value || generateUniqueSlug(judulInput.value)}`,
+                    og_url: `${window.location.origin}/post.html?slug=${finalSlug}`,
                     og_type: 'article'
                 };
                 
