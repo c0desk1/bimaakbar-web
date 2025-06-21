@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
-		<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
-		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
-		<link rel="manifest" href="assets/favicon/site.webmanifest" />
+	<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="Bima Akbar" />
+	<link rel="manifest" href="assets/favicon/site.webmanifest" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="supabaseConfig.js"></script> 
 </head>
 <body class="bg-gray-50 font-sans antialiased">
     <div class="min-h-screen flex items-center justify-center p-6">
@@ -45,11 +46,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        const SUPABASE_URL = 'https://wgcslximcxnprmfqtsoh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnY3NseGltY3hucHJtZnF0c29oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTE5NzEsImV4cCI6MjA2NTMyNzk3MX0.K0xWAiVdU9vAwJepHV5rMBROBoBDTpXtczXoQopEZQk';
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+        const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
         async function setupLoginPage() {
             const loginForm = document.getElementById('loginForm');
             const errorMessageDiv = document.getElementById('errorMessage');
