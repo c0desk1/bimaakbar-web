@@ -77,15 +77,12 @@
 	        .se-dialog-form .se-btn-primary { background-color: #4f46e5 !important; color: #fff !important; border: none !important; }
 	        .se-list-inner { background-color: #374151 !important; border: 1px solid rgba(255,255,255,0.2) !important;}
 	        .se-list-inner ul li button:hover { background-color: #4f46e5 !important; color: #fff !important; }
+            
 
             /* Styles untuk Toast Message */
             .animate-slide-in { animation: slide-in 0.3s ease-out forwards; }
+            .toast-message { background-color: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
             @keyframes slide-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-            .toast-message {
-                background-color: rgba(23, 23, 23, 0.7);
-                backdrop-filter: blur(12px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
             
     </style>
 </head>
@@ -173,7 +170,6 @@
     </main>
     
     <div id="toast-container" class="fixed top-8 right-8 space-y-3 z-50"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
     
@@ -222,7 +218,7 @@
                     console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
                     return;
                 }
-
+        
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
             
@@ -233,13 +229,12 @@
             
                 if (type === 'error' && errorObject) {
                     console.error("Mencatat error ke database:", errorObject);
-                    const { data: { user } } = await supabase.auth.getUser();
                     supabase.from('error_logs').insert({
                         error_message: errorObject.message,
                         error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
                         location: "Client-Side Post Editor",
-                        user_id: user?.id,
-                        user_email: user?.email
+                        user_id: null,
+                        user_email: null
                     }).then(() => console.log('Error logged.'));
                 }
             
@@ -468,7 +463,7 @@
                                         const d = new Date(localDateTimeString); 
                                         return d.toISOString();
                                     })() : null,
-                                    
+
                     thumbnail_url: newThumbnailUrl,
                     author: authorInput.value,
                     tags: hiddenTagsInput.value,
