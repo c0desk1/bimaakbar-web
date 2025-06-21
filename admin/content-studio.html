@@ -368,23 +368,26 @@
                 tabContent.innerHTML = `
                 <div class="glass-card p-6 rounded-2xl">
                     <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-                        <div class="flex flex-wrap items-center gap-4"> <div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg">
-                            <button data-filter="all" class="filter-btn active px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button>
-                            <button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button>
-                            <button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button>
-                            <button data-filter="scheduled" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Scheduled</button> </div>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <div id="filter-buttons" class="flex items-center space-x-1 bg-neutral-800 p-1 rounded-lg">
+                                <button data-filter="all" class="filter-btn active px-4 py-1.5 text-sm font-semibold rounded-md transition">Semua</button>
+                                <button data-filter="published" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Published</button>
+                                <button data-filter="draft" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Draft</button>
+                                <button data-filter="scheduled" class="filter-btn text-slate-400 px-4 py-1.5 text-sm font-semibold rounded-md transition">Scheduled</button>
+                            </div>
+                            <div class="relative">
+                                <select id="categoryFilter" class="form-input w-40 pr-8 py-2 text-sm">
+                                    <option value="">Kategori</option>
+                                </select>
+                            </div>
                         </div>
+                        
                         <div class="relative">
-                            <select id="categoryFilter" class="form-input w-40 pr-8 py-2 text-sm">
-                                <option value="">Kategori</option>
-                            </select>
+                            <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input id="searchInput" type="search" placeholder="Cari" class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                         </div>
                     </div>
-                    <div class="relative">
-                        <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                        <input id="searchInput" type="search" placeholder="Cari" class="w-full md:w-64 pl-10 pr-4 py-2 bg-neutral-800 text-white border border-transparent rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
-                
+                    
                     <div id="postList" class="space-y-3">${getPostListSkeletonHTML()}</div>
                 </div>`;
                 
