@@ -935,10 +935,10 @@
                             actionText = `Anda mengubah password Anda.`;
                         } else if (log.action === 'CREATE_SCHEDULED_POST') {
 							icon = '<i class="ri-calendar-event-line text-blue-400"></i>';
-							actionText = `Anda menjadwalkan postingan baru: <strong>"${log.details.title}"</strong> untuk ${new Date(log.details.scheduledTime).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}`; // <-- Tambahan timeZone
+							actionText = `Anda menjadwalkan postingan baru: <strong>"${log.details.title}"</strong> untuk ${new Date(log.details.scheduledTime).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}`;
 						} else if (log.action === 'UPDATE_SCHEDULED_POST') {
 							icon = '<i class="ri-calendar-event-line text-blue-400"></i>';
-							actionText = `Anda memperbarui jadwal postingan: <strong>"${log.details.title}"</strong> untuk ${new Date(log.details.scheduledTime).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}`; // <-- Tambahan timeZone
+							actionText = `Anda memperbarui jadwal postingan: <strong>"${log.details.title}"</strong> untuk ${new Date(log.details.scheduledTime).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' })}`;
 						}
 				
 				        container.innerHTML += `
