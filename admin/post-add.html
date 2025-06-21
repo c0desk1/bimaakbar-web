@@ -229,7 +229,7 @@
                     supabase.from('error_logs').insert({
                         error_message: errorObject.message,
                         error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
-                        location: "Client-Side Content Studio",
+                        location: "Client-Side Post Editor",
                         user_id: user?.id,
                         user_email: user?.email
                     }).then(() => console.log('Error logged.'));
