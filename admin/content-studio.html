@@ -595,9 +595,44 @@
             }
 
             async function renderMusicPanel() {
-                tabContent.innerHTML = `<div class="glass-card p-6 rounded-2xl"><h2 class="text-xl font-semibold text-white mb-4">Tambah Rilisan Musik Baru</h2><form id="addMusicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"><input name="song_title" required placeholder="Judul Lagu" class="form-input p-3"><input name="release_date" type="date" class="form-input p-3"><input name="cover_art_url" placeholder="URL Cover Art" class="form-input p-3"><input name="spotify_url" type="url" placeholder="URL Spotify" class="form-input p-3"><input name="apple_music_url" type="url" placeholder="URL Apple Music" class="form-input p-3 md:col-span-2"><button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg">Tambah Musik</button></form><hr class="border-white/10"><h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Rilisan</h2><div id="musicList" class="space-y-3"></div></div>`;
+                tabContent.innerHTML = `
+                <div class="glass-card p-6 rounded-2xl">
+                    <h2 class="text-xl font-semibold text-white mb-4">Cari Rilisan di Spotify</h2>
+                    <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                        <input id="spotifySearchInput" type="text" placeholder="Cari Judul Lagu atau Artis di Spotify..." class="form-input flex-grow p-3">
+                        <button id="spotifySearchBtn" class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center whitespace-nowrap">
+                            <i class="ri-spotify-fill mr-2"></i>Cari Spotify
+                        </button>
+                    </div>
+                    <div id="spotifyResults" class="space-y-2 mb-8">
+                        </div>
+                    <hr class="border-white/10 mb-8">
+                    
+                    <h2 class="text-xl font-semibold text-white mb-4">Tambah Rilisan Musik Baru</h2>
+                    <form id="addMusicForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <input name="song_title" id="addSongTitle" required placeholder="Judul Lagu" class="form-input p-3">
+                        <input name="release_date" id="addReleaseDate" type="date" class="form-input p-3">
+                        <input name="cover_art_url" id="addCoverArtUrl" placeholder="URL Cover Art" class="form-input p-3">
+                        <input name="spotify_url" id="addSpotifyUrl" type="url" placeholder="URL Spotify" class="form-input p-3">
+                        <input name="apple_music_url" id="addAppleMusicUrl" type="url" placeholder="URL Apple Music (Opsional)" class="form-input p-3 md:col-span-2">
+                        <button type="submit" class="md:col-span-2 bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600 flex items-center justify-center">
+                            <i class="ri-add-line mr-2"></i>Tambah Musik
+                        </button>
+                    </form>
+                    <hr class="border-white/10">
+                    <h2 class="text-xl font-semibold text-white mt-6 mb-4">Daftar Rilisan</h2>
+                    <div id="musicList" class="space-y-3"></div>
+                </div>`;
                 
                 const musicListContainer = document.getElementById('musicList');
+                const spotifySearchInput = document.getElementById('spotifySearchInput');
+                const spotifySearchBtn = document.getElementById('spotifySearchBtn');
+                const spotifyResultsContainer = document.getElementById('spotifyResults');
+                const addSongTitleInput = document.getElementById('addSongTitle');
+                const addReleaseDateInput = document.getElementById('addReleaseDate');
+                const addCoverArtUrlInput = document.getElementById('addCoverArtUrl');
+                const addSpotifyUrlInput = document.getElementById('addSpotifyUrl');
+
                 async function loadMusic() {
                     const { data, error } = await supabase.from('music_releases').select('*').order('release_date', { ascending: false });
                     musicListContainer.innerHTML = '';
@@ -622,6 +657,88 @@
                             </div>`; 
                     });
                 }
+                async function searchSpotify() {
+                    const query = spotifySearchInput.value.trim();
+                    if (!query) {
+                        showToast('Harap masukkan judul lagu atau artis untuk mencari.', 'error');
+                        return;
+                    }
+
+                    spotifySearchBtn.disabled = true;
+                    spotifySearchBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Mencari...';
+                    spotifyResultsContainer.innerHTML = `<p class="text-center text-slate-500">Mencari...</p>`;
+
+                    try {
+                        const edgeFunctionUrl = `https://wgcslximcxnprmfqtsoh.supabase.co/functions/v1/spotify-search?query=${encodeURIComponent(query)}&type=track`; 
+
+                        const response = await fetch(edgeFunctionUrl);
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Gagal mencari Spotify.');
+                        }
+
+                        if (!data.tracks || data.tracks.items.length === 0) {
+                            spotifyResultsContainer.innerHTML = `<p class="text-center text-slate-500">Tidak ditemukan hasil untuk "${query}".</p>`;
+                            return;
+                        }
+
+                        spotifyResultsContainer.innerHTML = '';
+                        data.tracks.items.forEach(track => {
+                            const artists = track.artists.map(artist => artist.name).join(', ');
+                            const albumImage = track.album.images.length > 0 ? track.album.images[0].url : 'https://via.placeholder.com/60';
+                            
+                            const resultItem = document.createElement('div');
+                            resultItem.className = 'p-3 bg-neutral-900/50 rounded-lg flex items-center gap-4 cursor-pointer hover:bg-neutral-800 transition-colors';
+                            resultItem.innerHTML = `
+                                <img src="${albumImage}" alt="${track.album.name}" class="w-12 h-12 rounded-md object-cover">
+                                <div>
+                                    <p class="font-semibold text-white">${track.name}</p>
+                                    <p class="text-xs text-slate-400">${artists} - ${track.album.name}</p>
+                                </div>
+                            `;
+                            resultItem.addEventListener('click', () => {
+                                fillMusicForm(track);
+                                spotifyResultsContainer.innerHTML = '';
+                                spotifySearchInput.value = '';
+                            });
+                            spotifyResultsContainer.appendChild(resultItem);
+                        });
+
+                    } catch (error) {
+                        showToast('Error mencari Spotify: ' + error.message, 'error', error);
+                        spotifyResultsContainer.innerHTML = `<p class="text-red-400 text-center">Error: ${error.message}</p>`;
+                    } finally {
+                        spotifySearchBtn.disabled = false;
+                        spotifySearchBtn.innerHTML = '<i class="ri-spotify-fill mr-2"></i>Cari Spotify';
+                    }
+                }
+
+                function fillMusicForm(trackData) {
+                    addSongTitleInput.value = trackData.name;
+                    addSpotifyUrlInput.value = trackData.external_urls.spotify;
+                    if (trackData.album.images.length > 0) {
+                        addCoverArtUrlInput.value = trackData.album.images[0].url;
+                    } else {
+                        addCoverArtUrlInput.value = '';
+                    }
+
+                    if (trackData.album.release_date && trackData.album.release_date.length === 10) {
+                        addReleaseDateInput.value = trackData.album.release_date;
+                    } else {
+                        addReleaseDateInput.value = '';
+                    }
+                    showToast(`Form diisi dengan data "${trackData.name}"!`);
+                }
+
+                spotifySearchBtn.addEventListener('click', searchSpotify);
+                spotifySearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        searchSpotify();
+                    }
+                });
+
                 document.getElementById('addMusicForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
