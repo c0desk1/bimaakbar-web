@@ -143,6 +143,8 @@
             const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
             const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
             const modalText = document.getElementById('modal-text');
+
+            let currentConfirmListener = null;
             
             async function logActivity(action, details = {}) {
                 try {
@@ -167,21 +169,73 @@
                 }
             }
 
+            function getPostListSkeletonHTML(count = 5) {
+                let skeletonHTML = '<div class="space-y-3">';
+                for (let i = 0; i < count; i++) {
+                    skeletonHTML += `
+                        <div class="p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center">
+                            <div class="w-3/4 h-6 skeleton-pulse"></div>
+                            <div class="w-1/4 h-6 skeleton-pulse"></div>
+                        </div>
+                    `;
+                }
+                skeletonHTML += '</div>';
+                return skeletonHTML;
+            }
+            async function showToast(message, type = 'success', errorObject = null) {
+                const toastContainer = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+            
+                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
+                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+                toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
+                toastContainer.appendChild(toast);
+            
+                if (type === 'error' && errorObject) {
+                    console.error("Mencatat error ke database:", errorObject);
+                    const { data: { user } } = await supabase.auth.getUser();
+                    supabase.from('error_logs').insert({
+                        error_message: errorObject.message,
+                        error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
+                        location: "Client-Side Content Studio",
+                        user_id: user?.id,
+                        user_email: user?.email
+                    }).then(() => console.log('Error logged.'));
+                }
+            
+                setTimeout(() => {
+                    toast.classList.remove('animate-slide-in');
+                    toast.classList.add('opacity-0');
+                }, 4000);
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000 + 350);
+            }
+
+            
             function showConfirmationModal(onConfirm, message = "Apakah Anda yakin ingin menghapus item ini secara permanen? Tindakan ini tidak dapat dibatalkan.") {
                 modalText.textContent = message;
                 confirmationModal.classList.remove('hidden');
 
-                const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
-                confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
-                
-                newConfirmBtn.addEventListener('click', () => {
+                if (currentConfirmListener) {
+                    confirmDeleteBtn.removeEventListener('click', currentConfirmListener);
+                }
+
+                currentConfirmListener = () => {
                     onConfirm();
                     hideConfirmationModal();
-                });
+                };
+
+                confirmDeleteBtn.addEventListener('click', currentConfirmListener);
             }
 
             function hideConfirmationModal() {
                 confirmationModal.classList.add('hidden');
+                if (currentConfirmListener) {
+                    confirmDeleteBtn.removeEventListener('click', currentConfirmListener);
+                    currentConfirmListener = null;
+                }
             }
 
             cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
@@ -318,51 +372,6 @@
                 saveButton.disabled = false;
                 saveButton.innerHTML = '<i class="ri-save-3-fill mr-2"></i>Simpan Perubahan';
             });
-
-            function getPostListSkeletonHTML(count = 5) {
-                let skeletonHTML = '<div class="space-y-3">';
-                for (let i = 0; i < count; i++) {
-                    skeletonHTML += `
-                        <div class="p-3 bg-neutral-900/50 rounded-lg flex justify-between items-center">
-                            <div class="w-3/4 h-6 skeleton-pulse"></div>
-                            <div class="w-1/4 h-6 skeleton-pulse"></div>
-                        </div>
-                    `;
-                }
-                skeletonHTML += '</div>';
-                return skeletonHTML;
-            }
-            async function showToast(message, type = 'success', errorObject = null) {
-                const toastContainer = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
-            
-                toast.className = `flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg glass-card toast-message transition-all duration-300 transform translate-x-full animate-slide-in`;
-                toast.style.backgroundColor = type === 'success' ? 'rgba(34, 197, 94, 0.8)' : 'rgba(239, 68, 68, 0.8)';
-                toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
-                toastContainer.appendChild(toast);
-            
-                if (type === 'error' && errorObject) {
-                    console.error("Mencatat error ke database:", errorObject);
-                    const { data: { user } } = await supabase.auth.getUser();
-                    supabase.from('error_logs').insert({
-                        error_message: errorObject.message,
-                        error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
-                        location: "Client-Side Content Studio",
-                        user_id: user?.id,
-                        user_email: user?.email
-                    }).then(() => console.log('Error logged.'));
-                }
-            
-                setTimeout(() => {
-                    toast.classList.remove('animate-slide-in');
-                    toast.classList.add('opacity-0');
-                }, 4000);
-                setTimeout(() => {
-                    toast.remove();
-                }, 4000 + 350);
-            }
-
 
             async function renderPostsPanel() {
                 tabContent.innerHTML = `
