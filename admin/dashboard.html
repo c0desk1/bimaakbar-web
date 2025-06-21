@@ -102,13 +102,9 @@
 			</form>
 			<div id="comments-list" class="space-y-4"></div>
 			<div id="pagination-controls" class="hidden mt-8 flex justify-between items-center">
-				<button id="prev-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-					&larr; Sebelumnya
-				</button>
+				<button id="prev-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Sebelumnya</button>
 				<span id="page-info" class="text-sm text-slate-400"></span>
-				<button id="next-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-					Berikutnya &rarr;
-				</button>
+				<button id="next-page-btn" class="glass-card py-2 px-4 rounded-lg text-sm font-semibold hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">Berikutnya</button>
 			</div>
 		</template>
 
@@ -121,23 +117,36 @@
 		            <button data-range="all" class="date-filter-btn px-3 py-1 text-sm rounded-md">Semua</button>
 		        </div>
 		    </div>
-		
-		    <div class="space-y-8">
-		        <div class="glass-card p-6 rounded-2xl">
-		            <h2 class="text-lg font-semibold text-white mb-4">Tren Views Harian</h2>
-		            <div class="h-80"><canvas id="monthlyViewsChart"></canvas></div>
-		        </div>
-		        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-		            <div class="glass-card p-6 rounded-2xl">
-		                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
-		                <div class="h-80"><canvas id="postsByCategoryChart"></canvas></div>
-		            </div>
-		            <div class="glass-card p-6 rounded-2xl">
-		                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
-		                <div id="topPostsList" class="space-y-3"></div>
-		            </div>
-		        </div>
-		    </div>
+		    <div class="space-y-8"></div>
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				<div class="lg:col-span-2 space-y-8">
+					<div class="glass-card p-6 rounded-2xl">
+						<h2 class="text-lg font-semibold text-white mb-4">Tren Views Harian</h2>
+						<div class="h-80"><canvas id="monthlyViewsChart"></canvas></div>
+					</div>
+					<div class="glass-card p-6 rounded-2xl">
+						<h2 class="text-lg font-semibold text-white mb-4">Performa Semua Postingan</h2>
+						<div class="overflow-x-auto">
+							<table id="posts-performance-table" class="w-full text-sm text-left">
+								<thead class="text-xs text-gray-400 uppercase">
+									<tr>
+										<th class="py-3 px-4">Judul Postingan</th>
+										<th class="py-3 px-4">Views</th>
+										<th class="py-3 px-4">Komentar</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-white/10"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="lg:col-span-1 space-y-8">
+					<div class="glass-card p-6 rounded-2xl">
+						<h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
+						<div class="h-80"><canvas id="postsByCategoryChart"></canvas></div>
+					</div>
+				</div>
+			</div>
 		</template>
 
 	
@@ -533,62 +542,80 @@
 				    const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
 				    const topPostsListContainer = document.getElementById('topPostsList');
 				
-				    async function loadStatsForRange(days) {
-					    monthlyViewsContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-					    categoryChartContainer.innerHTML = '<div class="h-80 skeleton-pulse"></div>';
-					    topPostsListContainer.innerHTML = `<div class="space-y-3"><div class="h-10 w-full skeleton-pulse"></div><div class="h-10 w-full skeleton-pulse"></div><div class="h-10 w-full skeleton-pulse"></div></div>`;
-					
-					    let startDate = new Date('1970-01-01');
-					    if (days !== 'all') {
-					        startDate = new Date();
-					        startDate.setDate(startDate.getDate() - days);
-					    }
-					    
-					    const { data: posts, error } = await supabase.from('posts')
-					        .select('title, category, views, created_at')
-					        .gte('created_at', startDate.toISOString());
-					
-					    monthlyViewsContainer.innerHTML = '<canvas id="monthlyViewsChart"></canvas>';
-					    categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
-					    
-					    if (error || !posts) {
-					        topPostsListContainer.innerHTML = '<p class="text-red-400">Gagal memuat data.</p>';
-					        return;
-					    }
-					
-					    const dailyViewsAggregated = posts.reduce((acc, p) => {
-					        if (p.views > 0) {
-					             const date = new Date(p.created_at).toISOString().split('T')[0]; // Gunakan format YYYY-MM-DD untuk pengurutan
-					             acc[date] = (acc[date] || 0) + p.views;
-					        }
-					        return acc;
-					    }, {});
-					
-					    const sortedDailyViews = Object.entries(dailyViewsAggregated)
-					    .sort((a, b) => new Date(a[0]) - new Date(b[0]));
-					    
-					    const dailyLabels = sortedDailyViews.map(entry => new Date(entry[0]).toLocaleDateString('id-ID', { month: 'short', day: 'numeric' }));
-					    const dailyData = sortedDailyViews.map(entry => entry[1]);
-					
-					    createChart('monthlyViewsChart', 'line', dailyLabels, dailyData, 'Total Views');
-				
-				        const postsByCategory = posts.reduce((acc, p) => {
-				            const category = p.category || 'Lainnya';
-				            acc[category] = (acc[category] || 0) + 1;
-				            return acc;
-				        }, {});
-				        createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
-				        
-				        const topPosts = [...posts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
-				        topPostsListContainer.innerHTML = '';
-				        if(topPosts.length > 0) {
-				            topPosts.forEach(p => { 
-				                topPostsListContainer.innerHTML += `<div class="text-sm p-3 rounded-lg bg-neutral-800/50 flex justify-between"><span>${p.title}</span><span class="font-bold text-white">${p.views || 0}</span></div>`; 
-				            });
-				        } else {
-				            topPostsListContainer.innerHTML = '<p class="text-slate-500 text-sm text-center">Tidak ada data untuk periode ini.</p>';
-				        }
-				    }
+					async function loadStatsForRange(days) {
+						document.querySelector('#monthlyViewsChart').parentElement.parentElement.innerHTML = '<div class="h-80 skeleton-pulse"></div>'; // Target div pembungkus
+						const categoryChartContainer = document.querySelector('#postsByCategoryChart').parentElement;
+						if(categoryChartContainer) categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
+						
+						const tableBody = document.querySelector('#posts-performance-table tbody');
+						if (tableBody) tableBody.innerHTML = `<tr><td colspan="3">${getActivityLogSkeletonHTML()}</td></tr>`;
+
+						
+
+						let startDate = new Date('1970-01-01');
+						if (days !== 'all') {
+							startDate = new Date();
+							startDate.setDate(startDate.getDate() - days);
+						}
+						
+						const [postsRes, commentsRes] = await Promise.all([
+							supabase.from('posts').select('id, title, views, category, created_at').gte('created_at', startDate.toISOString()),
+							supabase.from('comments').select('post_id').gte('created_at', startDate.toISOString())
+						]);
+
+						document.querySelector('.glass-card .skeleton-pulse').parentElement.innerHTML = '<h2 class="text-lg font-semibold text-white mb-4">Tren Views Harian</h2><div class="h-80"><canvas id="monthlyViewsChart"></canvas></div>';
+						if(categoryChartContainer) categoryChartContainer.innerHTML = '<canvas id="postsByCategoryChart"></canvas>';
+						if (tableBody) tableBody.innerHTML = '';
+						
+						if (postsRes.error || commentsRes.error) {
+							if(tableBody) tableBody.innerHTML = '<tr><td colspan="3" class="text-red-400 text-center p-4">Gagal memuat data.</td></tr>';
+							return;
+						}
+
+						const commentsCount = commentsRes.data.reduce((acc, comment) => {
+							acc[comment.post_id] = (acc[comment.post_id] || 0) + 1;
+							return acc;
+						}, {});
+
+						const postsWithStats = postsRes.data.map(post => ({
+							...post,
+							comment_count: commentsCount[post.id] || 0
+						}));
+
+						const dailyViews = postsWithStats.reduce((acc, p) => {
+							if (p.views > 0) {
+								const date = new Date(p.created_at).toISOString().split('T')[0];
+								acc[date] = (acc[date] || 0) + p.views;
+							}
+							return acc;
+						}, {});
+						const sortedDailyViews = Object.entries(dailyViews).sort((a, b) => new Date(a[0]) - new Date(b[0]));
+						createChart('monthlyViewsChart', 'line', sortedDailyViews.map(e => new Date(e[0]).toLocaleDateString('id-ID', { month: 'short', day: 'numeric' })), sortedDailyViews.map(e => e[1]), 'Total Views');
+
+						const postsByCategory = postsWithStats.reduce((acc, p) => {
+							const category = p.category || 'Lainnya';
+							acc[category] = (acc[category] || 0) + 1;
+							return acc;
+						}, {});
+						createChart('postsByCategoryChart', 'bar', Object.keys(postsByCategory), Object.values(postsByCategory), 'Jumlah Post');
+						
+						if (postsWithStats.length > 0) {
+							postsWithStats.sort((a, b) => (b.views || 0) - (a.views || 0));
+
+							postsWithStats.forEach(p => {
+								const row = `
+									<tr class="hover:bg-white/5">
+										<td class="py-3 px-4 font-medium text-white">${p.title}</td>
+										<td class="py-3 px-4">${p.views || 0}</td>
+										<td class="py-3 px-4">${p.comment_count}</td>
+									</tr>
+								`;
+								if (tableBody) tableBody.innerHTML += row;
+							});
+						} else {
+							if (tableBody) tableBody.innerHTML = '<tr><td colspan="3" class="text-slate-500 text-center p-4">Tidak ada data postingan untuk periode ini.</td></tr>';
+						}
+					}
 				
 				    dateFilterButtons.addEventListener('click', (e) => {
 				        const button = e.target.closest('button');
