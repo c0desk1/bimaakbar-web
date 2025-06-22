@@ -48,19 +48,43 @@
     
     <script>
         const supabase = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY);
+    
+        async function logActivity(action, details = {}) {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                console.warn('Log aktivitas dibatalkan: Pengguna tidak ditemukan setelah login.');
+                return;
+            }
+            await supabase.from('activity_logs').insert({
+                user_id: user.id,
+                user_email: user.email,
+                action: action,
+                details: details
+            });
+        }
+    
+        async function logError(errorObject, attemptedEmail) {
+            await supabase.from('error_logs').insert({
+                error_message: errorObject.message,
+                error_details: errorObject,
+                location: 'Proses Login',
+                user_email: attemptedEmail
+            });
+        }
+    
         async function setupLoginPage() {
             const loginForm = document.getElementById('loginForm');
             const errorMessageDiv = document.getElementById('errorMessage');
             const submitButton = document.getElementById('submitButton');
             const buttonText = document.getElementById('buttonText');
             const loadingSpinner = document.getElementById('loadingSpinner');
-
+    
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
                 window.location.href = 'dashboard.html';
                 return;
             }
-
+    
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
@@ -68,19 +92,25 @@
                 buttonText.classList.add('hidden');
                 loadingSpinner.classList.remove('hidden');
                 errorMessageDiv.classList.add('hidden');
-
+    
                 const email = e.target.email.value;
                 const password = e.target.password.value;
-
+    
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
-
+    
                 if (error) {
+                    // PANGGIL LOG ERROR DI SINI
+                    await logError(error, email);
+                    
                     errorMessageDiv.textContent = 'Email atau password salah.';
                     errorMessageDiv.classList.remove('hidden');
                     submitButton.disabled = false;
                     buttonText.classList.remove('hidden');
                     loadingSpinner.classList.add('hidden');
                 } else {
+                    // PANGGIL LOG AKTIVITAS DI SINI
+                    await logActivity('USER_LOGIN');
+                    
                     window.location.href = 'dashboard.html';
                 }
             });
