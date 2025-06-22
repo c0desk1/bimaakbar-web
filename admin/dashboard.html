@@ -928,6 +928,9 @@
                         }	else if (log.action === 'UPDATE_SCHEDULED_POST') {
     						icon = '<i class="ri-calendar-schedule-line text-cyan-400"></i>'; 
     						actionText = `Anda memperbarui postingan terjadwal: <strong>"${log.details.title}"</strong>`;
+						}	else if (log.action === 'USER_LOGIN') {
+    						icon = '<i class="ri-login-box-line text-green-400"></i>';
+    						actionText = `Pengguna <strong>${log.user_email}</strong> telah login.`;
 						}
 				
 				        container.innerHTML += `
