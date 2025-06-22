@@ -187,10 +187,15 @@
 					</div>
 					<div class="glass-card p-6 rounded-2xl">
 						<h2 class="text-lg font-semibold text-white mb-1">Keamanan</h2>
-						<p class="text-sm text-slate-400 mb-4">Kelola keamanan akun Anda.</p>
-						<button id="change-password-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">
-							Ubah Password
-						</button>
+						<p class="text-sm text-slate-400 mb-4">Kelola keamanan akun dan data log Anda.</p>
+						<div class="flex flex-col sm:flex-row gap-4">
+							<button id="change-password-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">
+								Ubah Password
+							</button>
+							<button id="clear-logs-btn" class="bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-700">
+								Hapus Semua Log
+							</button>
+						</div>
 					</div>
 				</div>
 		        <div id="tab-content-activity" class="tab-content hidden space-y-4"></div>
@@ -946,7 +951,7 @@
 				// Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
 				}
 
-								async function loadErrorLogs(page = 1) {
+				async function loadErrorLogs(page = 1) {
 				    const logsPerPage = 15;
 				    const container = document.getElementById('tab-content-error');
 				    container.innerHTML = getActivityLogSkeletonHTML(); // Gunakan skeleton loading
@@ -1037,6 +1042,27 @@
 					const settingsAvatarImg = document.getElementById('settings-avatar');
 					const changePasswordBtn = document.getElementById('change-password-btn');
 					const changePasswordModal = document.getElementById('change-password-modal');
+					const clearLogsBtn = document.getElementById('clear-logs-btn');
+    				
+					if (clearLogsBtn) {
+        				clearLogsBtn.addEventListener('click', () => {
+            				showConfirmationModal(async () => {
+                				const { data, error } = await supabase.rpc('clear_all_logs');
+                				if (error) {
+                    				showToast('Gagal menghapus log: ' + error.message, 'error', error);
+                				} else {
+                    				showToast(data);
+                   
+                    				if (document.getElementById('tab-content-activity').innerHTML !== '') {
+                        				loadActivityLogs();
+                    				}
+                    				if (document.getElementById('tab-content-error').innerHTML !== '') {
+                        				loadErrorLogs();
+                    				}
+                				}
+            				}, 'ANDA YAKIN? Semua log aktivitas dan error akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.');
+        				});
+    				}
 
 					let currentUser = user;
 					let currentName = '';
