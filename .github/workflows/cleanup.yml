@@ -1,0 +1,20 @@
+# File: .github/workflows/cleanup.yml
+
+name: Daily Log Cleanup
+
+on:
+  schedule:
+    # Berjalan setiap hari pada jam 00:00 UTC
+    - cron: '0 0 * * *'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase Edge Function to delete old logs
+        run: |
+          curl -i -X POST "https://wgcslximcxnprmfqtsoh.supabase.co/functions/v1/delete-old-logs" \
+          -H "Authorization: Bearer ${SUPABASE_ANON_KEY}"
+        env:
+          PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
