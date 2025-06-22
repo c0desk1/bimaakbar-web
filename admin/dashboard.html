@@ -874,58 +874,61 @@
 				
 				    container.innerHTML = '';
 				    logs.forEach(log => {
-				        let icon = '<i class="ri-question-mark-line text-slate-400"></i>'; // Default icon
+				        let icon = '<i class="ri-question-mark-line text-slate-400"></i>';
 				        let actionText = `Aksi tidak dikenal: ${log.action}`;
 				
 				        if (log.action === 'APPROVED_COMMENT') {
 				            icon = '<i class="ri-check-double-line text-green-400"></i>';
 				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
 				        } else if (log.action === 'DELETE_COMMENT') {
-				            icon = '<i class="ri-chat-delete-line text-red-400"></i>'; // Icon delete comment
+				            icon = '<i class="ri-chat-delete-line text-red-400"></i>';
 				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
 				        } else if (log.action === 'CREATE_POST') {
-                            icon = '<i class="ri-file-add-line text-indigo-400"></i>'; // Icon add post
+                            icon = '<i class="ri-file-add-line text-indigo-400"></i>';
                             actionText = `Anda membuat postingan baru: <strong>"${log.details.title}"</strong>`;
                         } else if (log.action === 'UPDATE_POST') {
-                            icon = '<i class="ri-file-edit-line text-blue-400"></i>'; // Icon edit post
+                            icon = '<i class="ri-file-edit-line text-blue-400"></i>';
                             actionText = `Anda memperbarui postingan: <strong>"${log.details.title}"</strong>`;
                         } else if (log.action === 'DELETE_POST') {
-                            icon = '<i class="ri-file-forbid-line text-red-400"></i>'; // Icon delete post
+                            icon = '<i class="ri-file-forbid-line text-red-400"></i>';
                             actionText = `Anda menghapus postingan: <strong>"${log.details.title || log.details.postId}"</strong>`;
                         } else if (log.action === 'ADD_CATEGORY') {
-                            icon = '<i class="ri-folder-add-line text-purple-400"></i>'; // Icon add category
+                            icon = '<i class="ri-folder-add-line text-purple-400"></i>';
                             actionText = `Anda menambahkan kategori baru: <strong>"${log.details.name}"</strong>`;
                         } else if (log.action === 'UPDATE_CATEGORY') {
-                            icon = '<i class="ri-folder-edit-line text-orange-400"></i>'; // Icon edit category
+                            icon = '<i class="ri-folder-edit-line text-orange-400"></i>';
                             actionText = `Anda memperbarui kategori: <strong>"${log.details.newName}"</strong>`;
                         } else if (log.action === 'DELETE_CATEGORY') {
-                            icon = '<i class="ri-folder-reduce-line text-red-400"></i>'; // Icon delete category
+                            icon = '<i class="ri-folder-reduce-line text-red-400"></i>';
                             actionText = `Anda menghapus kategori: <strong>"${log.details.name || log.details.categoryId}"</strong>`;
                         } else if (log.action === 'ADD_MUSIC_RELEASE') {
-                            icon = '<i class="ri-music-fill text-green-400"></i>'; // Icon add music
+                            icon = '<i class="ri-music-fill text-green-400"></i>';
                             actionText = `Anda menambahkan rilisan musik: <strong>"${log.details.title}"</strong>`;
                         } else if (log.action === 'UPDATE_MUSIC_RELEASE') {
-                            icon = '<i class="ri-album-line text-blue-400"></i>'; // Icon update music
+                            icon = '<i class="ri-album-line text-blue-400"></i>';
                             actionText = `Anda memperbarui rilisan musik: <strong>"${log.details.title}"</strong>`;
                         } else if (log.action === 'DELETE_MUSIC_RELEASE') {
-                            icon = '<i class="ri-album-line text-red-400"></i>'; // Icon delete music
+                            icon = '<i class="ri-album-line text-red-400"></i>';
                             actionText = `Anda menghapus rilisan musik: <strong>"${log.details.title || log.details.musicId}"</strong>`;
                         } else if (log.action === 'ADD_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-m text-purple-400"></i>'; // Icon add affiliate
+                            icon = '<i class="ri-link-m text-purple-400"></i>';
                             actionText = `Anda menambahkan link afiliasi: <strong>"${log.details.name}"</strong>`;
                         } else if (log.action === 'UPDATE_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-m text-orange-400"></i>'; // Icon update affiliate
+                            icon = '<i class="ri-link-m text-orange-400"></i>';
                             actionText = `Anda memperbarui link afiliasi: <strong>"${log.details.name}"</strong>`;
                         } else if (log.action === 'DELETE_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-unlink-m text-red-400"></i>'; // Icon delete affiliate
+                            icon = '<i class="ri-link-unlink-m text-red-400"></i>';
                             actionText = `Anda menghapus link afiliasi: <strong>"${log.details.name || log.details.affiliateId}"</strong>`;
-                        } else if (log.action === 'UPDATE_PROFILE') { // Contoh dari Dashboard.html Settings
+                        } else if (log.action === 'UPDATE_PROFILE') {
                             icon = '<i class="ri-user-settings-line text-teal-400"></i>';
                             actionText = `Anda memperbarui profil Anda.`;
-                        } else if (log.action === 'CHANGE_PASSWORD') { // Contoh dari Dashboard.html Settings
+                        } else if (log.action === 'CHANGE_PASSWORD') {
                             icon = '<i class="ri-lock-2-line text-yellow-400"></i>';
                             actionText = `Anda mengubah password Anda.`;
-                        }
+                        }	else if (log.action === 'UPDATE_SCHEDULED_POST') {
+    						icon = '<i class="ri-calendar-schedule-line text-cyan-400"></i>'; 
+    						actionText = `Anda memperbarui postingan terjadwal: <strong>"${log.details.title}"</strong>`;
+						}
 				
 				        container.innerHTML += `
 				            <div class="glass-card p-3 rounded-xl flex items-start space-x-4 text-sm">
