@@ -249,61 +249,149 @@
 	        	const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 	        	const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
 	            let charts = {};
-	
-	            // --- FUNGSI RENDER UTAMA ---
-	            async function renderView(viewName = 'home') {
-	                const template = document.getElementById(`view-${viewName}`);
-	                if (template) app.innerHTML = template.innerHTML;
-	                
-	                document.querySelectorAll('.nav-item.active').forEach(i => i.classList.remove('active'));
-	                const newActiveItem = document.querySelector(`.nav-item[data-view="${viewName}"]`);
-	                if (newActiveItem) newActiveItem.classList.add('active');
-	
-	                if (viewName === 'home') await renderHomeView();
-	                if (viewName === 'comments') await renderCommentsView();
-	                if (viewName === 'stats') await renderStatsView();
-					if (viewName === 'settings') await renderSettingsView();
-	            }
-	
-	            // --- FUNGSI VIEW: HOME ---
-	            async function renderHomeView() {
-					const hour = new Date().getHours();
-					document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
-					document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
-					
-					// Set stat cards ke mode loading
-					document.getElementById('totalViews').textContent = '...';
-					document.getElementById('totalPosts').textContent = '...';
-					document.getElementById('publishedPosts').textContent = '...';
-					document.getElementById('draftPosts').textContent = '...';
 
-					const [postsRes, popularPostsRes, totalViewsRes, _] = await Promise.all([
-						supabase.from('posts').select('id, published'),
-						supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
-						supabase.rpc('get_total_views'),
-						renderRecentActivity()
-					]);
+				function initializePresenceListener() {
+    				console.log("Menginisialisasi listener untuk Presence...");
+    				const liveCountElement = document.getElementById('live-count');
+    				const liveDotElement = document.getElementById('live-dot');
 
-					if (!postsRes.error && postsRes.data) {
-						const posts = postsRes.data;
-						document.getElementById('totalPosts').textContent = posts.length;
-						document.getElementById('publishedPosts').textContent = posts.filter(p => p.published).length;
-						document.getElementById('draftPosts').textContent = posts.length - posts.filter(p => p.published).length;
-					}
-					if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
-					
-					if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
-						const list = document.getElementById('popularPostsList');
-						list.innerHTML = '';
-						popularPostsRes.data.forEach(post => {
-							list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
-						});
-					} else if (document.getElementById('popularPostsList')) {
-						document.getElementById('popularPostsList').innerHTML = '<p class="text-sm text-slate-500">Belum ada postingan populer.</p>';
-					}
+					const channel = supabase.channel('live-visitors');
+
+					channel.on('presence', { event: 'sync' }, () => {
+						const presences = channel.presenceState();
+						const count = Object.keys(presences).length;
+						
+						console.log('Data presence disinkronkan, jumlah pengunjung:', count);
+						liveCountElement.textContent = `${count} Pengunjung`;
+		
+						if(count > 0) {
+							liveDotElement.classList.add('blinking-dot');
+						} else {
+							liveDotElement.classList.remove('blinking-dot');
+						}
+					});
+
+					channel.subscribe(async (status) => {
+						if (status === 'SUBSCRIBED') {
+							console.log('Berhasil terhubung ke channel Presence.');
+							await channel.track({ online_at: new Date().toISOString() });
+							return;
+						}
+					});
 				}
 	            
-	            // --- FUNGSI VIEW: KOMENTAR ---
+	        	function showConfirmationModal(onConfirm) {
+	            	confirmationModal.classList.remove('hidden');
+	            
+	            	const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
+	            	confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
+	            
+	            	newConfirmBtn.addEventListener('click', () => {
+	                	onConfirm();
+	                	hideConfirmationModal();
+	            	});
+	       		}
+	
+	        	function hideConfirmationModal() {
+	            	confirmationModal.classList.add('hidden');
+	        	}
+	            
+	            function getCommentSkeletonHTML() {
+	                let skeletonHTML = '<div class="space-y-4">';
+	                for (let i = 0; i < 3; i++) {
+	                    skeletonHTML += '<div class="w-full h-28 skeleton-pulse"></div>';
+	                }
+	                skeletonHTML += '</div>';
+	                return skeletonHTML;
+	            }
+	            
+	            function getPopularPostsSkeletonHTML() {
+	                let skeletonHTML = '<div class="space-y-3">';
+	                for (let i = 0; i < 4; i++) {
+	                    skeletonHTML += '<div class="w-full h-12 skeleton-pulse"></div>';
+	                }
+	                skeletonHTML += '</div>';
+	                return skeletonHTML;
+	            }
+	            
+	            function getStatsSkeletonHTML() {
+	                return `
+	                    <div class="space-y-8">
+	                        <div class="glass-card p-6 rounded-2xl">
+	                            <h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2>
+	                            <div class="h-80 skeleton-pulse"></div>
+	                        </div>
+	                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+	                            <div class="glass-card p-6 rounded-2xl">
+	                                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
+	                                <div class="h-80 skeleton-pulse"></div>
+	                            </div>
+	                            <div class="glass-card p-6 rounded-2xl">
+	                                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
+	                                <div class="space-y-3">
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                    <div class="h-10 w-full skeleton-pulse"></div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                `;
+	            }
+
+				function getActivityLogSkeletonHTML() {
+				    let skeletonHTML = '<div class="space-y-4">';
+				    for (let i = 0; i < 5; i++) {
+				        skeletonHTML += '<div class="w-full h-16 skeleton-pulse"></div>';
+				    }
+				    skeletonHTML += '</div>';
+				    return skeletonHTML;
+				}
+
+				async function showToast(message, type = 'success', errorObject = null) {
+					const toastContainer = document.getElementById('toast-container');
+					if (!toastContainer) {
+						console.warn("Toast container not found. Messages will only appear in console.");
+						console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
+						return;
+					}
+	
+					const toast = document.createElement('div');
+					const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
+	
+					const baseClasses = 'flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg toast-message transition-all duration-300 transform translate-x-full animate-slide-in';
+					const typeClass = type === 'success' ? 'toast-success' : 'toast-error';
+					
+	
+					toast.className = `${baseClasses} ${typeClass}`;
+	
+					toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
+					toastContainer.appendChild(toast);
+	
+					if (type === 'error' && errorObject) {
+						console.error("Mencatat error ke database:", errorObject);
+						const { data: { user } } = await supabase.auth.getUser();
+						supabase.from('error_logs').insert({
+							error_message: errorObject.message,
+							error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
+							location: "Client-Side Admin Dashboard",
+							user_id: user?.id,
+							user_email: user?.email
+						}).then(() => console.log('Error logged.'));
+					}
+	
+					setTimeout(() => {
+						toast.classList.remove('animate-slide-in');
+						toast.classList.add('opacity-0');
+					 }, 4000);
+					 setTimeout(() => {
+						toast.remove();
+						}, 4000 + 350);
+				}
+
+				// --- FUNGSI VIEW: KOMENTAR ---
 	            async function renderCommentsView() {
 				    let currentPage = 1;
 				    const commentsPerPage = 5;
@@ -422,6 +510,12 @@
     				await loadComments(currentPage, currentFilter, currentSearchTerm);
 				}
 
+				async function checkPendingComments() {
+	                const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
+	                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
+	                else { commentBadge.classList.add('hidden'); }
+	            }
+
 				window.approveComment = async (commentId) => {
 	    			const { error } = await supabase.from('comments').update({ is_approved: true }).eq('id', commentId);
 	    			if (error) {
@@ -441,6 +535,7 @@
 						}
 	    			});
 				}
+
 				window.replyToComment = async (parentCommentId, postId) => {
 	    			const existingForm = document.getElementById('active-reply-form');
 	    				if (existingForm) {
@@ -500,12 +595,6 @@
 	    			});
 				}
 	
-				async function checkPendingComments() {
-	                const { count } = await supabase.from('comments').select('id', { count: 'exact', head: true }).eq('is_approved', false);
-	                if (count > 0) { commentBadge.textContent = count > 9 ? '9+' : count; commentBadge.classList.remove('hidden'); } 
-	                else { commentBadge.classList.add('hidden'); }
-	            }
-	            
 	            function listenForCommentChanges() {
 	                console.log('Realtime listener untuk komentar diaktifkan.');
 	                supabase.channel('public:comments')
@@ -529,6 +618,127 @@
 	                        }
 	                    });
 	            }
+	
+	            // --- FUNGSI RENDER UTAMA ---
+	            async function renderView(viewName = 'home') {
+	                const template = document.getElementById(`view-${viewName}`);
+	                if (template) app.innerHTML = template.innerHTML;
+	                
+	                document.querySelectorAll('.nav-item.active').forEach(i => i.classList.remove('active'));
+	                const newActiveItem = document.querySelector(`.nav-item[data-view="${viewName}"]`);
+	                if (newActiveItem) newActiveItem.classList.add('active');
+	
+	                if (viewName === 'home') await renderHomeView();
+	                if (viewName === 'comments') await renderCommentsView();
+	                if (viewName === 'stats') await renderStatsView();
+					if (viewName === 'settings') await renderSettingsView();
+	            }
+	
+	            // --- FUNGSI VIEW: HOME ---
+	            async function renderHomeView() {
+					const hour = new Date().getHours();
+					document.getElementById('greeting').textContent = (hour < 11) ? 'Selamat Pagi' : (hour < 15) ? 'Selamat Siang' : 'Selamat Malam';
+					document.getElementById('popularPostsList').innerHTML = getPopularPostsSkeletonHTML();
+					
+					// Set stat cards ke mode loading
+					document.getElementById('totalViews').textContent = '...';
+					document.getElementById('totalPosts').textContent = '...';
+					document.getElementById('publishedPosts').textContent = '...';
+					document.getElementById('draftPosts').textContent = '...';
+
+					const [postsRes, popularPostsRes, totalViewsRes, _] = await Promise.all([
+						supabase.from('posts').select('id, published'),
+						supabase.from('posts').select('title, views').order('views', { ascending: false }).limit(5),
+						supabase.rpc('get_total_views'),
+						renderRecentActivity()
+					]);
+
+					if (!postsRes.error && postsRes.data) {
+						const posts = postsRes.data;
+						document.getElementById('totalPosts').textContent = posts.length;
+						document.getElementById('publishedPosts').textContent = posts.filter(p => p.published).length;
+						document.getElementById('draftPosts').textContent = posts.length - posts.filter(p => p.published).length;
+					}
+					if (!totalViewsRes.error) { document.getElementById('totalViews').textContent = totalViewsRes.data || 0; }
+					
+					if (!popularPostsRes.error && popularPostsRes.data.length > 0) {
+						const list = document.getElementById('popularPostsList');
+						list.innerHTML = '';
+						popularPostsRes.data.forEach(post => {
+							list.innerHTML += `<div class="glass-card p-3 rounded-xl flex justify-between items-center text-sm"><p class="font-medium text-white truncate pr-4">${post.title}</p><p class="text-gray-400 flex-shrink-0">${post.views || 0} views</p></div>`;
+						});
+					} else if (document.getElementById('popularPostsList')) {
+						document.getElementById('popularPostsList').innerHTML = '<p class="text-sm text-slate-500">Belum ada postingan populer.</p>';
+					}
+				}
+
+				async function renderRecentActivity() {
+	    			const listContainer = document.getElementById('recentActivityList');
+	    			if (!listContainer) return;
+	
+	    			listContainer.innerHTML = `
+	        			<div class="space-y-3">
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	            			<div class="h-14 w-full skeleton-pulse"></div>
+	        			</div>
+	    			`;
+	
+	    			const [recentCommentsRes, recentPostsRes] = await Promise.all([
+	        			supabase.from('comments').select('id, content, author_name, created_at, posts(title)')
+	            		.order('created_at', { ascending: false }).limit(5),
+	        			supabase.from('posts').select('id, title, created_at, published')
+	            		.order('created_at', { ascending: false }).limit(5)
+	    			]);
+	
+	    			let activities = [];
+	
+	    			if (!recentCommentsRes.error) {
+	        			recentCommentsRes.data.forEach(item => {
+	            			activities.push({
+	                			type: 'comment',
+	                			content: `Komentar dari <strong>${item.author_name}</strong> di "${item.posts.title}"`,
+	                			date: new Date(item.created_at)
+	            			});
+	        			});
+	    			}
+	
+	    			if (!recentPostsRes.error) {
+	        			recentPostsRes.data.forEach(item => {
+	            			activities.push({
+	                			type: 'post',
+	                			content: `Postingan <strong>"${item.title}"</strong> telah ${item.published ? 'dipublikasikan' : 'dibuat (draft)'}.`,
+	                			date: new Date(item.created_at)
+	            			});
+	        			});
+	    			}
+	
+	    			activities.sort((a, b) => b.date - a.date);
+	
+	    			const latestActivities = activities.slice(0, 5);
+	    
+	    			if (latestActivities.length > 0) {
+	        			listContainer.innerHTML = '';
+	        			latestActivities.forEach(item => {
+	            			const icon = item.type === 'comment' 
+	                		? '<i class="ri-chat-4-line text-indigo-400"></i>'
+	                		: '<i class="ri-file-text-line text-green-400"></i>';
+	
+	            		listContainer.innerHTML += `
+	                		<div class="glass-card p-3 rounded-xl flex items-start space-x-3 text-sm">
+	                    		<div class="flex-shrink-0 mt-1">${icon}</div>
+	                    		<div>
+	                        		<p class="text-slate-200">${item.content}</p>
+	                        		<p class="text-xs text-slate-400 mt-1">${item.date.toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+	                    		</div>
+	                		</div>
+	            		`;
+	        		});
+	    			} else {
+	       	 			listContainer.innerHTML = '<p class="text-sm text-slate-500 text-center p-4">Belum ada aktivitas.</p>';
+	    			}
+				}
 
 	            // --- FUNGSI VIEW: STATISTIK ---
 	            async function renderStatsView() {
@@ -638,8 +848,8 @@
 				    
 				    await loadStatsForRange(currentRange);
 				}
-	            
-	            function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
+
+				function createChart(canvasId, type, labels, data, label, bgColors = ['rgba(99, 102, 241, 0.6)']) {
 				    const chartEl = document.getElementById(canvasId);
 				    if (!chartEl) return;
 				    if (charts[canvasId]) charts[canvasId].destroy();
@@ -675,356 +885,7 @@
 				    });
 				}
 	            
-	        	function showConfirmationModal(onConfirm) {
-	            	confirmationModal.classList.remove('hidden');
-	            
-	            	const newConfirmBtn = confirmDeleteBtn.cloneNode(true);
-	            	confirmDeleteBtn.parentNode.replaceChild(newConfirmBtn, confirmDeleteBtn);
-	            
-	            	newConfirmBtn.addEventListener('click', () => {
-	                	onConfirm();
-	                	hideConfirmationModal();
-	            	});
-	       		}
-	
-	        	function hideConfirmationModal() {
-	            	confirmationModal.classList.add('hidden');
-	        	}
-	        
-	        	async function showToast(message, type = 'success', errorObject = null) {
-                const toastContainer = document.getElementById('toast-container');
-                if (!toastContainer) {
-                    console.warn("Toast container not found. Messages will only appear in console.");
-                    console.log(`Toast: ${type.toUpperCase()} - ${message}`, errorObject);
-                    return;
-                }
-
-                const toast = document.createElement('div');
-                const icon = type === 'success' ? '<i class="ri-checkbox-circle-fill"></i>' : '<i class="ri-error-warning-fill"></i>';
-
-                const baseClasses = 'flex items-center space-x-3 text-white text-sm font-semibold p-3 rounded-xl shadow-lg toast-message transition-all duration-300 transform translate-x-full animate-slide-in';
-                const typeClass = type === 'success' ? 'toast-success' : 'toast-error';
-                
-
-                toast.className = `${baseClasses} ${typeClass}`;
-
-                toast.innerHTML = `<span>${icon}</span><p>${message}</p>`;
-                toastContainer.appendChild(toast);
-
-                if (type === 'error' && errorObject) {
-                    console.error("Mencatat error ke database:", errorObject);
-                    const { data: { user } } = await supabase.auth.getUser();
-                    supabase.from('error_logs').insert({
-                        error_message: errorObject.message,
-                        error_details: { code: errorObject.code, details: errorObject.details, hint: errorObject.hint },
-                        location: "Client-Side Admin Dashboard",
-                        user_id: user?.id,
-                        user_email: user?.email
-                    }).then(() => console.log('Error logged.'));
-                }
-
-                setTimeout(() => {
-                    toast.classList.remove('animate-slide-in');
-                    toast.classList.add('opacity-0');
-                 }, 4000);
-                 setTimeout(() => {
-                    toast.remove();
-                    }, 4000 + 350);
-            }
-
-	            
-	            function getCommentSkeletonHTML() {
-	                let skeletonHTML = '<div class="space-y-4">';
-	                for (let i = 0; i < 3; i++) {
-	                    skeletonHTML += '<div class="w-full h-28 skeleton-pulse"></div>';
-	                }
-	                skeletonHTML += '</div>';
-	                return skeletonHTML;
-	            }
-	            
-	            function getPopularPostsSkeletonHTML() {
-	                let skeletonHTML = '<div class="space-y-3">';
-	                for (let i = 0; i < 4; i++) {
-	                    skeletonHTML += '<div class="w-full h-12 skeleton-pulse"></div>';
-	                }
-	                skeletonHTML += '</div>';
-	                return skeletonHTML;
-	            }
-	            
-	            function getStatsSkeletonHTML() {
-	                return `
-	                    <div class="space-y-8">
-	                        <div class="glass-card p-6 rounded-2xl">
-	                            <h2 class="text-lg font-semibold text-white mb-4">Total Views per Bulan</h2>
-	                            <div class="h-80 skeleton-pulse"></div>
-	                        </div>
-	                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-	                            <div class="glass-card p-6 rounded-2xl">
-	                                <h2 class="text-lg font-semibold text-white mb-4">Post per Kategori</h2>
-	                                <div class="h-80 skeleton-pulse"></div>
-	                            </div>
-	                            <div class="glass-card p-6 rounded-2xl">
-	                                <h2 class="text-lg font-semibold text-white mb-4">Top 5 Postingan</h2>
-	                                <div class="space-y-3">
-	                                    <div class="h-10 w-full skeleton-pulse"></div>
-	                                    <div class="h-10 w-full skeleton-pulse"></div>
-	                                    <div class="h-10 w-full skeleton-pulse"></div>
-	                                    <div class="h-10 w-full skeleton-pulse"></div>
-	                                    <div class="h-10 w-full skeleton-pulse"></div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                `;
-	            }
-	            
-	            async function renderRecentActivity() {
-	    			const listContainer = document.getElementById('recentActivityList');
-	    			if (!listContainer) return;
-	
-	    			listContainer.innerHTML = `
-	        			<div class="space-y-3">
-	            			<div class="h-14 w-full skeleton-pulse"></div>
-	            			<div class="h-14 w-full skeleton-pulse"></div>
-	            			<div class="h-14 w-full skeleton-pulse"></div>
-	            			<div class="h-14 w-full skeleton-pulse"></div>
-	        			</div>
-	    			`;
-	
-	    			const [recentCommentsRes, recentPostsRes] = await Promise.all([
-	        			supabase.from('comments').select('id, content, author_name, created_at, posts(title)')
-	            		.order('created_at', { ascending: false }).limit(5),
-	        			supabase.from('posts').select('id, title, created_at, published')
-	            		.order('created_at', { ascending: false }).limit(5)
-	    			]);
-	
-	    			let activities = [];
-	
-	    			if (!recentCommentsRes.error) {
-	        			recentCommentsRes.data.forEach(item => {
-	            			activities.push({
-	                			type: 'comment',
-	                			content: `Komentar dari <strong>${item.author_name}</strong> di "${item.posts.title}"`,
-	                			date: new Date(item.created_at)
-	            			});
-	        			});
-	    			}
-	
-	    			if (!recentPostsRes.error) {
-	        			recentPostsRes.data.forEach(item => {
-	            			activities.push({
-	                			type: 'post',
-	                			content: `Postingan <strong>"${item.title}"</strong> telah ${item.published ? 'dipublikasikan' : 'dibuat (draft)'}.`,
-	                			date: new Date(item.created_at)
-	            			});
-	        			});
-	    			}
-	
-	    			activities.sort((a, b) => b.date - a.date);
-	
-	    			const latestActivities = activities.slice(0, 5);
-	    
-	    			if (latestActivities.length > 0) {
-	        			listContainer.innerHTML = '';
-	        			latestActivities.forEach(item => {
-	            			const icon = item.type === 'comment' 
-	                		? '<i class="ri-chat-4-line text-indigo-400"></i>'
-	                		: '<i class="ri-file-text-line text-green-400"></i>';
-	
-	            		listContainer.innerHTML += `
-	                		<div class="glass-card p-3 rounded-xl flex items-start space-x-3 text-sm">
-	                    		<div class="flex-shrink-0 mt-1">${icon}</div>
-	                    		<div>
-	                        		<p class="text-slate-200">${item.content}</p>
-	                        		<p class="text-xs text-slate-400 mt-1">${item.date.toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-	                    		</div>
-	                		</div>
-	            		`;
-	        		});
-	    			} else {
-	       	 			listContainer.innerHTML = '<p class="text-sm text-slate-500 text-center p-4">Belum ada aktivitas.</p>';
-	    			}
-				}
-
-				function getActivityLogSkeletonHTML() {
-				    let skeletonHTML = '<div class="space-y-4">';
-				    for (let i = 0; i < 5; i++) {
-				        skeletonHTML += '<div class="w-full h-16 skeleton-pulse"></div>';
-				    }
-				    skeletonHTML += '</div>';
-				    return skeletonHTML;
-				}
-				
-				async function loadActivityLogs(page = 1) {
-				    const logsPerPage = 10;
-				    const container = document.getElementById('tab-content-activity');
-				    container.innerHTML = getActivityLogSkeletonHTML();
-				
-				    const from = (page - 1) * logsPerPage;
-				    const to = from + logsPerPage - 1;
-				
-				    const { data: logs, error, count: totalLogs } = await supabase.from('activity_logs')
-				        .select('*', { count: 'exact' })
-				        .order('created_at', { ascending: false })
-				        .range(from, to);
-				    
-				    if (error) {
-				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log aktivitas.</p>';
-				        return;
-				    }
-				    if (logs.length === 0) {
-				        container.innerHTML = '<p class="text-center text-slate-500 p-8">👍 Belum ada aktivitas yang tercatat.</p>';
-				        return;
-				    }
-				
-				    container.innerHTML = '';
-				    logs.forEach(log => {
-				        let icon = '<i class="ri-question-mark-line text-slate-400"></i>';
-				        let actionText = `Aksi tidak dikenal: ${log.action}`;
-				
-				        if (log.action === 'APPROVED_COMMENT') {
-				            icon = '<i class="ri-check-double-line text-green-400"></i>';
-				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
-				        } else if (log.action === 'DELETE_COMMENT') {
-				            icon = '<i class="ri-chat-delete-line text-red-400"></i>';
-				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
-				        } else if (log.action === 'CREATE_POST') {
-                            icon = '<i class="ri-file-add-line text-indigo-400"></i>';
-                            actionText = `Anda membuat postingan baru: <strong>"${log.details.title}"</strong>`;
-                        } else if (log.action === 'UPDATE_POST') {
-                            icon = '<i class="ri-file-edit-line text-blue-400"></i>';
-                            actionText = `Anda memperbarui postingan: <strong>"${log.details.title}"</strong>`;
-                        } else if (log.action === 'DELETE_POST') {
-                            icon = '<i class="ri-file-forbid-line text-red-400"></i>';
-                            actionText = `Anda menghapus postingan: <strong>"${log.details.title || log.details.postId}"</strong>`;
-                        } else if (log.action === 'ADD_CATEGORY') {
-                            icon = '<i class="ri-folder-add-line text-purple-400"></i>';
-                            actionText = `Anda menambahkan kategori baru: <strong>"${log.details.name}"</strong>`;
-                        } else if (log.action === 'UPDATE_CATEGORY') {
-                            icon = '<i class="ri-folder-edit-line text-orange-400"></i>';
-                            actionText = `Anda memperbarui kategori: <strong>"${log.details.newName}"</strong>`;
-                        } else if (log.action === 'DELETE_CATEGORY') {
-                            icon = '<i class="ri-folder-reduce-line text-red-400"></i>';
-                            actionText = `Anda menghapus kategori: <strong>"${log.details.name || log.details.categoryId}"</strong>`;
-                        } else if (log.action === 'ADD_MUSIC_RELEASE') {
-                            icon = '<i class="ri-music-fill text-green-400"></i>';
-                            actionText = `Anda menambahkan rilisan musik: <strong>"${log.details.title}"</strong>`;
-                        } else if (log.action === 'UPDATE_MUSIC_RELEASE') {
-                            icon = '<i class="ri-album-line text-blue-400"></i>';
-                            actionText = `Anda memperbarui rilisan musik: <strong>"${log.details.title}"</strong>`;
-                        } else if (log.action === 'DELETE_MUSIC_RELEASE') {
-                            icon = '<i class="ri-album-line text-red-400"></i>';
-                            actionText = `Anda menghapus rilisan musik: <strong>"${log.details.title || log.details.musicId}"</strong>`;
-                        } else if (log.action === 'ADD_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-m text-purple-400"></i>';
-                            actionText = `Anda menambahkan link afiliasi: <strong>"${log.details.name}"</strong>`;
-                        } else if (log.action === 'UPDATE_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-m text-orange-400"></i>';
-                            actionText = `Anda memperbarui link afiliasi: <strong>"${log.details.name}"</strong>`;
-                        } else if (log.action === 'DELETE_AFFILIATE_LINK') {
-                            icon = '<i class="ri-link-unlink-m text-red-400"></i>';
-                            actionText = `Anda menghapus link afiliasi: <strong>"${log.details.name || log.details.affiliateId}"</strong>`;
-                        } else if (log.action === 'UPDATE_PROFILE') {
-                            icon = '<i class="ri-user-settings-line text-teal-400"></i>';
-                            actionText = `Anda memperbarui profil Anda.`;
-                        } else if (log.action === 'CHANGE_PASSWORD') {
-                            icon = '<i class="ri-lock-2-line text-yellow-400"></i>';
-                            actionText = `Anda mengubah password Anda.`;
-                        }	else if (log.action === 'UPDATE_SCHEDULED_POST') {
-    						icon = '<i class="ri-calendar-schedule-line text-cyan-400"></i>'; 
-    						actionText = `Anda memperbarui postingan terjadwal: <strong>"${log.details.title}"</strong>`;
-						}	else if (log.action === 'USER_LOGIN') {
-    						icon = '<i class="ri-login-box-line text-green-400"></i>';
-    						actionText = `Pengguna <strong>${log.user_email}</strong> telah login.`;
-						}
-				
-				        container.innerHTML += `
-				            <div class="glass-card p-3 rounded-xl flex items-start space-x-4 text-sm">
-				                <div class="flex-shrink-0 mt-1 text-xl">${icon}</div>
-				                <div>
-				                    <p class="text-slate-200">${actionText}</p>
-				                    <p class="text-xs text-slate-400 mt-1">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
-				                </div>
-				            </div>
-				        `;
-				    });
-				// Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
-				}
-
-				async function loadErrorLogs(page = 1) {
-				    const logsPerPage = 15;
-				    const container = document.getElementById('tab-content-error');
-				    container.innerHTML = getActivityLogSkeletonHTML(); // Gunakan skeleton loading
-
-				    const from = (page - 1) * logsPerPage;
-				    const to = from + logsPerPage - 1;
-
-				    const { data: logs, error, count: totalLogs } = await supabase.from('error_logs')
-				        .select('*', { count: 'exact' })
-				        .order('created_at', { ascending: false })
-				        .range(from, to);
-				    
-				    if (error) {
-				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log error.</p>';
-				        // Tidak perlu showToast di sini karena sudah ada di showToast yang memicu log ini
-				        return;
-				    }
-				    if (logs.length === 0) {
-				        container.innerHTML = '<p class="text-center text-slate-500 p-8"><i class="ri-check-line mr-2"></i>Tidak ada error yang tercatat. Sistem bersih!</p>';
-				        return;
-				    }
-
-				    container.innerHTML = '';
-				    logs.forEach(log => {
-				        // Format detail error agar lebih mudah dibaca, bisa custom tergantung struktur error_details
-				        let formattedDetails = '';
-				        if (log.error_details) {
-				            try {
-				                const details = log.error_details; // Sudah JSONB, jadi sudah objek
-				                if (details.code) formattedDetails += `<strong>Code:</strong> ${details.code}<br>`;
-				                if (details.details) formattedDetails += `<strong>Details:</strong> ${details.details}<br>`;
-				                if (details.hint) formattedDetails += `<strong>Hint:</strong> ${details.hint}<br>`;
-				                // Jika ada property lain yang ingin ditampilkan
-				                if (details.message && !details.details) formattedDetails += `<strong>Message:</strong> ${details.message}<br>`; // Jika message terpisah dari details
-				                if (details.location) formattedDetails += `<strong>Source:</strong> ${details.location}<br>`; // Jika location ada di details
-				                
-				                // Jika masih ada data JSON yang kompleks, tampilkan dalam <pre>
-				                const remainingDetails = { ...details };
-				                delete remainingDetails.code;
-				                delete remainingDetails.details;
-				                delete remainingDetails.hint;
-				                delete remainingDetails.message;
-				                delete remainingDetails.location; // Hapus yang sudah ditampilkan
-
-				                if (Object.keys(remainingDetails).length > 0) {
-				                    formattedDetails += `<details class="mt-2 text-xs text-slate-400"><summary>Lihat Detail JSON Lengkap</summary><pre class="whitespace-pre-wrap p-2 bg-neutral-900/50 rounded-md font-mono">${JSON.stringify(remainingDetails, null, 2)}</pre></details>`;
-				                }
-				            } catch (e) {
-				                console.error("Error parsing error_details:", e);
-				                formattedDetails = `<pre class="whitespace-pre-wrap">${JSON.stringify(log.error_details, null, 2)}</pre>`; // Fallback ke JSON mentah
-				            }
-				        } else {
-				            formattedDetails = '<i>Tidak ada detail error.</i>';
-				        }
-
-				        container.innerHTML += `
-				            <div class="glass-card p-4 rounded-xl text-sm break-words">
-				                <div class="flex justify-between items-start mb-2">
-				                    <div>
-				                        <p class="font-bold text-red-400"><i class="ri-bug-line mr-2"></i>${log.error_message || 'Error tidak diketahui'}</p>
-				                        <p class="text-xs text-slate-500 mt-1">Dicatat dari: ${log.user_email || 'Tidak Diketahui'} di ${log.location || 'Client-Side'}</p>
-				                    </div>
-				                    <p class="text-xs text-slate-400 flex-shrink-0 ml-4">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
-				                </div>
-				                <div class="text-xs text-slate-300">
-				                    ${formattedDetails}
-				                </div>
-				            </div>
-				        `;
-				    });
-				    // Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
-				}
-				
+				// --- FUNGSI VIEW: SETTINGS ---
 				async function renderSettingsView() {
 					const { data: { user } } = await supabase.auth.getUser();
 					
@@ -1237,36 +1098,181 @@
         				}
 				    });
 				}
-				function initializePresenceListener() {
-    				console.log("Menginisialisasi listener untuk Presence...");
-    				const liveCountElement = document.getElementById('live-count');
-    				const liveDotElement = document.getElementById('live-dot');
 
-					const channel = supabase.channel('live-visitors');
-
-					channel.on('presence', { event: 'sync' }, () => {
-						const presences = channel.presenceState();
-						const count = Object.keys(presences).length;
-						
-						console.log('Data presence disinkronkan, jumlah pengunjung:', count);
-						liveCountElement.textContent = `${count} Pengunjung`;
-		
-						if(count > 0) {
-							liveDotElement.classList.add('blinking-dot');
-						} else {
-							liveDotElement.classList.remove('blinking-dot');
+				async function loadActivityLogs(page = 1) {
+				    const logsPerPage = 10;
+				    const container = document.getElementById('tab-content-activity');
+				    container.innerHTML = getActivityLogSkeletonHTML();
+				
+				    const from = (page - 1) * logsPerPage;
+				    const to = from + logsPerPage - 1;
+				
+				    const { data: logs, error, count: totalLogs } = await supabase.from('activity_logs')
+				        .select('*', { count: 'exact' })
+				        .order('created_at', { ascending: false })
+				        .range(from, to);
+				    
+				    if (error) {
+				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log aktivitas.</p>';
+				        return;
+				    }
+				    if (logs.length === 0) {
+				        container.innerHTML = '<p class="text-center text-slate-500 p-8">Belum ada aktivitas yang tercatat.</p>';
+				        return;
+				    }
+				
+				    container.innerHTML = '';
+				    logs.forEach(log => {
+				        let icon = '<i class="ri-question-mark-line text-slate-400"></i>';
+				        let actionText = `Aksi tidak dikenal: ${log.action}`;
+				
+				        if (log.action === 'APPROVED_COMMENT') {
+				            icon = '<i class="ri-check-double-line text-green-400"></i>';
+				            actionText = `Anda menyetujui komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
+				        } else if (log.action === 'REPLY_TO_COMMENT') {
+							icon = '<i class="ri-reply-line text-blue-400"></i>';
+							actionText = `Anda membalas sebuah komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title}"`;
+						} else if (log.action === 'DELETE_COMMENT') {
+				            icon = '<i class="ri-chat-delete-line text-red-400"></i>';
+				            actionText = `Anda menghapus komentar dari <strong>${log.details.author_name}</strong> di "${log.details.post_title || 'postingan'}"`;
+				        } else if (log.action === 'CREATE_POST') {
+                            icon = '<i class="ri-file-add-line text-indigo-400"></i>';
+                            actionText = `Anda membuat postingan baru: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'UPDATE_POST') {
+                            icon = '<i class="ri-file-edit-line text-blue-400"></i>';
+                            actionText = `Anda memperbarui postingan: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'DELETE_POST') {
+                            icon = '<i class="ri-file-forbid-line text-red-400"></i>';
+                            actionText = `Anda menghapus postingan: <strong>"${log.details.title || log.details.postId}"</strong>`;
+                        } else if (log.action === 'ADD_CATEGORY') {
+                            icon = '<i class="ri-folder-add-line text-purple-400"></i>';
+                            actionText = `Anda menambahkan kategori baru: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'UPDATE_CATEGORY') {
+                            icon = '<i class="ri-folder-edit-line text-orange-400"></i>';
+                            actionText = `Anda memperbarui kategori: <strong>"${log.details.newName}"</strong>`;
+                        } else if (log.action === 'DELETE_CATEGORY') {
+                            icon = '<i class="ri-folder-reduce-line text-red-400"></i>';
+                            actionText = `Anda menghapus kategori: <strong>"${log.details.name || log.details.categoryId}"</strong>`;
+                        } else if (log.action === 'ADD_MUSIC_RELEASE') {
+                            icon = '<i class="ri-music-fill text-green-400"></i>';
+                            actionText = `Anda menambahkan rilisan musik: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'UPDATE_MUSIC_RELEASE') {
+                            icon = '<i class="ri-album-line text-blue-400"></i>';
+                            actionText = `Anda memperbarui rilisan musik: <strong>"${log.details.title}"</strong>`;
+                        } else if (log.action === 'DELETE_MUSIC_RELEASE') {
+                            icon = '<i class="ri-album-line text-red-400"></i>';
+                            actionText = `Anda menghapus rilisan musik: <strong>"${log.details.title || log.details.musicId}"</strong>`;
+                        } else if (log.action === 'ADD_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-m text-purple-400"></i>';
+                            actionText = `Anda menambahkan link afiliasi: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'UPDATE_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-m text-orange-400"></i>';
+                            actionText = `Anda memperbarui link afiliasi: <strong>"${log.details.name}"</strong>`;
+                        } else if (log.action === 'DELETE_AFFILIATE_LINK') {
+                            icon = '<i class="ri-link-unlink-m text-red-400"></i>';
+                            actionText = `Anda menghapus link afiliasi: <strong>"${log.details.name || log.details.affiliateId}"</strong>`;
+                        } else if (log.action === 'UPDATE_PROFILE') {
+                            icon = '<i class="ri-user-settings-line text-teal-400"></i>';
+                            actionText = `Anda memperbarui profil Anda.`;
+                        } else if (log.action === 'CHANGE_PASSWORD') {
+                            icon = '<i class="ri-lock-2-line text-yellow-400"></i>';
+                            actionText = `Anda mengubah password Anda.`;
+                        }	else if (log.action === 'UPDATE_SCHEDULED_POST') {
+    						icon = '<i class="ri-calendar-schedule-line text-cyan-400"></i>'; 
+    						actionText = `Anda memperbarui postingan terjadwal: <strong>"${log.details.title}"</strong>`;
+						}	else if (log.action === 'USER_LOGIN') {
+    						icon = '<i class="ri-login-box-line text-green-400"></i>';
+    						actionText = `Pengguna <strong>${log.user_email}</strong> telah login.`;
 						}
-					});
-
-					channel.subscribe(async (status) => {
-						if (status === 'SUBSCRIBED') {
-							console.log('Berhasil terhubung ke channel Presence.');
-							await channel.track({ online_at: new Date().toISOString() });
-							return;
-						}
-					});
+				
+				        container.innerHTML += `
+				            <div class="glass-card p-3 rounded-xl flex items-start space-x-4 text-sm">
+				                <div class="flex-shrink-0 mt-1 text-xl">${icon}</div>
+				                <div>
+				                    <p class="text-slate-200">${actionText}</p>
+				                    <p class="text-xs text-slate-400 mt-1">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+				                </div>
+				            </div>
+				        `;
+				    });
+				// Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
 				}
 
+				async function loadErrorLogs(page = 1) {
+				    const logsPerPage = 15;
+				    const container = document.getElementById('tab-content-error');
+				    container.innerHTML = getActivityLogSkeletonHTML(); // Gunakan skeleton loading
+
+				    const from = (page - 1) * logsPerPage;
+				    const to = from + logsPerPage - 1;
+
+				    const { data: logs, error, count: totalLogs } = await supabase.from('error_logs')
+				        .select('*', { count: 'exact' })
+				        .order('created_at', { ascending: false })
+				        .range(from, to);
+				    
+				    if (error) {
+				        container.innerHTML = '<p class="text-red-400 text-center">Gagal memuat log error.</p>';
+				        // Tidak perlu showToast di sini karena sudah ada di showToast yang memicu log ini
+				        return;
+				    }
+				    if (logs.length === 0) {
+				        container.innerHTML = '<p class="text-center text-slate-500 p-8"><i class="ri-check-line mr-2"></i>Tidak ada error yang tercatat. Sistem bersih!</p>';
+				        return;
+				    }
+
+				    container.innerHTML = '';
+				    logs.forEach(log => {
+				        // Format detail error agar lebih mudah dibaca, bisa custom tergantung struktur error_details
+				        let formattedDetails = '';
+				        if (log.error_details) {
+				            try {
+				                const details = log.error_details; // Sudah JSONB, jadi sudah objek
+				                if (details.code) formattedDetails += `<strong>Code:</strong> ${details.code}<br>`;
+				                if (details.details) formattedDetails += `<strong>Details:</strong> ${details.details}<br>`;
+				                if (details.hint) formattedDetails += `<strong>Hint:</strong> ${details.hint}<br>`;
+				                // Jika ada property lain yang ingin ditampilkan
+				                if (details.message && !details.details) formattedDetails += `<strong>Message:</strong> ${details.message}<br>`; // Jika message terpisah dari details
+				                if (details.location) formattedDetails += `<strong>Source:</strong> ${details.location}<br>`; // Jika location ada di details
+				                
+				                // Jika masih ada data JSON yang kompleks, tampilkan dalam <pre>
+				                const remainingDetails = { ...details };
+				                delete remainingDetails.code;
+				                delete remainingDetails.details;
+				                delete remainingDetails.hint;
+				                delete remainingDetails.message;
+				                delete remainingDetails.location; // Hapus yang sudah ditampilkan
+
+				                if (Object.keys(remainingDetails).length > 0) {
+				                    formattedDetails += `<details class="mt-2 text-xs text-slate-400"><summary>Lihat Detail JSON Lengkap</summary><pre class="whitespace-pre-wrap p-2 bg-neutral-900/50 rounded-md font-mono">${JSON.stringify(remainingDetails, null, 2)}</pre></details>`;
+				                }
+				            } catch (e) {
+				                console.error("Error parsing error_details:", e);
+				                formattedDetails = `<pre class="whitespace-pre-wrap">${JSON.stringify(log.error_details, null, 2)}</pre>`; // Fallback ke JSON mentah
+				            }
+				        } else {
+				            formattedDetails = '<i>Tidak ada detail error.</i>';
+				        }
+
+				        container.innerHTML += `
+				            <div class="glass-card p-4 rounded-xl text-sm break-words">
+				                <div class="flex justify-between items-start mb-2">
+				                    <div>
+				                        <p class="font-bold text-red-400"><i class="ri-bug-line mr-2"></i>${log.error_message || 'Error tidak diketahui'}</p>
+				                        <p class="text-xs text-slate-500 mt-1">Dicatat dari: ${log.user_email || 'Tidak Diketahui'} di ${log.location || 'Client-Side'}</p>
+				                    </div>
+				                    <p class="text-xs text-slate-400 flex-shrink-0 ml-4">${new Date(log.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+				                </div>
+				                <div class="text-xs text-slate-300">
+				                    ${formattedDetails}
+				                </div>
+				            </div>
+				        `;
+				    });
+				    // Di sini kita bisa menambahkan logika paginasi untuk log jika diperlukan di masa depan
+				}
+
+				// --- FUNGSI VIEW ---
 	            async function initializePage() {
 				    const { data: { session } } = await supabase.auth.getSession();
 				    if (!session) {
@@ -1373,7 +1379,7 @@
 				}
 
 	            initializePage();
-	        });
+});
 	    </script>
 	</body>
 </html>
