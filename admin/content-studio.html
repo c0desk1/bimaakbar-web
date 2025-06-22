@@ -597,16 +597,27 @@
                 };
 
                 window.deleteCategory = async (id) => {
+                    const item = document.querySelector(`[data-category-id="${id}"]`);
+                    if (!item) {
+                        showToast('Item kategori tidak ditemukan di halaman.', 'error');
+                        return;
+                    }
+
+                    const categoryName = item.querySelector('.category-name-display').textContent.trim();
+
                     showConfirmationModal(async () => {
                         const { error } = await supabase.from('categories').delete().eq('id', id);
+                        
                         if (error) {
                             showToast('Gagal menghapus kategori: ' + error.message, 'error', error);
                         } else {
                             showToast('Kategori berhasil dihapus!');
-                            logActivity('DELETE_CATEGORY', { categoryId: id });
+                            
+                            logActivity('DELETE_CATEGORY', { categoryId: id, name: categoryName });
+                            
                             loadCategories(); 
                         }
-                    }, 'Yakin ingin menghapus kategori ini?');
+                    }, `Yakin ingin menghapus kategori "${categoryName}"?`);
                 };
                 
                 loadCategories();
