@@ -1,0 +1,56 @@
+---
+// src/pages/blog/[...slug].astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+<Layout title={post.data.title} description={post.data.description}>
+  <article class="container mx-auto px-4 py-16 md:py-24 max-w-3xl">
+    
+    <header class="text-center mb-12">
+      {post.data.category && (
+        <p class="text-cyan-400 font-semibold mb-2">{post.data.category}</p>
+      )}
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">{post.data.title}</h1>
+      <p class="text-lg text-gray-400">
+        Diterbitkan pada {new Date(post.data.pubDate).toLocaleDateString('id-ID', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        })}
+      </p>
+    </header>
+
+    {post.data.heroImage && (
+      <Image 
+        src={post.data.heroImage}
+        alt={`Gambar untuk ${post.data.title}`}
+        width={1200}
+        height={600}
+        format="webp"
+        class="w-full rounded-lg mb-12 shadow-lg"
+      />
+    )}
+    
+    <div class="prose prose-invert max-w-none prose-lg
+                prose-p:text-gray-300
+                prose-h2:text-cyan-400 
+                prose-a:text-cyan-400 hover:prose-a:text-cyan-300
+                prose-blockquote:border-l-cyan-400 prose-blockquote:text-gray-400">
+      <Content />
+    </div>
+  </article>
+</Layout>

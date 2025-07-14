@@ -39,6 +39,13 @@ const ThemeToggleButton = () => {
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [currentPath, setCurrentPath] = useState('');
+
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        setCurrentPath(window.location.pathname);
+      }
+    }, []);
 
     useEffect(() => {
       const handleScroll = () => {
@@ -71,6 +78,18 @@ const Header: React.FC = () => {
         };
     }, [isMenuOpen]);
 
+    const getLinkClass = (path: string) => {
+      return currentPath === path
+          ? 'text-white font-semibold' // Kelas untuk link aktif
+          : 'text-gray-400 hover:text-white'; // Kelas untuk link tidak aktif
+  };
+
+  const getMobileLinkClass = (path: string) => {
+      return currentPath === path
+          ? 'text-cyan-400 font-semibold' // Kelas untuk link aktif di mobile
+          : 'text-gray-300 hover:text-cyan-400'; // Kelas untuk link tidak aktif di mobile
+  };
+
     return (
       <header className={`sticky top-0 z-50 w-full transition-all duration-300${isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-gray-800' : 'bg-transparent border-b border-transparent'}`}>
         <div className="container mx-auto px-4">
@@ -82,9 +101,9 @@ const Header: React.FC = () => {
                 </a>
             </div>
             <nav className="hidden md:flex items-center gap-6 text-gray-400">
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-                <a href="/blog" className="hover:text-white transition-colors">Blog</a>
-                <a href="/projects" className="hover:text-white transition-colors">Projects</a>
+                <a href="/" className={getLinkClass('/')}>Home</a>
+                <a href="/blog" className={getLinkClass('/blog')}>Blog</a>
+                <a href="/projects" className={getLinkClass('/projects')}>Projects</a>
             </nav>
             <div className="flex-1 flex items-center justify-end gap-4">
                 <div className="hidden md:flex items-center gap-4">
@@ -101,10 +120,9 @@ const Header: React.FC = () => {
         </div>
         <div className={`md:hidden absolute top-full left-0 w-full bg-black/80 backdrop-blur-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-2'}`}>
           <div className="container mx-auto flex flex-col items-center gap-6 py-8">
-            <a href="/" className="text-xl text-gray-300 hover:text-cyan-400" onClick={toggleMenu}>Home</a>
-            <a href="/blog" className="text-xl text-gray-300 hover:text-cyan-400" onClick={toggleMenu}>Blog</a>
-            <a href="/projects" className="text-xl text-gray-300 hover:text-cyan-400" onClick={toggleMenu}>Projects</a>
-
+            <a href="/" className={getMobileLinkClass('/')} onClick={toggleMenu}>Home</a>
+            <a href="/blog" className={getMobileLinkClass('/blog')} onClick={toggleMenu}>Blog</a>
+            <a href="/projects" className={getMobileLinkClass('/projects')} onClick={toggleMenu}>Projects</a>
             <div className='w-24 h-px bg-gray-700 my-2'></div>
             <div className="flex items-center gap-8">
               <ThemeToggleButton />
