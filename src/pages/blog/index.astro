@@ -35,7 +35,11 @@ const posts = selectedTag ? await getPostsByTag(selectedTag) : await getAllPosts
         <h2 class="text-xl font-semibold">
           <a href={`/blog/${post.slug}`} class="hover:underline">{post.data.title}</a>
         </h2>
-        <p class="text-sm text-[var(--color-muted)] mt-1">{post.data.date.toLocaleDateString()}</p>
+       <p class="text-sm text-[var(--color-muted)] mt-1">
+  {post.data.pubDate
+    ? post.data.pubDate.toLocaleDateString('id-ID', { dateStyle: 'long' })
+    : 'Tanggal tidak tersedia'}
+</p>
       </article>
     ))}
   </div>
