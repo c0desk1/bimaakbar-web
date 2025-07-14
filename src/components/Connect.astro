@@ -1,0 +1,57 @@
+---
+// src/components/Connect.astro
+
+// Definisikan link sosial media Anda di sini agar mudah diubah
+const socialLinks = [
+  {
+    name: 'GitHub',
+    href: 'https://github.com/bima-akbar',
+    icon: 'ri-github-fill'
+  },
+  {
+    name: 'LinkedIn',
+    href: 'https://linkedin.com/in/bima-akbar',
+    icon: 'ri-linkedin-box-fill'
+  },
+  {
+    name: 'Instagram',
+    href: 'https://instagram.com/bima-akbar',
+    icon: 'ri-instagram-line'
+  }
+]
+---
+<section class="container mx-auto px-4 py-16 md:py-24">
+  <div class="text-center max-w-2xl mx-auto">
+
+    <h2 class="text-3xl md:text-4xl font-bold text-white">
+      Let's Connect
+    </h2>
+
+    <p class="mt-4 text-lg text-gray-400">
+      Reach out to me via email or on social media.
+    </p>
+
+    <div class="mt-8 flex flex-wrap justify-center items-center gap-4">
+      <a 
+        href="mailto:contact@bimaakbar.my.id"
+        class="flex items-center gap-2 bg-white hover:bg-gray-200 text-black font-semibold py-3 px-6 rounded-lg transition-transform hover:scale-105"
+      >
+        <i class="ri-mail-line"></i>
+        <span>Email Me</span>
+      </a>
+
+      {socialLinks.map(link => (
+        <a 
+          href={link.href} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          aria-label={link.name}
+          class="flex items-center justify-center w-12 h-12 border border-gray-700 hover:bg-gray-800 text-gray-300 hover:text-white rounded-full transition-colors"
+        >
+          <i class:list={[link.icon, "text-2xl"]}></i>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</section>

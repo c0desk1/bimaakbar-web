@@ -1,0 +1,39 @@
+/* src/styles/global.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f9f9f9;
+  --color-fg: #111111;
+  --color-muted: rgba(102, 102, 102, 0.75);
+  --color-border: #e5e7eb;
+  --color-hover: #e5e7eb;
+  --color-accent: #007aff;
+  --color-card-bg: #ffffff;
+}
+
+html.dark {
+  --color-bg: #0a0a0a;
+  --color-bg-secondary: #111111;
+  --color-fg: #ffffff;
+  --color-muted: rgba(136, 136, 136, 0.65);
+  --color-border: #2a2a2a;
+  --color-hover: #2a2a2a;
+  --color-accent: #0ea5e9;
+  --color-card-bg: #111111;
+
+}
+
+html {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    scroll-behavior: smooth;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

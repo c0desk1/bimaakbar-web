@@ -1,0 +1,29 @@
+---
+// src/components/RecentProjects.astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Card from './Card.astro';
+
+type Project = CollectionEntry<'projects'>;
+
+const recentProjects: Project[] = (await getCollection('projects')).slice(0, 2);
+---
+<section class="container mx-auto px-4 py-16 md:py-24">
+  <div class="flex justify-between items-center mb-12">
+    <h2 class="text-3xl font-bold text-white">Studi Kasus Terbaru</h2>
+    <a href="/projects" class="border border-gray-700 hover:bg-gray-800 text-gray-300 font-semibold py-2 px-5 rounded-lg transition-colors text-sm hidden sm:block">
+      Semua Proyek &rarr;
+    </a>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {recentProjects.map((project) => (
+      <Card
+        href={`/projects/${project.slug}/`}
+        title={project.data.title}
+        description={project.data.description}
+        image={project.data.image}
+        tags={project.data.technologies}
+      />
+    ))}
+  </div>
+</section>
