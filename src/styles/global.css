@@ -7,28 +7,23 @@
   --color-bg: #ffffff;
   --color-bg-secondary: #f9f9f9;
   --color-fg: #111111;
-  --color-muted: #666666;
+  --color-muted: rgba(102, 102, 102, 0.75);
   --color-border: #e5e7eb;
+  --color-hover: #e5e7eb;
   --color-accent: #007aff;
-  --color-code-bg: #f5f5f5;
-
-  --aurora-color-1: theme('colors.cyan.500');
-  --aurora-color-2: theme('colors.fuchsia.500');
-  --aurora-color-3: theme('colors.blue.500');
+  --color-card-bg: #ffffff;
 }
 
 html.dark {
   --color-bg: #0a0a0a;
   --color-bg-secondary: #111111;
   --color-fg: #ffffff;
-  --color-muted: #888888;
+  --color-muted: rgba(136, 136, 136, 0.65);
   --color-border: #2a2a2a;
+  --color-hover: #2a2a2a;
   --color-accent: #0ea5e9;
-  --color-code-bg: #1e1e1e;
+  --color-card-bg: #111111;
 
-  --aurora-color-1: theme('colors.sky.800');
-  --aurora-color-2: theme('colors.purple.800');
-  --aurora-color-3: theme('colors.indigo.800');
 }
 
 html {
@@ -41,83 +36,4 @@ html {
 
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.animate {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--color-bg);
-}
-
-.animate::before,
-.animate::after {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  width: 60vmin;
-  height: 60vmin;
-  border-radius: 50%;
-  filter: blur(100px);
-  mix-blend-mode: screen;
-  animation: move 20s linear infinite;
-}
-
-.animate::before {
-  top: -20%;
-  left: -20%;
-  background: var(--aurora-color-1);
-}
-
-.animate::after {
-  bottom: -20%;
-  right: -20%;
-  background: var(--aurora-color-2);
-  animation-delay: -10s;
-}
-
-@keyframes move {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    transform: translate(100%, 50%) scale(1.2);
-  }
-  50% {
-    transform: translate(50%, -80%) scale(1);
-  }
-  75% {
-    transform: translate(-100%, 0) scale(1.1);
-  }
-}
-
-.animated {
-  animation: fadeIn-up 1s ease-out forwards;
-  opacity: 0;
-}
-
-h1.animated {
-  animation-delay: 0.2s;
-}
-
-p.animated:last-of-type {
-  animation-delay: 0.4s;
-}
-
-.animated + .animated {
-  animation-delay: 0.4s;
-}
-
-div.animated {
-  animation-delay: 0.6s;
-}
-
-@keyframes fadeIn-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
