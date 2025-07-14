@@ -1,7 +1,7 @@
-import { glob } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export async function getAllPosts() {
-  const posts = await glob('../content/blog/*.mdx');
+  const posts = await getCollection('blog');
   return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
