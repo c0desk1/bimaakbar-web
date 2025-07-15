@@ -37,10 +37,24 @@ export default function BlogFilter({ posts, tags }: Props) {
                 <div className="col-span-3 sm:col-span-1 pt-16">
                     <div className="sticky top-28">
                         <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search posts" />
-                        <div className="relative flex flex-row justify-between w-full">
-                            <p className="text-sm font-semibold uppercase my-4 text-[var(--color-fg)]">Tags</p>
+                        <div className="flex items-center justify-between w-full mt-4 mb-2">
+                            <p className="text-sm font-semibold uppercase text-[var(--color-fg)]">Tags</p>
+                            <div className="h-6">
+                                {selectedTags.length > 0 ? (
+                                <button
+                                    onClick={() => setSelectedTags([])}
+                                    className="flex items-center gap-1 text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-fg)] cursor-pointer transition"
+                                    title="Clear Filters"
+                                >
+                                    <i className="ri-close-line text-base" />
+                                    <span className="hidden sm:inline">Clear</span>
+                                </button>
+                                ) : (
+                                <span className="invisible">Clear</span>
+                                )}
+                            </div>
                         </div>
-                        <ul className="flex flex-wrap sm:flex-col gap-1.5">
+                        <ul className="flex flex-wrap sm:flex-col gap-2">
                             {tags.map(tag => (
                                 <li key={tag} className="sm:w-full">
                                     <button 
