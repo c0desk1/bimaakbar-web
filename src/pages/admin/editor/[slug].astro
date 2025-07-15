@@ -1,16 +1,5 @@
 ---
 import AdminLayout from '../../../layouts/AdminLayout.astro';
-
-const { slug } = Astro.params;
-
 ---
-<AdminLayout title={`Edit: ${slug}`}>
-  <header class="mb-6">
-    <a href="/admin" class="text-blue-500 hover:underline">&larr; Kembali ke Daftar Postingan</a>
-    <h2 class="text-3xl font-bold mt-2">Mengedit: <span class="text-gray-600">{slug}</span></h2>
-  </header>
-
-  <div class="bg-white p-6 rounded-lg shadow-md">
-    <p>Form untuk mengedit konten postingan "<span class="font-semibold">{slug}</span>" akan ditampilkan di sini.</p>
-    </div>
+<AdminLayout>
 </AdminLayout>
