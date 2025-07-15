@@ -1,0 +1,25 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, summary } = post.data;
+---
+<Layout title={title} description={summary}>
+  <div class="animate">
+    <TopLayout entry={post} />
+  </div>
+  <div class="animate">
+    <BottomLayout entry={post} />
+  </div>
+</Layout>

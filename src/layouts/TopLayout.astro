@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate, readingTime } from "../lib/utils";
+
+type Props = {
+  entry: CollectionEntry<"projects"> | CollectionEntry<"blog">
+};
+
+const { entry } = Astro.props;
+const { collection, data, body } = entry;
+const { title, summary, date } = data;
+
+const demoUrl = collection === "projects" ? data.demoUrl : null;
+const repoUrl = collection === "projects" ? data.repoUrl : null;
+---
+
+<div class="pt-16 pb-5">
+  <!-- Back Button -->
+  <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-1.5 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-bg)] transition group">
+    <i class="ri-arrow-left-line text-base group-hover:-translate-x-0.5 transition-transform duration-200"></i>
+    <span>Kembali ke {collection}</span>
+  </a>
+
+  <!-- Metadata -->
+  <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
+    <div class="flex items-center gap-2">
+      <i class="ri-calendar-line text-base"></i>
+      {formatDate(date)}
+    </div>
+    <div class="flex items-center gap-2">
+      <i class="ri-book-open-line text-base"></i>
+      {readingTime(body)}
+    </div>
+  </div>
+
+  <!-- Title -->
+  <h1 class="text-3xl font-semibold text-[var(--color-fg)] mt-2">
+    {title}
+  </h1>
+
+  <!-- Summary -->
+  <p class="mt-1">
+    {summary}
+  </p>
+
+  <!-- Demo & Repo (optional) -->
+  {(demoUrl || repoUrl) && (
+    <div class="mt-6 flex flex-wrap gap-3">
+      {demoUrl && (
+        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded border border-border px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
+          <i class="ri-earth-line"></i> <span>See Demo</span>
+        </a>
+      )}
+      {repoUrl && (
+        <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded border border-border px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
+          <i class="ri-github-line"></i> <span>See Repository</span>
+        </a>
+      )}
+    </div>
+  )}
+</div>

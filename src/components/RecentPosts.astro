@@ -1,0 +1,25 @@
+---
+// src/components/RecentPosts.astro
+import { getCollection } from 'astro:content';
+import Card from "../components/Card"
+
+const posts = (await getCollection("blog"))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0,3)
+---
+<section id='recent-post' class="container mx-auto h-auto px-4 py-16 md:py-24">
+  <div class="flex justify-between items-center mb-8">
+    <h2 class="text-xl font-bold text-[var(--color-fg)]">Postingan Terbaru</h2>
+    <a href="/blog" class="border border-[var(--color-border)] hover:bg-[var(--color-hover)] hover:text-[var(--color-fg)] text-[var(--color-muted)] font-semibold py-2 px-5 rounded-lg transition-colors text-sm hidden sm:block">
+      Semua Postingan
+    </a>
+  </div>
+  <ul class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {posts.map((post) => (
+      <li>
+        <Card entry={post} />
+      </li>
+    ))}
+  </ul>  
+</section>
