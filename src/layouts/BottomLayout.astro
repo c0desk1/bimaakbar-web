@@ -24,29 +24,33 @@ const next = items[(index + 1) % items.length]
     <Content/>
   </article>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16">
-    <a href={`/${prev.collection}/${prev.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend">
-      <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend">
-        <div class="flex flex-wrap gap-2">
-          <div class="text-sm uppercase">
-            Prev
-          </div>
+    <a href={`/${prev.collection}/${prev.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-[var(--color-bg)] border-[var(--color-border)] blend">
+      <div class="order-2 w-full h-full group-hover:text-[var(--color-fg)] blend">
+        <div class="text-sm uppercase text-[var(--color-muted)]">
+          Sebelumnya
         </div>
-        <div class="font-semibold mt-3 text-black dark:text-white">
-          {prev.data.title}
-        </div>
+      <div class="font-semibold mt-3 text-[var(--color-fg)">
+        {prev.data.title}
       </div>
-      <i class="ri-arrow-left-line text-2xl group-hover:text-black dark:group-hover:text-white"></i>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)]">
+        <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+        <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+      </svg>
     </a>
-    <a href={`/${next.collection}/${next.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out">
-      <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend">
-        <div class="text-sm uppercase">
-          Next
+    <a href={`/${next.collection}/${next.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-[var(--color-bg)] border-[var(--color-border)] transition-colors duration-300 ease-in-out">
+      <div class="w-full h-full text-right group-hover:text-[var(--color-fg)] blend">
+        <div class="text-sm uppercase text-[var(--color-muted)]">
+          Selanjutnya
         </div>
-        <div class="font-semibold mt-3 text-black dark:text-white">
+        <div class="font-semibold mt-3 text-[var(--color-fg)">
           {next.data.title}
         </div>
       </div>
-      <i class="ri-arrow-right-line text-2xl group-hover:text-black dark:group-hover:text-white"></i>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)]">
+        <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
+        <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
+      </svg>
     </a>
   </div>
 </div>

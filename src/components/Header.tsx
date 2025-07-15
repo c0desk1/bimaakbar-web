@@ -84,8 +84,8 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`fixed top-0 z-50 w-full transition-all duration-300${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="container mx-auto px-4">
+    <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
+      <div className="container mx-auto">
         <div className="flex items-center justify-between h-16">
           <div className="flex-1">
             <a href="/" className="flex items-center gap-2 text-xl font-bold transition-colors">

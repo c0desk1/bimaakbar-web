@@ -1,6 +1,4 @@
 /* src/styles/global.css */
-
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 @import 'tailwindcss';
 
 @layer base {
@@ -30,7 +28,6 @@
   --color-hover: #e5e7eb;
   --color-accent: #007aff;
   --color-card-bg: #ffffff;
-
   --font-sans: 'Inter', 'sans-serif';
 }
 
@@ -52,17 +49,39 @@ html.dark {
   --color-hover: #2a2a2a;
   --color-accent: #0ea5e9;
   --color-card-bg: #111111;
-
   color-scheme: dark;
 
 }
 
-html,
 body {
-  height: 100%;
-  width: 100%;
+  line-height: 1.75;
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+main, section, article, .container {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  main, section, article, .container {
+    max-width: 768px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  main, section, article, .container {
+    max-width: 840px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
