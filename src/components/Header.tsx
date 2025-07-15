@@ -110,7 +110,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div className={`md:hidden absolute top-full left-0 w-full h-full bg-[var(--color-bg)] backdrop-blur-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-2'}`}>
-        <div className="container mx-auto flex flex-col items-center gap-6 py-8">
+        <div className="container mx-auto flex flex-col items-center gap-6 py-8 bg-[var(--color-card-bg)] rounded-lg">
           {
             LINKS.map((LINK) => (
               <a key={LINK.HREF} href={LINK.HREF} className={getMobileLinkClass(LINK.HREF)} onClick={toggleMenu}>{LINK.TEXT}</a>
