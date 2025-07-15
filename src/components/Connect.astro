@@ -3,25 +3,20 @@
 import { SITE, SOCIALS } from "../consts"
 ---
 <section class="container mx-auto py-6">
-  <div class="text-left">
-    <h2 class="text-xl md:text-xl font-bold text-[var(--color-fg)]">
-      Mari Terhubung
-    </h2>
-    <p class="text-md text-[var(--color-muted)]">
-      Hubungi saya melalui email atau media sosial.
-    </p>
-    <div class="text-left items-center flex flex-wrap justify-start gap-4 py-2">
-      <a href="mailto:contact@bimaakbar.my.id" class="flex items-center bg-[var(--color-fg)] text-[var(--color-bg)] font-semibold py-1 px-2 rounded-lg transition-transform hover:scale-105">
-        <i class="ri-mail-line"></i>
-      </a>
+    <div class="flex flex-col text-left">
+      <h2 class="text-xl md:text-xl font-bold text-[var(--color-fg)]">
+        Mari Terhubung
+      </h2>
+      <p class="text-md text-[var(--color-muted)]">
+        Hubungi saya melalui email atau media sosial.
+      </p>
       {
         SOCIALS.map((SOCIAL) => (
-          <a href={SOCIAL.HREF} target="_blank" aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} class="group text-left text-[var(--color-muted)] size-10 rounded-full p-2 flex items-center justify-center hover:bg-[var(--color-hover)] hover:text-[var(--color-fg)] transition">
+          <a href={SOCIAL.HREF} target="_blank" aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} class="group flex flex-row w-auto text-[var(--color-muted)] rounded-full text-left p-2 gap-2 items-center justify-start hover:text-[var(--color-fg)] transition">
             <i class={`text-xl ${SOCIAL.ICON}`}></i>
+            <p class="text-md hover:text-[var(--color-fg)]">{SOCIAL.TEXT}</p>
           </a>
         ))
       }
     </div>
-
-  </div>
 </section>

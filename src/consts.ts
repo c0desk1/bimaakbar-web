@@ -35,6 +35,12 @@ export const LINKS: Links = [
 
 export const SOCIALS: Socials = [
     { 
+      NAME: "Email",
+      ICON: "ri-mail-line",
+      TEXT: "Bima Akbar",
+      HREF: "mailto:contact@bimaakbar.my.id"
+    },
+    { 
       NAME: "TikTok",
       ICON: "ri-tiktok-line",
       TEXT: "Bima Akbar",

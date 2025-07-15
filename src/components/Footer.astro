@@ -5,32 +5,30 @@ import { SITE, SOCIALS } from "../consts"
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="border-t h-16 w-full border-[var(--color-border)]">
-  <div class="container mx-auto px-4 py-6 flex flex-col gap-2">
-    <div class="flex justify-between items-center flex-wrap">
-      <div class="flex flex-col gap-4">
-        <div class="flex flex-row gap-1">
-          <a href="/terms" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Ketentuan</a>
-          <span class="px-1 text-sm text-[var(--color-muted)]">-</span>
-          <a href="/privacy" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Privasi</a>
-        </div>
-        <p class="text-sm text-[var(--color-muted)] text-center sm:text-left">
-          &copy; {currentYear} <a href="/" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{SITE.TITLE}</a>. All rights reserved.
-        </p>
+<footer class="border-t border-[var(--color-border)]">
+  <div class="container mx-auto w-auto justify-center py-6 pl-4 pr-1">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 text-sm text-[var(--color-muted)]">
+      <div class="flex gap-2 justify-center md:justify-start">
+        <a href="/terms" class="hover:text-[var(--color-fg)]">Ketentuan</a>
+        <span>/</span>
+        <a href="/privacy" class="hover:text-[var(--color-fg)]">Privasi</a>
       </div>
-      <div class="flex justify-between items-center flex-wrap">
-        <div class="flex flex-col">
-          <div class="flex flex-row gap-2">
-            {
-              SOCIALS.map((SOCIAL) => (
-                <a href={SOCIAL.HREF} target="_blank" aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} class="group text-[var(--color-muted)] size-10 rounded-full p-2 flex items-center justify-center hover:bg-[var(--color-hover)] hover:text-[var(--color-fg)]">
-                  <i class={`text-xl ${SOCIAL.ICON}`}></i>
-                </a>
-              ))
-            }
-          </div> 
-        </div>
+      <div class="flex gap-4 justify-center items-center text-center md:hidden">
+        {SOCIALS.map((SOCIAL) => (
+          <a
+            href={SOCIAL.HREF}
+            target="_blank"
+            aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
+            class="group inline-flex text-center items-center justify-center w-9 h-9 rounded-full text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] transition"
+          >
+            <i class={`text-lg ${SOCIAL.ICON}`}></i>
+          </a>
+        ))}
+      </div>
+      <div class="text-center md:text-right">
+        &copy; {currentYear} <a href="/" class="hover:text-[var(--color-fg)]">{SITE.TITLE}</a>. All rights reserved.
       </div>
     </div>
   </div>
 </footer>
+

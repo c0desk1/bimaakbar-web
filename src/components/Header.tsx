@@ -85,7 +85,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed top-0 z-50 w-full ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="container mx-auto py-4 h-16 px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 py-4 h-16">
         <div className="flex items-center justify-between font-semibold">
           <div className="flex-1">
             <a href="/" className="flex gap-1 items-center text-center text-current hover:text-[var(--color-fg)]">
@@ -109,7 +109,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-bg)] backdrop-blur-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-2'}`}>
+      <div className={`md:hidden absolute top-full left-0 w-full h-full bg-[var(--color-bg)] backdrop-blur-lg transition-all duration-300 ease-in-out ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-2'}`}>
         <div className="container mx-auto flex flex-col items-center gap-6 py-8">
           {
             LINKS.map((LINK) => (

@@ -35,7 +35,7 @@ const BackToTopButton: React.FC = () => {
               <line x1="19" y1="12" x2="5" y2="12" className="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
               <polyline points="12 19 5 12 12 5" className="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
           </svg>
-          <div className="hidden sm:block group-hover:text-[var(--color-fg)]">
+          <div className="group-hover:text-[var(--color-fg)]">
             Back to top
           </div>
         </button>
