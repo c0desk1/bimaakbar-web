@@ -15,9 +15,9 @@ const { title, description } = Astro.props;
     <head>
         <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
     </head>
-    <body class="antialiased">
+    <body>
         <Header client:idle />
-        <main class="container mx-auto py-16 md:py-24">
+        <main class="container mx-auto px-4 py-16 md:py-24">
             <slot />
         </main>
 	    <StatusIndicator />
