@@ -4,18 +4,18 @@ import type { Site, Page, Links, Socials } from "./types"
 
 export const SITE: Site = {
     TITLE: "Bima Akbar",
-    DESCRIPTION: "Welcome to Astro Sphere, a portfolio and blog for designers and developers.",
+    DESCRIPTION: "Selamat datang. Sampai nanti",
     AUTHOR: "Bima Akbar",
 }
 
 export const BLOG: Page = {
     TITLE: "Blog",
-    DESCRIPTION: "Writing on topics I am passionate about.",
+    DESCRIPTION: "Menulis tentang topik yang saya minati.",
 }
   
 export const PROJECTS: Page = {
-    TITLE: "Projects",
-    DESCRIPTION: "Recent projects I have worked on.",
+    TITLE: "Proyek",
+    DESCRIPTION: "Proyek terkini yang telah saya kerjakan.",
 }
 
 export const LINKS: Links = [
@@ -35,28 +35,22 @@ export const LINKS: Links = [
 
 export const SOCIALS: Socials = [
     { 
-      NAME: "Email",
-      ICON: "ri-mail-line", 
-      TEXT: "markhorn.dev@gmail.com",
-      HREF: "mailto:markhorn.dev@gmail.com",
+      NAME: "TikTok",
+      ICON: "ri-tiktok-line",
+      TEXT: "Bima Akbar",
+      HREF: "https://tiktok.com/@bimaakbarmusicc"
     },
     { 
-      NAME: "Github",
-      ICON: "ri-github-line",
-      TEXT: "markhorn-dev",
-      HREF: "https://github.com/markhorn-dev/astro-sphere"
+      NAME: "Instagram",
+      ICON: "ri-instagram-line",
+      TEXT: "Bima Akbar",
+      HREF: "https://instagram.com/notmesound",
     },
     { 
-      NAME: "LinkedIn",
-      ICON: "ri-linkedin-line",
-      TEXT: "markhorn-dev",
-      HREF: "https://www.linkedin.com/in/markhorn-dev/",
-    },
-    { 
-      NAME: "Twitter",
-      ICON: "ri-twitter-x-line",
-      TEXT: "markhorn_dev",
-      HREF: "https://twitter.com/markhorn_dev",
+      NAME: "YouTube",
+      ICON: "ri-youtube-line",
+      TEXT: "Bima Akbar",
+      HREF: "https://youtube.com/bimaakbarmusic",
     },
 ]
   

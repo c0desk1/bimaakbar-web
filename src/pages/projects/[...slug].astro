@@ -1,72 +1,24 @@
 ---
 // src/pages/projects/[...slug].astro
-import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
-  return allProjects.map(project => ({
-    params: { slug: project.slug },
-    props: { project },
+  return allProjects.map(projects => ({
+    params: { slug: projects.slug },
+    props: { projects },
   }));
 }
 
-type Props = {
-  project: CollectionEntry<'projects'>;
-}
-const { project } = Astro.props;
-const { Content } = await project.render();
+const { projects } = Astro.props;
+const { title, summary } = projects.data;
+
 ---
-<Layout title={project.data.title} description={project.data.summary}>
-  <article class="container px-4 py-16 md:py-24">
-    <header class="text-center mb-12 max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-extrabold text=[var(--color-fg)] mb-4">{project.data.title}</h1>
-      <p class="text-lg text-[var(--color-muted)]">{project.data.summary}</p>
-    </header>
-    <Image 
-      src={project.data.image}
-      alt={`Gambar untuk ${project.data.title}`}
-      width={1200}
-      height={675}
-      format="webp"
-      class="w-full rounded-lg mb-12 shadow-lg"
-    />
-    
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
-      
-      <aside class="lg:col-span-1 lg:order-last">
-        <div class="sticky top-24 p-6 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg)]">
-          <h3 class="text-xl font-bold mb-4">Detail Proyek</h3>
-          
-          <div class="space-y-3 mb-6">
-            {project.data.liveUrl && (
-              <a href={project.data.liveUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-cyan-400 hover:underline">
-                <i class="ri-external-link-line"></i>
-                <span>Lihat Live</span>
-              </a>
-            )}
-            {project.data.repoUrl && (
-              <a href={project.data.repoUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-cyan-400 hover:underline">
-                <i class="ri-github-fill"></i>
-                <span>Lihat Kode</span>
-              </a>
-            )}
-          </div>
-          
-          <h4 class="font-bold mb-2">Teknologi</h4>
-          <div class="flex flex-wrap gap-2">
-            {project.data.technologies.map((tech) => (
-              <span class="bg-gray-700/50 text-gray-300 text-xs font-semibold px-2 py-1 rounded-full">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </aside>
-      <main class="lg:col-span-3 prose prose-invert max-w-none prose-lg">
-        <Content />
-      </main>
-    </div>
-  </article>
+
+<Layout title={title} description={summary}>
+  <TopLayout entry={projects} />
+  <BottomLayout entry={projects} />
 </Layout>

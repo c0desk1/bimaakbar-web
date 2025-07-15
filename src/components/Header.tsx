@@ -85,8 +85,8 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed top-0 z-50 w-full ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 font-semibold">
+      <div className="container mx-auto py-4 h-16">
+        <div className="flex items-center justify-between font-semibold">
           <div className="flex-1">
             <a href="/" className="flex gap-1 items-center text-center text-current hover:text-[var(--color-fg)]">
               <Logo width={32} height={32} />
@@ -94,11 +94,9 @@ const Header: React.FC = () => {
             </a>
           </div>
           <nav className="hidden md:flex items-center gap-4 px-4">
-            {
-              LINKS.map((LINK) => (
-                <a key={LINK.HREF} href={LINK.HREF} className={getLinkClass(LINK.HREF)}>{LINK.TEXT}</a>
-              ))
-            }
+            {LINKS.map((LINK) => (
+              <a key={LINK.HREF} href={LINK.HREF} className={getLinkClass(LINK.HREF)}>{LINK.TEXT}</a>
+            ))}
           </nav>
           <div className="flex-1 flex items-center justify-end gap-4">
             <div className="hidden md:flex items-center gap-4">

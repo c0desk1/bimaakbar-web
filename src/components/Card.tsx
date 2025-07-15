@@ -1,3 +1,4 @@
+//src/components/Card.tsx
 import { formatDate, truncateText } from "../lib/utils"
 import type { CollectionEntry } from "astro:content"
 

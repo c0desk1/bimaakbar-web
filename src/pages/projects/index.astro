@@ -1,10 +1,18 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from '../../layouts/Layout.astro';
 import { PROJECTS } from "../../consts"
+import ProjectFilter from "../../components/ProjectFilter.tsx";
+
+const allProjects = await getCollection('projects');
+
+const allTags = [
+  ...new Set(allProjects.flatMap(entry => entry.data.tags || []))
+].sort();
 ---
 <Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
-  <section class="container mx-auto">
-    <div class="flex flex-col text-left items-left mt-16">
+  <section class="container relative w-full mx-auto">
+    <div class="flex flex-col justify-start text-left">
       <h1 class="text-3xl font-semibold text-[var(--color-fg)]">
         {PROJECTS.TITLE}
       </h1>
@@ -13,4 +21,5 @@ import { PROJECTS } from "../../consts"
       </span>
     </div>
   </section>
+  <ProjectFilter projects={allProjects} tags={allTags} client:load />
 </Layout>

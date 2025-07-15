@@ -2,18 +2,17 @@
 // src/components/Connect.astro
 import { SITE, SOCIALS } from "../consts"
 ---
-<section class="container mx-auto h-auto py-16 md:py-24">
+<section class="container mx-auto py-6">
   <div class="text-left">
     <h2 class="text-xl md:text-xl font-bold text-[var(--color-fg)]">
-      Let's Connect
+      Mari Terhubung
     </h2>
-    <p class="mt-4 text-md text-[var(--color-muted)]">
-      Reach out to me via email or on social media.
+    <p class="text-md text-[var(--color-muted)]">
+      Hubungi saya melalui email atau media sosial.
     </p>
-    <div class="text-left items-center mt-8 flex flex-wrap justify-start gap-4">
-      <a href="mailto:contact@bimaakbar.my.id" class="flex items-center gap-2 bg-[var(--color-fg)] text-[var(--color-bg)] font-semibold py-3 px-6 rounded-lg transition-transform hover:scale-105">
+    <div class="text-left items-center flex flex-wrap justify-start gap-4 py-2">
+      <a href="mailto:contact@bimaakbar.my.id" class="flex items-center bg-[var(--color-fg)] text-[var(--color-bg)] font-semibold py-1 px-2 rounded-lg transition-transform hover:scale-105">
         <i class="ri-mail-line"></i>
-        <span>Email Me</span>
       </a>
       {
         SOCIALS.map((SOCIAL) => (

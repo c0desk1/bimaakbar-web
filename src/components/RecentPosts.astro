@@ -8,10 +8,10 @@ const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0,4)
 ---
-<section id='recent-post' class="container mx-auto h-auto py-16 md:py-24">
-  <div class="group flex justify-between items-center mb-4">
-    <h2 class="text-xl font-bold text-[var(--color-fg)]">Postingan Terbaru</h2>
-    <a href="/blog" class="flex flex-row items-center hover:text-[var(--color-fg)] text-[var(--color-muted)] border border-[var(--color-border)] hover:bg-[var(--color-hover)] py-2 px-2 rounded-xl transition-colors cursor-pointer">
+<section id='recent-post' class="container mx-auto h-auto py-22">
+  <div class="group flex flex-row justify-between items-center py-4">
+    <h2 class="text-xl font-bold text-[var(--color-fg)] flex-1">Postingan Terbaru</h2>
+    <a href="/blog" class="flex flex-row items-center hover:text-[var(--color-fg)] text-[var(--color-muted)] border border-[var(--color-border)] hover:bg-[var(--color-hover)] py-2 px-2 rounded-xl cursor-pointer">
       <span class="font-semibold text-sm hidden sm:block">
         Semua Postingan
       </span>
