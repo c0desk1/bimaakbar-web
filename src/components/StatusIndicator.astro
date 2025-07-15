@@ -1,17 +1,17 @@
 ---
 // src/components/StatusIndicator.astro
+import BackToTop from '../components/BackToTop.tsx';
 ---
-<section class="container mx-auto py-16">
-    <div class="flex justify-center items-center gap-4 border border-[var(--color-border)] bg-[var(--color-bg)]-900/50 rounded-lg max-w-md mx-auto p-4">
-  
+<section class="container mx-auto py-4">
+    <BackToTop client:visible />
+    <div class="flex justify-end items-center gap-4 mx-auto">
       <span class="relative flex h-3 w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-50"></span>
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full border border-[var(--color-accent)] opacity-50"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-accent)] opacity-75"></span>
       </span>
-  
-      <p class="font-medium text-gray-300">
-        All systems normal. Ready for new opportunities.
+      <p class="font-medium text-[var(--color-muted)]">
+        All systems normal.
       </p>
-  
     </div>
   </section>

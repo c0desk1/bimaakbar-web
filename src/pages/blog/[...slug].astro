@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
@@ -16,10 +16,6 @@ const { post } = Astro.props;
 const { title, summary } = post.data;
 ---
 <Layout title={title} description={summary}>
-  <div class="animate">
     <TopLayout entry={post} />
-  </div>
-  <div class="animate">
     <BottomLayout entry={post} />
-  </div>
 </Layout>

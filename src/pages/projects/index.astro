@@ -1,7 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { PROJECTS } from "../../consts"
 ---
-<Layout title="Projects">
-  <h1 class="text-4xl font-bold">Halaman Proyek</h1>
-  <p class="mt-4 text-gray-400">Daftar proyek akan muncul di sini.</p>
+<Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
+  <section class="container mx-auto">
+    <div class="flex flex-col text-left items-left mt-16">
+      <h1 class="text-3xl font-semibold text-[var(--color-fg)]">
+        {PROJECTS.TITLE}
+      </h1>
+      <span class="mt-1">
+        {PROJECTS.DESCRIPTION}
+      </span>
+    </div>
+  </section>
 </Layout>

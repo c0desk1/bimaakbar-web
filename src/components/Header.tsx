@@ -29,8 +29,8 @@ const ThemeToggleButton = () => {
   };
   
   return (
-    <button onClick={toggleTheme} className="text-2xl text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-full cursor-pointer transition-colors">
-      {isDark ? <i className="ri-sun-line px-1 py-1" /> : <i className="ri-moon-line px-1 py-1" />}
+    <button onClick={toggleTheme} className="flex items-center justify-center size-9 text-xl p-2 text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-xl cursor-pointer">
+      {isDark ? <i className="ri-sun-line" /> : <i className="ri-moon-line" />}
     </button>
   );
 };
@@ -76,24 +76,24 @@ const Header: React.FC = () => {
 }, [isMenuOpen]);
 
   const getLinkClass = (href: string) => {
-    return href === currentPath ? 'text-[var(--color-fg)] px-2 font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] px-2';
+    return href === currentPath ? 'text-[var(--color-fg)] py-1 px-2' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] py-1 px-2 rounded-lg';
   };
 
   const getMobileLinkClass = (href: string) => {
-    return href === currentPath ? 'text-[var(--color-fg)] px-2 font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] px-2';
+    return href === currentPath ? 'text-[var(--color-fg)] px-2 py-1' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)] px-2 py-1';
   };
 
   return (
-    <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
+    <header className={`fixed top-0 z-50 w-full ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
       <div className="container mx-auto">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 font-semibold">
           <div className="flex-1">
-            <a href="/" className="flex items-center gap-2 text-xl font-bold transition-colors">
-              <Logo width={32} height={32} className='text-[var(-color-muted)] hover:text-[var(--color-fg)]' />
-              <span className="hidden md:inline text-[var(-color-muted)] hover:text-[var(--color-fg)]">{SITE.TITLE}</span>
+            <a href="/" className="flex gap-1 items-center text-center text-current hover:text-[var(--color-fg)]">
+              <Logo width={32} height={32} />
+              <span className="hidden md:inline">{SITE.TITLE}</span>
             </a>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-4 px-4">
             {
               LINKS.map((LINK) => (
                 <a key={LINK.HREF} href={LINK.HREF} className={getLinkClass(LINK.HREF)}>{LINK.TEXT}</a>
@@ -104,7 +104,8 @@ const Header: React.FC = () => {
             <div className="hidden md:flex items-center gap-4">
               <ThemeToggleButton />
             </div>
-            <button className="md:hidden text-2xl" onClick={toggleMenu} aria-label="Buka Menu">
+            
+            <button className="md:hidden text-xl flex items-center justify-center size-9 p-2 text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-xl cursor-pointer" onClick={toggleMenu} aria-label="Buka Menu">
               {isMenuOpen ? <i className="ri-close-line"></i> : <i className="ri-menu-3-line"></i>}
             </button>
           </div>

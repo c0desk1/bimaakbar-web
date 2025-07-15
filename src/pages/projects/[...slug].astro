@@ -19,13 +19,11 @@ const { project } = Astro.props;
 const { Content } = await project.render();
 ---
 <Layout title={project.data.title} description={project.data.summary}>
-  <article class="container mx-auto px-4 py-16 md:py-24">
-    
+  <article class="container px-4 py-16 md:py-24">
     <header class="text-center mb-12 max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">{project.data.title}</h1>
-      <p class="text-lg text-gray-400">{project.data.summary}</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold text=[var(--color-fg)] mb-4">{project.data.title}</h1>
+      <p class="text-lg text-[var(--color-muted)]">{project.data.summary}</p>
     </header>
-
     <Image 
       src={project.data.image}
       alt={`Gambar untuk ${project.data.title}`}
@@ -38,7 +36,7 @@ const { Content } = await project.render();
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
       
       <aside class="lg:col-span-1 lg:order-last">
-        <div class="sticky top-24 p-6 border border-gray-800 rounded-lg bg-gray-900/50">
+        <div class="sticky top-24 p-6 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg)]">
           <h3 class="text-xl font-bold mb-4">Detail Proyek</h3>
           
           <div class="space-y-3 mb-6">
