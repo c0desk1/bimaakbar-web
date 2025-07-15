@@ -43,6 +43,10 @@
   --max-width-content: 1024px;
 
   --transition-default: background-color 0.3s ease, color 0.3s ease;
+  
+  --header-height: 4rem; /* Sekitar 64px */
+  --footer-height: 4rem; /* Sekitar 64px */
+  
  /* Ukuran Font Prosa */
   --prose-font-size: var(--font-size-base); /* Menggunakan ukuran font dasar sebagai default */
   --prose-line-height: 1.7; /* Ketinggian baris untuk keterbacaan prosa */
@@ -460,6 +464,167 @@ hr {
     padding-left: var(--spacing-xs);
     margin-left: 0; /* Tidak ada margin samping */
     margin-right: 0;
+  }
+}
+
+header {
+  background-color: var(--color-card-bg); /* Latar belakang seperti kartu */
+  color: var(--color-fg);
+  padding: var(--spacing-sm) var(--spacing-unit); /* Padding atas/bawah dan samping */
+  box-shadow: var(--box-shadow-sm); /* Bayangan tipis */
+  position: sticky; /* Membuat header sticky di atas */
+  top: 0;
+  z-index: 1000; /* Pastikan header di atas elemen lain */
+  width: 100%;
+  border-bottom: 1px solid var(--color-border); /* Garis bawah pemisah */
+
+  display: flex;
+  justify-content: space-between; /* Untuk logo di kiri, nav di kanan */
+  align-items: center;
+  min-height: var(--header-height); /* Tinggi minimum header */
+}
+
+/* Kontainer dalam Header (untuk membatasi lebar konten) */
+header .header-content {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  width: 100%; /* Penting agar max-width bekerja */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo atau Judul Situs di Header */
+header .logo {
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  color: var(--color-accent); /* Warna aksen untuk logo */
+  text-decoration: none;
+  white-space: nowrap; /* Mencegah logo pecah baris */
+}
+
+/* Navigasi di Header (jika ada) */
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-md); /* Jarak antar item menu */
+}
+
+header nav ul li a {
+  color: var(--color-fg);
+  text-decoration: none;
+  padding: var(--spacing-xs) 0;
+  transition: color 0.2s ease-in-out;
+}
+
+header nav ul li a:hover {
+  color: var(--color-accent);
+}
+
+/* --- 3. Footer: Informasi Tambahan dan Hak Cipta --- */
+footer {
+  background-color: var(--color-bg-secondary); /* Latar belakang sekunder */
+  color: var(--color-muted); /* Warna teks muted */
+  padding: var(--spacing-lg) var(--spacing-unit); /* Padding atas/bawah dan samping */
+  text-align: center;
+  border-top: 1px solid var(--color-border); /* Garis atas pemisah */
+  margin-top: auto; /* Penting untuk "sticky footer" saat body flex-direction column */
+  min-height: var(--footer-height); /* Tinggi minimum footer */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Kontainer dalam Footer (untuk membatasi lebar konten) */
+footer .footer-content {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  width: 100%;
+}
+
+footer p {
+  margin: var(--spacing-xs) 0; /* Margin untuk paragraf di footer */
+  font-size: var(--font-size-small);
+}
+
+footer a {
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+footer a:hover {
+  color: var(--color-accent);
+}
+
+/* --- 4. Responsivitas Header & Footer --- */
+
+/* Untuk Tablet dan Layar Menengah (max-width: 768px) */
+@media (max-width: 768px) {
+  header {
+    padding: var(--spacing-xs) var(--spacing-half); /* Padding lebih kecil */
+    min-height: calc(var(--header-height) * 0.8); /* Tinggi sedikit berkurang */
+  }
+
+  header .logo {
+    font-size: var(--font-size-base); /* Ukuran logo lebih kecil */
+  }
+
+  header nav ul {
+    gap: var(--spacing-sm); /* Jarak antar item menu lebih kecil */
+  }
+
+  header nav ul li a {
+    font-size: var(--font-size-small); /* Ukuran teks menu lebih kecil */
+  }
+
+  footer {
+    padding: var(--spacing-md) var(--spacing-half); /* Padding lebih kecil */
+    min-height: calc(var(--footer-height) * 0.8); /* Tinggi sedikit berkurang */
+  }
+
+  footer p {
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Untuk Ponsel / Android (max-width: 480px) */
+@media (max-width: 480px) {
+  header {
+    /* Mungkin perlu menu hamburger di sini jika navigasi banyak */
+    padding: var(--spacing-xs);
+    flex-wrap: wrap; /* Izinkan wrap jika item terlalu banyak */
+    justify-content: center; /* Pusatkan item jika wrap */
+    min-height: auto; /* Biarkan tinggi menyesuaikan konten */
+  }
+
+  header .logo {
+    font-size: var(--font-size-base);
+    flex-basis: 100%; /* Logo bisa mengambil lebar penuh di atas */
+    text-align: center;
+    margin-bottom: var(--spacing-xs); /* Jarak ke navigasi */
+  }
+
+  header nav {
+    flex-basis: 100%; /* Navigasi mengambil lebar penuh */
+  }
+
+  header nav ul {
+    justify-content: center; /* Pusatkan menu */
+    gap: var(--spacing-xs); /* Jarak antar item menu sangat kecil */
+  }
+
+  footer {
+    padding: var(--spacing-sm) var(--spacing-xs);
+    min-height: auto;
+  }
+
+  footer p {
+    font-size: var(--font-size-small);
   }
 }
 
