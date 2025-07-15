@@ -85,7 +85,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed top-0 z-50 w-full ${isScrolled ? 'bg-[var(--color-bg)] backdrop-blur-md border-b border-[var(--color-border)]' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="container mx-auto py-4 h-16">
+      <div className="container mx-auto py-4 h-16 sm:px-6">
         <div className="flex items-center justify-between font-semibold">
           <div className="flex-1">
             <a href="/" className="flex gap-1 items-center text-center text-current hover:text-[var(--color-fg)]">
