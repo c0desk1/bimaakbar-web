@@ -8,6 +8,16 @@ export const SITE: Site = {
     AUTHOR: "Bima Akbar",
 }
 
+export const HOME: Page = {
+TITLE: "Beranda",
+DESCRIPTION: "Selamat datang. Sampai nanti",
+}
+
+export const ABOUT: Page = {
+TITLE: "Tentang",
+DESCRIPTION: "Tentang Saya",
+}
+
 export const BLOG: Page = {
     TITLE: "Blog",
     DESCRIPTION: "Menulis tentang topik yang saya minati.",
@@ -52,6 +62,12 @@ export const SOCIALS: Socials = [
       TEXT: "Bima Akbar",
       HREF: "https://instagram.com/notmesound",
     },
+{
+NAME: "Spotify",
+ICON: "ri-spotify-line",
+TEXT: "Bima Akbar",
+HREF: "https://open.spotify.com/artist/5ZLO25pWHVvAje7M6rVgUR",
+}
     { 
       NAME: "YouTube",
       ICON: "ri-youtube-line",
