@@ -1,6 +1,6 @@
 ---
 // src/pages/index.astro
-import { SITE } from "../consts"
+import { HOME } from "../consts"
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import RecentPosts from '../components/RecentPosts.astro';
@@ -8,7 +8,7 @@ import RecentProjects from '../components/RecentProjects.astro';
 import Connect from '../components/Connect.astro';
 ---
 
-<Layout title="Home" description={SITE.DESCRIPTION}>
+<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
 	<Hero />
 	<RecentPosts />
 	<RecentProjects />
