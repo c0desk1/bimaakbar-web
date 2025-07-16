@@ -67,7 +67,7 @@ NAME: "Spotify",
 ICON: "ri-spotify-line",
 TEXT: "Bima Akbar",
 HREF: "https://open.spotify.com/artist/5ZLO25pWHVvAje7M6rVgUR",
-}
+},
     { 
       NAME: "YouTube",
       ICON: "ri-youtube-line",
