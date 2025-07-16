@@ -2,8 +2,9 @@
 // src/pages/terms.astro
 import Layout from '../../layouts/Layout.astro';
 import Container from '../../components/Container.astro';
+import { TERMS } from '../../consts';
 ---
-<Layout title="Syarat dan Ketentuan">
+<Layout title={TERMS.TITLE} description={TERMS.DESCRIPTION}>
   <Container size="xl">
     <div class="py-16 md:py-24">
       <article class="prose prose-invert">
