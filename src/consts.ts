@@ -28,6 +28,16 @@ export const PROJECTS: Page = {
     DESCRIPTION: "Proyek terkini yang telah saya kerjakan.",
 }
 
+export const TERMS: Page = {
+TITLE: "Ketentuan",
+DESCRIPTION: "Ketentuan",
+}
+
+export const PRIVACY: Page = {
+TITLE: "Privasi",
+DESCRIPTION: : "Privasi",
+}
+
 export const LINKS: Links = [
     { 
       TEXT: "Home", 
