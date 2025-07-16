@@ -11,5 +11,16 @@ export default defineConfig({
   integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
+  },
+  markdown: {
+    shikiConfig: {
+      theme: 'one-dark-pro',
+      // Atau gunakan dua tema untuk light & dark mode
+      // themes: {
+      //   light: 'github-light',
+      //   dark: 'github-dark',
+      // },
+      wrap: true,
+    },
   }
 });

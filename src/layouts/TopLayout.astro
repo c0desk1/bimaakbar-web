@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate, readingTime } from "../lib/utils";
+
+type Props = {
+  entry: CollectionEntry<"projects"> | CollectionEntry<"blog">
+};
+
+const { entry } = Astro.props;
+const { collection, data, body } = entry;
+const { title, summary, date } = data;
+
+const demoUrl = collection === "projects" ? data.demoUrl : null;
+const repoUrl = collection === "projects" ? data.repoUrl : null;
+---
+
+<div class="container mx-auto">
+  <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-1.5 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-hover)] transition group">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)">
+      <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+      <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+    </svg>
+    <span>Kembali ke {collection}</span>
+  </a>
+  <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
+    <div class="flex items-center gap-2">
+      <i class="ri-calendar-line text-base"></i>
+      {formatDate(date)}
+    </div>
+    <div class="flex items-center gap-2">
+      <i class="ri-book-open-line text-base"></i>
+      {readingTime(body)}
+    </div>
+  </div>
+  <h1 class="text-3xl font-semibold text-[var(--color-fg)] mt-2">
+    {title}
+  </h1>
+  <p class="mt-1">
+    {summary}
+  </p>
+  {(demoUrl || repoUrl) && (
+    <div class="mt-6 flex flex-wrap gap-3">
+      {demoUrl && (
+        <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded border border-border px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
+          <i class="ri-earth-line"></i> <span>See Demo</span>
+        </a>
+      )}
+      {repoUrl && (
+        <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded border border-border px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
+          <i class="ri-github-line"></i> <span>See Repository</span>
+        </a>
+      )}
+    </div>
+  )}
+</div>

@@ -1,0 +1,25 @@
+---
+// src/components/Socials.astro
+import { SITE, SOCIALS } from "../consts"
+import Container from "../components/Container.astro"
+---
+<section class="container mx-auto py-6">
+  <Container size="xl">
+    <div class="flex flex-col text-left">
+      <h2 class="text-xl md:text-xl font-bold text-[var(--color-fg)]">
+        Mari Terhubung
+      </h2>
+      <p class="text-md text-[var(--color-muted)]">
+        Hubungi saya melalui email atau media sosial.
+      </p>
+      {
+        SOCIALS.map((SOCIAL) => (
+          <a href={SOCIAL.HREF} target="_blank" aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} class="group flex flex-row w-auto text-[var(--color-muted)] rounded-full text-left p-2 gap-2 items-center justify-start hover:text-[var(--color-fg)] transition">
+            <i class={`text-xl ${SOCIAL.ICON}`}></i>
+            <p class="text-md hover:text-[var(--color-fg)]">{SOCIAL.TEXT}</p>
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</section>

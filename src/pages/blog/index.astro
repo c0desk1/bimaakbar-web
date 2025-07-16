@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Container from "../../components/Container.astro";
+import BlogFilter from '../../components/BlogFilter.tsx';
+import { getCollection } from 'astro:content';
+import { BLOG } from "../../consts";
+
+
+const posts = (await getCollection('blog')).filter(p => !p.data.draft);
+const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+---
+
+<Layout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
+  <section class="container relative w-full mx-auto">
+    <Container size="xl">
+      <div class="flex flex-col justify-start text-left">
+        <h1 class="text-3xl font-semibold text-[var(--color-fg)]">
+          {BLOG.TITLE}
+        </h1>
+        <div class="mt-1">
+          {BLOG.DESCRIPTION}
+        </div>
+      </div>
+  </Container>
+  </section>
+  <BlogFilter posts={posts} tags={tags} client:load />
+</Layout>
