@@ -1,0 +1,56 @@
+---
+// src/pages/about/index.astro
+
+import Layout from '../../layouts/Layout';
+import Container from '../../components/Container.astro';
+import Connect from '../../components/Connect.astro';
+import { SITE, ABOUT } from '../../consts';
+---
+
+<Layout title={ABOUT.TITLE} description={ABOUT.DESCRIPTION}>
+  <Container size="xl">
+    <div class="prose prose-lg mx-auto py-16">
+      
+      <h1>Tentang Saya</h1>
+      <p>
+        Halo! Saya {SITE.TITLE}, seorang pengembang web dan penggemar teknologi 
+        dengan hasrat untuk menciptakan solusi digital yang elegan dan efisien. 
+        Perjalanan saya di dunia pemrograman dimulai dari rasa penasaran sederhana 
+        tentang bagaimana sebuah situs web bekerja, dan kini telah berkembang menjadi 
+        karier yang saya cintai.
+      </p>
+      
+      <img 
+        src="/favicon.svg" 
+        alt="Foto Bima Akbar"
+        class="aspect-video w-full rounded-lg object-cover"
+      />
+
+      <h2>Latar Belakang & Keahlian</h2>
+      <p>
+        Dengan latar belakang di bidang [Sebutkan bidang studi atau pengalaman Anda, misal: Teknik Informatika], 
+        saya memiliki fondasi yang kuat dalam pemecahan masalah dan desain sistem. 
+        Saya berspesialisasi dalam pengembangan front-end menggunakan teknologi modern 
+        seperti React, Vue, dan tentu saja, Astro. Saya juga memiliki pengalaman 
+        dengan back-end menggunakan Node.js dan Express.
+      </p>
+      <ul>
+        <li><strong>Bahasa Pemrograman:</strong> JavaScript, TypeScript, HTML, CSS</li>
+        <li><strong>Framework & Library:</strong> React, Next.js, Astro, Tailwind CSS</li>
+        <li><strong>Tools & Platform:</strong> Git, GitHub, Vercel, Figma</li>
+      </ul>
+
+      <h2>Misi Saya</h2>
+      <p>
+        Misi saya adalah membangun aplikasi yang tidak hanya berfungsi dengan baik, 
+        tetapi juga memberikan pengalaman pengguna yang luar biasa. Saya percaya bahwa 
+        kode yang bersih, arsitektur yang terstruktur, dan perhatian pada detail 
+        adalah kunci untuk mencapai hal tersebut.
+      </p>
+      
+    </div>
+  </Container>
+
+  <Connect />
+
+</Layout>
