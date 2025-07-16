@@ -2,8 +2,9 @@
 // src/pages/privacy.astro
 import Layout from '../../layouts/Layout.astro';
 import Container from '../../components/Container.astro';
+import {PRIVACY} from '../../consts';
 ---
-<Layout title="Kebijakan Privasi">
+<Layout title={PRIVACY.TITLE} description={PRIVACY.DESCRIPTION}>
   <Container size="xl">
     <div class="py-16 md:py-24">
       <article class="prose prose-invert">
