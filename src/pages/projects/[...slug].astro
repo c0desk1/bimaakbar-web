@@ -23,11 +23,7 @@ const { headings } = await projects.render();
 <Layout title={title} description={summary}>
   <Container size="xl">
     <TopLayout entry={projects} />
-    <aside class="hidden md:block">
-      <div class="sticky top-24">
-        <TableOfContents headings={headings} />
-      </div>
-    </aside>
-  <BottomLayout entry={projects} />
+    <TableOfContents headings={headings} />
+    <BottomLayout entry={projects} />
   </Container>
 </Layout>

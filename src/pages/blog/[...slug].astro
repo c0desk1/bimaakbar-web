@@ -6,6 +6,7 @@ import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import BackToTop from '../../components/BackToTop.tsx';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
@@ -21,12 +22,17 @@ const { headings } = await post.render();
 ---
 <Layout title={title} description={summary}>
   <Container size="xl">
-    <TopLayout entry={post} />
-    <aside class="hidden md:block w-auto flex-shrink-0">
-      <div class="sticky top-16">
-        <TableOfContents headings={headings} />
+    <div class="main-content flex-grow min-w-0"> 
+      <TopLayout entry={post} />
+    </div>
+    <div class="flex flex-col md:flex-row gap-12 items-start">
+      <div class="main-content flex-grow min-w-0"> 
+        <BottomLayout entry={post} />
       </div>
-    </aside>
-    <BottomLayout entry={post} />
+      <div class="sticky flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0">
+        <TableOfContents headings={headings} />
+        <BackToTop client:visible />
+    </div>
+    </div>
   </Container>
 </Layout>

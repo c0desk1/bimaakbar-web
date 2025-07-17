@@ -54,6 +54,7 @@ html {
   color-scheme: light;
   scroll-behavior: smooth;
   background-color: var(--color-bg);
+  scroll-padding-top: 88px;
 }
 
 *, *::before, *::after {
@@ -412,51 +413,13 @@ main {
   user-select: none;
 }
 
-.toc-sidebar {
-  font-size: 0.875rem;
-  background-color: var(--color-card-bg);
-}
-
-.toc-sidebar::before {
-  content: 'Pada Halaman Ini';
-  display: block;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-muted);
-}
-
-.toc-sidebar ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0;
-}
-
-.toc-item[data-depth="3"] {
-  padding-left: 1rem;
-}
-
 .toc-link {
-  display: block;
-  padding: 0.25rem 0.5rem;
   color: var(--color-muted);
-  text-decoration: none;
-  border-left: 2px solid transparent;
-  transition: all 0.2s ease-in-out;
-}
-
-.toc-link:hover {
-  color: var(--color-fg);
-  background-color: var(--color-hover);
-  border-radius: 8px;
 }
 
 .toc-link.is-active {
-  color: var(--color-accent);
+  color: var(--color-fg);
   font-weight: 600;
-  border-left-color: var(--color-accent);
 }
 
 .copy-code-button {

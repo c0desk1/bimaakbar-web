@@ -1,43 +1,95 @@
 ---
 // src/components/TableOfContents.astro
 import type { MarkdownHeading } from 'astro';
+import BackToTop from '../components/BackToTop.tsx';
 
 interface Props {
   headings: MarkdownHeading[];
 }
 
 const { headings } = Astro.props;
-const filteredHeadings = headings.filter(h => h.depth > 1 && h.depth < 4);
+const filtered = headings.filter(h => h.depth > 1 && h.depth < 4);
 ---
-<nav class="toc-sidebar px-2 py-2 rounded-lg" aria-label="Daftar Isi">
-  <ul>
-    {filteredHeadings.map(heading => (
-      <li class="toc-item" data-depth={heading.depth}>
-        <a class="toc-link" href={`#${heading.slug}`}>{heading.text}</a>
-      </li>
-    ))}
-  </ul>
-</nav>
 
-<script>
+{filtered.length > 0 && (
+  <aside class="h-auto">
+    <div class="rounded-xl bg-[var(--color-card-bg)] border border-[var(--color-border)] block md:hidden px-2 py-1">
+      <button id="toc-toggle" class="flex items-center justify-between text-sm font-medium cursor-pointer" aria-expanded="false" aria-controls="toc-body">
+        <i id="toc-chevron" class="ri-arrow-down-s-fill transition-transform px-1"></i>
+        <span class="text-[var(--color-fg)] block md:hidden py-4">On this page</span>
+      </button>
+    </div>
+    <nav id="toc-body" class="hidden md:block text-md" aria-label="Table of Contents">
+      <div class="px-4 gap-2">
+        <span class="text-[var(--color-fg)] hidden md:block py-4">On this page</span>
+          {filtered.map((h) => (
+          <a href={`#${h.slug}`} class="toc-link block gap-2 py-2 text-[var(--color-muted)] hover:text-[var(--color-fg)]" data-id={h.slug}>
+            {h.text}
+          </a>
+        ))}
+      </div>
+    </nav>
+  </aside>
+)}
+
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const id = entry.target.getAttribute('id');
-        const link = document.querySelector(`.toc-link[href="#${id}"]`);
-        if (link) {
-          if (entry.isIntersecting) {
-            document.querySelectorAll('.toc-link.is-active').forEach(l => l.classList.remove('is-active'));
-            link.classList.add('is-active');
-          }
-        }
-      });
-    }, {
-      rootMargin: '0px 0px -80% 0px'
+    const toggleBtn = document.getElementById('toc-toggle');
+    const tocBody = document.getElementById('toc-body');
+    const chevron = document.getElementById('toc-chevron');
+
+    toggleBtn?.addEventListener('click', () => {
+      tocBody.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-180');
+      toggleBtn.setAttribute(
+        'aria-expanded',
+        String(tocBody.classList.contains('hidden') === false)
+      );
     });
 
-    document.querySelectorAll('article h2, article h3').forEach(heading => {
-      observer.observe(heading);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const activeId = visible[0]?.target.id;
+        document.querySelectorAll('.toc-link').forEach((link) => {
+          const hrefId = link.getAttribute('href')?.slice(1);
+          if (hrefId === activeId) {
+            link.classList.add('text-white');
+          } else {
+            link.classList.remove('text-white');
+          }
+        });
+      },
+      {
+        rootMargin: '-20% 0px -79% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    document
+      .querySelectorAll('article h2[id], article h3[id]')
+      .forEach((el) => observer.observe(el));
+
+    document.querySelectorAll('.toc-link').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('href')?.slice(1);
+        const target = document.getElementById(id);
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: 'smooth',
+          });
+        }
+
+        if (window.innerWidth < 768) {
+          tocBody.classList.add('hidden');
+          chevron.classList.remove('rotate-180');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
     });
   });
 </script>

@@ -34,3 +34,19 @@ export function truncateText(str: string, maxLength: number): string {
   
     return sliced + ellipsis;
 }
+
+export function getBreadcrumbs(slug: string): { name: string; href: string }[] {
+    const segments = slug.split("/").filter(Boolean);
+    const breadcrumbs = [];
+  
+    let path = "";
+    for (const segment of segments) {
+      path += `/${segment}`;
+      breadcrumbs.push({
+        name: segment.replace(/-/g, " "),
+        href: path
+      });
+    }
+  
+    return breadcrumbs;
+  }
