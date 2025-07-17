@@ -12,6 +12,7 @@ interface Props {
 
 export default function TableOfContents({ headings }: Props) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -51,13 +52,12 @@ export default function TableOfContents({ headings }: Props) {
     }
   };
 
+  const activeText = headings.find((h) => h.slug === activeId)?.text ?? 'Di halaman ini';
+
   return (
     <>
       {/* Desktop TOC */}
-      <nav
-        aria-label="Table of contents"
-        className="hidden md:block sticky top-4 bg-[var(--color-bg)] p-4 border-l border-[var--color-border)] w-64 text-sm max-h-[calc(100vh-5rem)] overflow-auto"
-      >
+      <nav aria-label="Table of contents" className="hidden md:block sticky top-4 bg-[var(--color-bg)] p-4 w-64 text-sm max-h-[calc(100vh-5rem)] overflow-auto">
         <strong className="text-[var(--color-fg)] mb-2 block">Di halaman ini</strong>
         <ul className="space-y-1">
           {headings.map((h) => (
@@ -67,7 +67,7 @@ export default function TableOfContents({ headings }: Props) {
                 aria-current={activeId === h.slug ? 'true' : undefined}
                 className={`text-left w-full px-2 py-1 rounded transition-colors ${
                   activeId === h.slug
-                    ? 'bg-[var(--color-accent)] text-[var(--color-fg)] font-semibold'
+                    ? 'text-[var(--color-fg)] font-semibold'
                     : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
                 }`}
               >
@@ -78,22 +78,49 @@ export default function TableOfContents({ headings }: Props) {
         </ul>
       </nav>
 
-      {/* Mobile TOC (dropdown) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-xl z-50 p-2 shadow">
-        <select
-          className="w-full p-2 text-sm"
-          value={activeId ?? ''}
-          onChange={(e) => handleClick(e.target.value)}
+      {/* Mobile TOC */}
+      <div className="md:hidden fixed bottom-4 left-4 right-4 bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-xl z-50 shadow-md">
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-t-xl"
         >
-          <option disabled value="">
-            Di halaman ini
-          </option>
-          {headings.map((h) => (
-            <option key={h.slug} value={h.slug}>
-              {h.text}
-            </option>
-          ))}
-        </select>
+          <span className="flex items-center gap-2">
+            <i className="ri-list-check mr-1 text-lg" />
+            {activeText}
+          </span>
+          <i className={`ri-arrow-${mobileOpen ? 'up' : 'down'}-s-line`} />
+        </button>
+
+        {mobileOpen && (
+          <ul className="max-h-64 overflow-auto bg-[var(--color-bg)] border-t text-sm rounded-b-xl">
+            {headings.map((h) => (
+              <li key={h.slug}>
+                <button
+                  onClick={() => {
+                    handleClick(h.slug);
+                    setMobileOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 flex items-center gap-2 transition-colors ${
+                    activeId === h.slug
+                      ? 'bg-[var(--color-bg)] text-[var(--color-fg)] font-semibold'
+                      : 'hover:bg-[var(--color-hover)]'
+                  }`}
+                >
+                  <i
+                    className={`${
+                      h.depth === 2
+                        ? 'ri-subtract-line'
+                        : h.depth === 3
+                        ? 'ri-arrow-right-s-line'
+                        : 'ri-circle-line'
+                    } text-xs`}
+                  />
+                  {h.text}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
