@@ -1,76 +1,67 @@
 import { useEffect, useState } from 'react';
+type Heading = { slug: string; text: string; depth: number };
 
-type Heading = {
-  id: string;
-  text: string;
-};
+interface Props { headings: Heading[]; }
 
-interface Props {
-  headings: Heading[];
+function buildNested(headings: Heading[]) {
+  const toc: any[] = []; const parents = new Map<number, any>();
+  headings.forEach(h => {
+    const node = { ...h, sub: [] };
+    parents.set(h.depth, node);
+    if (h.depth === 2) toc.push(node);
+    else parents.get(h.depth - 1)?.sub.push(node);
+  });
+  return toc;
 }
 
 export default function TableOfContents({ headings }: Props) {
-  const [activeId, setActiveId] = useState<string | null>(null);
-
+  const [active, setActive] = useState<string>('');
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -70% 0px', threshold: 0.1 }
-    );
-
-    const elements = headings
-      .map((h) => document.getElementById(h.id))
-      .filter((el): el is HTMLElement => Boolean(el));
-
-    elements.forEach((el) => observer.observe(el));
-
-    return () => elements.forEach((el) => observer.unobserve(el));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '0px 0px -70% 0px', threshold: 0.1 });
+    headings.forEach(h => {
+      const el = document.getElementById(h.slug);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
   }, [headings]);
+
+  const nested = buildNested(headings);
+
+  const renderList = (nodes: any[]) => (
+    <ul className="space-y-1 ml-4">
+      {nodes.map(n => (
+        <li key={n.slug}>
+          <a href={`#${n.slug}`}
+            className={active === n.slug ? 'text-[var(--color-fg)] font-semibold' : 'text-[var(--color-fg)]'}
+          >
+            {n.text}
+          </a>
+          {n.sub.length > 0 && renderList(n.sub)}
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <>
-      <aside className="hidden md:block sticky top-4 bg-gray-100 p-4 text-sm border-l border-gray-300 w-64">
+      <aside className="hidden md:block sticky top-4 bg-[var(--color-bg)] p-4 text-sm border-l border-[var(--color-accent)] w-64">
         <strong>Daftar Isi</strong>
-        <ul className="mt-2 space-y-1">
-          {headings.map((h) => (
-            <li key={h.id}>
-              <a
-                href={`#${h.id}`}
-                className={
-                  activeId === h.id
-                    ? 'text-blue-600 font-semibold'
-                    : 'text-gray-700'
-                }
-              >
-                {h.text}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {renderList(nested)}
       </aside>
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 p-2 z-50">
+
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-bg)] border-t border-[var(--color-bg)] p-2 z-50">
         <select
-          onChange={(e) => {
-            const target = document.getElementById(e.target.value);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth' });
-            }
+          onChange={e => {
+            const el = document.getElementById(e.target.value);
+            el?.scrollIntoView({ behavior: 'smooth' });
           }}
           className="w-full p-2 border rounded"
         >
-          <option disabled selected>
-            Daftar Isi
-          </option>
-          {headings.map((h) => (
-            <option key={h.id} value={h.id}>
-              {h.text}
-            </option>
+          <option disabled selected>Daftar Isi</option>
+          {headings.map(h => (
+            <option key={h.slug} value={h.slug}>{h.text}</option>
           ))}
         </select>
       </div>
