@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
-import TableOfContents from '../../components/TableOfContents.astro';
+import TableOfContents from'../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
 
 export async function getStaticPaths() {
@@ -30,7 +30,7 @@ const { headings } = await post.render();
         <BottomLayout entry={post} />
       </div>
       <div class="sticky flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0">
-        <TableOfContents headings={headings} />
+<TableOfContents client:load headings={headings} />
         <BackToTop client:visible />
     </div>
     </div>
