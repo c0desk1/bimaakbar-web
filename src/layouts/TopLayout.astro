@@ -11,10 +11,10 @@ const { collection, data, body } = entry;
 const { title, summary, date } = data;
 
 const demoUrl = collection === "projects" ? data.demoUrl : null;
-const repoUrl = collection === "projects" ? data.repoUrl : null;
+const repoUrl = collection === "projects" ? data.repoUrl : null; 
 ---
 
-<div class="container mx-auto">
+<div class="py-16">
   <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-1.5 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-hover)] transition group">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)">
       <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />

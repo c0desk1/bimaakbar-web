@@ -85,3 +85,4 @@ export const SOCIALS: Socials = [
     HREF: "https://youtube.com/bimaakbarmusic",
   },
 ]
+  

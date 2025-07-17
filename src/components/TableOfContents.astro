@@ -1,0 +1,43 @@
+---
+// src/components/TableOfContents.astro
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const filteredHeadings = headings.filter(h => h.depth > 1 && h.depth < 4);
+---
+<nav class="toc-sidebar px-2 py-2 rounded-lg" aria-label="Daftar Isi">
+  <ul>
+    {filteredHeadings.map(heading => (
+      <li class="toc-item" data-depth={heading.depth}>
+        <a class="toc-link" href={`#${heading.slug}`}>{heading.text}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = document.querySelector(`.toc-link[href="#${id}"]`);
+        if (link) {
+          if (entry.isIntersecting) {
+            document.querySelectorAll('.toc-link.is-active').forEach(l => l.classList.remove('is-active'));
+            link.classList.add('is-active');
+          }
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -80% 0px'
+    });
+
+    document.querySelectorAll('article h2, article h3').forEach(heading => {
+      observer.observe(heading);
+    });
+  });
+</script>

@@ -5,6 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -16,12 +17,17 @@ export async function getStaticPaths() {
 
 const { projects } = Astro.props;
 const { title, summary } = projects.data;
-
+const { headings } = await projects.render();
 ---
 
 <Layout title={title} description={summary}>
   <Container size="xl">
     <TopLayout entry={projects} />
+    <aside class="hidden md:block">
+      <div class="sticky top-24">
+        <TableOfContents headings={headings} />
+      </div>
+    </aside>
   <BottomLayout entry={projects} />
   </Container>
 </Layout>
