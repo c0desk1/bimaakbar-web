@@ -78,7 +78,7 @@ export default function TableOfContents({ headings }: Props) {
               onKeyDown={e => handleKey(e, r.slug)}
               aria-current={activeId === r.slug ? 'true' : undefined}
               className={`w-full text-left px-2 py-1 rounded transition-colors ${
-                activeId === r.slug ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
+                activeId === r.slug ? 'bg-[var(--color-bg)] text-[var(--color-fg)] font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
               }`}
             >
               {r.text}
@@ -100,7 +100,7 @@ export default function TableOfContents({ headings }: Props) {
                       onKeyDown={e => handleKey(e, c.slug)}
                       aria-current={activeId === c.slug ? 'true' : undefined}
                       className={`block w-full text-left px-4 py-1 rounded transition-colors ${
-                        activeId === c.slug ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
+                        activeId === c.slug ? 'bg-[var(--color-bg)] text-[var--color-fg)] font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
                       }`}
                     >
                       {c.text}
@@ -114,7 +114,7 @@ export default function TableOfContents({ headings }: Props) {
 
       {/* Floating mobile toggle */}
       <button
-        className="md:hidden fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-50"
+        className="md:hidden fixed bottom-4 right-4 bg-[var(--color-card-bg)] text-[var(--color-fg)] p-3 rounded-full shadow-lg z-50"
         aria-label="Toggle Table of Contents"
         onClick={() => setOpenMobile(!openMobile)}
       >
@@ -123,7 +123,7 @@ export default function TableOfContents({ headings }: Props) {
 
       {/* Mobile panel */}
       {openMobile && (
-        <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40">
+        <div className="md:hidden fixed inset-0 bg-[var(--color-bg)] bg-opacity-50 z-40">
           <div className="fixed bottom-0 left-0 right-0 bg-[var(--color-card-bg)] border-t border-[var(--color-border)] rounded-t-lg shadow-lg max-h-[70vh] overflow-auto p-4 z-50">
             <strong className="block text-[var(--color-fg)] mb-2">Di halaman ini</strong>
             {roots.map(r => (
