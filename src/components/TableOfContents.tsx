@@ -56,9 +56,9 @@ export default function TableOfContents({ headings }: Props) {
       {/* Desktop TOC */}
       <nav
         aria-label="Table of contents"
-        className="hidden md:block sticky top-4 rounded-lg bg-[var(--color-bg)] p-4 border-l border-[var--color-border)] w-64 text-sm max-h-[calc(100vh-5rem)] overflow-auto"
+        className="hidden md:block sticky top-4 bg-[var(--color-bg)] p-4 border-l border-[var--color-border)] w-64 text-sm max-h-[calc(100vh-5rem)] overflow-auto"
       >
-        <strong className="text-[var(--color-fg)] mb-2 block">Daftar Isi</strong>
+        <strong className="text-[var(--color-fg)] mb-2 block">Di halaman ini</strong>
         <ul className="space-y-1">
           {headings.map((h) => (
             <li key={h.slug} className={`ml-${(h.depth - 2) * 4}`}>
@@ -79,14 +79,14 @@ export default function TableOfContents({ headings }: Props) {
       </nav>
 
       {/* Mobile TOC (dropdown) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg z-50 p-2 shadow">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-xl z-50 p-2 shadow">
         <select
-          className="w-full p-2 border rounded text-sm"
+          className="w-full p-2 text-sm"
           value={activeId ?? ''}
           onChange={(e) => handleClick(e.target.value)}
         >
           <option disabled value="">
-            Daftar Isi
+            Di halaman ini
           </option>
           {headings.map((h) => (
             <option key={h.slug} value={h.slug}>
