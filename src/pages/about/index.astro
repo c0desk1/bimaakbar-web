@@ -8,9 +8,8 @@ import { SITE, ABOUT } from '../../consts';
 ---
 
 <Layout title={ABOUT.TITLE} description={ABOUT.DESCRIPTION}>
-  <Container size="xl">
+  <Container size="lg">
     <div class="prose prose-lg mx-auto py-16">
-      
       <h1>Tentang Saya</h1>
       <p>
         Halo! Saya {SITE.TITLE}, seorang pengembang web dan penggemar teknologi 
@@ -21,11 +20,10 @@ import { SITE, ABOUT } from '../../consts';
       </p>
       
       <img 
-        src="/open,-graph.jpg" 
+        src="/open-graph.jpg" 
         alt="Foto Bima Akbar"
         class="aspect-video w-full rounded-lg object-cover"
       />
-
       <h2>Latar Belakang & Keahlian</h2>
       <p>
         Dengan latar belakang di bidang [Sebutkan bidang studi atau pengalaman Anda, misal: Teknik Informatika], 
@@ -39,7 +37,6 @@ import { SITE, ABOUT } from '../../consts';
         <li><strong>Framework & Library:</strong> React, Next.js, Astro, Tailwind CSS</li>
         <li><strong>Tools & Platform:</strong> Git, GitHub, Vercel, Figma</li>
       </ul>
-
       <h2>Misi Saya</h2>
       <p>
         Misi saya adalah membangun aplikasi yang tidak hanya berfungsi dengan baik, 
@@ -47,10 +44,7 @@ import { SITE, ABOUT } from '../../consts';
         kode yang bersih, arsitektur yang terstruktur, dan perhatian pada detail 
         adalah kunci untuk mencapai hal tersebut.
       </p>
-      
     </div>
   </Container>
-
   <Connect />
-
 </Layout>
