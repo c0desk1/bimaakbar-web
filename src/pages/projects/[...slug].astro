@@ -5,7 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
-import TableOfContents from '../../components/TableOfContents.astro';
+import TableOfContents from '../../components/TableOfContents.tsx';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -23,7 +23,7 @@ const { headings } = await projects.render();
 <Layout title={title} description={summary}>
   <Container size="xl">
     <TopLayout entry={projects} />
-    <TableOfContents headings={headings} />
+    <TableOfContents client:load headings={headings} />
     <BottomLayout entry={projects} />
   </Container>
 </Layout>
