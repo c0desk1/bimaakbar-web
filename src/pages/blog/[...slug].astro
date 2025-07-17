@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
-import TableOfContents from'../../components/TableOfContents.tsx';
+import TableOfContents from '../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
 
 export async function getStaticPaths() {
@@ -22,17 +22,19 @@ const { headings } = await post.render();
 ---
 <Layout title={title} description={summary}>
   <Container size="xl">
-    <div class="main-content flex-grow min-w-0"> 
-      <TopLayout entry={post} />
+    <div class="flex justify-center">
+      <div class="w-full max-w-3xl">
+        <TopLayout entry={post} />
+      </div>
     </div>
-    <div class="flex flex-col md:flex-row gap-12 items-start">
-      <div class="main-content flex-grow min-w-0"> 
+    <div class="flex flex-col md:flex-row gap-24 items-start">
+      <div class="flex-grow min-w-0">
         <BottomLayout entry={post} />
       </div>
-      <div class="sticky flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0">
-<TableOfContents client:load headings={headings} />
+      <div class="sticky flex flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0">
+        <TableOfContents client:load headings={headings} />
         <BackToTop client:visible />
-    </div>
+      </div>
     </div>
   </Container>
 </Layout>

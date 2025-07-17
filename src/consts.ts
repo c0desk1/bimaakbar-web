@@ -6,36 +6,43 @@ export const SITE: Site = {
   TITLE: "Bima Akbar",
   DESCRIPTION: "Selamat datang. Sampai nanti",
   AUTHOR: "Bima Akbar",
+  OG_IMAGE: "/open-graph.jpg",
 }
 
 export const HOME: Page = {
   TITLE: "Beranda",
   DESCRIPTION: "Selamat datang. Sampai nanti",
+  OG_IMAGE: ''
 }
 
 export const ABOUT: Page = {
   TITLE: "Tentang",
   DESCRIPTION: "Tentang Saya",
+  OG_IMAGE: ''
 }
 
 export const BLOG: Page = {
   TITLE: "Blog",
   DESCRIPTION: "Menulis tentang topik yang saya minati.",
+  OG_IMAGE: ''
 }
   
 export const PROJECTS: Page = {
   TITLE: "Proyek",
   DESCRIPTION: "Proyek terkini yang telah saya kerjakan.",
+  OG_IMAGE: ''
 }
 
 export const TERMS: Page = {
   TITLE: "Ketentuan",
   DESCRIPTION: "Ketentuan",
+  OG_IMAGE: ''
 }
 
 export const PRIVACY: Page = {
   TITLE: "Privasi",
   DESCRIPTION: "Privasi",
+  OG_IMAGE: ''
 }
 
 export const LINKS: Links = [

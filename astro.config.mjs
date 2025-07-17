@@ -6,7 +6,9 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
-import remarkToc from 'remark-toc';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import remarkGfm from 'remark-gfm';
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,9 +25,9 @@ export default defineConfig({
           theme: 'one-dark-pro',
           wrap: true,
         },
-        remarkPlugins: [],
         rehypePlugins: [
           rehypeHeadingIds,
+          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
           rehypeAccessibleEmojis,
         ],
       },
@@ -36,9 +38,10 @@ export default defineConfig({
       theme: 'one-dark-pro',
       wrap: true,
     },
-    remarkPlugins: [],
+
     rehypePlugins: [
       rehypeHeadingIds,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
       rehypeAccessibleEmojis,
     ],
   },

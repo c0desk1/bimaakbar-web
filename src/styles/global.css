@@ -123,21 +123,22 @@ main {
 }
 
 .prose a {
-  color: var(--color-accent);
+  color: var(--color-fg);
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
   position: relative;
-  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-image: linear-gradient(var(--color-fg), var(--color-accent));
   background-size: 0% 2px;
   background-position: 0% 100%;
   background-repeat: no-repeat;
   transition: background-size 0.3s ease-in-out;
+  text-decoration: none;
 }
 
 .prose a:hover {
   color: var(--color-fg);
-  text-decoration: underline;
+  text-decoration: none;
   background-size: 100% 2px;
 }
 
@@ -159,6 +160,13 @@ main {
 .prose h4 { font-size: 1.5rem; font-weight: 600; }
 .prose h5 { font-size: 1.25rem; font-weight: 600; }
 .prose h6 { font-size: 1rem; font-weight: 600; }
+
+.prose mark {
+  background-color: var(--color-accent);
+  padding-inline: 2px;
+  border-radius: 4px;
+  color: var(--color-fg);
+}
 
 .prose p {
   font-size: 1rem;
@@ -257,7 +265,7 @@ main {
 }
 
 .prose code {
-  background-color: var(--color-card-bg);
+  background-color: var(--color-bg-secondary);
   color: var(--color-fg);
   padding: 0.2em 0.4em;
   border-radius: 4px;
@@ -391,9 +399,10 @@ main {
 }
 
 .prose th {
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-secondary);
   font-weight: 600;
   color: var(--color-fg);
+  border-radius: 8px;
 }
 
 .prose tr:nth-child(even) {

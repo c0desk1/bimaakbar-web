@@ -7,7 +7,7 @@ import Container from "../components/Container.astro"
 const recentProjects = (await getCollection("projects"))
   .filter(project => !project.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,4)
+  .slice(0,6)
 ---
 <section id='recent-projects' class="container mx-auto py-22">
   <Container size="xl">

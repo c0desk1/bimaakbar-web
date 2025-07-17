@@ -8,6 +8,9 @@ import { BLOG } from "../../consts";
 
 const posts = (await getCollection('blog')).filter(p => !p.data.draft);
 const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+
+const estimated_initial_size =
+  28 + posts.length * 158 + (posts.length - 1) * 12;
 ---
 
 <Layout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
@@ -23,5 +26,7 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
       </div>
   </Container>
   </section>
-  <BlogFilter posts={posts} tags={tags} client:load />
+  <div style={{ minHeight: `${estimated_initial_size}px` }}>
+    <BlogFilter posts={posts} tags={tags} client:load />
+  </div>
 </Layout>

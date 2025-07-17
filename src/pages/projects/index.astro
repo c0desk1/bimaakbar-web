@@ -6,10 +6,14 @@ import { PROJECTS } from "../../consts";
 import ProjectFilter from "../../components/ProjectFilter.tsx";
 
 const allProjects = await getCollection('projects');
+console.log(allProjects);
 
 const allTags = [
   ...new Set(allProjects.flatMap(entry => entry.data.tags || []))
 ].sort();
+
+const estimated_initial_size =
+  28 + allProjects.length * 158 + (allProjects.length - 1) * 12;
 ---
 <Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
   <section class="py-16">
@@ -24,5 +28,7 @@ const allTags = [
       </div>
     </Container>
   </section>
-  <ProjectFilter projects={allProjects} tags={allTags} client:load />
+  <div style={{ minHeight: `${estimated_initial_size}px` }}>
+    <ProjectFilter projects={allProjects} tags={allTags} client:load />
+  </div>
 </Layout>

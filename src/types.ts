@@ -1,6 +1,7 @@
 export type Page = {
     TITLE: string
     DESCRIPTION: string
+    OG_IMAGE: string
 }
   
 export interface Site extends Page {
