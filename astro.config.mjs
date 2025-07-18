@@ -7,6 +7,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
 import rehypeFormat from 'rehype-format';
+import rehypeSlug from 'rehype-slug';
 
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
@@ -34,7 +35,6 @@ export default defineConfig({
       rehypePlugins: [
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
         rehypeStringify,
-        remarkParse,
         rehypeFormat,
       ],
       gfm: true,
@@ -60,11 +60,12 @@ export default defineConfig({
       },
       defaultColor: false,
     },
+    remarkPlugins: [remarkParse],
     rehypePlugins: [
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
       rehypeStringify,
-      remarkParse,
       rehypeFormat,
+      rehypeSlug,
     ],
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
