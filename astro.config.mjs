@@ -55,7 +55,4 @@ export default defineConfig({
   markdown: {
     gfm: true,
   },
-  i18n: {
-    defaultLocale: "id",
-  }
 });
