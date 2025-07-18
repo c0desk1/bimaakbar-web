@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 type Heading = { text: string; slug: string; depth: number };
 interface Props { headings: Heading[] }
@@ -29,6 +30,19 @@ export default function TableOfContents({ headings }: Props) {
     return () => observer.disconnect();
   }, [headings]);
 
+  useEffect(() => {
+    if (!activeId) return;
+
+    const activeLink = document.querySelector(`nav button[data-slug="${activeId}"]`);
+
+    if (activeLink) {
+      activeLink.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      });
+    }
+  }, [activeId]);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -42,44 +56,62 @@ export default function TableOfContents({ headings }: Props) {
 
   return (
     <>
-      <nav aria-label="Table of contents" className="hidden md:block w-64 text-sm max-h-[calc(100vh-5rem)] overflow-visible">
+      <nav aria-label="Table of contents" className="hidden md:block w-64 text-sm overflow-y-auto max-h-[calc(100vh-4rem)]">
         <strong className="block mb-2 text-[var(--color-fg)]">Di halaman ini</strong>
-        <ul className="space-y-1">
-          {headings.map(h => (
-            <li key={h.slug}>
-              <button onClick={() => scrollTo(h.slug)}
-                className={`block w-full text-left py-2 ${
-                  activeId === h.slug
-                    ? 'text-[var(--color-fg)] font-semibold'
-                    : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
-                }`}>
-                {h.text}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="md:hidden px-4 pt-4 pb-2">
-        <button className="flex items-center justify-between w-full px-4 py-2 border border-[var(--color-border)] rounded-lg text-sm font-medium bg-[var(--color-card-bg)]" onClick={() => setOpen(!open)} aria-expanded={open}>
-          <span className="flex items-center text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[90%]">
-            {activeHeading ? `Bagian: ${activeHeading.text}` : 'Daftar Isi'}
-          </span>
-          <i className={`ri-arrow-${open ? 'up' : 'down'}-s-line ml-2`} />
-        </button>
-        {open && (
-          <ul className="mt-2 pl-3 text-sm max-h-[50vh] overflow-auto transition-all">
-            {headings.map((h) => (
+        <ul className="space-y-1 pl-0">
+          {headings.map(h => {
+            const paddingLeft = h.depth > 2 ? `${(h.depth - 2) * 1.0}rem` : '0rem';
+            return (
               <li key={h.slug}>
-                <button onClick={() => { scrollTo(h.slug); setOpen(false); }}
-                  className={`block text-left w-full px-2 py-1 rounded ${
-                    activeId === h.slug
-                      ? 'text-[var(--color-fg)] font-semibold'
-                      : 'text-[var(--color-muted)] hover:text-[var(--color-fg)]'
-                  }`}>
+                <button
+                  data-slug={h.slug}
+                  onClick={() => scrollTo(h.slug)}
+                  aria-current={activeId === h.slug ? 'true' : 'false'}
+                  style={{ paddingLeft }}
+                  className={clsx(
+                    'block w-full text-left py-1 cursor-pointer',
+                    {
+                      'text-[var(--color-fg)]': activeId === h.slug,
+                      'text-[var(--color-muted)] hover:text-[var(--color-fg)]': activeId !== h.slug,
+                    }
+                  )}>
                   {h.text}
                 </button>
               </li>
-            ))}
+            );
+          })}
+        </ul>
+      </nav>
+      <div className="w-full bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden px-2 py-2">
+        <button className="flex items-center text-left justify-between w-full text-sm font-medium" onClick={() => setOpen(!open)} aria-expanded={open}>
+          <i className={`ri-arrow-${open ? 'up' : 'down'}-s-line flex mr-1 cursor-pointer w-auto`} />
+          <span className="items-center text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[90%] flex-1">
+            {activeHeading ? `Bagian: ${activeHeading.text}` : 'Daftar Isi'}
+          </span>
+        </button>
+        {open && (
+          <ul className="mt-2 py-2 text-sm max-h-[50vh] overflow-auto transition-all">
+            {headings.map(h => {
+              const paddingLeft = h.depth > 2 ? `${(h.depth - 2) * 1.0}rem` : '0rem';
+              return (
+                <li key={h.slug}>
+                  <button
+                    data-slug={h.slug}
+                    onClick={() => scrollTo(h.slug)}
+                    aria-current={activeId === h.slug ? 'true' : 'false'}
+                    style={{ paddingLeft }}
+                    className={clsx(
+                      'block w-full text-left py-1 cursor-pointer',
+                      {
+                        'text-[var(--color-fg)]': activeId === h.slug,
+                        'text-[var(--color-muted)] hover:text-[var(--color-fg)]': activeId !== h.slug,
+                      }
+                    )}>
+                    {h.text}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

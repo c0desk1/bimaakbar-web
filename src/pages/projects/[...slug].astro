@@ -6,6 +6,7 @@ import Container from '../../components/Container.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.tsx';
+import BackToTop from '../../components/BackToTop.tsx';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -23,7 +24,14 @@ const { headings } = await projects.render();
 <Layout title={title} description={summary}>
   <Container size="xl">
     <TopLayout entry={projects} />
-    <TableOfContents client:load headings={headings} />
-    <BottomLayout entry={projects} />
+    <div class="flex flex-col md:flex-row gap-24 items-start">
+      <div class="sticky top-22 flex-grow min-w-0">
+        <TableOfContents client:load headings={headings} />
+      </div>
+      <div class="items-center">
+        <BottomLayout entry={projects} />
+        <BackToTop client:visible />
+      </div>
+    </div>
   </Container>
 </Layout>

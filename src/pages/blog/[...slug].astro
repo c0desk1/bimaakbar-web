@@ -31,7 +31,7 @@ const { headings } = await post.render();
       <div class="flex-grow min-w-0">
         <BottomLayout entry={post} />
       </div>
-      <div class="sticky flex flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0">
+      <div class="sticky items-center flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0 gap-2">
         <TableOfContents client:load headings={headings} />
         <BackToTop client:visible />
       </div>

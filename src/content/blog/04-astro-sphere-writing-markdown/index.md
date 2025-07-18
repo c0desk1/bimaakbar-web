@@ -10,7 +10,7 @@ tags:
 - Markdown
 ---
 
-### Headings
+## Headings
 
 ```text
 # H1
@@ -39,13 +39,13 @@ tags:
 
 ###### H6
 
-### Paragraph
+## Paragraph
 
 Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
 
 Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
 
-### Images
+## Images
 
 Relative image in the /public folder
 
@@ -99,7 +99,7 @@ The blockquote element represents content that is quoted from another source, op
 
 ## Tables
 
-#### Syntax
+### Syntax
 
 ```markdown
 | Italics   | Bold     | Code   |
@@ -107,7 +107,7 @@ The blockquote element represents content that is quoted from another source, op
 | _italics_ | **bold** | `code` |
 ```
 
-#### Output
+### Output
 
 | Italics   | Bold     | Code   |
 | --------- | -------- | ------ |
@@ -115,7 +115,7 @@ The blockquote element represents content that is quoted from another source, op
 
 ## Code Blocks
 
-#### Syntax
+### Syntax
 
 we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntac, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
 

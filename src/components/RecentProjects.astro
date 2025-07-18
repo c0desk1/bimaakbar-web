@@ -9,7 +9,7 @@ const recentProjects = (await getCollection("projects"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0,6)
 ---
-<section id='recent-projects' class="container mx-auto py-22">
+<section id='recent-projects' class="py-16">
   <Container size="xl">
     <div class="group flex flex-row justify-between items-center py-4">
       <h2 class="text-xl font-bold text-[var(--color-fg)] flex-1">Projects Terbaru</h2>

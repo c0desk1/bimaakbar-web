@@ -9,7 +9,7 @@ const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0,4)
 ---
-<section id='recent-post' class="container mx-auto h-auto py-22">
+<section id='recent-post' class="py-16">
   <Container size="xl">
     <div class="group flex flex-row justify-between items-center py-4">
       <h2 class="text-xl font-bold text-[var(--color-fg)] flex-1">Postingan Terbaru</h2>
