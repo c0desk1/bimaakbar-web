@@ -118,9 +118,8 @@ main {
 
 .prose {
   max-width: 100%;
-  line-height: 1.0em;
-  margin-bottom: 1.25em;
-  color: var(--color-fg);
+  word-break: break-word;
+  overflow-x: hidden;
 }
 
 .prose * + * {
@@ -301,6 +300,10 @@ main {
   border-radius: 4px;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 0.9em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .prose details {
@@ -433,6 +436,10 @@ main {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 0.875rem;
   margin: 1.5em 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .prose pre code {
@@ -449,6 +456,19 @@ main {
 
 .prose br {
   color: var(--color-accent);
+}
+
+.prose iframe,
+.prose embed,
+.prose object {
+	max-width: 100%;
+	height: auto;
+}
+
+.prose ins {
+	max-width: 100%;
+	display: block;
+	overflow-x: auto;
 }
 
 .prose table {
