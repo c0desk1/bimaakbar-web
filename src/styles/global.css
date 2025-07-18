@@ -154,6 +154,15 @@ PROSE CONTENT STYLING
   color: var(--color-fg);
 }
 
+.prose {
+  overflow-wrap: break-word;
+}
+
+.prose * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 /* ===============================
    HEADINGS
    =============================== */
