@@ -218,6 +218,26 @@ PROSE CONTENT STYLING
   border: 1px solid var(--color-accent);
 }
 
+.prose abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+  border-bottom: none;
+}
+
+.prose sup {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+color: var(--color-accent);
+}
+
+.prose sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+  line-height: 0;
+color: var(--color-accent);
+}
+
 /* ===============================
    LINKS
    =============================== */
