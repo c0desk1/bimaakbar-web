@@ -53,7 +53,7 @@ export default defineConfig({
         dark: 'github-dark',
       },
       wrap: true,
-      langs: ['text', 'ymnl','astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown', 'javascript', 'typescript', 'toml', 'config'
+      langs: ['text', 'yaml', 'astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown', 'javascript', 'typescript', 'toml', 'config'
       ],
       langAlias: {
         cjs: 'javascript',
