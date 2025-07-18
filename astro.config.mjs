@@ -7,7 +7,6 @@ import sitemap from '@astrojs/sitemap';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import remarkGfm from 'remark-gfm';
 
 
 // https://astro.build/config
@@ -47,36 +46,13 @@ export default defineConfig({
           [rehypeAutolinkHeadings, { behavior: 'wrap' }],
           [rehypeAccessibleEmojis],
         ],
-        gfm: false,
+        gfm: true,
         optimize: true,
       },
     ),
   ],
   markdown: {
-    shikiConfig: {
-      theme: 'dracula',
-      themes: {
-        light: 'github-light',
-        dark: 'github-dark',
-      },
-      defaultColor: false,
-      langs: [],
-      langAlias: {
-        cjs: "javascript"
-      },
-      wrap: false,
-      transformers: [],
-    },
-    syntaxHighlight: {
-      type: 'shiki',
-      excludeLangs: ['mermaid', 'math', 'markdown', 'js'],
-    },
-    rehypePlugins: [
-      rehypeHeadingIds,
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      [rehypeAccessibleEmojis],
-    ],
-    gfm: false,
+    gfm: true,
   },
   i18n: {
     defaultLocale: "id",
