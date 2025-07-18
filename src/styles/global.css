@@ -350,7 +350,6 @@ color: var(--color-accent);
   Tambahan Elemen Teknis & Edge-Case
    ======================================= */
 
-/* Definition List (dl, dt, dd) */
 .prose dl {
   margin: 1.25em 0;
 }
@@ -362,21 +361,18 @@ color: var(--color-accent);
   margin-bottom: 0.5rem;
 }
 
-/* Cite (e.g. used inside blockquote) */
 .prose cite {
   font-style: italic;
   color: var(--color-muted);
   font-size: 0.9em;
 }
 
-/* Time (timestamp or dates) */
 .prose time {
   font-size: 0.9em;
   font-style: italic;
   color: var(--color-muted);
 }
 
-/* Sample Output (e.g. <samp>) */
 .prose samp {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.875em;
@@ -386,7 +382,6 @@ color: var(--color-accent);
   border-radius: 0.25rem;
 }
 
-/* Variable (e.g. <var>) */
 .prose var {
   font-style: italic;
   font-family: serif;
@@ -394,13 +389,11 @@ color: var(--color-accent);
   font-size: 0.95em;
 }
 
-/* Small (for footnote or copyright) */
 .prose small {
   font-size: 0.8em;
   color: var(--color-accent);
 }
 
-/* Code Inside kbd (nested monospace) */
 .prose kbd code {
   font-size: 0.75em;
   padding: 0;
@@ -515,7 +508,7 @@ background-color: transparent;
   color: var(--color-fg);
   padding: 1rem;
   border-radius: 0.5rem;
-  overflow-x: auto;
+  overflow-x: hidden;
   font-size: 0.875rem;
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
