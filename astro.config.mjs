@@ -4,10 +4,12 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeStringify from 'rehype-stringify';
-import remarkParse from 'remark-parse';
 import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
+import remarkToc from 'remark-toc';
+import remarkParse from 'remark-parse';
 
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
@@ -32,10 +34,16 @@ export default defineConfig({
         },
         defaultColor: false,
       },
+      remarkPlugins: [
+		remarkParse,
+      	remarkGfm,
+			remarkToc,
+		],
       rehypePlugins: [
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeStringify,
         rehypeFormat,
+        rehypeSlug,
+        rehypeRaw,
       ],
       gfm: true,
       syntaxHighlight: 'shiki',
@@ -60,12 +68,14 @@ export default defineConfig({
       },
       defaultColor: false,
     },
-    remarkPlugins: [remarkParse],
+    remarkPlugins: [remarkParse,
+      remarkGfm,
+      remarkToc,],
     rehypePlugins: [
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      rehypeStringify,
       rehypeFormat,
       rehypeSlug,
+      rehypeRaw,
     ],
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
