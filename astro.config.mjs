@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from "@tailwindcss/vite";
-import typography from '@tailwindcss/typography';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { rehypeHeadingIds } from '@astrojs/markdown-remark';
@@ -15,8 +14,7 @@ export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
     plugins: [
-		tailwindcss(),
-		typography(),
+		tailwindcss()
 	],
   },
   integrations: [
@@ -54,5 +52,5 @@ export default defineConfig({
   ],
   markdown: {
     gfm: true,
-  },
+  }
 });
