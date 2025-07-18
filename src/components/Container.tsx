@@ -3,8 +3,6 @@
 import React from 'react';
 import type { ReactNode } from "react";
 
-// Fungsi helper untuk menggabungkan class, sama seperti 'con' atau 'cn'
-// Anda bisa menggunakan library seperti 'clsx' jika sudah terpasang
 const con = (...classes: (string | boolean | undefined)[]) => {
   return classes.filter(Boolean).join(' ');
 }

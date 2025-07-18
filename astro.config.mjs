@@ -1,57 +1,73 @@
-// @ts-nocheck
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
-import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeAccessibleEmojis from 'rehype-accessible-emojis';
+import rehypeStringify from 'rehype-stringify';
+import remarkParse from 'remark-parse';
+import rehypeFormat from 'rehype-format';
 
-
-// https://astro.build/config
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
-    plugins: [
-		tailwindcss()
-	],
+    plugins: [tailwindcss()],
   },
   integrations: [
     react(),
     sitemap(),
-    mdx(
-      {
-        shikiConfig: {
-          theme: 'dracula',
-          themes: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-          defaultColor: false,
-          langs: [],
-          langAlias: {
-            cjs: "javascript"
-          },
-          wrap: false,
-          transformers: [],
+    mdx({
+      shikiConfig: {
+        theme: 'github-dark',
+        themes: {
+          light: 'github-light',
+          dark: 'github-dark',
         },
-        syntaxHighlight: {
-          type: 'shiki',
-          excludeLangs: ['mermaid', 'math', 'markdown', 'js'],
-        },
-        rehypePlugins: [
-          rehypeHeadingIds,
-          [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-          [rehypeAccessibleEmojis],
+        wrap: true,
+        langs: ['astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown',
         ],
-        gfm: true,
-        optimize: true,
+        langAlias: {
+          cjs: 'javascript',
+        },
+        defaultColor: false,
       },
-    ),
+      gfm: true,
+      syntaxHighlight: 'shiki',
+      rehypePlugins: [
+        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        rehypeAccessibleEmojis,
+        [rehypeStringify],
+        [remarkParse],
+        rehypeFormat,
+      ],
+      remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
+    }),
   ],
   markdown: {
-warp: false,
     gfm: true,
-  }
+    syntaxHighlight: 'shiki',
+    shikiConfig: {
+      theme: 'github-dark',
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      wrap: true,
+      langs: ['astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown',
+      ],
+      langAlias: {
+        cjs: 'javascript',
+      },
+      defaultColor: false,
+    },
+    rehypePlugins: [
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      rehypeAccessibleEmojis,
+      [rehypeStringify],
+      [remarkParse],
+      rehypeFormat,
+    ],
+    remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
+  },
 });
