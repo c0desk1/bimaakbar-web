@@ -51,6 +51,7 @@ export default defineConfig({
     ),
   ],
   markdown: {
+warp: false,
     gfm: true,
   }
 });
