@@ -498,12 +498,12 @@ background-color: transparent;
 }
 
 .prose pre {
-  background-color: theme('colors.gray.100');
-  color: theme('colors.gray.800');
+  background-color: var(--color-card-bg);
+  color: var(--color-fg);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
   margin: 1.5rem 0;
@@ -517,8 +517,8 @@ background-color: transparent;
 }
 
 .prose code:not(pre code) {
-  background-color: theme('colors.gray.200');
-  color: theme('colors.pink.600');
+  background-color: var(--color-card-bg);
+  color: var(--color-muted);
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-size: 0.875em;
@@ -529,7 +529,7 @@ background-color: transparent;
   height: 6px;
 }
 .prose pre::-webkit-scrollbar-thumb {
-  background-color: theme('colors.gray.300');
+  background-color: var(--color-card-bg);
   border-radius: 3px;
 }
 
@@ -549,13 +549,9 @@ background-color: transparent;
    TABLES
    =============================== */
 
-/* =============================
-  Responsive Table in .prose
-   ============================= */
-
 .prose table {
   width: 100%;
-  display: block; /* enables horizontal scroll */
+  display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
@@ -567,19 +563,19 @@ background-color: transparent;
 }
 
 .prose thead {
-  background-color: theme('colors.gray.100'); /* soft header background */
-  color: theme('colors.gray.700');
+  background-color: var(--color-card-bg);
+  color: var(--color-card-fg);
   font-weight: 600;
 }
 
 .prose thead th {
   padding: 0.75rem 1rem;
   white-space: nowrap;
-  border-bottom: 1px solid theme('colors.gray.300');
+  border-bottom: 1px solid var(--color-border);
 }
 
 .prose tbody tr {
-  border-bottom: 1px solid theme('colors.gray.200');
+  border-bottom: 1px solid var(--color-border);
 }
 
 .prose tbody td {
@@ -588,21 +584,19 @@ background-color: transparent;
   white-space: normal;
 }
 
-/* Optional hover effect for rows */
 .prose tbody tr:hover {
-  background-color: theme('colors.gray.50');
+  background-color: var(--color-hover);
 }
 
-/* Optional: striped rows */
 .prose tbody tr:nth-child(odd) {
-  background-color: theme('colors.gray.50');
+  background-color: var(--color-bg-secondary);
+}
 
-/* Optional: Scrollbar styling */
 .prose table::-webkit-scrollbar {
   height: 6px;
 }
 .prose table::-webkit-scrollbar-thumb {
-  background-color: theme('colors.gray.300');
+  background-color: var(--color-card-bg);
   border-radius: 3px;
 }
 
