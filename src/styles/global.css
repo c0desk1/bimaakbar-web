@@ -93,6 +93,10 @@ body {
   transition: var(--transition-default);
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 main {
   display: block;
   flex-grow: 1;
@@ -507,6 +511,8 @@ background-color: transparent;
   line-height: 1.6;
   -webkit-overflow-scrolling: touch;
   margin: 1.5rem 0;
+max-width: 100%;
+display: block;
 }
 
 .prose pre code {
@@ -550,7 +556,7 @@ background-color: transparent;
    =============================== */
 
 .prose table {
-  width: 100%;
+  max-width: 100%;
   display: block;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
