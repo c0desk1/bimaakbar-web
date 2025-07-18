@@ -14,19 +14,40 @@ import remarkGfm from 'remark-gfm';
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+		tailwindcss(),
+		require('@tailwindcss/typography'),
+	],
   },
   integrations: [
     react(),
     sitemap(),
     mdx(
+      {
+        shikiConfig: {
+          theme: 'dracula',
+          themes: {
+            light: 'github-light',
+            dark: 'github-dark',
+          },
+          defaultColor: false,
+          langs: [],
+          langAlias: {
+            cjs: "javascript"
+          },
+          wrap: false,
+          transformers: [],
+        },
+        syntaxHighlight: {
+          type: 'shiki',
+          excludeLangs: ['mermaid', 'math', 'markdown', 'js'],
+        },
         rehypePlugins: [
           rehypeHeadingIds,
           [rehypeAutolinkHeadings, { behavior: 'wrap' }],
           [rehypeAccessibleEmojis],
         ],
         gfm: false,
-        remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1"},
         optimize: true,
       },
     ),
@@ -56,6 +77,8 @@ export default defineConfig({
       [rehypeAccessibleEmojis],
     ],
     gfm: false,
-    remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1"},
   },
+  i18n: {
+    defaultLocale: "id",
+  }
 });
