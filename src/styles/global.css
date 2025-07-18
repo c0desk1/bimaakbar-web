@@ -383,6 +383,10 @@ main {
   border: 1px solid var(--color-border);
 }
 
+.prose pre code {
+background-color: transparent;
+}
+
 .prose table {
   width: 100%;
   border-collapse: collapse;
