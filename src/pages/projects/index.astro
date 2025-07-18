@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import Layout from '../../layouts/Layout.astro';
+import Container from "../../components/Container.astro";
+import { PROJECTS } from "../../consts";
+import ProjectFilter from "../../components/ProjectFilter.tsx";
+
+const allProjects = await getCollection('projects');
+console.log(allProjects);
+
+const allTags = [
+  ...new Set(allProjects.flatMap(entry => entry.data.tags || []))
+].sort();
+
+const estimated_initial_size =
+  28 + allProjects.length * 158 + (allProjects.length - 1) * 12;
+---
+<Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
+  <section class="py-16">
+    <Container size="xl">
+      <div class="flex flex-col justify-start text-left">
+        <h1 class="text-3xl font-semibold text-[var(--color-fg)]">
+          {PROJECTS.TITLE}
+        </h1>
+        <span class="mt-1">
+          {PROJECTS.DESCRIPTION}
+        </span>
+      </div>
+    </Container>
+  </section>
+  <div style={{ minHeight: `${estimated_initial_size}px` }}>
+    <ProjectFilter projects={allProjects} tags={allTags} client:load />
+  </div>
+</Layout>

@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Container from "../../components/Container.astro";
+import BlogFilter from '../../components/BlogFilter.tsx';
+import { getCollection } from 'astro:content';
+import { BLOG } from "../../consts";
+
+
+const posts = (await getCollection('blog')).filter(p => !p.data.draft);
+const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+
+const estimated_initial_size =
+  28 + posts.length * 158 + (posts.length - 1) * 12;
+---
+
+<Layout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
+  <section class="py-16">
+    <Container size="xl">
+      <div class="flex flex-col justify-start text-left">
+        <h1 class="text-3xl font-semibold text-[var(--color-fg)]">
+          {BLOG.TITLE}
+        </h1>
+        <div class="mt-1">
+          {BLOG.DESCRIPTION}
+        </div>
+      </div>
+  </Container>
+  </section>
+  <div style={{ minHeight: `${estimated_initial_size}px` }}>
+    <BlogFilter posts={posts} tags={tags} client:load />
+  </div>
+</Layout>

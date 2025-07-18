@@ -14,7 +14,7 @@ import remarkGfm from 'remark-gfm';
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [require('@tailwindcss/typography'), tailwindcss()],
   },
   integrations: [
     react(),
@@ -22,27 +22,62 @@ export default defineConfig({
     mdx(
       {
         shikiConfig: {
-          theme: 'one-dark-pro',
-          wrap: true,
+          theme: 'dracula',
+          themes: {
+            light: 'github-light',
+            dark: 'github-dark',
+          },
+          defaultColor: false,
+          langs: [],
+          langAlias: {
+            cjs: "javascript"
+          },
+          wrap: false,
+          transformers: [],
+        },
+        syntaxHighlight: {
+          type: 'shiki',
+          excludeLangs: ['mermaid', 'math', 'markdown', 'js'],
         },
         rehypePlugins: [
           rehypeHeadingIds,
           [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-          rehypeAccessibleEmojis,
+          [rehypeAccessibleEmojis],
         ],
+        gfm: false,
+        remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1"},
+        optimize: true,
       },
     ),
   ],
   markdown: {
     shikiConfig: {
-      theme: 'one-dark-pro',
-      wrap: true,
+      theme: 'dracula',
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      defaultColor: false,
+      langs: [],
+      langAlias: {
+        cjs: "javascript"
+      },
+      wrap: false,
+      transformers: [],
     },
-
+    syntaxHighlight: {
+      type: 'shiki',
+      excludeLangs: ['mermaid', 'math', 'markdown', 'js'],
+    },
     rehypePlugins: [
       rehypeHeadingIds,
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      rehypeAccessibleEmojis,
+      [rehypeAccessibleEmojis],
     ],
+    gfm: false,
+    remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1"},
   },
+  i18n: {
+    defaultLocale: "id",
+  }
 });

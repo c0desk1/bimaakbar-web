@@ -1,0 +1,40 @@
+---
+// src/pages/blog/[...slug].astro
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/Container.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import TableOfContents from '../../components/TableOfContents.tsx';
+import BackToTop from '../../components/BackToTop.tsx';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, summary } = post.data;
+const { headings } = await post.render();
+---
+<Layout title={title} description={summary}>
+  <Container size="xl">
+    <div class="flex justify-center">
+      <div class="w-full max-w-3xl">
+        <TopLayout entry={post} />
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row gap-24 items-start">
+      <div class="flex-grow min-w-0">
+        <BottomLayout entry={post} />
+      </div>
+      <div class="sticky items-center justify-start md:justify-start flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0 gap-2">
+        <TableOfContents client:load headings={headings} />
+        <BackToTop client:visible />
+      </div>
+    </div>
+  </Container>
+</Layout>

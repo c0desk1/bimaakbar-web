@@ -1,0 +1,39 @@
+---
+// src/components/Socials.astro
+import { SITE, SOCIALS } from "../consts"
+import Container from "../components/Container.astro"
+---
+<section class="py-16">
+  <Container size="xl">
+    <div class="flex flex-col items-center text-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-fg)] tracking-tight">
+        Mari Terhubung
+      </h2>
+      <p class="mt-2 max-w-2xl text-lg text-[var(--color-muted)]">
+        Temukan saya di platform lain.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {
+        SOCIALS.map((social) => (
+          <a
+            href={social.HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${SITE.TITLE} on ${social.NAME}`}
+            class="group flex items-center gap-4 p-4 bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-hover)] transition-colors duration-200"
+          >
+            <div class="flex-shrink-0">
+              <i class={`text-2xl text-[var(--color-muted)] group-hover:text-[var(--color-fg)] transition-colors duration-200 ${social.ICON}`}></i>
+            </div>
+            <div class="flex flex-col text-left gap-1">
+              <p class="font-semibold text-[var(--color-fg)] leading-tight">{social.NAME}</p>
+              <p class="text-sm text-[var(--color-muted)] leading-tight">{social.TEXT}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</section>
