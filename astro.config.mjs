@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeAccessibleEmojis from 'rehype-accessible-emojis';
 import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
 import rehypeFormat from 'rehype-format';
@@ -32,15 +31,15 @@ export default defineConfig({
         },
         defaultColor: false,
       },
-      gfm: true,
-      syntaxHighlight: 'shiki',
       rehypePlugins: [
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeAccessibleEmojis,
-        [rehypeStringify],
-        [remarkParse],
-        [rehypeFormat],
+        rehypeStringify,
+        remarkParse,
+        rehypeFormat,
       ],
+      gfm: true,
+      syntaxHighlight: 'shiki',
+     
       remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
     }),
   ],
@@ -63,10 +62,9 @@ export default defineConfig({
     },
     rehypePlugins: [
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      rehypeAccessibleEmojis,
-      [rehypeStringify],
-      [remarkParse],
-      [rehypeFormat],
+      rehypeStringify,
+      remarkParse,
+      rehypeFormat,
     ],
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
