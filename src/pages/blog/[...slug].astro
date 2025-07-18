@@ -35,8 +35,6 @@ const isMDX = /\.mdx$/i.test(post.id);
       <div class="flex-grow w-full max-w-auto">
         <div class="flex flex-col md:flex-row gap-16 items-start">
           <article class="prose">
-            
-            <Content components={isMDX ? ContentWrapper : {}} />
 <Content />
           </article>
           <div class="sticky items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0 gap-2">
