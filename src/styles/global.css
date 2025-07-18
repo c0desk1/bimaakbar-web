@@ -406,7 +406,7 @@ background-color: transparent;
   background-color: var(--color-bg-secondary);
   padding: 1rem 1.25rem;
   border-radius: 8px;
-  overflow-x: auto;
+  overflow-x: hidden;
   font-family: var(--font-mono);
   font-size: 0.875rem;
   margin: 1.5em 0;
@@ -436,7 +436,7 @@ background-color: transparent;
   background-color: var(--color-bg-secondary);
   margin: 1.5em 0;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .prose th, .prose td {
