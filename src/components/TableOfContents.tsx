@@ -107,16 +107,16 @@ export default function TableOfContents({ headings }: Props) {
           })}
         </ul>
       </nav>
-      <div className="w-full bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden px-1 py-2">
+      <div className="w-full bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden p-2">
         <button className="flex items-center text-left justify-between w-full text-md" onClick={() => setOpen(!open)} aria-expanded={open}>
           <i className={`ri-corner-down-right-line flex transition-transform duration-300 ease-in-out ${ open ? 'rotate-180' : ''}`} />
           <span className="px-1 items-center text-left whitespace-nowrap overflow-hidden text-ellipsis flex-1 truncate max-w-[90%]">
-            {activeHeading ? `Bagian: ${activeHeading.text}` : 'Daftar Isi'}
+            {activeHeading ? `${activeHeading.text}` : 'Daftar Isi'}
           </span>
           <i className={`ri-arrow-down-s-fill flex cursor-pointer w-auto transition-transform duration-300 ease-in-out ${ open ? 'rotate-180' : ''}`} />
         </button>
         {open && (
-          <ul className="py-2 text-sm max-h-[80vh] overflow-auto transition-all">
+          <ul className="px-2 py-16 text-md max-h-[80vh] overflow-auto transition-all">
             {headings.map(h => {
               const paddingLeft = h.depth > 2 ? `${(h.depth - 2) * 1.0}rem` : '0rem';
               return (
