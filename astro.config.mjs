@@ -4,12 +4,14 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
-import remarkToc from 'remark-toc';
+
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
+
+
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 
 
@@ -22,16 +24,16 @@ export default defineConfig({
     react(),
     sitemap(),
     mdx({
+      gfm: true,
       shikiConfig: {
         theme: 'github-dark',
-
         themes: {
           light: 'github-light',
           dark: 'github-dark',
         },
 
         wrap: true,
-
+        
         langs: [
           'astro', 
           'css', 
@@ -45,22 +47,29 @@ export default defineConfig({
           'tsx', 
           'typescript', 
           'xml',
-          'yaml', 
+          'yaml',  
           'text' 
         ],
-  
+
         langAlias: {
           cjs: 'js',
+          ts:'ts',
+          yml: 'yml',
+          md: 'md',
         },
 
         defaultColor: false,
       },
 
+      syntaxHighlight: {
+        type: 'shiki',
+        excludeLangs: ['mermaid', 'math', 'js', 'md', 'ts', 'yml'],
+      },
+
       remarkPlugins: [
         remarkGfm,
-        [remarkToc, { heading: "contents"} ],
       ],
-  
+
       rehypePlugins: [
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
         rehypeRaw,
@@ -69,13 +78,8 @@ export default defineConfig({
         rehypeAccessibleEmojis
       ],
 
-      gfm: true,
+      smartypants: false,
 
-      syntaxHighlight: {
-        type: 'shiki',
-        excludeLangs: ['mermaid', 'math', 'js', 'md', 'ts', 'yml'],
-      },
-     
       remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
     }),
   ],
@@ -110,6 +114,9 @@ export default defineConfig({
 
       langAlias: {
         cjs: 'js',
+        ts:'ts',
+        yml: 'yml',
+        md: 'md',
       },
 
       defaultColor: false,
@@ -122,7 +129,6 @@ export default defineConfig({
 
     remarkPlugins: [
       remarkGfm,
-      [remarkToc, { heading: "contents"} ],
     ],
 
     rehypePlugins: [

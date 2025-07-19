@@ -39,17 +39,17 @@ export default function TableOfContents({ headings }: Props) {
 
   useEffect(() => {
     if (!activeId) return;
-
-    const activeLink = document.querySelector(`nav button[data-slug="${activeId}"]`);
-
-    if (activeLink) {
-      activeLink.scrollIntoView({
-        block: 'nearest',
-        behavior: 'smooth',
-      });
-    }
+  
+    const handler = setTimeout(() => {
+      const activeLink = document.querySelector(`nav button[data-slug="${activeId}"]`);
+      if (activeLink) {
+        activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }, 100);
+  
+    return () => clearTimeout(handler);
   }, [activeId]);
-
+  
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
 
@@ -64,6 +64,8 @@ export default function TableOfContents({ headings }: Props) {
       const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
 
+      setActiveId(id);
+
       scrollTimeout.current = window.setTimeout(() => {
         userScrollRef.current = false;
       }, 1000);
@@ -74,7 +76,7 @@ export default function TableOfContents({ headings }: Props) {
 
   return (
     <>
-      <nav aria-label="Table of contents" className="hidden md:block w-64 text-sm text-left overflow-y-auto max-h-[calc(100vh-4rem)]">
+      <nav aria-label="Daftar Isi" role="navigation" className="hidden md:block w-64 text-sm text-left overflow-y-auto max-h-[calc(100vh-4rem)]">
         <strong className="block mb-2 text-[var(--color-fg)] uppercase">Di halaman ini</strong>
         <ul className="pl-0 text-left">
           {headings.map(h => {
@@ -105,10 +107,12 @@ export default function TableOfContents({ headings }: Props) {
           })}
         </ul>
       </nav>
-      <div className="w-full bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden px-2 py-2">
+      <div className="w-full bg-[var(--color-card-bg)] max-w-[90%] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden px-2 py-2">
         <button className="flex items-center text-left justify-between w-full text-sm font-medium" onClick={() => setOpen(!open)} aria-expanded={open}>
-          <i className={`ri-arrow-${open ? 'up' : 'down'}-s-line flex mr-1 cursor-pointer w-auto`} />
-          <span className="items-center text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[90%] flex-1">
+          <i className={`ri-arrow-down-s-line flex mr-1 cursor-pointer w-auto transition-transform duration-300 ease-in-out ${
+              open ? 'rotate-180' : ''}`}
+          />
+          <span className="items-center text-left whitespace-nowrap overflow-hidden text-ellipsis flex-1 truncate max-w-[90%]">
             {activeHeading ? `Bagian: ${activeHeading.text}` : 'Daftar Isi'}
           </span>
         </button>
@@ -119,9 +123,19 @@ export default function TableOfContents({ headings }: Props) {
               return (
                 <li key={h.slug}>
                   <button
-                    data-slug={h.slug}
-                    onClick={() => scrollTo(h.slug)}
                     aria-current={activeId === h.slug ? 'true' : 'false'}
+                    role="link"
+                    data-slug={h.slug}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        scrollTo(h.slug);
+                      }
+                    }}
+                    onClick={() => {
+                      scrollTo(h.slug)
+                      setOpen(false);
+                    }}
+                    
                     style={{ paddingLeft }}
                     className={clsx(
                       'block w-full text-left py-1 cursor-pointer',

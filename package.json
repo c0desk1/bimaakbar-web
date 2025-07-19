@@ -20,6 +20,7 @@
     "astro": "^5.11.1",
     "astro-seo": "^0.8.4",
     "clsx": "^2.1.1",
+    "github-slugger": "^2.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
@@ -33,9 +34,10 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "remark-toc": "^9.0.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
   }
 }

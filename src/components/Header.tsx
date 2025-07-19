@@ -31,41 +31,67 @@ const Header: React.FC = () => {
   }`;
 
   return (
-    <header className={headerClasses}>
+    <header className={headerClasses} aria-label="Navigasi utama">
       <Container size="xl">
         <div className="py-4 flex items-center justify-between font-semibold">
           <div className="flex-1">
-            <a href="/" className="flex gap-2 items-center text-current hover:text-[var(--color-fg)]">
+            <a
+              href="/"
+              aria-label={`Beranda ${SITE.TITLE}`}
+              className="flex gap-2 items-center text-current hover:text-[var(--color-fg)]"
+            >
               <Logo width={32} height={32} />
               <span className="hidden md:inline">{SITE.TITLE}</span>
             </a>
           </div>
-          <nav className="hidden md:flex items-center gap-4">
+          <nav
+            className="hidden md:flex items-center gap-4"
+            aria-label="Navigasi utama desktop"
+          >
             {LINKS.map((link) => (
-              <a key={link.HREF} href={link.HREF} className={getLinkClass(link.HREF)}>{link.TEXT}</a>
+              <a
+                key={link.HREF}
+                href={link.HREF}
+                className={getLinkClass(link.HREF)}
+                aria-current={currentPath === link.HREF ? 'page' : undefined}
+                aria-label={`Menu ${link.TEXT}`}
+              >
+                {link.TEXT}
+              </a>
             ))}
           </nav>
           <div className="flex-1 flex items-center justify-end gap-4">
             <div className="hidden md:flex">
-              <ThemeToggleButton />
+              <ThemeToggleButton aria-label="Toggle tema gelap atau terang" />
             </div>
-            <button 
-              className="md:hidden flex items-center justify-center size-9 p-2 text-xl text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-xl" 
-              onClick={toggleMenu} 
-              aria-label={isMenuOpen ? "Tutup Menu" : "Buka Menu"}
-              aria-expanded={isMenuOpen}>
-              {isMenuOpen ? <i className="ri-close-line"></i> : <i className="ri-menu-3-line"></i>}
+
+            <button
+              className="md:hidden flex items-center justify-center size-9 p-2 text-xl text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-xl"
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {isMenuOpen ? (
+                <i className="ri-close-line" aria-hidden="true"></i>
+              ) : (
+                <i className="ri-menu-3-line" aria-hidden="true"></i>
+              )}
             </button>
           </div>
         </div>
       </Container>
 
-      <MobileMenu 
-        isOpen={isMenuOpen} 
+      <MobileMenu
+        isOpen={isMenuOpen}
         currentPath={currentPath}
         onLinkClick={() => setIsMenuOpen(false)}
+        id="mobile-menu"
+        aria-label="Navigasi Mobile"
+        className="z-50"
       />
     </header>
+
   );
 };
 
