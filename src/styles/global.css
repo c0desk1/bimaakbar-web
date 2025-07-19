@@ -927,7 +927,7 @@ PRINT MODE
 }
 
 @media (max-width: 768px) {
-  table {
+ .prose table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
