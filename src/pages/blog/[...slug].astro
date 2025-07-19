@@ -41,7 +41,7 @@ const headings = await getHeadings(post.body);
             	<div class="flex-grow items-start w-full">
               	<TableOfContents headings={headings} client:load />
               </div>
-              <div class="flex justify-end">
+              <div class="flex justify-end flex-shrink-0">
                 <BackToTop client:visible />
               </div>
             </div>
