@@ -4,25 +4,24 @@ export default function Feedback() {
   const [selected, setSelected] = useState<number | null>(null);
 
   const handleSelect = (i: number) => {
-    setSelected(i === selected ? null : i); // toggle jika diklik ulang
+    setSelected(i === selected ? null : i);
   };
 
   return (
     <div className="w-full max-w-md mx-auto mt-8">
       <div
-        className={`bg-neutral-950/80 text-white border border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${
-          selected !== null ? "rounded-xl max-h-[260px]" : "rounded-full max-h-14"
-        }`}
-      >
+        className={`bg-[var(--color-card-bg)] text-[var(--color-fg)] border border-[var(--color-border)] transition-all duration-300 ease-in-out overflow-hidden ${
+          selected !== null ? "rounded-xl max-h-[260px]" : "rounded-full max-h-12"
+        }`}>
         <div className="flex justify-between items-center px-4 py-3">
-          <span className="text-sm text-white/70">Was this helpful?</span>
+          <span className="text-sm text-[var(--color-muted)]">Was this helpful?</span>
           <div className="flex items-center gap-1.5">
             {icons.map((icon, i) => (
               <button
                 key={i}
                 onClick={() => handleSelect(i)}
                 aria-label={icon.label}
-                className={`w-8 h-8 p-1 rounded-full transition-colors duration-200 hover:bg-white/10 ${
+                className={`w-8 h-8 p-1 rounded-full transition-colors duration-200 hover:bg-[var(--color-hover)] ${
                   selected === i ? "bg-white/10 ring-1 ring-white/20" : ""
                 }`}
                 dangerouslySetInnerHTML={{ __html: icon.svg }}

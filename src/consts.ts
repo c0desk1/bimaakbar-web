@@ -47,8 +47,8 @@ export const PRIVACY: Page = {
 
 export const ERROR: Page = {
   TITLE: "404",
-  DESCRIPTION: "Places I have worked.",
-   OG_IMAGE: ''
+  DESCRIPTION: "ERROR Halaman tidak ditemukan",
+  OG_IMAGE: ''
 }
 
 export const LINKS: Links = [
@@ -67,12 +67,6 @@ export const LINKS: Links = [
 ]
 
 export const SOCIALS: Socials = [
-  { 
-    NAME: "Email",
-    ICON: "ri-mail-line",
-    TEXT: "Bima Akbar",
-    HREF: "mailto:contact@bimaakbar.my.id"
-  },
   { 
     NAME: "TikTok",
     ICON: "ri-tiktok-line",

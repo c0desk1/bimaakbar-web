@@ -1,10 +1,13 @@
 //src/lib/utils.ts
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import { visit } from 'unist-util-visit'
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import { visit } from 'unist-util-visit';
 import slugger from 'github-slugger';
+import type {Heading} from '../types';
+
+
 
 export function con(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -55,12 +58,6 @@ export function getBreadcrumbs(slug: string): { name: string; href: string }[] {
   }
   
   return breadcrumbs;
-}
-
-export interface Heading {
-  text: string;
-  slug: string;
-  depth: number;
 }
 
 export async function getHeadings(markdown: string): Promise<Heading[]> {

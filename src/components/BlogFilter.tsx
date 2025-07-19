@@ -3,7 +3,6 @@ import Card from "./Card";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import type { CollectionEntry } from "astro:content";
-import Container from "../components/Container.tsx";
 
 type Props = {
   posts: CollectionEntry<"blog">[];
@@ -11,14 +10,14 @@ type Props = {
 };
 
 export default function BlogFilter({ posts, tags }: Props) {
-    const [search, setSearch] = useState("");
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [sortAsc, setSortAsc] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [sortAsc, setSortAsc] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
-    const itemsPerPage = 6;
+  const itemsPerPage = 6;
 
-    const filteredPosts = useMemo(() => {
+  const filteredPosts = useMemo(() => {
         return posts
         .filter(post =>
             post.data.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -30,79 +29,63 @@ export default function BlogFilter({ posts, tags }: Props) {
             const bTime = new Date(b.data.date).getTime();
             return sortAsc ? aTime - bTime : bTime - aTime;
         });
-    }, [posts, search, selectedTags, sortAsc]);
+  }, 
+  
+  [posts, search, selectedTags, sortAsc]);
 
-    const paginatedPosts = useMemo(() => {
+  const paginatedPosts = useMemo(() => {
         const start = (currentPage - 1) * itemsPerPage;
         return filteredPosts.slice(start, start + itemsPerPage);
-      }, [filteredPosts, currentPage]);
+  },
+  
+  [filteredPosts, currentPage]);
     
-      useEffect(() => {
+  useEffect(() => {
         setCurrentPage(1);
-      }, [search, selectedTags, sortAsc]);
+  },
+  
+  [search, selectedTags, sortAsc]);
 
-    const toggleTag = (tag: string) => {
+  const toggleTag = (tag: string) => {
         setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
-    };
+  };
 
-    return (
-      <section className="container mx-auto h-auto">
-        <Container size="xl">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="sm:col-span-1 pt-13">
-              <div className="sticky top-24">
-                <SearchBar value={search} onChange={(e) => setSearch(e.target.value)}  />
-                <div className="flex items-center justify-between w-full py-4">
-                  <p className="text-sm font-semibold uppercase text-[var(--color-fg)]">Kata Kunci</p>
-                  <div className="h-6">
-                    {selectedTags.length > 0 ? (
-                      <button
-                        onClick={() => setSelectedTags([])}
-                        className="text-md flex items-center gap-1 font-medium text-[var(--color-muted)] hover:text-[var(--color-fg)] cursor-pointer transition" 
-                        title="Clear Filters"
-                      >
-                        <i className="ri-close-line text-lg" />
-                        <span className="hidden sm:inline">Hapus</span>
-                      </button>
-                    ) : <span className="invisible">Hapus</span>}
-                  </div>
-                </div>
-                <ul className="flex flex-wrap sm:flex-col gap-2">
-                  {tags.map(tag => (
-                    <li key={tag} className="sm:w-full">
-                      <button 
-                        onClick={() => toggleTag(tag)} 
-                        className={`w-full text-left px-3 py-2 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-hover)] text-md cursor-pointer ${selectedTags.includes(tag) ? "bg-[var(--color-hover)] text-[var(--color-fg)]" : "text-[var(--color-muted)] border-[var(--color-border)]"}`}>
-                        {tag}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <div className="flex justify-between items-center mb-4">
-                <div className="text-sm uppercase">
-                  Menampilkan {filteredPosts.length} dari {posts.length} proyek
-                </div>
-                <button onClick={() => setSortAsc(!sortAsc)} className="text-sm flex items-center gap-1 p-2 text-[var(--color-muted)] hover:text-[var(--color-fg)] uppercase cursor-pointer">
-                  {sortAsc ? "Terbaru" : "Terlama"}
-                  <i className={`ri-arrow-up-line transition ${sortAsc ? "rotate-0" : "rotate-180"}`} />
+  return (
+    <>
+      <div className="sticky top-16 w-full flex flex-col md:flex-row bg-[var(--color-bg)] py-4 gap-4">
+        <div className="flex-1">
+          <ul className="flex flex-row max-w-screen overflow-x-auto">
+            {tags.map(tag => (
+              <li key={tag} className="px-1">
+                <button onClick={() => toggleTag(tag)}className={`text-ellipsis truncate w-fit text-center px-2 py-1 rounded-full border border-[var(--color-border)] hover:bg-[var(--color-hover)] text-sm cursor-pointer ${selectedTags.includes(tag) ? "bg-[var(--color-hover)] text-[var(--color-fg)]" : "text-[var(--color-muted)] border-[var(--color-border)]"}`}>
+                  {tag}
                 </button>
-              </div>
-              <ul className="flex flex-col gap-3">
-                {paginatedPosts.map(posts => (
-                  <Card key={posts.slug} entry={posts} pill />
-                ))}
-              </ul>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(filteredPosts.length / itemsPerPage)}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </div>
-          </div>
-      </Container>
-    </section>
-    );
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="w-auto md:max-w-[40%]">
+          <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+      </div>
+      <section>
+        <div className="flex justify-between items-center py-4">
+          <div className="text-sm uppercase">Menampilkan {filteredPosts.length} dari {posts.length} postingan</div>
+          <button onClick={() => setSortAsc(!sortAsc)} className="rounded-full text-sm flex items-center gap-1 px-2 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] uppercase cursor-pointer">
+            {sortAsc ? "Terbaru" : "Terlama"}
+            <i className={`ri-arrow-up-line transition ${sortAsc ? "rotate-0" : "rotate-180"}`} />
+          </button>
+        </div>
+        <ul className="flex flex-col gap-3">
+          {paginatedPosts.map(posts => (
+            <Card key={posts.slug} entry={posts} pill />
+          ))}
+        </ul>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredPosts.length / itemsPerPage)}
+          onPageChange={(page) => setCurrentPage(page)} />
+      </section>
+    </>
+  );
 }

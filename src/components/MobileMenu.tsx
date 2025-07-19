@@ -26,8 +26,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       aria-hidden={!isOpen}
       {...props}
       className={`md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-[var(--color-bg)] backdrop-blur-lg transition-all duration-300 ease-in-out
-        ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-4'} ${className}`}
-    >
+        ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible -translate-y-4'} ${className}`}>
       <div className="container mx-auto flex flex-col items-center justify-center h-full gap-8">
         {LINKS.map((link) => (
           <a

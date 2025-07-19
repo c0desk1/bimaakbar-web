@@ -23,7 +23,7 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
   
   const getLinkClass = (href: string) => {
-    return `hover:text-[var(--color-fg)] transition-colors ${href === currentPath ? 'text-[var(--color-fg)]' : 'text-[var(--color-muted)]'}`;
+    return `px-3 py-1 rounded-full hover:text-[var(--color-muted)] hover:bg-[var(--color-hover)] transition-colors ${href === currentPath ? 'text-[var(--color-fg)]' : 'text-[var(--color-muted)]'}`;
   };
 
   const headerClasses = `fixed top-0 z-50 w-full h-16 transition-all duration-300 ${
@@ -32,30 +32,24 @@ const Header: React.FC = () => {
 
   return (
     <header className={headerClasses} aria-label="Navigasi utama">
-      <Container size="xl">
-        <div className="py-4 flex items-center justify-between font-semibold">
+      <Container size="2xl">
+        <div className="py-4 flex items-center justify-between">
           <div className="flex-1">
-            <a
-              href="/"
-              aria-label={`Beranda ${SITE.TITLE}`}
-              className="flex gap-2 items-center text-current hover:text-[var(--color-fg)]"
-            >
+            <a href="/" aria-label={`Beranda ${SITE.TITLE}`} className="flex gap-2 items-center text-[var(--color-fg)] text-xl hover:text-[var(--color-fg)]">
               <Logo width={32} height={32} />
-              <span className="hidden md:inline">{SITE.TITLE}</span>
+              <span className="hidden md:inline font-semibold">{SITE.TITLE}</span>
             </a>
           </div>
           <nav
             className="hidden md:flex items-center gap-4"
-            aria-label="Navigasi utama desktop"
-          >
+            aria-label="Navigasi utama desktop">
             {LINKS.map((link) => (
               <a
                 key={link.HREF}
                 href={link.HREF}
                 className={getLinkClass(link.HREF)}
                 aria-current={currentPath === link.HREF ? 'page' : undefined}
-                aria-label={`Menu ${link.TEXT}`}
-              >
+                aria-label={`Menu ${link.TEXT}`}>
                 {link.TEXT}
               </a>
             ))}
@@ -64,14 +58,12 @@ const Header: React.FC = () => {
             <div className="hidden md:flex">
               <ThemeToggleButton aria-label="Toggle tema gelap atau terang" />
             </div>
-
             <button
-              className="md:hidden flex items-center justify-center size-9 p-2 text-xl text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-xl"
+              className="md:hidden flex items-center justify-center size-6 p-4 text-md text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-full"
               onClick={toggleMenu}
               aria-label={isMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
               aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
+              aria-controls="mobile-menu">
               {isMenuOpen ? (
                 <i className="ri-close-line" aria-hidden="true"></i>
               ) : (
@@ -81,17 +73,14 @@ const Header: React.FC = () => {
           </div>
         </div>
       </Container>
-
       <MobileMenu
         isOpen={isMenuOpen}
         currentPath={currentPath}
         onLinkClick={() => setIsMenuOpen(false)}
         id="mobile-menu"
         aria-label="Navigasi Mobile"
-        className="z-50"
-      />
+        className="z-50" />
     </header>
-
   );
 };
 
