@@ -870,21 +870,43 @@ TABLE OF CONTENT (TOC)
 /* ───────────────────────────────
 COPY CODE BUTTON
 ─────────────────────────────── */
-.copy-code-button {
-  position: absolute;
-  top: 0;
-  right: 0.5rem;
+.pre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
   background-color: var(--color-card-bg);
-  color: var(--color-fg);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8em;
+  border-bottom: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.pre-header span {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.pre-header button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  color: var(--color-accent-fg);
   cursor: pointer;
 }
-.copy-code-button:hover {
+
+.pre-header button:hover {
   background-color: var(--color-hover);
 }
+
+.prose pre {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 
 /* ───────────────────────────────
 READING PROGRESS BAR
