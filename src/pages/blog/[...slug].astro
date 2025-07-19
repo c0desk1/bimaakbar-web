@@ -36,7 +36,7 @@ const headings = await getHeadings(post.body);
           <article class="prose">
             <Content />
           </article>
-          <div class="sticky bg-[var(--color-bg)] md:bg-transparent items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0 gap-2 py-6">
+          <div class="sticky bg-[var(--color-bg)] md:bg-transparent items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-22 md:w-auto w-full h-auto md:flex-shrink-0 gap-2 py-4">
             <TableOfContents headings={headings} client:load />
             <BackToTop client:visible />
           </div>
