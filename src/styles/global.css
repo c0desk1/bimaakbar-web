@@ -539,20 +539,10 @@ PROSE CONTENT STYLING
 	scrollbar-width: thin;
 }
 
-.prose thead {
-  background-color: var(--color-bg);
+.prose tr:nth-child(even) {
+  background-color: var(--color-card-bg);
 }
 
-.prose tbody {
-  background-color: var(--color-card-bg); 
-}
-
-.prose tr {
-  padding: 0.75em 1em;
-  text-align: left;
-  vertical-align: top;
-  word-break: break-word;
-}
 .prose th {
 	border-color: 1px solid var(--color-border);
   font-weight: 600;
@@ -560,12 +550,12 @@ PROSE CONTENT STYLING
   font-size: small;
   padding: 8px;
   text-align: left;
+background-color: var(--color-bg);
   
 }
 
 .prose td {
   border-color: 1px solid var(--color-border);
-  font-weight: 600;
   white-space: nowrap;
   font-size: small;
   padding: 8px;
