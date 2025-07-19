@@ -8,6 +8,7 @@ import BottomLayout from '../../layouts/BottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
 import {getHeadings} from '../../lib/utils';
+import '../../hooks/useCodePre';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
