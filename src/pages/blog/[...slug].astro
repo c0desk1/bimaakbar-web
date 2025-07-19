@@ -24,17 +24,19 @@ const headings = await getHeadings(post.body);
 
 ---
 <Layout title={title} description={summary}>
-   <Container size="lg">
-      <div class="justify-center w-full max-w-auto">
+  <Container size="lg">
+    <div class="flex justify-center">
+      <div class="w-full max-w-auto">
         <TopLayout entry={post} />
       </div>
+    </div>
     <div class="flex flex-col md:flex-row gap-4 items-start">
       <div class="flex-grow w-full max-w-auto">
         <div class="flex flex-col md:flex-row gap-16 items-start">
           <article class="prose">
             <Content />
           </article>
-          <div class="sticky bg-[var(--color-bg)] border-t border-[var(--color-border)] items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-16 md:w-auto w-full h-fit md:flex-shrink-0 gap-2 py-4 px-2 md:px-0">
+          <div class="sticky bg-[var(--color-bg)] items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-16 md:w-auto w-full h-fit md:flex-shrink-0 gap-2 py-4 px-2 md:px-0">
             <div class="flex md:flex-col justify-between w-full">
               <div class="flex-grow items-start w-full">
                 <TableOfContents headings={headings} client:load />
