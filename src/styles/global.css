@@ -106,6 +106,7 @@ html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
   scroll-padding-top: 88px;
+  -webkit-overflow-scrolling: touch;
 }
 
 *, *::before, *::after {
@@ -530,12 +531,9 @@ PROSE CONTENT STYLING
    TABLES
    =============================== */
 .prose table {
-	width: 100%;
-	min-width: max-content;
 	border-radius: 8px;
 	border-collapse: collapse;
 	border-color: 1px solid var(--color-border);
-	overflow-x: auto;
 	scrollbar-width: thin;
 }
 
