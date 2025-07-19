@@ -3,13 +3,15 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import remarkGfm from 'remark-gfm';
+import remarkToc from 'remark-toc';
+
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkToc from 'remark-toc';
-import remarkParse from 'remark-parse';
+import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
+
 
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
@@ -22,61 +24,117 @@ export default defineConfig({
     mdx({
       shikiConfig: {
         theme: 'github-dark',
+
         themes: {
           light: 'github-light',
           dark: 'github-dark',
         },
+
         wrap: true,
-        langs: ['astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown',
+
+        langs: [
+          'astro', 
+          'css', 
+          'html',
+          'javascript',
+          'json',
+          'jsonc', 
+          'jsx', 
+          'markdown', 
+          'mdx', 
+          'tsx', 
+          'typescript', 
+          'xml',
+          'yaml', 
+          'text' 
         ],
+  
         langAlias: {
-          cjs: 'javascript',
+          cjs: 'js',
         },
+
         defaultColor: false,
       },
+
       remarkPlugins: [
-		remarkParse,
-      	remarkGfm,
-			remarkToc,
-		],
+        remarkGfm,
+        [remarkToc, { heading: "contents"} ],
+      ],
+  
       rehypePlugins: [
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeFormat,
-        rehypeSlug,
         rehypeRaw,
+        rehypeSlug,
+        rehypeFormat,
+        rehypeAccessibleEmojis
       ],
+
       gfm: true,
-      syntaxHighlight: 'shiki',
+
+      syntaxHighlight: {
+        type: 'shiki',
+        excludeLangs: ['mermaid', 'math', 'js', 'md', 'ts', 'yml'],
+      },
      
       remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
     }),
   ],
   markdown: {
     gfm: true,
-    syntaxHighlight: 'shiki',
+
     shikiConfig: {
       theme: 'github-dark',
       themes: {
         light: 'github-light',
         dark: 'github-dark',
       },
+
       wrap: true,
-      langs: ['text', 'yaml', 'astro', 'css', 'html', 'js', 'ts', 'jsx', 'tsx', 'json', 'mdx', 'markdown', 'javascript', 'typescript', 'toml', 'config'
+      
+      langs: [
+        'astro', 
+        'css', 
+        'html',
+        'javascript',
+        'json',
+        'jsonc', 
+        'jsx', 
+        'markdown', 
+        'mdx', 
+        'tsx', 
+        'typescript', 
+        'xml',
+        'yaml',  
+        'text' 
       ],
+
       langAlias: {
-        cjs: 'javascript',
+        cjs: 'js',
       },
+
       defaultColor: false,
     },
-    remarkPlugins: [remarkParse,
+
+    syntaxHighlight: {
+      type: 'shiki',
+      excludeLangs: ['mermaid', 'math', 'js', 'md', 'ts', 'yml'],
+    },
+
+    remarkPlugins: [
       remarkGfm,
-      remarkToc,],
+      [remarkToc, { heading: "contents"} ],
+    ],
+
     rehypePlugins: [
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      rehypeFormat,
-      rehypeSlug,
       rehypeRaw,
+      rehypeSlug,
+      rehypeFormat,
+      rehypeAccessibleEmojis
     ],
+
+    smartypants: false,
+
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
 });
