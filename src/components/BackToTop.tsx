@@ -28,9 +28,9 @@ const BackToTopButton: React.FC = () => {
   }, []);
 
   return (
-    <section className="items-center py-4">
-      <div className="flex items-center h-auto w-full">
-        <button type="button" onClick={scrollToTop} className={`group flex justify-start bg-[var(--color-card-bg)] md:bg-transparent md:border-transparent border border-[var(--color-border)] px-2 pt-1 pb-1 rounded-full w-fit md:p-2 gap-2 text-md items-center text-[var(--color-muted)] hover:text-[var(--color-fg)] cursor-pointer ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} aria-label="Kembali ke atas">
+    <section className="items-center p-4">
+      <div className="flex items-center h-auto w-auto">
+        <button type="button" onClick={scrollToTop} className={`group flex justify-start p-2 gap-2 text-md items-center text-[var(--color-muted)] hover:text-[var(--color-fg)] cursor-pointer ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} aria-label="Kembali ke atas">
           <i className="ri-arrow-up-circle-line text-xl"></i>
           <span className="hidden md:block">Kembali ke atas</span>
         </button>
