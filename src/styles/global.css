@@ -345,6 +345,14 @@ PROSE CONTENT STYLING
 /* ===============================
    CODE & PRE
    =============================== */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--color-card-bg);
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
 
 .prose pre {
   background-color: var(--color-card-bg);
@@ -358,15 +366,6 @@ PROSE CONTENT STYLING
   box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
   scrollbar-width: thin;
   color: var(--color-fg);
-}
-
-.astro-code,
-.astro-code span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--color-card-bg);
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
   
 .prose pre code {
@@ -391,7 +390,6 @@ PROSE CONTENT STYLING
   color: var(--color-fg);
 }
   
-
 .prose h1,
 .prose h2,
 .prose h3,
@@ -635,6 +633,25 @@ PROSE CONTENT STYLING
   border-top: 1px solid var(--color-border);
   padding-top: 1em;
   font-size: 0.9em;
+}
+
+.prose .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  word-wrap: normal;
+  border: 0;
+}
+
+[data-footnote-ref]::before {
+  content: '[';
+}
+
+[data-footnote-ref]::after {
+  content: ']';
 }
 
 /* ===============================
