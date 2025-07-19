@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const preElements: NodeListOf<HTMLElement> = document.querySelectorAll('pre');
+  const preElements: NodeListOf<HTMLElement> = document.querySelectorAll('.prose pre');
 
   preElements.forEach((pre: HTMLElement) => {
     const codeElement: HTMLElement | null = pre.querySelector('code');
