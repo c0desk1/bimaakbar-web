@@ -36,14 +36,20 @@
 ROOT VARIABLES & THEMING
 ─────────────────────────────── */
 :root {
-  --color-bg: #ffffff;
+  --color-bg: #F7F7F7;
   --color-bg-secondary: #f9f9f9;
+
+  --color-card-bg: #FFFFFF;
+
   --color-fg: #111111;
-  --color-muted: rgba(102, 102, 102, 0.75);
-  --color-border: #e5e7eb;
-  --color-hover: rgba(0, 0, 0, 0.05);
-  --color-accent: #007aff;
-  --color-card-bg: #f9f9f9;
+  --color-muted: #6B6B6B;
+
+  --color-border: #E5E5E5;
+  --color-hover: #EAEAEA;
+
+  --color-accent: #C79218;
+  --color-accent-fg: #FFFFFF;
+  
 
   --font-sans: 'Atkinson', sans-serif;
   --font-mono: 'Menlo', 'Consolas', 'monospace';
@@ -52,14 +58,20 @@ ROOT VARIABLES & THEMING
 }
 
 html.dark {
-  --color-card-bg: #0a0a0a;
   --color-bg: #000000;
+  --color-card-bg: #121212;
+
+  --color-fg: #E5E5E5;
+  --color-muted: #888888;
+
   --color-bg-secondary: #111111;
-  --color-fg: #ffffff;
-  --color-muted: rgba(136, 136, 136, 0.65);
-  --color-border: #2a2a2a;
-  --color-hover: rgba(255, 255, 255, 0.05);
-  --color-accent: #0ea5e9;
+  
+  
+  --color-border: #2D2D2D;
+  --color-hover: #1C1C1C;
+
+  --color-accent: #FFD666;
+  --color-accent-fg: #111111;
   
   color-scheme: dark;
 }
@@ -517,48 +529,50 @@ PROSE CONTENT STYLING
 /* ===============================
    TABLES
    =============================== */
-
-.prose .table-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  max-width: 100%;
-}
-
 .prose table {
-  min-width: fit-content;
-  border-collapse: collapse;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-bg-secondary);
-  margin: 1.5em 0;
+  width: 100%;
+  min-width: max-content;
   border-radius: 8px;
-  table-layout: auto;
-  word-break: break-word;
-}
-.prose td code, .prose th code {
-  display: inline;
-  white-space: normal;
+  border-color: 1px solid var(--color-border);
+  border-collapse: 1px solid var(--color-border);
+  background-color: var(--color-bg);
   overflow-x: auto;
+  scrollbar-width: thin;
 }
 
+.prose table thead, .prose table tbody {
+  width: auto;
+}
 
-.prose th, .prose td {
+.prose thead {
+  background-color: var(--color-bg);
+}
+
+.prose tbody {
+  background-color: var(--color-card-bg); 
+}
+
+.prose tr {
   padding: 0.75em 1em;
-  border: 1px solid var(--color-border);
   text-align: left;
   vertical-align: top;
-  white-space: nowrap;
-  overflow-x: auto;
+  word-break: break-word;
 }
-
 .prose th {
-  background-color: var(--color-card-bg);
   font-weight: 600;
-  overflow-x: auto;
+  white-space: nowrap;
+  font-size: small;
+  padding: 8px 8px;
+  word-break: break-word;
+  
 }
 
-.prose tr:nth-child(even) {
-  background-color: var(--color-bg-secondary);
-  overflow-x: auto;
+.prose td {
+  
+  white-space: nowrap;
+  font-size: small;
+  padding: 8px 8px;
+  word-break: break-word;
 }
 
 /* ===============================
