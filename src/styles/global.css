@@ -901,9 +901,6 @@ COPY CODE BUTTON
   background-color: var(--color-hover);
 }
 
-.prose pre {
-  margin-top: 0;
-
 
 /* ───────────────────────────────
 READING PROGRESS BAR
