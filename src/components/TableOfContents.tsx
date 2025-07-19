@@ -107,10 +107,10 @@ export default function TableOfContents({ headings }: Props) {
           })}
         </ul>
       </nav>
-      <div className="w-full border border-[var(--color-border)] rounded-lg items-center md:hidden px-2 py-2">
+      <div className="md:hidden border border-[var(--color-border)] rounded-lg items-center md:hidden px-2 py-2">
         <button className="flex items-center text-left justify-between w-full font-medium overflow-hidden flex-shrink-0" onClick={() => setOpen(!open)} aria-expanded={open}>
           <i className={`ri-corner-down-right-line flex cursor-pointer w-auto transition-transform duration-300 ease-in-out ${open ? 'rotate-180' : ''}`}/>
-          <span className="px-2 items-center text-left whitespace-nowrap overflow-hidden text-ellipsis flex-1 truncate w-auto">
+          <span className="px-2 items-center text-left whitespace-nowrap overflow-hidden text-ellipsis flex-1 truncate">
             {activeHeading ? `${activeHeading.text}` : 'Daftar Isi'}
           </span>
           <i className={`ri-arrow-down-s-fill flex cursor-pointer w-auto transition-transform duration-300 ease-in-out ${open ? 'rotate-180' : ''}`}/>
