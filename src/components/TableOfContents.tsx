@@ -107,8 +107,8 @@ export default function TableOfContents({ headings }: Props) {
           })}
         </ul>
       </nav>
-      <div className="w-full bg-[var(--color-card-bg)] border border-[var(--color-border)] rounded-lg flex-1 items-center md:hidden p-2">
-        <button className="flex items-center text-left justify-between w-full text-md" onClick={() => setOpen(!open)} aria-expanded={open}>
+      <div className="w-full bg-[var(--color-bg)] rounded-lg flex-1 items-center md:hidden p-2">
+        <button className="bg-[var(--color-card-bg)] border border-[var(--color-border)] flex items-center text-left justify-between w-full text-md rounded-lg" onClick={() => setOpen(!open)} aria-expanded={open}>
           <i className={`ri-corner-down-right-line flex transition-transform duration-300 ease-in-out ${ open ? 'rotate-180' : ''}`} />
           <span className="px-1 items-center text-left whitespace-nowrap overflow-hidden text-ellipsis flex-1 truncate max-w-[90%]">
             {activeHeading ? `${activeHeading.text}` : 'Daftar Isi'}
@@ -116,7 +116,7 @@ export default function TableOfContents({ headings }: Props) {
           <i className={`ri-arrow-down-s-fill flex cursor-pointer w-auto transition-transform duration-300 ease-in-out ${ open ? 'rotate-180' : ''}`} />
         </button>
         {open && (
-          <ul className="px-2 py-16 text-md max-h-[80vh] overflow-auto transition-all">
+          <ul className="p-4 text-md max-h-[80vh] overflow-auto transition-all">
             {headings.map(h => {
               const paddingLeft = h.depth > 2 ? `${(h.depth - 2) * 1.0}rem` : '0rem';
               return (
