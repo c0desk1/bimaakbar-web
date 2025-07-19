@@ -535,10 +535,11 @@ PROSE CONTENT STYLING
 	border-collapse: separate;
 	border-color: 1px solid var(--color-border);
 	scrollbar-width: thin;
+	padding: 8px;
 }
 
 .prose tr:nth-child(even) {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg);
 }
 
 .prose th {
@@ -548,7 +549,7 @@ PROSE CONTENT STYLING
 	font-size: small;
 	padding: 8px;
 	text-align: left;
-	background-color: var(--color-card-bg);
+	background-color: var(--color-bg-secondary);
   
 }
 
@@ -558,7 +559,7 @@ PROSE CONTENT STYLING
 	font-size: small;
 	padding: 8px;
 	text-align: left;
-	background-color: var(--color-bg-secondary);
+	background-color: var(--color-bg);
 }
 
 .prose th:first-child {
@@ -893,14 +894,13 @@ COPY CODE BUTTON
   border: none;
   border-radius: 4px;
   background-color: var(--color-bg);
-  color: var(--color-accent-fg);
+  color: var(--color-fg);
   cursor: pointer;
 }
 
 .pre-header button:hover {
   background-color: var(--color-hover);
 }
-
 
 /* ───────────────────────────────
 READING PROGRESS BAR
