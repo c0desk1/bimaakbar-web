@@ -532,7 +532,7 @@ PROSE CONTENT STYLING
    =============================== */
 .prose table {
 	border-radius: 8px;
-	border-collapse: collapse;
+	border-collapse: separate;
 	border-color: 1px solid var(--color-border);
 	scrollbar-width: thin;
 }
