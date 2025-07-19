@@ -38,7 +38,7 @@ const headings = await getHeadings(post.body);
           </article>
           <div class="sticky bg-[var(--color-bg)] items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-16 md:w-auto w-full h-fit md:flex-shrink-0 gap-2 py-4">
             <div class="flex md:flex-col justify-start overflow-x-hidden w-full max-w-dvw">
-            	<div class="flex-grow items-start">
+            	<div class="flex-grow items-start w-full">
               	<TableOfContents headings={headings} client:load />
               </div>
               <div class="flex justify-end">
