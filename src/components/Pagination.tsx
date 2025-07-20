@@ -27,7 +27,6 @@ type Props = {
             </button>
           );
         })}
-  
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}

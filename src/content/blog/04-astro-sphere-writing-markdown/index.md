@@ -9,7 +9,6 @@ tags:
 - Astro Sphere
 - Markdown
 ---
-
 ## Headings
 
 ```text

@@ -21,18 +21,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .shiki,
-  .shiki span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--color-card-bg) !important;
-    border-color: var(--color-border) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
-  }
-}
-
 /* ───────────────────────────────
 ROOT VARIABLES & THEMING
 ─────────────────────────────── */
@@ -359,32 +347,69 @@ PROSE CONTENT STYLING
 /* ===============================
    CODE & PRE
    =============================== */
+
+.astro-code {
+  position: relative;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
 .astro-code,
-.astro-code span {
+.astro-code span { 
   color: var(--shiki-dark) !important;
+
   background-color: var(--color-card-bg) !important;
-  border-color: var(--color-border) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
+    
+  font-style: var(--shiki-font-style) !important;
+  font-weight: var(--shiki-font-weight) !important;
+  text-decoration: var(--shiki-text-decoration) !important;
+}
+
+.astro-code::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.astro-code::after {
+  content: 'Salin';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--color-bg);
+  padding: 6px 10px;
+  font-size: 12px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  cursor: pointer;
+  color: var(--color-fg);
+}
+  
+.expressive-code {
+  margin-bottom: 2em;
 }
 
 .prose pre {
   background-color: var(--color-bg);
   border-color: var(--color-border);
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
   font-size: 0.875rem;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
-  line-height: 1.6;
+  line-height: 1.5;
   overflow-x: auto;
-  margin-bottom: 2rem;
   box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
   scrollbar-width: thin;
   color: var(--color-fg);
+  
 }
   
 .prose pre code {
@@ -408,6 +433,22 @@ PROSE CONTENT STYLING
   white-space: break-spaces;
   word-break: break-word;
   color: var(--color-fg);
+}
+
+/* ===============================
+   FIGURE & CAPTION
+   =============================== */
+.prose figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+    
+.prose figcaption {
+  margin-top: 0.8em;
+  font-size: 0.9rem;
+  font-style: italic;
+  
+  background-color: var(--color-accent);
 }
   
 .prose h1,
@@ -517,7 +558,7 @@ PROSE CONTENT STYLING
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   font-style: italic;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .prose blockquote p {
@@ -541,12 +582,14 @@ PROSE CONTENT STYLING
 	border-radius: 8px;
 	border-collapse: separate;
 	border-color: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
 	scrollbar-width: thin;
 	margin-bottom: 1em;
 }
 
 .prose tr:nth-child(even) {
   background-color: var(--color-bg);
+  border-color: 1px solid var(--color-border);
 }
 
 .prose th {
@@ -597,22 +640,6 @@ PROSE CONTENT STYLING
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   object-fit: contain;
-}
-
-/* ===============================
-   FIGURE & CAPTION
-   =============================== */
-
-.prose figure {
-  margin: 1.5em 0;
-  text-align: center;
-}
-
-.prose figcaption {
-  margin-top: 0.8em;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--color-muted);
 }
 
 /* ===============================
@@ -873,41 +900,6 @@ TABLE OF CONTENT (TOC)
 }
 .toc-link.is-active {
   color: var(--color-fg);
-}
-
-/* ───────────────────────────────
-COPY CODE BUTTON
-─────────────────────────────── */
-.pre-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  background-color: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-bottom: none;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-.pre-header span {
-  font-size: 14px;
-  color: var(--color-muted);
-}
-
-.pre-header button {
-  padding: 8px 16px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--color-bg);
-  border-color: var(--color-border);
-  color: var(--color-fg);
-  cursor: pointer;
-}
-
-.pre-header button:hover {
-  background-color: var(--color-hover);
 }
 
 /* ───────────────────────────────

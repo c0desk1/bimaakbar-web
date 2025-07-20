@@ -7,7 +7,7 @@ import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
-import {getHeadings} from '../../lib/utils';
+import {getHeadings } from '../../lib/utils';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { title, summary } = post.data;
 const { Content } = await post.render();
-const headings = await getHeadings(post.body);
+const headings = await getHeadings(post.body);;
 
 ---
 <Layout title={title} description={summary}>
@@ -32,7 +32,7 @@ const headings = await getHeadings(post.body);
     </div>
     <div class="flex flex-col md:flex-row gap-4 items-start">
       <div class="flex-grow w-full max-w-auto">
-        <div class="flex flex-col md:flex-row gap-16 items-start">
+        <div class="flex flex-col md:flex-row gap-16 items-start w-full flex-grow">
           <article class="prose">
             <Content />
           </article>
@@ -41,7 +41,7 @@ const headings = await getHeadings(post.body);
             	<div class="flex-grow items-start w-full">
               	<TableOfContents headings={headings} client:load />
               </div>
-              <div class="flex justify-end flex-shrink-0">
+              <div class="flex justify-end flex-shrink-0 md:justify-start">
                 <BackToTop client:visible />
               </div>
             </div>

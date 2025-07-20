@@ -9,24 +9,59 @@ import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
+import expressiveCode from 'astro-expressive-code';
+
+
 
 
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+    ],
   },
   integrations: [
     react(),
-    sitemap(),
+    sitemap(), 
+    expressiveCode(
+      {
+        themes: ['aurora-x', 'catppuccin-latte'],
+        shiki: {
+          langs: [
+            'astro', 
+            'css', 
+            'html',
+            'javascript',
+            'json',
+            'jsonc', 
+            'jsx', 
+            'markdown', 
+            'mdx', 
+            'tsx', 
+            'typescript', 
+            'xml',
+            'yaml',  
+            'text' 
+          ],
+          defaultLang: 'text',
+          langAlias: {
+            cjs: 'js',
+            ts:'ts',
+            yml: 'yml',
+            md: 'md',
+          },
+          wrap: true,
+          injectLangsIntoNestedCodeBlocks: true,
+        },
+      }),
     mdx({
       gfm: true,
       smartypants: false,
       shikiConfig: {
-        theme: 'github-dark',
         themes: {
-          light: 'github-light',
-          dark: 'github-dark',
+          light: 'catppuccin-latte',
+          dark: 'aurora-x',
         },
         langs: [
           'astro', 
@@ -53,10 +88,7 @@ export default defineConfig({
         wrap: true,
         defaultColor: false,
       },
-      syntaxHighlight: {
-        type: 'shiki',
-        excludeLangs: ['mermaid', 'math'],
-      },
+      syntaxHighlight: 'shiki',
       remarkPlugins: [
         remarkGfm,
       ],
@@ -74,10 +106,9 @@ export default defineConfig({
     gfm: true,
     smartypants: false,
     shikiConfig: {
-      theme: 'github-dark',
       themes: {
-        light: 'github-light',
-        dark: 'github-dark',
+        light: 'catppuccin-latte',
+        dark: 'aurora-x',
       },
       langs: [
         'astro', 
@@ -104,10 +135,7 @@ export default defineConfig({
       wrap: true,
       defaultColor: false,
     },
-    syntaxHighlight: {
-      type: 'shiki',
-      excludeLangs: ['mermaid', 'math'],
-    },
+    syntaxHighlight: 'shiki',
     remarkPlugins: [
       remarkGfm,
     ],
@@ -116,7 +144,7 @@ export default defineConfig({
       rehypeRaw,
       rehypeSlug,
       rehypeFormat,
-      rehypeAccessibleEmojis
+      rehypeAccessibleEmojis,
     ],
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
