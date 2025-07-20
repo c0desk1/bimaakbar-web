@@ -194,11 +194,11 @@ PROSE CONTENT STYLING
   padding-top: 1rem;
 }
 
-.prose h1 { font-size: 2.25rem; font-weight: 800; }
-.prose h2 { font-size: 1.875rem; }
+.prose h1 { font-size: 2.7rem; font-weight: 800; }
+.prose h2 { font-size: 1.7rem; }
 .prose h3 { font-size: 1.5rem; }
-.prose h4 { font-size: 1.25rem; }
-.prose h5 { font-size: 1.125rem; }
+.prose h4 { font-size: 1.2rem; }
+.prose h5 { font-size: 1.1rem; }
 .prose h6 { font-size: 1rem; }
 
 .prose h1 a, .prose h2 a, .prose h3 a,
@@ -502,21 +502,32 @@ PROSE CONTENT STYLING
 
 .prose blockquote {
   min-width: fit-content;
-  border-left: 4px solid var(--color-accent);
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));
+  padding-inline: 8px;
+  background: var(--color-bg);
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   font-style: italic;
   margin-bottom: 1rem;
+  border-left: 4px solid var(--color-accent);
+  color: var(--color-fg);
 }
 
 .prose blockquote p {
- color: var(--color-fg);
- margin-bottom: 1em;
+ color: var(--color-muted);
+ padding-block: 4px;
 }
 
+.prose blockquote cite {
+  color: var(--color-fg);
+}
 
+.prose blockquote sup a[data-footnote-ref]::before {
+  content: '(';
+}
+
+.prose blockquote sup a[data-footnote-ref]::after {
+  content: ')';
+}
 
 /* ===============================
    TABLES
@@ -529,15 +540,16 @@ PROSE CONTENT STYLING
 	scrollbar-width: thin;
 	margin-bottom: 1em;
   width: 100%;
+  padding: 0px;
 }
 
 .prose tr:nth-child(even) {
   background-color: var(--color-bg);
-  border-color: 1px solid var(--color-border);
+  border-color: 0.5px solid var(--color-border);
 }
 
 .prose th {
-	border-color: 1px solid var(--color-border);
+	border-color: 0.5px solid var(--color-border);
 	font-weight: 600;
 	white-space: nowrap;
 	font-size: small;
@@ -547,7 +559,7 @@ PROSE CONTENT STYLING
 }
 
 .prose td {
-	border-color: 1px solid var(--color-border);
+	border-color: 0.5px solid var(--color-border);
 	white-space: nowrap;
 	font-size: small;
 	padding: 8px;
