@@ -23,7 +23,7 @@ content:
   - name: about
     label: About page
     type: file
-    path: src/pages/about
+    path: src/pages/about/index.astro
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
@@ -31,7 +31,7 @@ content:
   - name: projects
     label: Projects page
     type: file
-    path: src/pages/projects
+    path: src/pages/projects/index.astro
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
