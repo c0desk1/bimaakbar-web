@@ -20,7 +20,7 @@ content:
       - { name: category, label: Category, type: string }
       - { name: tags, label: Tags, type: string, list: true }
       - { name: draft, label: Draft, type: boolean }
-      - { name: body, label: Body, type: rich-text }
+      - { name: body, label: Body, type: "rich-text" }
 
   - name: projects
     label: Projects
@@ -42,85 +42,41 @@ content:
       - { name: demoUrl, label: Demo URL, type: string }
       - { name: draft, label: Draft, type: boolean }
       - { name: tags, label: Tags, type: string, list: true }
-      - { name: body, label: Body, type: rich-text }
+      - { name: body, label: Body, type: "rich-text" }
 
-- name: terms
-  label: Terms
-  type: file
-  path: src/pages/terms
-  fields:
-    - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-    - { name: title, label: Title, type: string }
-    - { name: body, label: Body, type: rich-text }
-
-- name: privacy
-  label: Privacy
-  type: file
-  path: src/pages/privacy
-  fields:
-    - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-    - { name: title, label: Title, type: string }
-    - { name: body, label: Body, type: rich-text }
-
-- name: about
-  label: About
-  type: file
-  path: src/pages/about
-  fields:
-    - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-    - { name: title, label: Title, type: string }
-    - { name: body, label: Body, type: rich-text }
-
-- name: not-found
-  label: 404
-  type: file
-  path: src/pages/404
-  fields:
-    - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-    - { name: title, label: Title, type: string }
-    - { name: body, label: Body, type: rich-text }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
-      
-  - name: projects
-    label: Projects page
-    type: file
-    path: src/pages/projects
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
-      
-   - name: terms
-    label: Terms page
+  - name: terms
+    label: Terms
     type: file
     path: src/pages/terms
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
-      
-      - name: privacy
-    label: Privacy page
+      - { name: body, label: Body, type: "rich-text" }
+
+  - name: privacy
+    label: Privacy
     type: file
     path: src/pages/privacy
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
-      - name: about
-    label: About page
+      - { name: body, label: Body, type: "rich-text" }
+
+  - name: about
+    label: About
     type: file
-    path: src/pages/about/index.astro
+    path: src/pages/about
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
-  - name: projects
-    label: Projects page
+      - { name: body, label: Body, type: "rich-text" }
+
+  - name: not-found
+    label: 404
     type: file
-    path: src/pages/projects/index.astro
+    path: src/pages/404
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      - { name: body, label: Body, type: "rich-text" }
+      
