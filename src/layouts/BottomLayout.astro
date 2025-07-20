@@ -1,12 +1,10 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content"
-import Feedback from '../components/Feedback.tsx';
 
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"projects">
 }
 
-// Get the requested entry
 const { entry } = Astro.props
 const { collection } = entry
 
@@ -20,44 +18,33 @@ const next = items[(index + 1) % items.length]
 ---
 
 <div>
-  <Feedback client:load />
-  <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-2 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-hover)] mt-16 transition group">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)">
+  <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-2 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-hover)] my-16 transition group">
+    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)">
       <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
       <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
     </svg>
     <span>Kembali ke {collection}</span>
   </a>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16 text-[var(--color-muted)]">
-    <a href={`/${prev.collection}/${prev.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-[var(--color-hover)] border-[var(--color-border)] blend">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-16 text-[var(--color-muted)] w-full">
+    <a href={`/${prev.collection}/${prev.slug}`} class="group gap-2 flex items-center transition-colors duration-300 ease-in-out">
       <div class="order-2 w-full h-full group-hover:text-[var(--color-fg)] blend">
         <div class="text-sm uppercase text-[var(--color-muted)]">
           Sebelumnya
         </div>
-      <div class="font-semibold mt-3 hover:text-[var(--color-fg)">
-        {prev.data.title}
+        <div class="text-md font-semibold mt-2 hover:text-[var(--color-fg)">
+          {prev.data.title}
+        </div>
       </div>
-      </div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-        class="w-5 h-5 shrink-0 stroke-current group-hover:stroke-[var(--color-fg)]">
-        <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
-        <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
-      </svg>
     </a>
-    <a href={`/${next.collection}/${next.slug}`} class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-[var(--color-hover)] border-[var(--color-border)] transition-colors duration-300 ease-in-out">
+    <a href={`/${next.collection}/${next.slug}`} class="group gap-2 flex items-center transition-colors duration-300 ease-in-out">
       <div class="w-full h-full text-right group-hover:text-[var(--color-fg)] blend">
         <div class="text-sm uppercase text-[var(--color-muted)]">
           Selanjutnya
         </div>
-        <div class="font-semibold mt-3 hover:text-[var(--color-fg)">
+        <div class="text-md font-semibold mt-2 hover:text-[var(--color-fg)">
           {next.data.title}
         </div>
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-        class="w-5 h-5 shrink-0 stroke-current group-hover:stroke-[var(--color-fg)]">
-        <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
-        <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
-      </svg>
     </a>
   </div>
 </div>
