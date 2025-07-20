@@ -1,41 +1,42 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
+// src/components/CodeBlock.tsx
+import { useState } from 'react';
 
-interface CodeBlockProps {
-  children?: React.ReactNode;
-  className?: string;
-}
+type CodeProps = {
+  children: {
+    props: {
+      className?: string;
+      children: string;
+    };
+  };
+};
 
-export default function CodeBlock({ children, className }: CodeBlockProps) {
+export default function CodeBlock({ children }: CodeProps) {
   const [copied, setCopied] = useState(false);
 
-  const lang = className?.replace(/^language-/, '') || '';
-  const rawCode = typeof children === 'string' ? children : '';
+  const rawCode = children?.props?.children?.trim?.() || '';
+  const className = children?.props?.className || '';
+  const langMatch = className.match(/language-(\w+)/);
+  const lang = langMatch ? langMatch[1] : 'txt';
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(rawCode).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(rawCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   return (
-    <div className="relative group font-mono text-sm my-4 bg-[var(--color-code-bg)] border border-[var(--color-border)] rounded-md overflow-hidden">
-      <div className="absolute top-0 right-0 z-10 p-2">
+    <div className="relative group text-sm my-6">
+      <div className="flex justify-between items-center px-4 py-2 bg-[var(--color-card-bg)] border-b border-[var(--color-border)] text-xs font-mono rounded-t-md">
+        <span className="text-[var(--color-muted)]">{lang}</span>
         <button
           onClick={handleCopy}
-          className="text-xs px-2 py-1 rounded-md border bg-[var(--color-card-bg)] hover:bg-[var(--color-hover)] text-[var(--color-fg)]"
+          className="text-[var(--color-muted)] hover:text-[var(--color-fg)] transition"
         >
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
-      {lang && (
-        <div className="absolute top-0 left-0 text-[10px] font-semibold text-[var(--color-muted)] uppercase px-2 py-1">
-          {lang}
-        </div>
-      )}
-      <pre className={clsx('overflow-x-auto p-4', className)}>
-        <code>{children}</code>
+      <pre className="overflow-auto rounded-b-md bg-[var(--color-code-bg)] text-[var(--color-code-fg)] px-4 py-3 font-mono">
+        <code className={`language-${lang}`}>{rawCode}</code>
       </pre>
     </div>
   );
