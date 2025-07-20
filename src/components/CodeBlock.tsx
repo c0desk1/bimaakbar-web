@@ -1,44 +1,42 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import clsx from 'clsx';
 
-type CodeBlockProps = {
-  code: string;
-  lang?: string;
-  filename?: string;
-};
+interface CodeBlockProps {
+  children?: React.ReactNode;
+  className?: string;
+}
 
-export default function CodeBlock({ code, lang = 'text', filename }: CodeBlockProps) {
+export default function CodeBlock({ children, className }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (!copied) return;
-    const timeout = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timeout);
-  }, [copied]);
+  const lang = className?.replace(/^language-/, '') || '';
+  const rawCode = typeof children === 'string' ? children : '';
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(rawCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
   };
 
   return (
-    <div className="not-prose my-6 overflow-hidden rounded-md border border-[var(--color-border)] dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900">
-      <div className="flex items-center justify-between px-4 py-2 text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono border-b border-zinc-300 dark:border-zinc-700">
-        <div className="flex items-center gap-2">
-          {lang && <span className="capitalize">{lang}</span>}
-          {filename && <span className="text-zinc-500">({filename})</span>}
-        </div>
+    <div className="relative group font-mono text-sm my-4 bg-[var(--color-code-bg)] border border-[var(--color-border)] rounded-md overflow-hidden">
+      <div className="absolute top-0 right-0 z-10 p-2">
         <button
           onClick={handleCopy}
-          className="rounded px-2 py-1 text-[11px] border border-zinc-400 dark:border-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+          className="text-xs px-2 py-1 rounded-md border bg-[var(--color-card-bg)] hover:bg-[var(--color-hover)] text-[var(--color-fg)]"
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <pre
-        className={`language-${lang} text-[13px] overflow-auto px-4 py-3 bg-zinc-50 dark:bg-zinc-900 leading-[1.4]`}
-        style={{ counterReset: 'line' }}
-        dangerouslySetInnerHTML={{ __html: code }}
-      />
+      {lang && (
+        <div className="absolute top-0 left-0 text-[10px] font-semibold text-[var(--color-muted)] uppercase px-2 py-1">
+          {lang}
+        </div>
+      )}
+      <pre className={clsx('overflow-x-auto p-4', className)}>
+        <code>{children}</code>
+      </pre>
     </div>
   );
 }
