@@ -83,7 +83,7 @@ export default function TableOfContents({ headings }: Props) {
             const paddingLeft = h.depth > 2 ? `${(h.depth - 2) * 1.0}rem` : '0rem';
             return (
               <li key={h.slug} 
-                  className={clsx('pl-2 border-l border-[var(--color-border)]',
+                  className={clsx('pl-4 border-l border-[var(--color-border)]',
                     {'border-l-2 border-[var(--color-fg)]': activeId === h.slug,
                       'border-l-2 border-[var(--color-hover)] hover:border-[var(--color-border)]': activeId !== h.slug,
                     }
