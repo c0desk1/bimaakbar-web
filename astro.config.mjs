@@ -135,7 +135,7 @@ export default defineConfig({
       wrap: true,
       defaultColor: false,
     },
-    syntaxHighlight: false,
+    syntaxHighlight: 'prism',
     remarkPlugins: [
       remarkGfm,
     ],
