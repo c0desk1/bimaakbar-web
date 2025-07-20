@@ -72,64 +72,11 @@ content:
       - { name: body, label: Body, type: "rich-text" }
 
   - name: not-found
-    label: 404 Pages
+    label: Error Pages 
     type: file
     path: src/pages/404
     fields:
       - { name: layout, type: string, hidden: true, default: "../../layouts/Layout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: "rich-text" }
-    view:
-      fields:
-        - title
-        - draft
-        - date
-    fields:
-      - { name: title, label: Title, type: string, required: true }
-      - { name: summary, label: Summary, type: string }
-      - { name: date, label: Date, type: date }
-      - { name: image, label: Image, type: string }
-      - { name: technologies, label: Technologies, type: string, list: true }
-      - { name: liveUrl, label: Live URL, type: string }
-      - { name: repoUrl, label: Repository URL, type: string }
-      - { name: demoUrl, label: Demo URL, type: string }
-      - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true }
-      - { name: body, label: Body, type: "rich-text" }
-
-  - name: terms
-    label: Terms
-    type: file
-    path: src/pages/terms
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: "rich-text" }
-
-  - name: privacy
-    label: Privacy
-    type: file
-    path: src/pages/privacy
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: "rich-text" }
-
-  - name: about
-    label: About
-    type: file
-    path: src/pages/about
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
-      - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: "rich-text" }
-
-  - name: not-found
-    label: Error Pages
-    type: file
-    path: src/pages/404
-    fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: "rich-text" }
       
