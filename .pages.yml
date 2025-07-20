@@ -1,0 +1,16 @@
+collections:
+  - name: posts
+    label: Posts
+    folder: src/content/blog
+    format: markdown
+    create: true
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: body
+        label: Body
+        type: markdown
