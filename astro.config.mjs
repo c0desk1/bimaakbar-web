@@ -26,7 +26,7 @@ export default defineConfig({
     sitemap(), 
     expressiveCode(
       {
-        themes: ['aurora-x', 'catppuccino-latte'],
+        themes: ['aurora-x', 'catppuccin-latte'],
         shiki: {
           langs: [
             'astro', 
@@ -135,7 +135,7 @@ export default defineConfig({
       wrap: true,
       defaultColor: false,
     },
-    syntaxHighlight: 'shiki',
+    syntaxHighlight: false,
     remarkPlugins: [
       remarkGfm,
     ],
