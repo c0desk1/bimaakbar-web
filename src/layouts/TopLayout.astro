@@ -17,7 +17,7 @@ const demoUrl = collection === "projects" ? data.demoUrl : null;
 const repoUrl = collection === "projects" ? data.repoUrl : null; 
 ---
 <div class="flex flex-col items-center text-center justify-center py-16">
-  <nav class="items-center text-sm text-[var(--color-muted)] mb-6">
+  <nav class="items-center text-sm text-[var(--color-muted)] mb-2">
     <ol class="flex items-center text-center space-x-1">
       <li>
         <a href="/" class="uppercase hover:text-[var(--color-fg)] text-[var(--color-muted)]"></i>Home</a>
@@ -31,7 +31,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
       {breadcrumbs.map((crumb, i) => (
         <>
           <li><i class="ri-arrow-drop-right-line"></i></li>
-          <li class={i === breadcrumbs.length - 1 ? "uppercase text-[var(--color-fg)] font-medium truncate max-w-[150px] sm:max-w-xs" : "text-[var(--color-muted)]"}>
+          <li class={i === breadcrumbs.length - 1 ? "uppercase hover:underline text-[var(--color-fg)] font-medium truncate max-w-[150px] cursor-pointer" : "text-[var(--color-muted)]"}>
             {i === breadcrumbs.length - 1 ? (
               <span>{crumb.name}</span>
             ) : (
@@ -50,12 +50,12 @@ const repoUrl = collection === "projects" ? data.repoUrl : null;
         {title}
       </h1>
     </div>
-    <div class="flex py-2 gap-2 items-center">
-      <div class="flex text-sm uppercase gap-1 items-center">
+    <div class="flex py-2 gap-2 items-center w-full text-[var(--color-muted)]">
+      <div class="flex flex-grow text-sm uppercase gap-1 items-center">
         <i class="ri-timer-flash-line text-lg"></i>
         <span>{readingTime(body)}</span>
       </div>
-      <div class="flex text-sm uppercase gap-1 items-center flex-wrap">
+      <div class="flex flex-shrink-0 text-sm uppercase gap-1 items-center flex-wrap">
         <i class="ri-calendar-line text-lg"></i>
         <span>{formatDate(date)}</span>
       </div> 
