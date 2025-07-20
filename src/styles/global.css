@@ -374,6 +374,8 @@ PROSE CONTENT STYLING
   border-color: var(--color-border);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
