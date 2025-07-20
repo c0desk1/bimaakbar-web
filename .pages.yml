@@ -1,26 +1,91 @@
-media:
-	input: public
-	output: /
-
-content:
-	- name: posts
-	label: Posts
-	type: collection
-    path: src/content/blog
-    view:
-      fields: [ title, draft, date ]
+collections:
+  - name: blog
+    label: Blog
+    folder: src/content/blog
+    format: markdown
+    create: true
+    slug: "{{year}}-{{month}}-{{slug}}"
     fields:
-      - { name: author, label: Author, type: string }
-      - { name: pubDatetime, label: Date, type: date }
-      - { name: modDatetime, label: Date, type: date }
-      - { name: title, label: Title, type: string, required: true }
-      - { name: ogImage, label: Title, type: string }
-      - { name: slug, label: Slug, type: string }
-      - { name: featured, label: Featured, type: boolean }
-      - { name: draft, label: Draft, type: boolean }
-      - { name: tags, label: Tags, type: string, list: true }
-      - { name: description, label: Description, type: string }
-      - { name: body, label: Body, type: rich-text }
+      - name: title
+        label: Title
+        type: string
+      - name: summary
+        label: Summary
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: image
+        label: Image
+        type: string
+        required: false
+      - name: category
+        label: Category
+        type: string
+        required: false
+      - name: tags
+        label: Tags
+        type: list
+        field:
+          type: string
+      - name: draft
+        label: Draft
+        type: boolean
+        required: false
+      - name: body
+        label: Body
+        type: markdown
+
+  - name: projects
+    label: Projects
+    folder: src/content/projects
+    format: markdown
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: summary
+        label: Summary
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: tags
+        label: Tags
+        type: list
+        field:
+          type: string
+      - name: image
+        label: Image
+        type: string
+        required: false
+      - name: technologies
+        label: Technologies
+        type: list
+        field:
+          type: string
+        required: false
+      - name: liveUrl
+        label: Live URL
+        type: string
+        required: false
+      - name: repoUrl
+        label: Repository URL
+        type: string
+        required: false
+      - name: demoUrl
+        label: Demo URL
+        type: string
+        required: false
+      - name: draft
+        label: Draft
+        type: boolean
+        required: false
+      - name: body
+        label: Body
+        type: markdown
     
     - name: projects
 	label: Projects
