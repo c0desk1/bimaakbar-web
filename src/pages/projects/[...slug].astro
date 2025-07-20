@@ -1,0 +1,41 @@
+---
+// src/pages/projects/[...slug].astro
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/Container.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import TableOfContents from '../../components/TableOfContents.tsx';
+import BackToTop from '../../components/BackToTop.tsx';
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects');
+  return allProjects.map(projects => ({
+    params: { slug: projects.slug },
+    props: { projects },
+  }));
+}
+
+const { projects } = Astro.props;
+const { title, summary } = projects.data;
+const { Content, headings } = await projects.render();
+---
+
+<Layout title={title} description={summary}>
+  <Container size="lg">
+    <div class="flex flex-col md:flex-row-reverse items-start justify-center gap-6">
+      <div class="sticky top-16 flex-grow items-start w-full h-full bg-[var(--color-bg)]">
+        <div class="flex-grow items-start w-full h-full py-4">
+          <TableOfContents headings={headings} client:load />
+          <BackToTop client:visible />
+        </div>
+      </div>
+      <div class="flex-grow items-start w-full">
+        <TopLayout entry={projects} />
+        <article class="prose">
+          <Content />
+      </article>
+      <BottomLayout entry={projects} />
+    </div>
+  </Container>
+</Layout>

@@ -11,9 +11,6 @@ import rehypeRaw from 'rehype-raw';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import expressiveCode from 'astro-expressive-code';
 
-
-
-
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   vite: {
@@ -23,119 +20,54 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    sitemap(), 
+    sitemap(),
     expressiveCode(
       {
-        themes: ['aurora-x', 'catppuccin-latte'],
+        themes: ['plastic', 'one-light'],
+        removeUnusedThemes: false,
         shiki: {
           langs: [
-            'astro', 
-            'css', 
+            'css',
+            'astro',
             'html',
             'javascript',
             'json',
-            'jsonc', 
-            'jsx', 
-            'markdown', 
-            'mdx', 
-            'tsx', 
-            'typescript', 
+            'jsonc',
+            'jsx',
+            'make',
+            'markdown',
+            'mdx',
+            'php',
+            'postcss',
+            'powershell',
+            'python',
+            'sass',
+            'scss',
+            'shellsession',
+            'sql',
+            'tsx',
+            'typescript',
             'xml',
-            'yaml',  
-            'text' 
+            'yaml	',
           ],
-          defaultLang: 'text',
-          langAlias: {
-            cjs: 'js',
-            ts:'ts',
-            yml: 'yml',
-            md: 'md',
-          },
-          wrap: true,
-          injectLangsIntoNestedCodeBlocks: true,
+          langAlias: [
+            'js',
+            'makefile',
+            'md',
+            'py',
+            'console',
+            'ts',
+            'cmd',
+            'yml'
+          ],
         },
-      }),
-    mdx({
-      gfm: true,
-      smartypants: false,
-      shikiConfig: {
-        themes: {
-          light: 'catppuccin-latte',
-          dark: 'aurora-x',
-        },
-        langs: [
-          'astro', 
-          'css', 
-          'html',
-          'javascript',
-          'json',
-          'jsonc', 
-          'jsx', 
-          'markdown', 
-          'mdx', 
-          'tsx', 
-          'typescript', 
-          'xml',
-          'yaml',  
-          'text' 
-        ],
-        langAlias: {
-          cjs: 'js',
-          ts:'ts',
-          yml: 'yml',
-          md: 'md',
-        },
-        wrap: true,
-        defaultColor: false,
-      },
-      syntaxHighlight: 'shiki',
-      remarkPlugins: [
-        remarkGfm,
-      ],
-      rehypePlugins: [
-        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeRaw,
-        rehypeSlug,
-        rehypeFormat,
-        rehypeAccessibleEmojis
-      ],
-      remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
-    }),
+      }
+    ),
+    mdx(),
   ],
   markdown: {
     gfm: true,
     smartypants: false,
-    shikiConfig: {
-      themes: {
-        light: 'catppuccin-latte',
-        dark: 'aurora-x',
-      },
-      langs: [
-        'astro', 
-        'css', 
-        'html',
-        'javascript',
-        'json',
-        'jsonc', 
-        'jsx', 
-        'markdown', 
-        'mdx', 
-        'tsx', 
-        'typescript', 
-        'xml',
-        'yaml',  
-        'text' 
-      ],
-      langAlias: {
-        cjs: 'js',
-        ts:'ts',
-        yml: 'yml',
-        md: 'md',
-      },
-      wrap: true,
-      defaultColor: false,
-    },
-    syntaxHighlight: false,
     remarkPlugins: [
       remarkGfm,
     ],
@@ -146,6 +78,7 @@ export default defineConfig({
       rehypeFormat,
       rehypeAccessibleEmojis,
     ],
+    syntaxHighlight: false,
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
 });
