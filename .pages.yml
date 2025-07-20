@@ -1,11 +1,12 @@
 media:
-  input: public
-  output: /
+	input: public
+	output: /
+
 content:
-  - name: posts
-    label: Posts
-    type: collection
-    path: src/pages/blog
+	- name: posts
+	label: Posts
+	type: collection
+    path: src/content/blog
     view:
       fields: [ title, draft, date ]
     fields:
@@ -20,7 +21,62 @@ content:
       - { name: tags, label: Tags, type: string, list: true }
       - { name: description, label: Description, type: string }
       - { name: body, label: Body, type: rich-text }
+    
+    - name: projects
+	label: Projects
+	type: collection
+    path: src/content/projects
+    view:
+      fields: [ title, draft, date ]
+    fields:
+      - { name: author, label: Author, type: string }
+      - { name: pubDatetime, label: Date, type: date }
+      - { name: modDatetime, label: Date, type: date }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: ogImage, label: Title, type: string }
+      - { name: slug, label: Slug, type: string }
+      - { name: featured, label: Featured, type: boolean }
+      - { name: draft, label: Draft, type: boolean }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: description, label: Description, type: string }
+      - { name: body, label: Body, type: rich-text }
+      
   - name: about
+    label: About page
+    type: file
+    path: src/pages/about
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      
+  - name: projects
+    label: Projects page
+    type: file
+    path: src/pages/projects
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      
+   - name: terms
+    label: Terms page
+    type: file
+    path: src/pages/terms
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      
+      - name: privacy
+    label: Privacy page
+    type: file
+    path: src/pages/privacy
+    fields:
+      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: title, label: Title, type: string }
+      - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+      - name: about
     label: About page
     type: file
     path: src/pages/about/index.astro
