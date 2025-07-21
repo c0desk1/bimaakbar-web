@@ -1,16 +1,16 @@
 ---
 title: "Astro Sphere: File Structure"
-summary: "You'll find these directories and files in the project. What do they do?"
-date: "Mar 17 2024"
-image: "/open-graph.jpg"
-draft: false
+summary: You'll find these directories and files in the project. What do they do?
+date: 2025-07-21
+image: /open-graph.jpg
+category: Coding
 tags:
-- Tutorial
-- Astro
-- Astro Sphere
+  - Tutorial
+  - Astro
+draft: false
 ---
-
 A one line summary of what each file and directory is for:
+
 ```js
 /
 ├── public/ // Files publicly available to the browser
