@@ -6,6 +6,7 @@ import Logo from './Logo';
 import Container from "./Container";
 import ThemeToggleButton from './ThemeToggleButton';
 import MobileMenu from './MobileMenu';
+import { con } from '../lib/utils';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,8 +56,13 @@ const Header: React.FC = () => {
             ))}
           </nav>
           <div className="flex-1 flex items-center justify-end gap-4">
-            <div className="hidden md:flex">
+            <div className="hidden md:flex gap-4">
               <ThemeToggleButton aria-label="Toggle tema gelap atau terang" />
+              <a href="/rss.xml" target="_blank" aria-label={`Rss feed untuk ${SITE.TITLE}`} className={con("hidden md:flex", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[var(--color-hover)]", "stroke-current hover:stroke-[var(--color-fg)]", "border border-[var(--color-border)]", "transition-colors duration-300 ease-in-out")}>
+                <svg className="size-full">
+                  <use href="/ui.svg#rss"></use>
+                 </svg>
+              </a>
             </div>
             <button
               className="md:hidden flex items-center justify-center size-6 p-4 text-md text-[var(--color-muted)] border border-[var(--color-border)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] rounded-full"

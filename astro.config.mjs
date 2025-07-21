@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
+import typography from '@tailwindcss/typography';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rss from '@astrojs/rss';
@@ -18,12 +19,13 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      typography(),
     ],
   },
   integrations: [
     react(),
-    sitemap(),
     rss(),
+    sitemap(),
     expressiveCode(
       {
         themes: ['plastic', 'one-light'],
