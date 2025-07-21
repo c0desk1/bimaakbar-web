@@ -1,15 +1,13 @@
 ---
 title: "Astro Sphere: Writing Markdown"
-summary: Basic Markdown syntax that can be used when writing Markdown content in
-  Astro Sphere.
-date: 2025-07-21
-category: How To
-tags:
-  - Tutorial
-  - Astro
-  - Astro Sphere
-  - "Markdown\r"
+summary: "Basic Markdown syntax that can be used when writing Markdown content in Astro Sphere."
+date: "Mar 13 2024"
 draft: false
+tags:
+- Tutorial
+- Astro
+- Astro Sphere
+- Markdown
 ---
 ## Headings
 
@@ -25,6 +23,7 @@ draft: false
 ##### H5
 
 ###### H6
+
 ```
 
 # H1
@@ -92,9 +91,10 @@ The blockquote element represents content that is quoted from another source, op
 
 #### Output
 
-> Don't communicate by sharing memory, share memory by communicating. — Rob Pike\[^1\]
+> Don't communicate by sharing memory, share memory by communicating.
+> — <cite>Rob Pike[^1]</cite>
 
-\[^1\]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
+[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
 
 ## Tables
 
@@ -108,15 +108,15 @@ The blockquote element represents content that is quoted from another source, op
 
 ### Output
 
-| Italics | Bold | Code |
-| --- | --- | --- |
+| Italics   | Bold     | Code   |
+| --------- | -------- | ------ |
 | _italics_ | **bold** | `code` |
 
 ## Code Blocks
 
 ### Syntax
 
-we can use 3 backticks \`\`\` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntac, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
+we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntac, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
 
 ````markdown
 ```html
@@ -162,9 +162,9 @@ we can use 3 backticks \`\`\` in new line and write snippet and close with 3 bac
 
 #### Output
 
-1.  First item
-2.  Second item
-3.  Third item
+1. First item
+2. Second item
+3. Third item
 
 ### Unordered List
 
@@ -178,9 +178,9 @@ we can use 3 backticks \`\`\` in new line and write snippet and close with 3 bac
 
 #### Output
 
-*   List item
-*   Another item
-*   And another item
+- List item
+- Another item
+- And another item
 
 ### Nested list
 
@@ -198,15 +198,17 @@ we can use 3 backticks \`\`\` in new line and write snippet and close with 3 bac
 
 #### Output
 
-*   Fruit
-    *   Apple
-    *   Orange
-    *   Banana
-*   Dairy
-    *   Milk
-    *   Cheese
+- Fruit
+  - Apple
+  - Orange
+  - Banana
+- Dairy
+  - Milk
+  - Cheese
 
-## Other Elements — abbr, sub, sup, kbd, mark
+## Other Elements
+
+### abbr, sub, sup, kbd, mark
 
 #### Syntax
 
@@ -224,12 +226,12 @@ Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and ot
 
 #### Output
 
-GIF is a bitmap image format.
+<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
 
-H2O
+H<sub>2</sub>O
 
-Xn + Yn = Zn
+X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
 
-Press CTRL+ALT+Delete to end the session.
+Press <kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd> to end the session.
 
-Most salamanders are nocturnal, and hunt for insects, worms, and other small creatures.
+Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.

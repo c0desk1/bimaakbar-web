@@ -6,22 +6,18 @@ import Container from "../components/Container.astro"
 import Hero from '../components/Hero.astro';
 import RecentPosts from '../components/RecentPosts.astro';
 import RecentProjects from '../components/RecentProjects.astro';
-import Socials from '../components/Socials.astro';
 ---
 
 <Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-	<Container size="lg">
+	<Container size="xl">
 		<section id="hero" class="py-4">
 			<Hero />
 		</section>
-		<section id="recent-post" class="py-4">
+		<section id="recent-post" class="pb-4">
 			<RecentPosts />
 		</section>
-		<section id="recent-projects" class="py-4">
+		<section id="recent-projects" class="pb-4">
 			<RecentProjects />
 		</section>
-		<section id="socials" class="py-4">
-			<Socials />
-		</section>	
 	</Container>
 </Layout>

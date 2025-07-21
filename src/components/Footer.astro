@@ -2,28 +2,19 @@
 // src/components/Footer.astro
 import { SITE, SOCIALS } from "../consts"
 import Container from "../components/Container.astro"
+import StatusIndicator from '../components/StatusIndicator.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="border-t border-[var(--color-border)]">
-  <Container size="lg">
-    <div class="text-sm overflow-hidden whitespace-nowrap container mx-auto w-auto justify-center py-6">
-      <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start gap-1">
-          <div class="flex flex-row items-center justify-center sm:items-start gap-2">
-            <a href="/terms" class="text-[var(--color-muted)] hover:text-[var(--color-fg)]">Ketentuan</a>
-            <span class="text-[var(--color-muted)]">⌭</span>
-            <a href="/privacy" class="text-[var(--color-muted)] hover:text-[var(--color-fg)]">Privasi</a>
-          </div>
-          <div class="text-[var(--color-muted)] text-center md:text-right">
-            &copy; {currentYear} <a href="/" class="text-[var(--color-muted)] hover:text-[var(--color-fg)]">{SITE.TITLE}</a>. All rights reserved.
-          </div>
-        </div>
-        <div class="order-1 sm:order-2 flex justify-center sm:justify-end">
-          <div class="flex flex-wrap gap-1 items-center justify-center">
-            {SOCIALS.map((SOCIAL) => (<a href={SOCIAL.HREF} target="_blank" aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} class="group inline-flex text-center items-center justify-center w-9 h-9 rounded-full text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] transition"><i class={`text-lg ${SOCIAL.ICON}`}></i></a>))}
-          </div>
-        </div>
+  <Container size="xl">
+    <div class="w-full flex flex-col md:flex-row gap-2 whitespace-nowrap items-center py-2">
+      <div class="flex w-full flex-grow items-center text-sm text-[var(--color-muted)] text-center">
+        &copy; {currentYear} <a href="/" class="text-[var(--color-muted)] hover:text-[var(--color-fg)] px-1">{SITE.TITLE}</a>. All rights reserved.
+      </div>
+      <div class="flex-shrink-0">
+        <StatusIndicator />
       </div>
     </div>
   </Container>

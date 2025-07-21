@@ -211,7 +211,7 @@ PROSE CONTENT STYLING
 .prose h2:hover .anchor,
 .prose h3:hover .anchor,
 .prose h4:hover .anchor {
-  opacity: 1;
+  opacity: 100;
 }
 
 .anchor {
@@ -556,7 +556,6 @@ PROSE CONTENT STYLING
 	padding: 8px;
 	text-align: left;
 	background-color: var(--color-bg-secondary);
-	width: 100%;
 }
 
 .prose td {
@@ -566,7 +565,6 @@ PROSE CONTENT STYLING
 	padding: 8px;
 	text-align: left;
 	background-color: var(--color-bg);
-width: 100%;
 }
 
 .prose th:first-child {
@@ -590,7 +588,7 @@ width: 100%;
    =============================== */
 
 .prose img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
   margin-bottom: 1em;
