@@ -15,6 +15,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.4.1",
+"@astrojs/vercel": "^X.X.X",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
     "@rehype-pretty/transformers": "^0.13.2",
