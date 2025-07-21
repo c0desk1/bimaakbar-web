@@ -51,7 +51,6 @@ content:
     fields:
       - { name: layout, type: string, hidden: true, default: "../../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
-      - { name: body, label: Body, type: "rich-text" }
 
   - name: privacy
     label: Privacy Pages
