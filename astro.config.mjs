@@ -13,6 +13,7 @@ import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
+import vercel from '@astrojs/vercel';
 
 
 export default defineConfig({
@@ -88,4 +89,11 @@ export default defineConfig({
     syntaxHighlight: false,
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
+adapter: vercel({
+    imagesConfig: {
+      sizes: [320, 640, 1280],
+    },
+imageService: true,
+  }),
+
 });
