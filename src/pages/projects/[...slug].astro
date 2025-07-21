@@ -9,6 +9,7 @@ import BottomLayout from '../../layouts/BottomLayout.astro';
 import ArticleBottomLayout from '../../layouts/ArticleBottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
+import Prose from '../../components/Prose';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -33,9 +34,9 @@ const { Content, headings } = await projects.render();
     <div class="flex flex-col md:flex-row gap-4 items-start">
       <div class="flex-grow w-full max-w-screen">
         <div class="flex flex-col md:flex-row gap-16 items-start w-full flex-grow">
-          <article class="prose flex-grow">
+          <Prose class="flex-grow">
             <Content />
-          </article>
+          </Prose>
           <div class="sticky bg-[var(--color-bg)] items-center justify-center md:justify-start flex flex-row md:flex-col bottom-0 md:top-16 md:w-auto w-full h-fit md:flex-shrink-0 gap-2 py-4">
             <div class="flex md:flex-col justify-start overflow-x-hidden w-screen md:w-auto">
             	<div class="flex-grow items-start w-full">
