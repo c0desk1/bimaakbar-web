@@ -1,0 +1,33 @@
+---
+// src/layouts/Layout.astro
+import "../styles/global.css";
+import Container from "../components/Container.astro"
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.tsx';
+import Socials from '../components/Socials.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from "../consts"
+import ReadingProgress from '../components/ReadingProgress.tsx';
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+    <head>
+        <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    </head>
+    <body>
+        <Header client:idle />
+        <ReadingProgress client:load /> 
+        <main>
+            <slot />
+        </main>
+        <section id="socials" class="border-t border-[var(--color-border)] py-4">
+            <Container size="xl">
+                <Socials />
+            </Container>
+		</section>	
+        <Footer />
+    </body>
+</html>

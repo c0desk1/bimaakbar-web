@@ -7,6 +7,7 @@ export default defineEcConfig({
   defaultProps: {
     collapseStyle: 'collapsible-auto',
     showLineNumbers: true,
+    startLineNumber: '1',
   },
   styleOverrides: {
     frames: {

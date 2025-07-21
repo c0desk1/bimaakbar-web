@@ -3,6 +3,8 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import rss from '@astrojs/rss';
+
 import remarkGfm from 'remark-gfm';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
@@ -21,6 +23,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap(),
+    rss(),
     expressiveCode(
       {
         themes: ['plastic', 'one-light'],

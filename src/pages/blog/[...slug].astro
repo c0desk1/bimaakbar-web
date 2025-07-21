@@ -1,0 +1,45 @@
+---
+// src/pages/blog/[...slug].astro
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/Container.astro';
+import ArticleTopLayout from '../../layouts/ArticleTopLayout.astro';
+import ArticleBottomLayout from '../../layouts/ArticleBottomLayout.astro';
+import TableOfContents from '../../components/TableOfContents.tsx';
+import BackToTop from '../../components/BackToTop.tsx';
+import {getHeadings } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, summary } = post.data;
+const { Content } = await post.render();
+const headings = await getHeadings(post.body);;
+
+---
+<Layout title={title} description={summary}>
+  <Container size="md">
+    <div class="flex justify-center">
+      <div class="w-full max-w-auto">
+        <ArticleTopLayout entry={post} />
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row gap-4 items-start">
+      <div class="flex-grow w-full max-w-screen">
+        <div class="flex flex-col md:flex-row gap-16 items-start w-full flex-grow">
+          <article class="prose flex-grow">
+            <Content />
+          </article>
+          
+        </div>
+        <ArticleBottomLayout entry={post} />
+      </div>
+    </div>
+  </Container>
+</Layout>

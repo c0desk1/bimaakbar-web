@@ -1,0 +1,83 @@
+---
+// src/components/Socials.astro
+import { SITE, SOCIALS, BLOG, PROJECTS, ABOUT, PRIVACY, TERMS, CONTACT } from "../consts"
+import Logo from './Logo';
+---
+<div class="flex flex-col md:flex-row w-full h-auto gap-4 py-2">
+  <div class="flex-1 flex-col w-auto gap-2">
+    <div class="flex items-center mb-1">
+      <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-muted)]">
+        {SITE.TITLE}
+      </h6>
+    </div>
+    <div class="flex flex-col text-left gap-2">
+      <a href='/about' target="_blank" rel="noopener noreferrer" aria-label={ABOUT.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{ABOUT.TITLE}</p>
+      </a>
+      <a href='/privacy' target="_blank" rel="noopener noreferrer" aria-label={PRIVACY.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{PRIVACY.TITLE}</p>
+      </a>
+      <a href='/terms' target="_blank" rel="noopener noreferrer" aria-label={TERMS.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{TERMS.TITLE}</p>
+      </a>
+    </div>
+  </div>
+  <div class="flex-1 flex-col w-auto gap-2">
+    <div class="flex items-center mb-1">
+      <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-muted)]">
+        Discover
+      </h6>
+    </div>
+    <div class="flex flex-col text-left gap-2">
+      <a href='/blog' target="_blank" rel="noopener noreferrer" aria-label={BLOG.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{BLOG.TITLE}</p>
+      </a>
+      <a href='/projects' target="_blank" rel="noopener noreferrer" aria-label={PROJECTS.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{PROJECTS.TITLE}</p>
+      </a>
+    </div>
+  </div>
+  <div class="flex-1 flex-col w-auto gap-2">
+    <div class="flex items-center mb-1">
+      <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-muted)]">
+        Sosial
+      </h6>
+    </div>
+    {
+      SOCIALS.map((social) => (
+        <a
+          href={social.HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${SITE.TITLE} on ${social.NAME}`}
+          class="group flex items-center gap-1 transition-colors duration-200">
+          <div class="flex-shrink-0">
+            <i class={`text-sm text-[var(--color-muted)] group-hover:text-[var(--color-fg)] transition-colors duration-200 ${social.ICON}`}></i>
+          </div>
+          <p class="text-sm text-[var(--color-muted)] group-hover:text-[var(--color-fg)] transition-colors duration-200">{social.NAME}</p>
+        </a>
+      ))
+    }
+  </div>
+  <div class="flex-1 flex-col w-auto gap-2">
+    <div class="flex items-center mb-1">
+      <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-muted)]">
+        Support
+      </h6>
+    </div>
+    <div class="flex flex-col text-left gap-2">
+      <a href='/contact' target="_blank" rel="noopener noreferrer" aria-label={CONTACT.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{CONTACT.TITLE}</p>
+      </a>
+      <a href='/feedback' target="_blank" rel="noopener noreferrer" aria-label={ABOUT.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{ABOUT.TITLE}</p>
+      </a>
+      <a href='/report' target="_blank" rel="noopener noreferrer" aria-label={PRIVACY.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{PRIVACY.TITLE}</p>
+      </a>
+      <a href='/help' target="_blank" rel="noopener noreferrer" aria-label={TERMS.TITLE} class="items-center transition-colors duration-200">
+        <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors duration-200">{TERMS.TITLE}</p>
+      </a>
+    </div>
+  </div>
+</div>
