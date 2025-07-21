@@ -9,7 +9,7 @@ import BottomLayout from '../../layouts/BottomLayout.astro';
 import ArticleBottomLayout from '../../layouts/ArticleBottomLayout.astro';
 import TableOfContents from '../../components/TableOfContents.tsx';
 import BackToTop from '../../components/BackToTop.tsx';
-import Prose from '../../components/Prose';
+import Prose from '../../components/Prose.astro';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
