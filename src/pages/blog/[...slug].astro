@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Container from '../../components/Container.astro';
 import ArticleTopLayout from '../../layouts/ArticleTopLayout.astro';
 import ArticleBottomLayout from '../../layouts/ArticleBottomLayout.astro';
-import Prose from '../../components/Prose';
+import Prose from '../../components/Prose.astro';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
