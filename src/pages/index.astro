@@ -1,0 +1,23 @@
+---
+// src/pages/index.astro
+import { HOME } from "../consts"
+import Layout from '../layouts/Layout.astro';
+import Container from "../components/Container.astro"
+import Hero from '../components/Hero.astro';
+import RecentPosts from '../components/RecentPosts.astro';
+import RecentProjects from '../components/RecentProjects.astro';
+---
+
+<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+	<Container size="xl">
+		<section id="hero" class="py-4">
+			<Hero />
+		</section>
+		<section id="recent-post" class="pb-4">
+			<RecentPosts />
+		</section>
+		<section id="recent-projects" class="pb-4">
+			<RecentProjects />
+		</section>
+	</Container>
+</Layout>

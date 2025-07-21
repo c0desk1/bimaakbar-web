@@ -1,0 +1,51 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content"
+
+type Props = {
+  entry: CollectionEntry<"blog"> | CollectionEntry<"projects">
+}
+
+const { entry } = Astro.props
+const { collection } = entry
+
+
+const items = (await getCollection(collection))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  
+const index = items.findIndex(x => x.slug === entry.slug)
+const prev = items[(index - 1 + items.length) % items.length]
+const next = items[(index + 1) % items.length]
+---
+
+<div>
+  <a href={`/${collection}`} class="inline-flex items-center gap-2 text-sm px-3 py-2 border border-[var(--color-border)] rounded-lg bg-transparent hover:bg-[var(--color-hover)] my-16 transition group">
+    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-[var(--color-fg)">
+      <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+      <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+    </svg>
+    <span>Kembali ke {collection}</span>
+  </a>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-16 text-[var(--color-muted)] w-full">
+    <a href={`/${prev.collection}/${prev.slug}`} class="group gap-2 flex items-center transition-colors duration-300 ease-in-out">
+      <div class="order-2 w-full h-full group-hover:text-[var(--color-fg)] blend">
+        <div class="text-sm uppercase text-[var(--color-muted)]">
+          Sebelumnya
+        </div>
+        <div class="text-md font-semibold mt-2 hover:text-[var(--color-fg)">
+          {prev.data.title}
+        </div>
+      </div>
+    </a>
+    <a href={`/${next.collection}/${next.slug}`} class="group gap-2 flex items-center transition-colors duration-300 ease-in-out">
+      <div class="w-full h-full text-right group-hover:text-[var(--color-fg)] blend">
+        <div class="text-sm uppercase text-[var(--color-muted)]">
+          Selanjutnya
+        </div>
+        <div class="text-md font-semibold mt-2 hover:text-[var(--color-fg)">
+          {next.data.title}
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

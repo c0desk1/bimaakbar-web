@@ -1,0 +1,14 @@
+---
+// src/pages/about/index.astro
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/Container.astro';
+import { ERROR } from '../../consts';
+---
+
+<Layout title={ERROR.TITLE} description={ERROR.DESCRIPTION}>
+  <Container size="xl">
+    <div class="prose">
+      <h1>404</h1>
+  </Container>
+</Layout>

@@ -3,6 +3,9 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+
+import expressiveCode from 'astro-expressive-code';
+
 import remarkGfm from 'remark-gfm';
 
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -10,10 +13,11 @@ import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
 import rehypeRaw from 'rehype-raw';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
-import expressiveCode from 'astro-expressive-code';
+
 
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
+  output: 'server',
   vite: {
     plugins: [
       tailwindcss(),

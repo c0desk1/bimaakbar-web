@@ -1,0 +1,38 @@
+---
+// src/components/Hero.astro
+import { SITE } from "../consts"
+---
+<section class="hero py-24">  
+  <div class="p-2 text-center">
+      <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-[var(--color-fg)]">
+        {SITE.TITLE}
+      </h1>
+      <p class="text-sm md:text-base lg:text-lg opacity-55">
+        {SITE.DESCRIPTION}
+      </p>
+    </div>
+  </section>
+<style>
+.hero {
+  position: relative;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  padding: 6rem 1rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to left, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  z-index: 0;
+  pointer-events: none;
+  width: 100%;
+}
+</style>
+  

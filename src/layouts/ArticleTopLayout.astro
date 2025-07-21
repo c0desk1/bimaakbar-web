@@ -1,0 +1,97 @@
+---
+//src/layout/ArticleTopLayout.astro
+import type { CollectionEntry} from "astro:content";
+import { formatDate, readingTime, getBreadcrumbs } from "../lib/utils";
+import {Image} from 'astro:assets';
+import {SITE} from '../consts'
+
+type Props = {
+  entry: CollectionEntry<"projects"> | CollectionEntry<"blog">,
+  
+};
+
+const { entry } = Astro.props;
+const { collection, data, body } = entry;
+const { title, summary, date, image, lastModified  } = data;
+const { slug } = entry;
+
+const breadcrumbs = getBreadcrumbs(slug);
+
+const demoUrl = collection === "projects" ? data.demoUrl : null;
+const repoUrl = collection === "projects" ? data.repoUrl : null; ;
+  
+---
+<div class="flex flex-col items-center text-center justify-center mb-8">
+  <nav class="items-center text-sm text-[var(--color-muted)] mb-2">
+    <ol class="flex items-center text-center space-x-1 border border-[var(--color-border)] rounded-full px-2 py-1">
+      <li>
+        <a href="/" class="uppercase hover:text-[var(--color-fg)] text-[var(--color-muted)]">
+          <i class="ri-home-5-line text-md pr-1"></i>Home</a>
+      </li>
+      <li><i class="ri-arrow-right-s-line"></i></li>
+      <li>
+        <a href={`/${collection}`} class="uppercase hover:text-[var(--color-fg)] text-[var(--color-muted)]">
+          {collection}
+        </a>
+      </li>
+      {breadcrumbs.map((crumb, i) => (
+        <>
+          <li><i class="ri-arrow-right-s-line"></i></li>
+          <li class={i === breadcrumbs.length - 1 ? "uppercase hover:underline text-[var(--color-fg)] font-medium truncate max-w-[150px] cursor-pointer" : "text-[var(--color-muted)]"}>
+            {i === breadcrumbs.length - 1 ? (
+              <span>{crumb.name}</span>
+            ) : (
+              <a href={`/${collection}${crumb.href}`} class="uppercase hover:underline">
+                {crumb.name}
+              </a>
+            )}
+          </li>
+        </>
+      ))}
+    </ol>
+  </nav> 
+  <div class="py-6 flex flex-col items-center text-center justify-center">
+    <div class="prose flex flex-col items-center text-center justify-center">
+      <h1 class="py-2 font-semibold">
+        {title}
+      </h1>
+    </div>
+    <div class="flex flex-row items-center text-center justify-center w-full gap-2">
+      <Image src='/bimaakbar-logo.png' width={20} height={20} sizes='4px' alt={SITE.TITLE} class="border border-[var(--color-border)] rounded-full" />
+      <span>{SITE.AUTHOR}</span>
+    </div>
+    <div class="flex py-2 gap-2 items-center w-full">
+      <div class="flex flex-grow text-sm gap-1 items-center text-[var(--color-muted)]">
+        <i class="ri-timer-flash-line text-lg"></i>
+        <span>{readingTime(body)}</span>
+      </div>
+      <div class="flex flex-shrink-0 text-sm gap-2 items-center flex-wrap text-[var(--color-muted)]">
+        <span>{formatDate(data.date)}</span>
+        {data.lastModified && data.lastModified.getTime() !== data.date.getTime() && (
+          <>
+            <span class="mx-1">•</span>
+            <span>Diperbarui: {formatDate(data.lastModified, 'DD-MM-YYYY')}</span>
+          </>
+        )}
+      </div>
+    </div>
+    <div class="prose flex flex-col items-center text-center justify-center">
+      {summary && (<summary>{summary}</summary>)}
+      {image && <Image src={image} alt={title} width="960"height="480" />}
+    </div>
+    {(demoUrl || repoUrl) && (
+      <div class="mt-6 flex flex-wrap gap-3">
+        {demoUrl && (
+          <a href={demoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-2 text-sm hover:bg-[var(--color-hover)] transition">
+            <i class="ri-earth-line"></i> <span>Lihat Demo</span>
+          </a>
+        )}
+        {repoUrl && (
+          <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] px-4 py-2 text-sm hover:bg-[var(--color-hover)] transition">
+            <i class="ri-github-line"></i> <span>Lihat Repository</span>
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</div>
