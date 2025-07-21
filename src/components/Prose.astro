@@ -1,0 +1,83 @@
+---
+/*
+  Komponen wrapper typography berbasis TailwindCSS Prose.
+  Gunakan untuk membungkus konten MDX, CMS, atau blog post.
+*/
+---
+<div
+  class="
+    prose max-w-none
+    dark:prose-invert
+
+    /* Headings */
+    prose-headings:font-bold
+    prose-headings:underline
+    prose-h1:text-3xl
+    prose-h2:text-2xl
+    prose-h3:text-xl
+    prose-h4:text-lg
+
+    /* Paragraph */
+    prose-p:text-justify
+    prose-p:leading-relaxed
+    prose-p:tracking-wide
+
+    /* Link */
+    prose-a:no-underline
+    prose-a:text-blue-600
+    hover:prose-a:underline
+    hover:prose-a:text-blue-800
+    dark:prose-a:text-blue-400
+    dark:hover:prose-a:text-blue-300
+
+    /* Code */
+    prose-code:bg-zinc-100
+    prose-code:px-1.5
+    prose-code:py-0.5
+    prose-code:rounded
+    prose-code:before:content-none
+    prose-code:after:content-none
+    dark:prose-code:bg-zinc-800
+    dark:prose-code:text-pink-400
+
+    /* Pre */
+    prose-pre:bg-zinc-900
+    prose-pre:text-zinc-100
+    prose-pre:rounded-xl
+    prose-pre:overflow-x-auto
+
+    /* Blockquote */
+    prose-blockquote:border-l-4
+    prose-blockquote:border-zinc-300
+    prose-blockquote:pl-4
+    prose-blockquote:text-zinc-600
+    dark:prose-blockquote:border-zinc-600
+    dark:prose-blockquote:text-zinc-400
+
+    /* Lists */
+    prose-ul:pl-6
+    prose-ol:pl-6
+    prose-li:marker:text-zinc-500
+    dark:prose-li:marker:text-zinc-400
+
+    /* Image */
+    prose-img:rounded-xl
+    prose-img:mx-auto
+
+    /* Table */
+    prose-table:w-full
+    prose-th:border-b
+    prose-td:border-b
+    prose-th:bg-zinc-100
+    dark:prose-th:bg-zinc-800
+    prose-th:text-left
+    prose-td:p-2
+
+    /* Horizontal rule */
+    prose-hr:my-8
+    prose-hr:border-zinc-300
+    dark:prose-hr:border-zinc-700
+  "
+>
+  <slot />
+</div>
