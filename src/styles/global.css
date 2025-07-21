@@ -116,6 +116,7 @@ CUSTOM SCROLLBAR
 ::-webkit-scrollbar-thumb {
   background-color: var(--color-muted);
   border-radius: 10px;
+border-color: var(--color-border);
 }
 
 ::-webkit-scrollbar-thumb:hover {
