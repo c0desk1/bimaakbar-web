@@ -535,7 +535,7 @@ PROSE CONTENT STYLING
 .prose tr:nth-child(even) {
   background-color: var(--color-bg);
   border-color: 0.5px solid var(--color-border);
-width: 100%;
+width: auto;
 }
 
 .prose th {
@@ -546,7 +546,7 @@ width: 100%;
 	padding: 8px;
 	text-align: left;
 	background-color: var(--color-bg-secondary);
-	width: 100%;
+width: auto;
 }
 
 .prose td {
