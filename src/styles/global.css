@@ -41,7 +41,7 @@ ROOT VARIABLES & THEMING
   --font-sans: 'Atkinson', sans-serif;
   --font-mono: 'Menlo', 'Consolas', 'monospace';
 
-  --transition-default: background-color 0.3s ease, color 0.3s ease;
+	--transition-default: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html.dark {
@@ -51,7 +51,7 @@ html.dark {
   --color-fg: #E5E5E5;
   --color-muted: #888888;
 
-  --color-bg-secondary: #111111;
+  --color-bg-secondary: #181818;
   
   
   --color-border: #2D2D2D;
@@ -61,26 +61,6 @@ html.dark {
   --color-accent-fg: #111111;
   
   color-scheme: dark;
-}
-
-html.dark .prose {
-  color: var(--color-fg);
-}
-html.dark .prose a {
-  color: var(--color-accent);
-}
-html.dark .prose blockquote {
-  background-color: var(--color-bg-secondary);
-  color: var(--color-muted);
-}
-
-html.dark .shiki,
-html.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--color-card-bg) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
 /* ───────────────────────────────
@@ -346,7 +326,7 @@ PROSE CONTENT STYLING
 
 .prose pre {
   width: 100%;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-secondary);
   border-color: var(--color-border);
   color: var(--color-fg);
   border-radius: 8px;
@@ -503,7 +483,7 @@ PROSE CONTENT STYLING
 .prose blockquote {
   min-width: fit-content;
   padding-inline: 8px;
-  background: var(--color-bg);
+  background: var(--color-bg-secondary);
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   font-style: italic;
