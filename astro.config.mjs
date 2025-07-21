@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
-import typography from '@tailwindcss/typography';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
@@ -17,7 +16,6 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
-      typography(),
     ],
   },
   integrations: [
