@@ -1,28 +1,36 @@
 ---
-/*
-  Komponen wrapper typography berbasis TailwindCSS Prose.
-  Gunakan untuk membungkus konten MDX, CMS, atau blog post.
-*/
+/**
+ * Komponen typography wrapper full customisasi dengan prose tag lengkap.
+ * Mendukung semua elemen HTML umum dari markdown/MDX/CMS dengan style Tailwind.
+ * Termasuk: heading, paragraph, link, code, table, blockquote, hr, image, list, strong, emphasis, dll.
+ */
 ---
 <div
   class="
     prose max-w-none
     dark:prose-invert
 
-    /* Headings */
+    /* === HEADINGS === */
     prose-headings:font-bold
     prose-headings:underline
-    prose-h1:text-3xl
-    prose-h2:text-2xl
-    prose-h3:text-xl
-    prose-h4:text-lg
+    prose-headings:text-zinc-900
+    prose-h1:text-3xl prose-h1:scroll-mt-24
+    prose-h2:text-2xl prose-h2:scroll-mt-24
+    prose-h3:text-xl prose-h3:scroll-mt-24
+    prose-h4:text-lg prose-h4:scroll-mt-24
+    prose-h5:text-base
+    prose-h6:text-sm
+    dark:prose-headings:text-zinc-100
 
-    /* Paragraph */
+    /* === PARAGRAPH === */
     prose-p:text-justify
     prose-p:leading-relaxed
     prose-p:tracking-wide
+    prose-p:text-zinc-800
+    dark:prose-p:text-zinc-200
 
-    /* Link */
+    /* === ANCHOR / LINK === */
+    prose-a:font-medium
     prose-a:no-underline
     prose-a:text-blue-600
     hover:prose-a:underline
@@ -30,8 +38,12 @@
     dark:prose-a:text-blue-400
     dark:hover:prose-a:text-blue-300
 
-    /* Code */
+    /* === INLINE CODE === */
+    prose-code:font-mono
+    prose-code:text-sm
+    prose-code:font-medium
     prose-code:bg-zinc-100
+    prose-code:text-pink-600
     prose-code:px-1.5
     prose-code:py-0.5
     prose-code:rounded
@@ -40,43 +52,107 @@
     dark:prose-code:bg-zinc-800
     dark:prose-code:text-pink-400
 
-    /* Pre */
+    /* === PRE / CODE BLOCK === */
     prose-pre:bg-zinc-900
     prose-pre:text-zinc-100
     prose-pre:rounded-xl
     prose-pre:overflow-x-auto
+    prose-pre:scrollbar-thin
+    prose-pre:scrollbar-thumb-zinc-700
+    prose-pre:scrollbar-track-transparent
 
-    /* Blockquote */
+    /* === BLOCKQUOTE === */
+    prose-blockquote:pl-4
     prose-blockquote:border-l-4
     prose-blockquote:border-zinc-300
-    prose-blockquote:pl-4
+    prose-blockquote:italic
     prose-blockquote:text-zinc-600
     dark:prose-blockquote:border-zinc-600
     dark:prose-blockquote:text-zinc-400
 
-    /* Lists */
+    /* === HR === */
+    prose-hr:my-10
+    prose-hr:border-zinc-300
+    dark:prose-hr:border-zinc-700
+
+    /* === STRONG / BOLD === */
+    prose-strong:text-zinc-900
+    dark:prose-strong:text-zinc-100
+
+    /* === EMPHASIS / ITALIC === */
+    prose-em:text-zinc-800
+    dark:prose-em:text-zinc-200
+
+    /* === LISTS === */
     prose-ul:pl-6
     prose-ol:pl-6
+    prose-li:leading-relaxed
     prose-li:marker:text-zinc-500
     dark:prose-li:marker:text-zinc-400
 
-    /* Image */
-    prose-img:rounded-xl
-    prose-img:mx-auto
-
-    /* Table */
+    /* === TABLE === */
     prose-table:w-full
-    prose-th:border-b
-    prose-td:border-b
-    prose-th:bg-zinc-100
-    dark:prose-th:bg-zinc-800
+    prose-table:border-collapse
     prose-th:text-left
+    prose-th:font-semibold
+    prose-th:p-2
+    prose-th:border-b
+    prose-th:bg-zinc-100
     prose-td:p-2
+    prose-td:border-b
+    prose-td:border-zinc-200
+    dark:prose-th:bg-zinc-800
+    dark:prose-th:text-zinc-100
+    dark:prose-td:border-zinc-700
 
-    /* Horizontal rule */
-    prose-hr:my-8
-    prose-hr:border-zinc-300
-    dark:prose-hr:border-zinc-700
+    /* === IMAGE === */
+    prose-img:mx-auto
+    prose-img:rounded-xl
+    prose-img:shadow
+    prose-img:border
+    prose-img:border-zinc-200
+    dark:prose-img:border-zinc-700
+
+    /* === FIGURE & FIGCAPTION === */
+    prose-figure:my-6
+    prose-figcaption:mt-2
+    prose-figcaption:text-sm
+    prose-figcaption:text-center
+    prose-figcaption:text-zinc-500
+    dark:prose-figcaption:text-zinc-400
+
+    /* === KBD === */
+    prose-kbd:px-1.5
+    prose-kbd:py-0.5
+    prose-kbd:rounded
+    prose-kbd:bg-zinc-100
+    prose-kbd:text-xs
+    prose-kbd:font-semibold
+    prose-kbd:text-zinc-800
+    dark:prose-kbd:bg-zinc-800
+    dark:prose-kbd:text-zinc-200
+
+    /* === DEL / STRIKETHROUGH === */
+    prose-del:text-red-600
+    dark:prose-del:text-red-400
+
+    /* === MARK / HIGHLIGHT === */
+    prose-mark:bg-yellow-200
+    prose-mark:text-black
+    dark:prose-mark:bg-yellow-400
+
+    /* === ABBR === */
+    prose-abbr:border-b
+    prose-abbr:border-dotted
+    prose-abbr:cursor-help
+    prose-abbr:text-zinc-600
+    dark:prose-abbr:text-zinc-400
+
+    /* === SUP & SUB === */
+    prose-sup:text-xs
+    prose-sub:text-xs
+    prose-sup:align-super
+    prose-sub:align-sub
   "
 >
   <slot />
