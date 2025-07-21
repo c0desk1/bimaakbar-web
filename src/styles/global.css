@@ -536,6 +536,7 @@ PROSE CONTENT STYLING
 	padding: 8px;
 	text-align: left;
 	background-color: var(--color-bg-secondary);
+	width: 100%;
 }
 
 .prose td {
@@ -545,6 +546,7 @@ PROSE CONTENT STYLING
 	padding: 8px;
 	text-align: left;
 	background-color: var(--color-bg);
+	width: 100%;
 }
 
 .prose th:first-child {
