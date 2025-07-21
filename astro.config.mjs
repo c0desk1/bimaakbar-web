@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
+
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
@@ -19,8 +20,6 @@ export default defineConfig({
     ],
   },
   integrations: [
-    react(),
-    sitemap(),
     expressiveCode(
       {
         themes: ['plastic', 'one-light'],
@@ -63,6 +62,10 @@ export default defineConfig({
         },
       }
     ),
+    react(),
+    sitemap({
+      filter: (page) => !page.includes('/admin/'),
+    }),
     mdx(),
   ],
   markdown: {

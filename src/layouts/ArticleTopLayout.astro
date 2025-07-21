@@ -11,10 +11,12 @@ const { entry } = Astro.props;
 const { collection, data, body } = entry;
 const { title, summary, date, image } = data;
 const { slug } = entry;
+
 const breadcrumbs = getBreadcrumbs(slug);
 
 const demoUrl = collection === "projects" ? data.demoUrl : null;
 const repoUrl = collection === "projects" ? data.repoUrl : null; 
+  
 ---
 <div class="flex flex-col items-center text-center justify-center py-16">
   <nav class="items-center text-sm text-[var(--color-muted)] mb-2">

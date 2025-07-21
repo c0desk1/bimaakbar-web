@@ -2,6 +2,7 @@
  BASE LAYER & FONT FACE
 ─────────────────────────────── */
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @font-face {
   font-family: "Atkinson";
