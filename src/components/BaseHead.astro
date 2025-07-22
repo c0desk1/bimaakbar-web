@@ -49,12 +49,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <ClientRouter />
 
 <script>
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+  };
+
+  // Atur tema dark saat halaman dimuat
+  const theme = localStorage.getItem('theme');
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
   }
 </script>
