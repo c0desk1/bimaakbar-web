@@ -7,7 +7,7 @@ interface Props {
   tags: string[];
 }
 
-const BlogFilter = ({ tags }: Props) => {
+const BlogFilter = async ({ tags }: Props) => {
   const posts = await getCollection('blog');
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
