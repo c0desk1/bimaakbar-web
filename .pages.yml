@@ -66,7 +66,7 @@ content:
     type: file
     path: src/pages/about/index.astro
     fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: layout, type: string, hidden: true, default: "../layouts/BaseLayout.astro" }
       - { name: title, label: Title, type: string }
 
   - name: not-found
