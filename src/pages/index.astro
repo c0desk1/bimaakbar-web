@@ -1,0 +1,33 @@
+---
+// src/pages/index.astro
+import { HOME } from "../consts"
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopLayout from '../layouts/TopLayout.astro';
+import BottomLayout from '../layouts/BottomLayout.astro';
+import Container from "../components/Container.astro"
+import Hero from '../components/Hero.astro';
+import FeaturedPosts from '../components/FeaturedPosts.astro';
+import RecentPosts from '../components/RecentPosts.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<BaseLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+	<TopLayout>
+		<section id="hero" class="py-4">
+			<Hero />
+		</section>
+	</TopLayout>
+	<Container size="xl">
+		<section id="Featured-post" class="pb-4">
+			<FeaturedPosts />
+		</section>
+		<section id="recent-post" class="pb-4">
+			<RecentPosts />
+		</section>
+	</Container>
+	<BottomLayout>
+		<section id="navigation-section">
+			<Navigation />
+		</section>	
+	</BottomLayout>
+</BaseLayout>
