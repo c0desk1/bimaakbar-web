@@ -45,24 +45,24 @@ content:
       - { name: body, label: Body, type: "rich-text" }
 
   - name: terms
-    label: Terms Pages
+    label: Terms
     type: file
     path: src/pages/terms/index.astro
     fields:
-      - { name: layout, type: string, hidden: true, default: "../../layouts/Layout.astro" }
+      - { name: layout, type: string, hidden: true, default: "../../layouts/BaseLayout.astro" }
       - { name: title, label: Title, type: string }
 
   - name: privacy
-    label: Privacy Pages
+    label: Privacy
     type: file
     path: src/pages/privacy/index.astro
     fields:
-      - { name: layout, type: string, hidden: true, default: "./layouts/Layout.astro" }
+      - { name: layout, type: string, hidden: true, default: "./layouts/BaseLayout.astro" }
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: "rich-text" }
 
   - name: about
-    label: About page
+    label: About
     type: file
     path: src/pages/about/index.astro
     fields:
@@ -70,11 +70,11 @@ content:
       - { name: title, label: Title, type: string }
 
   - name: not-found
-    label: Error Pages 
+    label: Error 
     type: file
     path: src/pages/404/index.astro
     fields:
-      - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
+      - { name: layout, type: string, hidden: false, default: "../layouts/BaseLayout.astro" }
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: "rich-text" }
       
