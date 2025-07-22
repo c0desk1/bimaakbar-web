@@ -37,27 +37,6 @@ export default function Card({ entry }: Props) {
           ))}
         </ul>
       </div>
-      <svg
-        xmlns="http:                      
-        viewBox="0 0 24 24"
-        fill="none"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-5 h-5 shrink-0 stroke-current group-hover:stroke-[var(--color-fg)] transition-all duration-300"
-      >
-        <line
-          x1="5"
-          y1="12"
-          x2="19"
-          y2="12"
-          className="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"
-        />
-        <polyline
-          points="12 5 19 12 12 19"
-          className="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"
-        />
-      </svg>
     </a>
   )
 }
