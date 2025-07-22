@@ -1,27 +1,19 @@
-import { formatDate, truncateText } from "../lib/utils"
+import { formatDate } from "../lib/utils"
 import type { CollectionEntry } from "astro:content"
 
 type Props = {
   entry: CollectionEntry<"blog">
-  pill?: boolean
 }
 
-export default function Card({ entry, pill }: Props) {
+export default function Card({ entry }: Props) {
   return (
     <a
       href={`/blog/${entry.slug}`}
-      className="group flex flex-row justify-between h-full items-center text-left p-4 gap-2 border rounded-xl bg-[var(--color-card-bg)] hover:bg-[var(--color-bg)] border-[var(--color-border)] transition-all duration-300"
+      className="group flex flex-col justify-between h-full text-left p-4 gap-2 border rounded-xl bg-[var(--color-card-bg)] hover:bg-[var(--color-bg)] border-[var(--color-border)] transition-all duration-300"
     >
       <div className="flex flex-col flex-grow h-full">
-        <div className="flex flex-wrap items-center gap-2">
-          {pill && (
-            <div className="text-sm capitalize px-2 py-0.5 rounded-full border border-[var(--color-border)]">
-              Postingan
-            </div>
-          )}
-          <div className="text-sm uppercase text-[var(--color-muted)]">
-            {formatDate(entry.data.date)}
-          </div>
+        <div className="text-sm uppercase text-[var(--color-muted)]">
+          {formatDate(entry.data.date)}
         </div>
         <div className="font-semibold mt-3 text-[var(--color-fg)] line-clamp-2">
           {entry.data.title}
@@ -29,18 +21,16 @@ export default function Card({ entry, pill }: Props) {
         <div className="text-sm text-[var(--color-muted)] line-clamp-2 my-2">
           {entry.data.summary}
         </div>
-        {entry.data.tags && entry.data.tags.length > 0 && (
-          <ul className="flex flex-wrap mt-auto gap-1">
-            {entry.data.tags.map((tag: string) => (
-              <li
-                key={tag}
-                className="text-center text-xs uppercase px-2 py-1 rounded-lg text-[var(--color-fg)] border border-[var(--color-border)]"
-              >
-                {truncateText(tag, 20)}
-              </li>
-            ))}
-          </ul>
-        )}
+        <ul className="flex flex-wrap mt-auto gap-1">
+          {entry.data.tags.map((tag: string) => (
+            <li
+              key={tag}
+              className="text-center text-xs uppercase px-2 py-1 rounded-lg text-[var(--color-fg)] border border-[var(--color-border)]"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
       </div>
       <svg
         xmlns="http:                      
