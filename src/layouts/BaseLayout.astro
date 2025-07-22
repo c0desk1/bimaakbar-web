@@ -1,0 +1,24 @@
+---
+// src/layouts/Layout.astro
+import "../styles/global.css";
+import BaseHead from '../components/BaseHead.astro';
+import BaseHeader from '../components/BaseHeader.tsx';
+import Footer from '../components/Footer.astro';
+import { SITE } from "../consts"
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+    <head>
+        <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    </head>
+    <body class="grid-bg">
+        <BaseHeader client:idle />
+        <main>
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>
