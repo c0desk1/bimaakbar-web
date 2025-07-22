@@ -58,7 +58,7 @@ const BlogFilter = ({ posts, categories }: Props) => {
             <li key={index} className="px-1">
               <button
                 onClick={() => setSelectedCategory(category)}
-                className={`text-ellipsis truncate px-2 py-1 rounded-full border text-sm cursor-pointer ${
+                className={`text-ellipsis truncate px-2 py-1 rounded-full border border-[var(--color-border)] text-sm cursor-pointer ${
                   selectedCategory === category
                     ? "bg-[var(--color-hover)] text-[var(--color-fg)]"
                     : "text-[var(--color-muted)] border-[var(--color-border)]"
