@@ -1,28 +1,19 @@
-import { getCollection } from 'astro:content';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Card from "../components/Card";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
 
 interface Props {
+  posts: any[];
   categories: string[];
 }
 
-const BlogFilter = ({ categories }: Props) => {
-  const [posts, setPosts] = useState<any[]>([]);
+const BlogFilter = ({ posts, categories }: Props) => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const fetchedPosts = await getCollection('blog');
-      setPosts(fetchedPosts);
-    };
-    fetchPosts();
-  }, []);
 
   const filteredPosts = useMemo(() => {
     return posts
@@ -69,15 +60,7 @@ const BlogFilter = ({ categories }: Props) => {
         </div>
         <ul className="flex flex-col gap-3">
           {paginatedPosts.map((post) => (
-            <Card key={post.slug} entry={{
-              slug: post.slug,
-              data: {
-                title: post.data.title,
-                summary: post.data.summary,
-                date: post.data.date,
-                category: post.data.category,
-              },
-            }} pill />
+            <Card key={post.slug} entry={post} />
           ))}
         </ul>
         <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredPosts.length / itemsPerPage)} onPageChange={(page) => setCurrentPage(page)} />
