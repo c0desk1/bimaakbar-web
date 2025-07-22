@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { useState, useEffect } from 'react';
 import Card from "../components/Card";
 import SearchBar from "../components/SearchBar";
 import Pagination from "../components/Pagination";
@@ -7,13 +8,21 @@ interface Props {
   tags: string[];
 }
 
-const BlogFilter = async ({ tags }: Props) => {
-  const posts = await getCollection('blog');
+const BlogFilter = ({ tags }: Props) => {
+  const [posts, setPosts] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [sortAsc, setSortAsc] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchedPosts = await getCollection('blog');
+      setPosts(fetchedPosts);
+    };
+    fetchPosts();
+  }, []);
 
   const filteredPosts = posts
     .filter(post => post.data.title.toLowerCase().includes(search.toLowerCase()) || post.data.summary.toLowerCase().includes(search.toLowerCase()))
