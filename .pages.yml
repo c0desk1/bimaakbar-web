@@ -47,7 +47,7 @@ content:
   - name: terms
     label: Terms Pages
     type: file
-    path: src/pages/terms
+    path: src/pages/terms/index.astro
     fields:
       - { name: layout, type: string, hidden: true, default: "../../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
@@ -55,7 +55,7 @@ content:
   - name: privacy
     label: Privacy Pages
     type: file
-    path: src/pages/privacy
+    path: src/pages/privacy/index.astro
     fields:
       - { name: layout, type: string, hidden: true, default: "./layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
@@ -72,7 +72,7 @@ content:
   - name: not-found
     label: Error Pages 
     type: file
-    path: src/pages/404
+    path: src/pages/404/index.astro
     fields:
       - { name: layout, type: string, hidden: true, default: "../layouts/Layout.astro" }
       - { name: title, label: Title, type: string }
