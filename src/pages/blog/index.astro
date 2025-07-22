@@ -10,7 +10,7 @@ import Navigation from '../../components/Navigation.astro';
 
 
 const posts = (await getCollection('blog')).filter(p => !p.data.draft);
-const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+const categories = [...new Set(posts.flatMap(post => post.data.category))];
 
 const estimated_initial_size =
   28 + posts.length * 158 + (posts.length - 1) * 12;
@@ -32,7 +32,10 @@ const estimated_initial_size =
   <Container size="xl">
     <section id="main" class="border border-[var(--color-border)] p-16">
       <div style={{ minHeight: `${estimated_initial_size}px` }}>
-        <BlogFilter posts={posts} tags={tags} client:load />
+        
+
+<BlogFilter categories={categories} client:load />
+
       </div>
     </section>
   </Container> 
