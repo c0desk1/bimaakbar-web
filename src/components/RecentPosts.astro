@@ -20,7 +20,7 @@ const posts = allPosts
 <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
     {posts.map(post => (
       <li>
-        <Card client:load entry={post} />
+        <Card client:visible entry={post} />
       </li>
     ))}
 </ul>
