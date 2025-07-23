@@ -19,6 +19,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <meta name="color-scheme" content="light dark" />
+<meta name="apple-mobile-web-app-title" content={title} />
+
 
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -55,3 +57,5 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   document.documentElement.classList.toggle("dark", theme === "dark");
 </script>
+
+<ClientRouter/>
