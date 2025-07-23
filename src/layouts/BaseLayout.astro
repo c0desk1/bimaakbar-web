@@ -13,9 +13,9 @@ import { SITE } from "../consts"
     <head>
         <BaseHead title={`${SITE.TITLE}`} description={SITE.DESCRIPTION} />
     </head>
-    <body class="grid-bg transition-colors duration-500">
+    <body class="grid-bg">
         <Header />
-        <MobileMenuWrapper client:load />
+        <MobileMenuWrapper client:idle />
         <main>
             <slot />
         </main>
