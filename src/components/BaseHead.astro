@@ -9,7 +9,7 @@ interface Props {
   image?: string
 }
 
-const { title, description, image = "/src/assets/open-graph.png" } = Astro.props;
+const { title, description, image = "/open-graph.png" } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -20,11 +20,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="generator" content={Astro.generator} />
 <meta name="color-scheme" content="light dark" />
 
-<link rel="icon" type="image/png" href="/src/assets/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
-<link rel="shortcut icon" href="/src/assets/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/src/assets/apple-touch-icon.png" />
-<link rel="manifest" href="/src/assets/site.webmanifest" />
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 
 <!-- Font preload -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin="anonymous">
