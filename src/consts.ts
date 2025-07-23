@@ -65,6 +65,30 @@ export const PRIVACY: Page = {
   OG_IMAGE: ''
 }
 
+export const REPORT: Page = {
+  TITLE: "Report",
+  DESCRIPTION: "Privasi",
+  OG_IMAGE: ''
+}
+
+export const FEEDBACK: Page = {
+  TITLE: "Feedback",
+  DESCRIPTION: "Privasi",
+  OG_IMAGE: ''
+}
+
+export const HELP: Page = {
+  TITLE: "Help",
+  DESCRIPTION: "Privasi",
+  OG_IMAGE: ''
+}
+
+export const SUPPORT: Page = {
+  TITLE: "Support",
+  DESCRIPTION: "Privasi",
+  OG_IMAGE: ''
+}
+
 export const ERROR: Page = {
   TITLE: "404",
   DESCRIPTION: "ERROR Halaman tidak ditemukan",
