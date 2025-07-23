@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import SkeletonCard from './SkeletonCard.tsx'
+import SkeletonArticle from './SkeletonArticle.tsx'
 
 export function ContentWrapper({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ export function ContentWrapper({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <SkeletonCard />
+      <SkeletonArticle />
     );
   }
 
