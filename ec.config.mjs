@@ -58,7 +58,7 @@ export default defineEcConfig({
         focusBorder: 'var(--color-accent)',
 
         scrollbarThumbColor: 'var(--color-accent)',
-        scrollbarThumbHoverColor: 'var(--color-hover)',
+        scrollbarThumbHoverColor: 'var(--color-accent)',
 
         uiSelectionBackground: 'var(--color-accent)',
         uiSelectionForeground: 'var(--color-accent-fg)',
