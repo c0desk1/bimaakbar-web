@@ -16,7 +16,7 @@ export default function Card({ entry }: Props) {
   return (
     <a
       href={`/blog/${entry.slug}`}
-      className="group overflow-hidden flex flex-col justify-between h-full text-left p-4 gap-2 border rounded-xl bg-[var(--color-card-bg)] hover:bg-[var(--color-bg)] border-[var(--color-border)]">
+      className="group overflow-hidden flex flex-col justify-between h-full w-full text-left p-4 gap-2 border rounded-xl bg-[var(--color-card-bg)] hover:bg-[var(--color-bg)] border-[var(--color-border)]">
       <div className="flex flex-col flex-grow h-full">
         <div className="flex justify-between items-center">
           <div className="text-sm uppercase text-[var(--color-muted)]">
