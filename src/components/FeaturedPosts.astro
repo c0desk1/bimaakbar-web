@@ -1,0 +1,25 @@
+---
+//FeaturedPosts.astro
+import { getCollection } from 'astro:content';
+import Card from './Card.tsx';
+
+const allPosts = await getCollection('blog');
+const featured = allPosts
+  .filter(post => post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+  
+---
+
+{featured.length > 0 && (
+  <section class="py-16">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-2xl font-semibold text-[var(--color-fg)] mb-8">Featured</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((post) => (
+          <Card client:load entry={post} />
+        ))}
+      </div>
+    </div>
+  </section>
+)}
