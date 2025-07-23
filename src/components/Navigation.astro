@@ -1,6 +1,6 @@
 ---
 // src/components/Socials.astro
-import { SITE, SOCIALS, BLOG, PROJECTS, ABOUT, PRIVACY, TERMS, CONTACT } from "../consts"
+import { SITE, SOCIALS, BLOG, PROJECTS, ABOUT, PRIVACY, TERMS, CONTACT, FEEDBACK, SUPPORT, HELP, REPORT } from "../consts"
 import {Image} from 'astro:assets';
 import BimaAkbarLogo from '../assets/bimaakbar-logo.png';
 import {con} from '../lib/utils'
@@ -9,7 +9,7 @@ import {con} from '../lib/utils'
   <div class="flex w-full h-auto">
     <div class="flex-1 flex-col items-center w-auto gap-2">
       <div class="flex items-center mb-4">
-        <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]">
+        <h6 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]" style="">
           {SITE.TITLE}
         </h6>
       </div>
@@ -52,20 +52,20 @@ import {con} from '../lib/utils'
         </h6>
       </div>
       <div class="flex flex-col text-left gap-4">
-        <a href='/contact' target="_blank" rel="noopener noreferrer" aria-label={CONTACT.TITLE} class="items-center">
-          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Support</p>
+        <a href='/support' target="_blank" rel="noopener noreferrer" aria-label={SUPPORT.TITLE} class="items-center">
+          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{SUPPORT.TITLE}</p>
         </a>
         <a href='/contact' target="_blank" rel="noopener noreferrer" aria-label={CONTACT.TITLE} class="items-center">
           <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{CONTACT.TITLE}</p>
         </a>
-        <a href='/feedback' target="_blank" rel="noopener noreferrer" aria-label={ABOUT.TITLE} class="items-center">
-          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Feedback</p>
+        <a href='/feedback' target="_blank" rel="noopener noreferrer" aria-label={FEEDBACK.TITLE} class="items-center">
+          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{FEEDBACK.TITLE}</p>
         </a>
-        <a href='/report' target="_blank" rel="noopener noreferrer" aria-label={PRIVACY.TITLE} class="items-center">
-          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Report</p>
+        <a href='/report' target="_blank" rel="noopener noreferrer" aria-label={REPORT.TITLE} class="items-center">
+          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{REPORT.TITLE}</p>
         </a>
-        <a href='/help' target="_blank" rel="noopener noreferrer" aria-label={TERMS.TITLE} class="items-center">
-          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Help</p>
+        <a href='/help' target="_blank" rel="noopener noreferrer" aria-label={HELP.TITLE} class="items-center">
+          <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{HELP.TITLE}</p>
         </a>
       </div>
     </div>
