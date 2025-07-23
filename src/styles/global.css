@@ -580,7 +580,7 @@ a.active {
   color: var(--color-muted);
   list-style: none;
   margin-bottom: 1em;
-  font-size: larger;
+  font-size: large;
 }
 .prose summary::before {
   content: '+';

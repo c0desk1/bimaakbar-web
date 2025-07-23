@@ -2,7 +2,7 @@
 // src/pages/about/index.astro
 import { Image } from 'astro:assets';
 import { SITE, ABOUT } from '../../consts';
-import BimaAkbar from '../../assets/avatar.jpeg';
+import BimaAkbar from '../../assets/avatar.avif';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
@@ -25,23 +25,24 @@ import Navigation from '../../components/Navigation.astro';
     </Container>
   </TopLayout>
   <Container size="lg">
-    <section id="main" class="border border-[var(--color-border)] px-4 py-4">
+    <section id="main">
       <div class="grid-bg justify-center items-center flex-col w-full "> 
         <article class="prose">
+          <div class="justify-center items-center flex flex-row w-auto gap-4"> 
           <Image 
             src={BimaAkbar} 
-            alt="Foto Bima Akbar"
-            width="320"
-            height="320"
-           
+            alt={SITE.TITLE}
+            width={64}
+            height={64}
             loading="eager" />
           <summary>
-            Halo! Saya <a>{SITE.TITLE}</a>, seorang pengembang web dan penggemar teknologi 
+            Halo! Saya <a href="/">{SITE.TITLE}</a>, seorang pengembang web dan penggemar teknologi 
             dengan hasrat untuk menciptakan solusi digital yang elegan dan efisien. 
             Perjalanan saya di dunia pemrograman dimulai dari rasa penasaran sederhana 
             tentang bagaimana sebuah situs web bekerja, dan kini telah berkembang menjadi 
             karier yang saya cintai.
           </summary>
+          </div>
           <h2>Latar Belakang & Keahlian</h2>
           <p>
             Dengan latar belakang di bidang [Sebutkan bidang studi atau pengalaman Anda, misal: Teknik Informatika], 
