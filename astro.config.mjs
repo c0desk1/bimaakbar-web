@@ -25,6 +25,7 @@ export default defineConfig({
     ],
   },
   integrations: [
+    react(),
     expressiveCode(
       {
         themes: ['plastic', 'one-light'],
@@ -67,7 +68,7 @@ export default defineConfig({
         },
       }
     ),
-    react(),
+    
     sitemap({
       filter: (page) => !page.includes('/admin/'),
     }),

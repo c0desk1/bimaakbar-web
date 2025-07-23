@@ -1,0 +1,55 @@
+---
+// src/pages/blog/[...slug].astro
+export const prerender = true;
+
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import Container from '../../components/Container.astro';
+import ArticleTopLayout from '../../layouts/ArticleTopLayout.astro';
+import ArticleClientWrapper from '../../components/ArticleClientWrapper.tsx';
+import ArticleBottomLayout from '../../layouts/ArticleBottomLayout.astro';
+import TableOfContents from '../../components/TableOfContents';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, description } = post.data;
+
+const { Content, headings} = await post.render();
+---
+<ArticleLayout title={title} description={description}>
+  <TopLayout>
+    <Container size="lg">
+      <section class="hero">
+        <ArticleTopLayout entry={post} />
+      </section>
+    </Container>
+  </TopLayout>
+  <Container size="lg">
+    <!--div class="sticky top-22 justify-center items-center flex-col w-full ">
+      <TableOfContents client:load headings={headings} /> 
+    </div> -->
+    <section id="Article-section">
+      <div class="justify-center items-center flex-col w-full ">
+        <article class="prose">
+          <Content />
+        </article>        
+      </div>
+    </section>
+  </Container>
+  <BottomLayout>
+    <Container size="lg">
+      <section>
+        <ArticleBottomLayout entry={post} />
+      </section>	
+    </BottomLayout>
+    </Container>
+</ArticleLayout>
