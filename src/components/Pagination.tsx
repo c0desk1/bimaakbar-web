@@ -12,7 +12,7 @@ type Props = {
         <button
           aria-label="Halaman sebelumnya"
           onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}
-          className="px-3 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] text-sm border border-[var(--color-border)] rounded-lg cursor-pointer disabled:opacity-50">
+          className="px-3 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] text-md border border-[var(--color-border)] rounded-lg cursor-pointer disabled:opacity-50">
           Sebelumnya
         </button>
         {[...Array(totalPages)].map((_, index) => {
@@ -23,7 +23,7 @@ type Props = {
               onClick={() => onPageChange(page)}
               aria-label={`Halaman ${page}`}
               aria-current={currentPage === page ? "page" : undefined}
-              className={`p-2 size-9 items-center text-center text-sm border border-[var(--color-border)] rounded-full cursor-pointer ${
+              className={`p-2 size-9 items-center text-center text-md border border-[var(--color-border)] rounded-full cursor-pointer ${
                 currentPage === page
                   ? "bg-[var(--color-bg)] text-[var(--color-fg)]"
                   : "text-[var(--color-muted)] hover:text-[var(--color-fg)]"
@@ -37,7 +37,7 @@ type Props = {
           aria-label="Halaman selanjutnya"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] text-sm border border-[var(--color-border)] rounded-lg cursor-pointer disabled:opacity-50">
+          className="px-3 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] text-md border border-[var(--color-border)] rounded-lg cursor-pointer disabled:opacity-50">
           Selanjutnya
         </button>
       </div>
