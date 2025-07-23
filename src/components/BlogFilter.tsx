@@ -57,6 +57,7 @@ const BlogFilter = ({ posts, categories }: Props) => {
           {["", ...categories].map((category, index) => (
             <li key={index} className="px-1">
               <button
+                aria-label={`Filter kategori ${category === "" ? "Semua" : category}`}
                 onClick={() => setSelectedCategory(category)}
                 className={`text-ellipsis truncate px-2 py-1 rounded-full border border-[var(--color-border)] text-sm cursor-pointer ${
                   selectedCategory === category
@@ -85,12 +86,14 @@ const BlogFilter = ({ posts, categories }: Props) => {
           <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
       </div>
-      <section>
+      <section role="region" aria-labelledby="post-section-title">
+        <h2 id="post-section-title" className="sr-only">Daftar Postingan</h2>
         <div className="flex justify-between items-center py-4">
           <div className="text-sm uppercase text-[var(--color-muted)]">
             Menampilkan {filteredPosts.length} dari {posts.length} postingan
           </div>
           <button
+            aria-label={sortAsc ? "Urut: Terlama" : "Urut: Terbaru"}
             onClick={() => setSortAsc(!sortAsc)}
             className="rounded-full text-sm flex items-center gap-1 px-2 py-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-hover)] uppercase cursor-pointer"
           >
@@ -100,7 +103,9 @@ const BlogFilter = ({ posts, categories }: Props) => {
         </div>
         <ul className="flex flex-col gap-3">
           {paginatedPosts.map((post) => (
-            <Card key={post.slug} entry={post} />
+            <li key={post.slug}>
+              <Card entry={post} />
+            </li>
           ))}
         </ul>
         <Pagination
