@@ -32,6 +32,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin="anonymous">
 <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin="anonymous">
 
+<link rel="preconnect" href="https://opensheet.elk.sh" />
+<link rel="dns-prefetch" href="https://opensheet.elk.sh" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
 <!-- RSS & Sitemap -->
 <link rel="alternate" type="application/rss+xml" title={title} href={`${Astro.site}rss.xml`} />
 <link rel="sitemap" href="/sitemap-index.xml" />
