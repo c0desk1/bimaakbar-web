@@ -1,0 +1,52 @@
+---
+// src/pages/blog/[slug].astro
+import { fetchBlog } from '../../lib/fetchBlog';
+import Layout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import { formatDate } from '../../lib/utils';
+
+const { slug } = Astro.params;
+const blogs = await fetchBlog();
+const post = blogs.find((b) => b.slug === slug);
+
+if (!post) {
+  throw Astro.redirect('/404');
+}
+---
+
+<Layout
+  title={post.metaTitle || post.title}
+  description={post.metaDescription}
+  canonical={post.canonicalUrl || `/blog/${post.slug}`}
+  keywords={post.metaKeywords?.join(', ')}
+/>
+  <Container class="py-10">
+    <article class="prose prose-neutral dark:prose-invert max-w-3xl mx-auto">
+      {post.cover && (
+        <img src={post.cover} alt={post.title} class="rounded-xl w-full object-cover mb-6" />
+      )}
+      
+      <h1>{post.title}</h1>
+
+      <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <span>{formatDate(post.date)}</span>
+        <span class="mx-2">·</span>
+        <span>{post.author}</span>
+        <span class="mx-2">·</span>
+        <span>{post.category}</span>
+      </div>
+
+      {post.tags?.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {post.tags.map(tag => (
+            <span class="text-xs uppercase bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div innerHTML={post.content} />
+    </article>
+  </Container>
+</Layout>
