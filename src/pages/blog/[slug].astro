@@ -1,0 +1,125 @@
+---
+import { fetchBlog } from '../../utils/fetchBlog';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BreadCrumb from '../../components/BreadCrumb.tsx';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import Container from '../../components/Container.astro';
+import BackToTop from "../../components/BackToTop";
+import { remark } from 'remark';
+import html from 'remark-html';
+import { Image } from 'astro:assets';
+import { formatDate, readingTime } from "../../lib/utils";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await fetchBlog();
+  return posts
+    .filter((p) => p.slug?.trim())
+    .map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const allPosts = await fetchBlog();
+
+const sortedPosts = allPosts
+  .filter((p) => p.slug?.trim() && p.status === 'PUBLISH')
+  .sort((a, b) => {
+    const aDate = new Date(a.date ?? 0);
+    const bDate = new Date(b.date ?? 0);
+    return bDate.getTime() - aDate.getTime();
+  });
+
+const post = sortedPosts.find(p => p.slug === slug);
+if (!post) {
+  throw Astro.redirect('/404');
+}
+
+const index = sortedPosts.findIndex(p => p.slug === slug);
+const prev = sortedPosts[index - 1] ?? null;
+const next = sortedPosts[index + 1] ?? null;
+
+const result = await remark().use(html).process(post.content ?? '');
+const contentHtml = result.toString();
+---
+
+<ArticleLayout
+  title={post.metaTitle || post.title}
+  description={post.metaDescription}
+  canonical={post.canonicalUrl || `/blog/${post.slug}`}
+  keywords={post.metaKeywords?.join(', ')}>
+  <Container size="lg">
+    <TopLayout>
+      <div class="flex flex-col items-center text-center justify-center">
+        <BreadCrumb items={[
+          { label: 'Blog', href: '/blog' },
+          {
+            label: post.category ?? 'Tanpa Kategori',
+            href: `/blog?category=${encodeURIComponent(post.category ?? 'unknown')}`
+          },
+          { label: post.title ?? 'Tanpa Judul', href: `/blog/${post.slug}` }
+        ]} />
+
+        <div class="py-6 flex flex-col items-center text-center justify-center">
+          <div class="prose flex flex-col items-center">
+            <h1 class="py-2 font-semibold">{post.title}</h1>
+          </div>
+
+          <div class="flex text-[var(--color-muted)] gap-2 items-center text-center justify-center">
+            <span>{post.author}</span>
+          </div>
+
+          <div class="flex py-2 gap-2 items-center w-full justify-center text-sm text-[var(--color-muted)]">
+            <svg stroke="var(--color-fg)" class="size-4 pointer-events-none cursor-pointer">
+              <use href="/ui.svg#book-open"></use>
+            </svg>
+            <span>{readingTime(contentHtml)}</span>
+            <span class="mx-2">·</span>
+            <span>{formatDate(post.date)}</span>
+          </div>
+          <div class="text-sm text-[var(--color-muted)]">
+            Terakhir diubah: {post.lastModified ? formatDate(post.lastModified) : '-'}
+          </div>
+          <div class="prose flex flex-col items-center">
+            {post.description && <summary>{post.description}</summary>}
+            {post.cover && <Image src={post.cover} alt={post.title} width={960} height={480} layout="constrained" />}
+          </div>
+        </div>
+      </div>
+    </TopLayout>
+
+    <article class="prose max-w-full">
+      <div set:html={contentHtml} />
+    </article>
+
+    <BottomLayout>
+      {post.tags?.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {post.tags.map(tag => (
+            <span class="text-xs uppercase border border-[var(--color-border)] bg-[var--color-bg)] text-[var(--color-muted)] px-2 py-1 rounded-lg">
+              # {tag}
+            </span>
+          ))}
+        </div>
+      )}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 text-[var(--color-muted)]">
+        {prev && (
+          <a href={`/blog/${prev.slug}`} rel="prev" class="group flex flex-col items-start">
+            <div class="text-sm uppercase">Sebelumnya</div>
+            <div class="text-md font-semibold mt-1 group-hover:text-[var(--color-fg)]">{prev.title}</div>
+          </a>
+        )}
+        {next && (
+          <a href={`/blog/${next.slug}`} rel="next" class="group flex flex-col items-end">
+            <div class="text-sm uppercase">Selanjutnya</div>
+            <div class="text-md font-semibold mt-1 group-hover:text-[var(--color-fg)]">{next.title}</div>
+          </a>
+        )}
+      </div>
+      <div class="mt-12">
+        <BackToTop client:load />
+      </div>
+    </BottomLayout>
+  </Container>
+</ArticleLayout>
