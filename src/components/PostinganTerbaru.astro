@@ -4,7 +4,7 @@ import fetchBlog from '../utils/fetchBlog';
 
 const posts = await fetchBlog();
 const recentPosts = posts
-  .filter(post => post.status !== 'draft')
+  .filter(post => post.status !== 'PUBLISH')
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 4);
 ---
