@@ -1,17 +1,50 @@
 ---
+import "../styles/global.css";
+import Container from '../components/Container.astro';
+import Footer from '../components/Footer.astro';
+
 const { children } = Astro.props;
 ---
 
-<html lang="id">
+<html lang="id" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <title>Admin - Blog</title>
+    <title>Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
-  <body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-200">
-    <header class="border-b px-4 py-3 sticky top-0 bg-white dark:bg-neutral-900 z-10">
-      <h1 class="font-bold text-lg">Dashboard Admin</h1>
+  <body>
+    <header class="border-b border-[var(--color-border)] sticky top-0 items-center">
+        <Container size="lg">
+            <h1>Dashboard</h1>
+        </Container>  
     </header>
-    <main>{children}</main>
+    <Container size="lg">
+      <aside class="w-full md:w-64 bg-[var(--color-bg-secondary)] shadow-md md:min-h-screen">
+        <div class="px-6 py-4 border-b border-[var(--color-border)]">
+          <h2 class="text-xl font-bold">Admin Panel</h2>
+        </div>
+        <nav class="flex flex-col gap-1 p-4 text-sm">
+          <a href="/admin" class="px-3 py-2 rounded-lg hover:bg-[var(--color-hover)]">
+            Dashboard
+          </a>
+          <a href="/admin/post/blog" class="px-3 py-2 rounded-lg hover:bg-[var(--color-hover)]">
+            Postingan Blog
+          </a>
+          <a href="/admin/post/project" class="px-3 py-2 rounded-lg hover:bg-[var(--color-hover)]">
+            Postingan Project
+          </a>
+          <a href="/admin/settings" class="px-3 py-2 rounded-lg hover:bg-[var(--color-hover)]">
+            Pengaturan
+          </a>
+          <a href="/" class="px-3 py-2 mt-4 rounded-lg text-red-500 hover:bg-[var(--color-hover)]">
+            Kembali ke Website
+          </a>
+        </nav>
+      </aside>
+      <main>{children}</main>
+    </Container>
+    <Container size="lg">
+      <Footer />
+  </Container>
   </body>
 </html>
