@@ -1,56 +1,42 @@
-interface Blog {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  featured: string;
-  cover: string;
-  date: string;
-  lastModified: string;
-  content: string;
-  status: string;
-  category: string;
-  tags: string;
-  author: string;
-  canonicalUrl: string;
-  metaTitle: string;
-  metaDescription: string;
-  metaKeywords: string;
-}
-
-const fetchBlog = async (): Promise<Blog[]> => {
-  const googlesheetId = '1x404DP2RoiOOJa_Ik5uo54ZtIDjjUuj5EY0AjeGPFKQ';
-  const sheetName = 'Blog';
-  const url = `https://opensheet.elk.sh/${googlesheetId}/${sheetName}`;
-
+export async function fetchBlog() {
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const headers = data.values[0];
-    const blogs: Blog[] = data.values.slice(1).map((row: any[]) => ({
-      id: row[headers.indexOf('id')],
-      slug: row[headers.indexOf('slug')],
-      title: row[headers.indexOf('title')],
-      description: row[headers.indexOf('description')],
-      featured: row[headers.indexOf('featured')],
-      cover: row[headers.indexOf('cover')],
-      date: row[headers.indexOf('date')],
-      lastModified: row[headers.indexOf('lastModified')],
-      content: row[headers.indexOf('content')],
-      status: row[headers.indexOf('status')],
-      category: row[headers.indexOf('category')],
-      tags: row[headers.indexOf('tags')],
-      author: row[headers.indexOf('author')],
-      canonicalUrl: row[headers.indexOf('canonicalUrl')],
-      metaTitle: row[headers.indexOf('metaTitle')],
-      metaDescription: row[headers.indexOf('metaDescription')],
-      metaKeywords: row[headers.indexOf('metaKeywords')],
+    const res = await fetch('https://opensheet.elk.sh/1x404DP2RoiOOJa_Ik5uo54ZtIDjjUuj5EY0AjeGPFKQ/Blog');
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    const blogs = data.map((item: any) => ({
+      id: item.id,
+      slug: item.slug,
+      title: item.title,
+      description: item.description,
+      content: item.content,
+      cover: !item.cover || item.cover === '(tidak ada)' ? null : item.cover,
+      author: item.author,
+      featured: item.featured?.toLowerCase() === 'true',
+      status: item.status?.toUpperCase() || 'DRAFT',
+      category: item.category,
+      lastModified: item.lastModified ? new Date(item.lastModified) : null,
+      date: item.date ? new Date(item.date) : null,
+      canonicalUrl: item.canonicalUrl?.trim() || '',
+      metaTitle: item.metaTitle,
+      metaDescription: item.metaDescription?.trim() || '',
+      metaKeywords: item.metaKeywords
+        ?.split(' ')
+        .map((kw: string) => kw.trim())
+        .filter(Boolean) || [],
+      tags: item.tags
+        ?.split(' ')
+        .map((tag: string) => tag.trim())
+        .filter(Boolean) || [],
     }));
+
     return blogs;
   } catch (error) {
-    console.error(error);
+    console.error('Gagal mengambil data Blog:', error);
     return [];
   }
-};
-
-export default fetchBlog;
+}
