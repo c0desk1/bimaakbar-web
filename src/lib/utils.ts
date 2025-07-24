@@ -31,10 +31,9 @@ export function formatDate(date: string | Date | undefined | null, options?: Int
 
   return dt.toLocaleDateString('id-ID', {
     day: 'numeric',
-    month: 'long',
+    month: 'short',
     year: 'numeric',
-    ...options,
-  });
+  }).toLowerCase();
 }
 
 export function formatUpdateDate(date: string | Date | undefined | null): string {
