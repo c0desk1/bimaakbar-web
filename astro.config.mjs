@@ -28,8 +28,12 @@ export default defineConfig({
   ],
   markdown: {
     shikiConfig: {
-      theme: 'dracula',
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
     },
+    syntaxHighlight: 'shiki',
     gfm: true,
     smartypants: false,
     remarkPlugins: [
