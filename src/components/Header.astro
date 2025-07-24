@@ -1,0 +1,55 @@
+---
+// src/components/Header.astro
+import { SITE, LINKS } from "../consts";
+import Container from "./Container.astro";
+import ThemeToggleButton from "./ThemeToggleButton.tsx";
+import HeaderLink from "./HeaderLink.astro";
+---
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const header = document.querySelector('header[aria-label="Base Header"]');
+    const scrollThreshold = 10;
+    let isScrolled = false;
+    const handleScroll = () => {
+      const scrolledCurrently = window.scrollY > scrollThreshold;
+      if (scrolledCurrently !== isScrolled) {
+        isScrolled = scrolledCurrently;
+        if (header) {
+          header.classList.toggle("is-scrolled", isScrolled);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+  });
+</script>
+
+<header id="header" aria-label="Base Header" class="fixed top-0 z-50 w-full oveflow-hidden bg-transparent border-b border-transparent backdrop-blur-md [&.is-scrolled]:bg-[var(--color-bg)] [&.is-scrolled]:border-[var(--color-border)]">
+  <Container size="md">
+    <div class="flex items-center justify-between py-4 h-16">
+      <div class="flex-1 items-center">
+        <a href="/" aria-label={`Beranda ${SITE.TITLE}`} class="flex gap-2 items-center text-[var(--color-fg)] text-xl hover:text-[var(--color-fg)]">
+          <svg stroke="var(--color-fg)" class="size-6 pointer-events-none">
+            <use href="/ui.svg#logo"></use>
+          </svg>
+        </a>
+        <span class="hidden font-semibold text-center">{SITE.TITLE}</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-4" aria-label="Navigasi desktop">
+        {LINKS.map((link) => (
+          <HeaderLink
+            href={link.HREF}
+            aria-label={`Menu ${link.TEXT}`}>
+            {link.TEXT}
+          </HeaderLink>
+        ))}
+      </nav>
+      <div class="flex-1 flex items-center justify-end gap-4">
+        <div class="hidden md:flex gap-4">
+          <ThemeToggleButton client:visible aria-label="Toggle tema gelap atau terang" />
+        </div>
+      </div>
+    </div>
+  </Container>
+</header>

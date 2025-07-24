@@ -11,7 +11,6 @@ import rehypeRaw from 'rehype-raw';
 import { rehypeAccessibleEmojis } from 'rehype-accessible-emojis';
 import vercel from '@astrojs/vercel';
 
-
 export default defineConfig({
   site: "https://bimaakbar.vercel.app",
   output: 'server',
@@ -28,6 +27,9 @@ export default defineConfig({
     mdx(),
   ],
   markdown: {
+    shikiConfig: {
+      theme: 'dracula',
+    },
     gfm: true,
     smartypants: false,
     remarkPlugins: [

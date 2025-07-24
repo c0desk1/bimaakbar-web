@@ -1,0 +1,25 @@
+---
+//FeaturedPosts.astro
+import { fetchBlog } from '../utils/fetchBlog';
+import PostCard from './PostCard.tsx';
+
+const allPosts = await fetchBlog();
+const featured = allPosts
+  .filter(post => post.featured && post.status === 'PUBLISH')
+  .slice(0, 3);
+
+  
+---
+
+{featured.length > 0 && (
+  <section class="py-6">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-2xl font-semibold text-[var(--color-fg)] mb-4">Featured</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </div>
+  </section>
+)}

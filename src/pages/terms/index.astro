@@ -1,0 +1,50 @@
+---
+// src/pages/terms.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import Container from '../../components/Container.astro';
+import Navigation from '../../components/Navigation.astro';
+import { TERMS } from '../../consts';
+---
+<BaseLayout title={TERMS.TITLE} description={TERMS.DESCRIPTION}>
+  <TopLayout>
+    <section class="prose py-6">
+      <h1>Syarat dan Ketentuan</h1>
+      <p>Terakhir diperbarui: 15 Juli 2025</p>
+    </section>
+  </TopLayout>
+  <Container size="lg">
+    <article class="prose">
+        <h2>Penerimaan Persyaratan</h2>
+        <p>
+          Dengan mengakses dan menggunakan website ini (selanjutnya disebut "Situs"), Anda menerima dan setuju untuk terikat oleh syarat dan ketentuan yang ditetapkan dalam dokumen ini. Jika Anda tidak setuju dengan bagian mana pun dari persyaratan ini, Anda tidak diizinkan untuk menggunakan Situs ini.
+        </p>
+        <h2>Penggunaan Konten</h2>
+        <p>
+          Semua konten yang disediakan di Situs ini, termasuk tulisan, gambar, video, dan kode, adalah milik Bima Akbar kecuali dinyatakan lain. Konten ini dilindungi oleh undang-undang hak cipta. Anda dapat menggunakan konten untuk referensi pribadi dan non-komersial. Penggunaan komersial atau distribusi ulang tanpa izin tertulis secara eksplisit dilarang.
+        </p>
+        <h3>Lisensi Kode</h3>
+        <p>
+          Setiap cuplikan kode yang dibagikan di dalam postingan blog dilisensikan di bawah Lisensi MIT kecuali dinyatakan lain, yang berarti Anda bebas untuk menggunakan, memodifikasi, dan mendistribusikannya, bahkan untuk tujuan komersial, selama Anda menyertakan pemberitahuan hak cipta asli.
+        </p>
+        <h2>Batasan Tanggung Jawab</h2>
+        <p>
+          Informasi yang disediakan di Situs ini bersifat "sebagaimana adanya" tanpa jaminan apa pun. Meskipun segala upaya dilakukan untuk memastikan keakuratan informasi, pemilik Situs tidak bertanggung jawab atas kesalahan, kelalaian, atau hasil yang timbul dari penggunaan informasi ini.
+        </p>
+        <h2>Perubahan Persyaratan</h2>
+        <p>
+          Pemilik Situs berhak untuk mengubah syarat dan ketentuan ini kapan saja tanpa pemberitahuan sebelumnya. Dengan terus menggunakan Situs setelah perubahan tersebut, Anda setuju untuk terikat oleh versi yang telah direvisi.
+        </p>
+        <hr>
+        <p>
+          Jika Anda memiliki pertanyaan tentang Syarat dan Ketentuan ini, silakan hubungi saya melalui email yang tersedia di halaman kontak.
+        </p>
+    </article>
+  </Container>
+  <BottomLayout>
+    <section id="navigation-section">
+      <Navigation />
+    </section>	
+  </BottomLayout>
+</BaseLayout>
