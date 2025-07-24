@@ -17,7 +17,7 @@ const recentPosts = posts
 <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
   {recentPosts.map(post => (
     <li key={post.id}>
-      <PostCard />
+      <PostCard post={post} />
     </li>
   ))}
 </ul>
