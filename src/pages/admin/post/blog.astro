@@ -2,11 +2,13 @@
 import AdminLayout from '../../../layouts/AdminLayout.astro';
 import { fetchBlog } from '../../../utils/fetchBlog';
 import { type Blog } from '../../../types';
+import CreatePosts from '../../../components/CreatePosts.tsx';
 
 const blogs: Blog[] = await fetchBlog();
 ---
 
 <AdminLayout>
+<CreatePosts client:load />
   <section class="px-4 py-6 max-w-screen-lg mx-auto">
     <h1 class="text-2xl font-semibold mb-6">Postingan Blog</h1>
     {blogs.length === 0 ? (
