@@ -22,7 +22,7 @@ const fetchBlog = async (): Promise<Blog[]> => {
   const googlesheetId = '1x404DP2RoiOOJa_Ik5uo54ZtIDjjUuj5EY0AjeGPFKQ';
   const sheetName = 'Blog';
 
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${googlesheetId}/values/${sheetName}!A1:Z1000`;
+  const url = `https://opensheet.elk.sh/${googlesheetId}/${sheetName}`;
 
   try {
     const response = await fetch(url);
