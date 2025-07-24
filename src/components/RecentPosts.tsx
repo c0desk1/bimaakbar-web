@@ -1,6 +1,6 @@
 // components/RecentPosts.tsx
 import PostCard from './PostCard.tsx';
-import fetchBlog from '../utils/fetchBlog';
+import {fetchBlog} from '../utils/fetchBlog';
 
 export default async function RecentPosts() {
   const posts = await fetchBlog();
