@@ -2,8 +2,7 @@
 import "../styles/global.css";
 import Container from '../components/Container.astro';
 import Footer from '../components/Footer.astro';
-
-const { children } = Astro.props;
+import Header from '../components/Header.astro';
 ---
 
 <html lang="id" class="dark">
@@ -13,18 +12,12 @@ const { children } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <header class="border-b border-[var(--color-border)] sticky top-0 items-center">
-        <Container size="lg">
-            <h1>Dashboard</h1>
-        </Container>  
-    </header>
     <Container size="lg">
+      <Header />
       <main>
-<slot />
-</main>
-    </Container>
-    <Container size="lg">
+        <slot />
+      </main> 
       <Footer />
-  </Container>
+    </Container>
   </body>
 </html>
