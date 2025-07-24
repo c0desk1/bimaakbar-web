@@ -23,7 +23,7 @@ import Navigation from '../components/Navigation.astro';
 			<FeaturedPosts />
 		</section>
 		<section id="Recent-post" class="py-2">
-			<RecentPosts />
+			<RecentPosts client:only="react" />
 		</section>
 	</Container>
 	<BottomLayout>
