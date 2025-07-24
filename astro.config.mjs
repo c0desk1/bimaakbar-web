@@ -3,11 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-
-import expressiveCode from 'astro-expressive-code';
-
 import remarkGfm from 'remark-gfm';
-
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
 import rehypeSlug from 'rehype-slug';
@@ -26,49 +22,6 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    expressiveCode(
-      {
-        themes: ['plastic', 'one-light'],
-        removeUnusedThemes: false,
-        shiki: {
-          langs: [
-            'css',
-            'astro',
-            'html',
-            'javascript',
-            'json',
-            'jsonc',
-            'jsx',
-            'make',
-            'markdown',
-            'mdx',
-            'php',
-            'postcss',
-            'powershell',
-            'python',
-            'sass',
-            'scss',
-            'shellsession',
-            'sql',
-            'tsx',
-            'typescript',
-            'xml',
-            'yaml	',
-          ],
-          langAlias: [
-            'js',
-            'makefile',
-            'md',
-            'py',
-            'console',
-            'ts',
-            'cmd',
-            'yml'
-          ],
-        },
-      }
-    ),
-    
     sitemap({
       filter: (page) => !page.includes('/admin/'),
     }),
@@ -92,7 +45,7 @@ export default defineConfig({
   },
 adapter: vercel({
     imagesConfig: {
-      sizes: [320, 640, 1280],
+      sizes: [320, 480, 640, 1280],
     },
 imageService: true,
   }),

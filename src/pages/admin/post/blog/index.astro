@@ -1,0 +1,36 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import { fetchBlog } from '../../../../utils/fetchBlog';
+
+const blogs = (await fetchBlog()).filter((b: { status: string; }) => b.status === "PUBLISH");
+---
+
+<AdminLayout>
+  <section>
+    <h1 class="text-xl font-bold mb-4">Daftar Blog Aktif</h1>
+    {blogs.length === 0 ? (
+      <p class="text-muted">Tidak ada blog yang diterbitkan.</p>
+    ) : (
+      <table class="w-full table-auto text-sm">
+        <thead class="bg-gray-100 dark:bg-neutral-800">
+          <tr>
+            <th class="text-left p-3">Judul</th>
+            <th class="text-left p-3">Slug</th>
+            <th class="text-left p-3">Kategori</th>
+            <th class="text-left p-3">Tanggal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {blogs.map((post: { title: unknown; slug: unknown; category: unknown; date: { toISOString: () => string | any[]; }; }) => (
+            <tr class="border-b">
+              <td class="p-3">{post.title}</td>
+              <td class="p-3 text-muted">{post.slug}</td>
+              <td class="p-3">{post.category}</td>
+             
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </section>
+</AdminLayout>

@@ -1,0 +1,27 @@
+---
+// src/pages/about/index.astro
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import { ERROR } from '../../consts';
+import TopLayout from '../../layouts/TopLayout.astro';
+---
+<BaseLayout title={ERROR.TITLE} description={ERROR.DESCRIPTION}>
+  <Container size="lg">
+    <TopLayout title="404 – Page Not Found">
+      <main class="min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-16">
+        <h1 class="text-6xl font-bold tracking-tight text-[var(--color-fg)] sm:text-7xl">
+          404
+        </h1>
+        <p class="mt-6 text-lg text-[var(--color-muted)]">
+          Halaman yang kamu cari tidak ditemukan. Mungkin sudah dipindahkan atau tautan salah.
+        </p>
+        <a href="/"
+          class="mt-8 inline-flex items-center gap-2 rounded-lg bg-[var(--color-card-bg)] border border-[var(--color-border)] px-5 py-3 text-[var(--color-fg)] transition hover:bg-[var(--color-hover)]">
+          <i class="ri-arrow-left-line text-xl"></i>
+          Kembali ke Beranda
+        </a>
+      </main>
+    </TopLayout>
+  </Container>
+</BaseLayout>
