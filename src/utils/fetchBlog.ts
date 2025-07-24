@@ -16,7 +16,7 @@ export async function fetchBlog() {
       content: item.content,
       cover: !item.cover || item.cover === '(tidak ada)' ? null : item.cover,
       author: item.author,
-      featured: item.featured?.toLowerCase() === 'true',
+      featured: ['true', 'yes', '1'].includes(String(item.featured).toLowerCase()),
       status: item.status?.toUpperCase() || 'DRAFT',
       category: item.category,
       lastModified: item.lastModified ? new Date(item.lastModified) : null,
