@@ -25,10 +25,8 @@ export function isLinkActive(href: string, currentPath: string): boolean {
 
 export function formatDate(date: string | Date | undefined | null, options?: Intl.DateTimeFormatOptions): string {
   if (!date) return '';
-
   const dt = typeof date === 'string' ? new Date(date) : date;
   if (isNaN(dt.getTime())) return '';
-
   return dt.toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
@@ -39,14 +37,11 @@ export function formatDate(date: string | Date | undefined | null, options?: Int
 
 export function formatUpdateDate(date: string | Date | undefined | null): string {
   if (!date) return '';
-
   const dt = typeof date === 'string' ? new Date(date) : date;
   if (isNaN(dt.getTime())) return '';
-
   const day = dt.getDate().toString().padStart(2, '0');
   const month = (dt.getMonth() + 1).toString().padStart(2, '0');
   const year = dt.getFullYear();
-
   return `${day}-${month}-${year}`;
 }
 

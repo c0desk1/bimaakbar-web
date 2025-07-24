@@ -1,6 +1,6 @@
 import type { APIContext } from 'astro';
 
-const apiUrl = import.meta.env.API_URL;
+const apiUrl = import.meta.env.PUBLIC_API_URL;
 
 export async function POST({ request }: APIContext) {
     const data = await request.json();

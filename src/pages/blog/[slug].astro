@@ -78,7 +78,9 @@ const contentHtml = result.toString();
             <span class="mx-2">·</span>
             <span>{formatDate(post.date)}</span>
           </div>
-
+          <div class="text-sm text-[var(--color-muted)]">
+            Terakhir diubah: {post.lastModified ? formatDate(post.lastModified) : '-'}
+          </div>
           <div class="prose flex flex-col items-center">
             {post.description && <summary>{post.description}</summary>}
             {post.cover && <Image src={post.cover} alt={post.title} width={960} height={480} layout="constrained" />}

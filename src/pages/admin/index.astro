@@ -1,13 +1,10 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
-import Container from "../../components/Container.astro"
-import AddPost from '../../pages/admin/post/AddPost.tsx'
+import AddPostForm from '../../components/AddPostForm.tsx';
 ---
 
 <AdminLayout title= 'Admin' description= 'Admin'>
-	<Container size="lg">
-		<section id="Featured-post" class="py-2">
-			<AddPost client:load />
-		</section>
-	</Container>
+	<AddPostForm client:only />
 </AdminLayout>
+
+
