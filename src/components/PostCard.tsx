@@ -4,13 +4,32 @@ import SkeletonCard from './SkeletonCard.tsx';
 import { useState, useEffect } from 'react';
 import fetchBlog from '../utils/fetchBlog';
 
+type BlogEntry = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  content: string;
+  cover: string;
+  author: string;
+  featured: string;
+  status: string;
+  category: string;
+  lastModified: string;
+  canonicalUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords: string;
+  date: string;
+  tags: string;
+};
+
 type Props = {
-  // entry: CollectionEntry<"blog">;
   loading?: boolean;
 };
 
 export default function PostCard() {
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState<BlogEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +49,7 @@ export default function PostCard() {
 
   return (
     <>
-      {blogs.map((entry: any) => (
+      {blogs.map((entry: BlogEntry) => (
         <a href={`/blog/${entry.slug}`} className="group overflow-hidden flex flex-col justify-between h-full w-full text-left p-4 gap-2 border rounded-xl bg-[var(--color-card-bg)] hover:bg-[var(--color-bg)] border-[var(--color-border)]">
           <div className="flex flex-col flex-grow h-full">
             <div className="flex justify-between items-center">
@@ -55,7 +74,7 @@ export default function PostCard() {
             <ul className="flex flex-wrap mt-auto gap-1">
               {entry.tags.split(',').map((tag: string) => (
                 <li key={tag} className="text-center text-xs uppercase px-2 py-1 rounded-lg text-[var(--color-fg)] border border-[var(--color-border)]">
-                  {tag}
+                  {tag.trim()}
                 </li>
               ))}
             </ul>
