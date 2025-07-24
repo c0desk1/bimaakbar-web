@@ -49,11 +49,10 @@ export default defineConfig({
     syntaxHighlight: false,
     remarkRehype: { footnoteLabel: "Footnotes", footnoteBackLabel: "Back to reference 1", allowDangerousHtml: true},
   },
-adapter: vercel({
+  adapter: vercel({
     imagesConfig: {
       sizes: [320, 480, 640, 1280],
     },
-imageService: true,
+    imageService: true,
   }),
-
 });
