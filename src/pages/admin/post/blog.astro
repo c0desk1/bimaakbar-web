@@ -1,20 +1,20 @@
 ---
 import AdminLayout from '../../../layouts/AdminLayout.astro';
 import { fetchBlog } from '../../../utils/fetchBlog';
+import { type Blog } from '../../../types';
 
-const blogs = await fetchBlog();
+const blogs: Blog[] = await fetchBlog();
 ---
 
 <AdminLayout>
   <section class="px-4 py-6 max-w-screen-lg mx-auto">
     <h1 class="text-2xl font-semibold mb-6">Postingan Blog</h1>
-
     {blogs.length === 0 ? (
       <p class="text-muted italic">Tidak ada data blog.</p>
     ) : (
       <table class="w-full text-sm border-collapse">
         <thead>
-          <tr class="bg-gray-100 dark:bg-neutral-800">
+          <tr class="bg-[var(--color-bg-secondary)]">
             <th class="text-left p-3 border-b">Judul</th>
             <th class="text-left p-3 border-b">Slug</th>
             <th class="text-left p-3 border-b">Status</th>
