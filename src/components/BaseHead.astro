@@ -1,6 +1,7 @@
 ---
 import { SEO } from 'astro-seo';
 import { SITE } from '../consts';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 const {
   title = SITE.title,
@@ -10,7 +11,6 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
-
 <!-- SEO Meta -->
 <SEO
   title={title}
@@ -120,3 +120,4 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     initDrawer();
   });
 </script>
+<SpeedInsights />
