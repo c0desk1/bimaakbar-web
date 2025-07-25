@@ -1,0 +1,93 @@
+---
+// src/components/Socials.astro
+import { SITE, SOCIALS, BLOG, ABOUT, PRIVACY, TERMS, CONTACT, FEEDBACK, SUPPORT, HELP, REPORT } from "../consts"
+import {con} from '../lib/utils'
+---
+<section class="py-6">
+  <div class="flex flex-col md:flex-row w-full h-auto gap-4 mb-4">
+    <div class="flex w-full h-auto">
+      <div class="flex-1 flex-col items-center w-auto gap-2">
+        <div class="flex items-center mb-4">
+          <h3 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]" style="">
+            {SITE.title}
+          </h3>
+        </div>
+        <div class="flex flex-col text-left gap-4">
+          <a href='/about' target="_blank" rel="noopener noreferrer" aria-label={ABOUT.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{ABOUT.title}</p>
+          </a>
+          <a href='/privacy' target="_blank" rel="noopener noreferrer" aria-label={PRIVACY.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{PRIVACY.title}</p>
+          </a>
+          <a href='/terms' target="_blank" rel="noopener noreferrer" aria-label={TERMS.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{TERMS.title}</p>
+          </a>
+          <a href='/rss.xml' target="_blank" rel="noopener noreferrer" aria-label={`Rss feed untuk ${SITE.title}`} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">RSS</p>
+          </a>
+        </div>
+      </div>
+      <div class="flex-1 flex-col items-center w-auto gap-2">
+        <div class="flex items-center mb-4">
+          <h3 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]">
+            Discover
+          </h3>
+        </div>
+        <div class="flex flex-col text-left gap-4">
+          <a href='/blog' target="_blank" rel="noopener noreferrer" aria-label={BLOG.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{BLOG.title}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="flex w-full">
+      <div class="flex-1 flex-col items-center w-auto gap-2">
+        <div class="flex items-center mb-4">
+          <h3 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]">
+            Support
+          </h3>
+        </div>
+        <div class="flex flex-col text-left gap-4">
+          <a href='/support' target="_blank" rel="noopener noreferrer" aria-label={SUPPORT.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{SUPPORT.title}</p>
+          </a>
+          <a href='/contact' target="_blank" rel="noopener noreferrer" aria-label={CONTACT.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{CONTACT.title}</p>
+          </a>
+          <a href='/feedback' target="_blank" rel="noopener noreferrer" aria-label={FEEDBACK.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{FEEDBACK.title}</p>
+          </a>
+          <a href='/report' target="_blank" rel="noopener noreferrer" aria-label={REPORT.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{REPORT.title}</p>
+          </a>
+          <a href='/help' target="_blank" rel="noopener noreferrer" aria-label={HELP.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{HELP.title}</p>
+          </a>
+        </div>
+      </div>
+      <div class="flex-1 flex-col items-center w-auto gap-4">
+        <div class="flex items-center mb-4">
+          <h3 class="uppercase text-sm md:text-md font-bold text-[var(--color-fg)]">
+            Sosial
+          </h3>
+        </div>
+        <div class="flex flex-col gap-4"> 
+          {
+            SOCIALS.map((social) => (
+              <a
+                href={social.HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${SITE.title} on ${social.NAME}`}
+                class="group flex flex-col items-start gap-2">
+                <div class={con("flex items-center","flex-shrink-0")}>
+                  <p class={con("text-sm","text-[var(--color-muted)] group-hover:text-[var(--color-fg)]")}>{social.NAME}</p>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

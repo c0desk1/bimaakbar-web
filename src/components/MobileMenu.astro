@@ -1,0 +1,37 @@
+---
+import { SITE, LINKS } from "../consts"
+import { con } from "../lib/utils"
+const { pathname } = Astro.url
+const subpath = pathname.match(/[^/]+/g)
+---
+
+<div id="drawer" class="fixed inset-0 h-0 z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-[var(--color-bg)] backdrop-blur-xl transition-[height] duration-300 ease-in-out">
+  <nav class="flex flex-col items-center space-y-2">
+    {
+      LINKS.map((LINK) => (
+        <a href={LINK.HREF} class={con("flex items-center justify-center px-3 py-1 rounded-full", "text-[var(--color-muted)] hover:text-[var(--color-fg)]", "hover:bg-[var(--color-hover)]", "transition-colors duration-300 ease-in-out", pathname === LINK.HREF || "/" + subpath?.[0] === LINK.HREF ? "pointer-events-none bg-[var(--color-bg-secondary)] text-[var(--color-fg)]" : "")}>
+          {LINK.TEXT}
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="flex flex-col gap-4 mt-5 items-center">
+    <a href="/rss.xml" target="_blank" aria-label={`Rss feed for ${SITE.title}`} class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-[var(--color-hover)] stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)] border border-[var(--color-border)] transition-colors duration-500 ease-in-out">
+      <svg class="size-full">
+        <use href="/ui.svg#rss"></use>
+      </svg>
+    </a>
+    <a href="/" aria-label={`Beranda ${SITE.title}`} class="flex gap-2 text-center items-center text-[var(--color-fg)] text-xl hover:text-[var(--color-fg)]">
+      <svg stroke="var(--color-fg)" class="size-8 pointer-events-none justify-center">
+        <use href="/ui.svg#logo"></use>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<style>
+  #drawer.open {
+   height: 100vh;
+  }
+</style>

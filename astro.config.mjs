@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeFormat from 'rehype-format';
@@ -21,9 +20,6 @@ export default defineConfig({
   },
   integrations: [
     react(),
-    sitemap({
-      filter: (page) => !page.includes('/admin/'),
-    }),
     mdx(),
   ],
   markdown: {

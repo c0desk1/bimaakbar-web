@@ -1,0 +1,29 @@
+---
+// src/components/Hero.astro
+import { SITE } from "../consts"
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  centered?: boolean;
+}
+
+const {
+  title = SITE.title,
+  subtitle = SITE.description,
+  centered = false
+} = Astro.props;
+---
+
+<section id="hero-section" class={`py-6 ${centered ? 'text-center' : ''}`}>
+  <div class="gap-2">
+    <h1 class="text-xl md:text-2xl lg:text-4xl font-bold uppercase text-[var(--color-fg)] tracking-tight">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="text-xs md:text-sm lg:text-lg opacity-20">
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>

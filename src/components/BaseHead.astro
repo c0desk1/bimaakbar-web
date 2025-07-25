@@ -1,0 +1,122 @@
+---
+import { SEO } from 'astro-seo';
+import { SITE } from '../consts';
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image = '/open-graph.png',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!-- SEO Meta -->
+<SEO
+  title={title}
+  description={description}
+  canonical={canonicalURL.toString()}
+  twitter={{
+    card: 'summary_large_image',
+    site: '@bimaakbarmusic'
+  }}
+  openGraph={{
+    basic: {
+      title,
+      type: 'website',
+      image: new URL(image, Astro.site).toString(),
+      url: canonicalURL.toString()
+    },
+    optional: {
+      siteName: SITE.title,
+      description
+    }
+  }}
+/>
+
+<!-- Prevent FOUC with early theme load -->
+<script is:inline>
+  (function () {
+    const saved = localStorage.getItem('theme') || 'system';
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved === 'dark' || (saved === 'system' && systemDark);
+    document.documentElement.classList.toggle('dark', isDark);
+  })();
+</script>
+
+<!-- Favicon & Metadata -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<meta name="generator" content={Astro.generator} />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+<meta name="apple-mobile-web-app-title" content={title} />
+
+<!-- Font Preload -->
+<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin="anonymous" />
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin="anonymous" />
+
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Drawer & Theme Scripts -->
+<script is:inline>
+  const storageKey = "theme";
+  const themeOrder = ["light", "dark", "system"];
+
+  function applyTheme(theme) {
+    if (theme === "system") {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.classList.toggle("dark", prefersDark);
+    } else {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    }
+  }
+
+  function moveIndicator(index) {
+    const indicator = document.getElementById("theme-indicator");
+    if (indicator) indicator.style.transform = `translateX(${index * 100}%)`;
+  }
+
+  function updateActiveButton(index) {
+    document.querySelectorAll(".theme-btn").forEach((btn, i) => {
+      btn.classList.toggle("active", i === index);
+    });
+  }
+
+  function setupThemeButtons() {
+    document.querySelectorAll(".theme-btn").forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.dataset.theme;
+        localStorage.setItem(storageKey, selected);
+        applyTheme(selected);
+        moveIndicator(index);
+        updateActiveButton(index);
+      });
+    });
+  }
+
+  function toggleDrawer() {
+    document.getElementById("drawer")?.classList.toggle("open");
+    document.getElementById("header-drawer-button")?.classList.toggle("open");
+  }
+
+  function initDrawer() {
+    document.getElementById("header-drawer-button")?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initDrawer);
+  document.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem(storageKey) || "system";
+    const index = themeOrder.indexOf(saved);
+    applyTheme(saved);
+    moveIndicator(index);
+    updateActiveButton(index);
+    setupThemeButtons();
+    initDrawer();
+  });
+</script>
