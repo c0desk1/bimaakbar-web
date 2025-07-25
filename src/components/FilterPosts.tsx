@@ -18,7 +18,7 @@ const BlogControls: FC<BlogControlsProps> = ({
   categories,
 }) => {
   return (
-    <div className="sticky top-16 w-full max-w-screen flex flex-col md:flex-row bg-[var(--color-bg)] gap-4 z-10">
+    <div className="w-full max-w-screen flex flex-col md:flex-row bg-[var(--color-bg)] gap-4 z-10">
       <div className="flex-1">
         <ul className="flex flex-row overflow-x-auto py-4 items-center">
           {['', ...categories].map((category, index) => (
