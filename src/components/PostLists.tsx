@@ -87,14 +87,14 @@ const BlogFilter = () => {
   if (posts.length === 0) {
     return (
       <p className="text-center text-sm text-[var(--color-muted)] py-12">
-        Tidak ada postingan yang ditemukan.
+        Tidak ada postingan.
       </p>
     );
   }
 
   return (
     <>
-    <div className="flex flex-col py-6 gap-2 items-center w-full">
+    <div className="flex flex-col py-6 gap-2 items-center">
       <div className="flex-col flex-1">
         <section id='filter-posts' aria-label='filter postingan'>
           <FilterPosts search={search} setSearch={setSearch} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} />
