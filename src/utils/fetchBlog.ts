@@ -56,11 +56,11 @@ export async function fetchBlog(): Promise<Blog[]> {
           .filter((item) => item.status?.toUpperCase() === 'PUBLISHED')
           .map((item): Blog => {
             const tags = typeof item.tags === 'string'
-              ? item.tags.split(/[,|\s]/).map(t => t.trim()).filter(Boolean)
+              ? item.tags.split(/[,|\s]/).map((t: string) => t.trim()).filter(Boolean)
               : []
 
             const metaKeywords = typeof item.metaKeywords === 'string'
-              ? item.metaKeywords.split(/[,|\s]/).map(k => k.trim()).filter(Boolean)
+              ? item.metaKeywords.split(/[,|\s]/).map((k: string) => k.trim()).filter(Boolean)
               : []
 
             const slug = item.slug?.trim() || generateUniqueSlug(`${item.title}-${item.id}`)
