@@ -12,7 +12,7 @@ export default function RecentPosts() {
   useEffect(() => {
     fetchBlog().then((posts) => {
       const sorted = posts
-      .filter((post) => post.status?.toUpperCase() === 'PUBLISH' && post.date)
+      .filter((post) => post.status?.toUpperCase() === 'PUBLISHED' && post.date)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 4);
       setRecentPosts(sorted);
