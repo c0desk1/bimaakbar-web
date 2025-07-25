@@ -1,0 +1,1 @@
+declare module '@vercel/speed-insights/astro';

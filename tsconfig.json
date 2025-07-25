@@ -10,5 +10,6 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "typeRoots": ["./types", "./node_modules/@types"],
   }
 }

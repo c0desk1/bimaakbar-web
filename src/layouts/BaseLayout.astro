@@ -7,6 +7,7 @@ import Header from '../components/Header.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
 import {fade} from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 
 const {
   title = SITE.title,
@@ -26,9 +27,11 @@ const {
         <main transition:animate={fade({ duration: '400ms' })}>
             <slot />
         </main>
+        <Analytics/>
         <Footer />
         <noscript>
             <iframe src={`https://www.googletagmanager.com/ns.html?id=${import.meta.env.GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden"></iframe>
         </noscript>
     </body> 
 </html>
+
