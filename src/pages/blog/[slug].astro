@@ -27,7 +27,7 @@ const { slug } = Astro.params;
 const allPosts = await fetchBlog();
 
 const sortedPosts = allPosts
-  .filter((p) => p.slug?.trim() && p.status === 'PUBLISH')
+  .filter((p) => p.slug?.trim() && p.status === 'PUBLISHED')
   .sort((a, b) => {
     const aDate = new Date(a.date ?? 0);
     const bDate = new Date(b.date ?? 0);
