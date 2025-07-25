@@ -31,7 +31,7 @@ export function generateSlug(input: string): string {
  * Main function to fetch blog posts
  */
 export async function fetchBlog(): Promise<Blog[]> {
-  const url = import.meta.env.PUBLIC_GOOGLE_BLOG_URL
+  const url = 'https://opensheet.elk.sh/1iG_SXsiPQLNMQcw4yqsmkSG_3EQFwdizZ4EPSocJEIs/Posts'
   const seenSlugs = new Set<string>()
 
   function generateUniqueSlug(title: string): string {
