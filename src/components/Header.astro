@@ -43,13 +43,13 @@ const subpath = pathname.match(/[^/]+/g)
          {LINKS.map((link) => (
           <HeaderLink
             href={link.HREF}
-            class={con("h-8 rounded-full px-3 text-current", "flex items-center justify-center", "transition-colors duration-300 ease-in-out", pathname === link.HREF || "/" + subpath?.[0] === link.HREF ? "bg-black dark:bg-white text-[var(--color-fg)" : "hover:bg-[var(--color-hover)] hover:text-[var(--color-fg)]")}
+            class={con("h-8 rounded-full px-3 text-[var(--color-fg)]", "flex items-center justify-center", "transition-colors duration-300 ease-in-out", pathname === link.HREF || "/" + subpath?.[0] === link.HREF ? "bg-[var(--color-bg-secondary)] text-[var(--color-fg)" : "hover:bg-[var(--color-hover)] hover:text-[var(--color-fg)]")}
             aria-label={`Menu ${link.TEXT}`}>
             {link.TEXT}
           </HeaderLink>
         ))}
       </nav>
-      <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={con("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-black/5 dark:hover:bg-white/20", "stroke-current hover:stroke-black hover:dark:stroke-white", "border border-black/10 dark:border-white/25", "transition-colors duration-300 ease-in-out")}>
+      <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={con("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[var(--color-hover)]", "stroke-[var(--color-fg)] hover:stroke-[var(--color-fg)", "border border-[var(--color-border)]", "transition-colors duration-500 ease-in-out cursor-pointer")}>
         <svg id="drawer-open" stroke="var(--color-fg)" class="size-full pointer-events-none">
           <use href="/ui.svg#menu"></use>
         </svg>

@@ -5,11 +5,12 @@ import { SITE } from '../consts';
 const GTM_ID = import.meta.env.GTM_ID;
 
 const {
-  title = SITE.title,
+  title = '',
   description = SITE.description,
   image = '/open-graph.png',
 } = Astro.props;
 
+const fullTitle = Astro.url.pathname === '/' ? SITE.title : `${title} | ${SITE.author}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const gtmScript = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -22,7 +23,7 @@ f.parentNode.insertBefore(j,f);
 ---
 <!-- SEO Meta -->
 <SEO
-  title={title}
+  title={fullTitle}
   description={description}
   canonical={canonicalURL.toString()}
   twitter={{

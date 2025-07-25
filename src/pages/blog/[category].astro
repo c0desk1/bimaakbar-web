@@ -21,7 +21,7 @@ const pageTitle = postsByCategory.length > 0
 <BaseLayout title={pageTitle || category } description={category}>
     <Container size="md">
         <TopLayout>
-            <Hero title={pageTitle} subtitle={category} />
+            <Hero title={category} subtitle={`Daftar postingan kategori: ${category}`} />
         </TopLayout>
         {postsByCategory.length > 0 ? (
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 py-6">

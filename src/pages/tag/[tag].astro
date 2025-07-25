@@ -1,0 +1,33 @@
+---
+import { fetchBlog } from '../../utils/fetchBlog';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import PostCard from '../../components/PostCard.tsx';
+import Container from "../../components/Container.astro";
+import Hero from "../../components/Hero.astro";
+
+const allPosts = await fetchBlog();
+const currentTag = decodeURIComponent(Astro.params.tag ?? '');
+
+const filteredPosts = allPosts.filter(post =>
+  Array.isArray(post.tags) && post.tags.includes(currentTag)
+);
+---
+
+<BaseLayout title={currentTag} description={currentTag}>
+    <Container size="md">
+        <TopLayout>
+            <Hero title={currentTag} subtitle={`Daftar postingan dari tag: ${currentTag}`} />
+        </TopLayout>
+        {filteredPosts.length > 0 ? (
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredPosts.map(post => (
+                <PostCard client:load post={post} />
+              ))}
+            </div>
+          ) : (
+            <p class="text-[var(--color-muted)]">Belum ada postingan dengan tag <strong>{currentTag}</strong></p>
+          )}
+    </Container>
+</BaseLayout>

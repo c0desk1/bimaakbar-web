@@ -66,6 +66,12 @@ const BlogFilter = () => {
     return filteredPosts.slice(start, start + itemsPerPage);
   }, [filteredPosts, currentPage]);
 
+  const handleViewAllByCategory = () => {
+    if (!selectedCategory) return;
+    window.location.href = `/blog/${encodeURIComponent(selectedCategory)}`;
+  };
+  
+
   if (loading) {
     return (
       <section className="py-8">
@@ -101,22 +107,31 @@ const BlogFilter = () => {
             </div>
             <SortPosts sortAsc={sortAsc} toggleSort={() => setSortAsc(!sortAsc)} />
           </div>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {paginatedPosts.map((post) => (
-              <li key={`${post.slug}-${post.date ?? 'no-date'}`}>
-                <PostCard post={post} />
-              </li>
-            ))}
-          </ul>
         </section>
       </div>
-      <div className="flex flex-shrink-0">
-      <section id='filter-posts' aria-label='filter postingan'>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)} />
-      </section>
+      <div className="flex-col flex-1">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {paginatedPosts.map((post) => (
+                <li key={`${post.slug}-${post.date ?? 'no-date'}`}>
+                  <PostCard post={post} />
+                </li>
+              ))}
+            </ul>
+        </div>
+      <div className="flex flex-col flex-shrink-0">
+        <section id='filter-posts' aria-label='filter postingan'>
+            {selectedCategory && (
+              <button
+                onClick={handleViewAllByCategory}
+                className="my-6 px-4 py-2 rounded-full text-sm font-medium bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-fg)] hover:bg-[var(--color-hover)] transition cursor-pointer">
+              Lihat semua postingan: {selectedCategory}
+              </button>
+            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)} />
+        </section>
       </div>
     </div>
     </>

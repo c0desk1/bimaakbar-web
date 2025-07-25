@@ -66,7 +66,7 @@ export async function fetchBlog(): Promise<Blog[]> {
 
           return {
             id: item.id,
-            title: item.title,
+            title: item.title || SITE.title,
             slug,
             description: item.description,
             content: item.content,

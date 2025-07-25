@@ -6,6 +6,7 @@ import BreadCrumb from '../../components/BreadCrumb.tsx';
 import TopLayout from '../../layouts/TopLayout.astro';
 import BottomLayout from '../../layouts/BottomLayout.astro';
 import Container from '../../components/Container.astro';
+import Navigation from "../../components/Navigation.astro";
 import BackToTop from "../../components/BackToTop";
 import { remark } from 'remark';
 import html from 'remark-html';
@@ -102,7 +103,7 @@ const contentHtml = result.toString();
         {post.tags?.length > 0 && (
           <div class="flex flex-wrap gap-2">
             {post.tags.map(tag => (
-              <a href={`/${encodeURIComponent(tag ?? 'unknown')}`} class="text-xs uppercase border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)] px-2 py-1 rounded-lg">
+              <a href={`/tag/${encodeURIComponent(tag ?? 'unknown')}`} class="text-xs uppercase border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)] px-2 py-1 rounded-lg">
                 <span>
                   # {tag}
                 </span>
@@ -131,5 +132,6 @@ const contentHtml = result.toString();
       </div>
       <BackToTop client:visible />
     </BottomLayout>
+    <Navigation/>
   </Container>
 </BaseLayout>
