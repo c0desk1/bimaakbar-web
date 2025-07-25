@@ -27,6 +27,8 @@ const {
             <slot />
         </main>
         <Footer />
+        <noscript>
+            <iframe src={`https://www.googletagmanager.com/ns.html?id=${import.meta.env.GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
     </body> 
 </html>
-
