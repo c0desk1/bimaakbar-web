@@ -23,5 +23,5 @@ export function useScroll() {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  },[])
 }

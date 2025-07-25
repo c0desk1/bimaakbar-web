@@ -8,12 +8,8 @@ import Container from "../../components/Container.astro";
 import Hero from "../../components/Hero.astro";
 import PostLists from '../../components/PostLists.tsx';
 import Navigation from '../../components/Navigation.astro';
-import { fetchBlog } from '../../utils/fetchBlog';
-
-const posts = (await fetchBlog()).filter(post => post.status === 'PUBLISH');
-const estimated_initial_size = 28 + posts.length * 158 + (posts.length - 1) * 12;
-
 ---
+
 <BaseLayout title={BLOG.title || SITE.title} description={BLOG.description}>
   <Container size="md">
     <TopLayout>
@@ -32,13 +28,9 @@ const estimated_initial_size = 28 + posts.length * 158 + (posts.length - 1) * 12
       </script>
       <script is:inline src="//www.highperformanceformat.com/9ec096002c2fad1b9d684a8a1057f653/invoke.js"></script>
     </section>
-    
     <section class="py-6">
-      <div style={{ minHeight: `${estimated_initial_size}px` }}>
-        <PostLists client:load />
-      </div>
+      <PostLists client:load />
     </section>
-    
     <BottomLayout>
       <Navigation />
     </BottomLayout>

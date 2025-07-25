@@ -67,7 +67,6 @@ html {
   scroll-behavior: smooth;
   background-color: var(--color-bg);
   scroll-padding-top: 88px;
-  -webkit-overflow-scrolling: touch;
 }
 
 *, *::before, *::after {
@@ -83,8 +82,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-sans);
 }
 
@@ -213,6 +210,7 @@ a.active {
   font-family: var(--font-sans);
   color: var(--color-fg);
   overflow-wrap: break-word;
+  padding: 4px;
 }
 .prose h3, .prose h4, .prose h5, .prose h6 {
   margin-top: 1rem;
@@ -338,7 +336,6 @@ a.active {
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   line-height: 1.5;
   overflow-x: auto;
-
   box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
   scrollbar-width: thin;
   margin-bottom: 2em;
@@ -386,18 +383,6 @@ a.active {
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
-}
-.prose .alert {
-  padding: 1rem;
-  border-radius: 0.375rem;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-accent);
-  color: var(--color-fg);
-}
-.prose .alert.info {
-  border-color: var(--color-border);
-  background-color: var(--color-card-bg);
-  color: var(--color-fg);
 }
 .prose blockquote {
   min-width: fit-content; 
@@ -635,7 +620,6 @@ a.active {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    border-radius: 8px;
   }
 }
  

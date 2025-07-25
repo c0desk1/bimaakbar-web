@@ -1,0 +1,37 @@
+---
+import { fetchBlog } from '../../utils/fetchBlog';
+
+
+const { tag } = Astro.params;
+const currentTag = decodeURIComponent(Astro.params.tag ?? '');
+
+
+const allPosts = await fetchBlog();
+
+const filteredPosts = allPosts.filter(post =>
+  Array.isArray(post.tags) && post.tags.includes(currentTag)
+);
+---
+<html lang="id">
+  <head>
+    <title>Tag: {currentTag}</title>
+  </head>
+  <body class="px-4 py-6 max-w-5xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">📁 Tag: {currentTag}</h1>
+
+    {filteredPosts.length > 0 ? (
+      <ul class="space-y-4">
+        {filteredPosts.map(post => (
+          <li>
+            <a href={`/blog/${post.slug}`} class="text-blue-600 hover:underline text-lg font-medium">
+              {post.title}
+            </a>
+            <p class="text-sm text-gray-500">{post.description}</p>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="text-gray-500">Belum ada postingan dengan tag ini 🤷</p>
+    )}
+  </body>
+</html>

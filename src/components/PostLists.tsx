@@ -43,7 +43,7 @@ const BlogFilter = () => {
 
   useEffect(() => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}, [currentPage]);
+  }, [currentPage]);
 
   const filteredPosts = useMemo(() => {
     return posts
@@ -88,31 +88,37 @@ const BlogFilter = () => {
 
   return (
     <>
-      <section id='filter-posts' aria-label='filter postingan'>
-        <FilterPosts search={search} setSearch={setSearch} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} />
-      </section>
-      <section role="region" aria-labelledby="post-section-title">
-        <h2 id="post-section-title" className="sr-only">Daftar Postingan</h2>
-        <div className="flex justify-between items-center py-4">
-          <div className="text-sm uppercase text-[var(--color-muted)]">
-            Menampilkan {filteredPosts.length} dari {posts.length} postingan
+    <div className="flex flex-col py-6 gap-2 items-center w-full">
+      <div className="flex-col flex-1">
+        <section id='filter-posts' aria-label='filter postingan'>
+          <FilterPosts search={search} setSearch={setSearch} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} categories={categories} />
+        </section>
+        <section role="region" aria-labelledby="post-section-title">
+          <h2 id="post-section-title" className="sr-only">Daftar Postingan</h2>
+          <div className="flex justify-between items-center py-4">
+            <div className="text-sm uppercase text-[var(--color-muted)]">
+              Menampilkan {filteredPosts.length} dari {posts.length} postingan
+            </div>
+            <SortPosts sortAsc={sortAsc} toggleSort={() => setSortAsc(!sortAsc)} />
           </div>
-          <SortPosts sortAsc={sortAsc} toggleSort={() => setSortAsc(!sortAsc)} />
-        </div>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {paginatedPosts.map((post) => (
-            <li key={`${post.slug}-${post.date ?? 'no-date'}`}>
-              <PostCard post={post} />
-            </li>
-          ))}
-        </ul>
-      </section>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {paginatedPosts.map((post) => (
+              <li key={`${post.slug}-${post.date ?? 'no-date'}`}>
+                <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+      <div className="flex flex-shrink-0">
       <section id='filter-posts' aria-label='filter postingan'>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)} />
       </section>
+      </div>
+    </div>
     </>
   );
 };

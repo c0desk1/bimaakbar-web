@@ -1,7 +1,6 @@
 ---
 import { SEO } from 'astro-seo';
 import { SITE } from '../consts';
-import SpeedInsights from '@vercel/speed-insights/astro';
 
 const GTM_ID = import.meta.env.GTM_ID;
 
@@ -138,4 +137,3 @@ f.parentNode.insertBefore(j,f);
 </script>
 <script is:inline set:html={gtmScript}></script>
 <script is:inline src="https://accounts.google.com/gsi/client" async defer></script>
-<SpeedInsights />

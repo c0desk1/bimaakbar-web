@@ -10,7 +10,7 @@ import BackToTop from "../../components/BackToTop";
 import { remark } from 'remark';
 import html from 'remark-html';
 import { Image } from 'astro:assets';
-import { formatDate, readingTime } from "../../lib/utils";
+import { formatDate, formatUpdateDate, readingTime } from "../../lib/utils";
 import ReadingProgress from '../../components/ReadingProgress';
 
 export const prerender = true;
@@ -53,30 +53,38 @@ const contentHtml = result.toString();
   <Container size="md">
     <TopLayout>
       <div class="flex flex-col items-center text-center justify-center">
-        <BreadCrumb items={[
-          { label: 'Blog', href: '/blog' },
-          {
-            label: post.category ?? 'Tanpa Kategori',
-            href: `/blog?category=${encodeURIComponent(post.category ?? 'unknown')}`
-          },
-          { label: post.title ?? 'Tanpa Judul', href: `/blog/${post.slug}` }
-        ]} />
-        <div class="py-6 flex flex-col items-center text-center justify-center">
+        <BreadCrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Blog', href: '/blog' },
+            {
+              label: post.category ?? 'Tanpa Kategori',
+              href: `/blog/${encodeURIComponent(post.category ?? 'unknown')}`,
+            },
+            {
+              label: post.title ?? 'Tanpa Judul',
+              href: `/blog/${post.slug}`,
+            },
+          ]}
+        />
+
+        <div class="py-6 flex flex-col items-center text-center justify-center w-full">
           <div class="prose flex flex-col items-center">
-            <h1 class="py-2 font-semibold">{post.title}</h1>
+            <h1>{post.title}</h1>
           </div>
           <div class="flex text-[var(--color-muted)] gap-2 items-center text-center justify-center">
             <span>{post.author}</span>
           </div>
-          <div class="flex py-2 gap-2 items-center w-full justify-center text-sm text-[var(--color-muted)]">
-            <svg stroke="var(--color-fg)" class="size-4 pointer-events-none cursor-pointer">
-              <use href="/ui.svg#book-open"></use>
-            </svg>
-            <span>{readingTime(contentHtml)}</span>
-            <svg id="spacer" stroke="var(--color-fg)" class="size-4 pointer-events-none">
-              <use href="/ui.svg#spacer"></use>
-            </svg>
-            <span>{formatDate(post.date)}</span>
+          <div class="flex flex-row py-2 gap-2 items-center w-full text-sm text-[var(--color-muted)]">
+            <div class="flex flex-1 items-center gap-1">
+              <svg stroke="var(--color-fg)" class="size-4 pointer-events-none cursor-pointer">
+                <use href="/ui.svg#book-open"></use>
+              </svg>
+              <span>{readingTime(contentHtml)}</span>
+            </div>
+            <div class="flex flex-shrink-0 items-center gap-1">
+              <span>{formatDate(post.date)}</span>
+            </div>
           </div>
           <div class="prose flex flex-col items-center">
             {post.description && <summary>{post.description}</summary>}
@@ -85,24 +93,26 @@ const contentHtml = result.toString();
         </div>
       </div>
     </TopLayout>
-    <div class="flex flex-wrap gap-2 mb-6">
-
     <article class="prose">
       <div set:html={contentHtml} />
     </article>
-    </div>
     <BottomLayout>
-      {post.tags?.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-6">
-          {post.tags.map(tag => (
-            <span class="text-xs uppercase border border-[var(--color-border)] bg-[var--color-bg)] text-[var(--color-muted)] px-2 py-1 rounded-lg">
-              # {tag}
-            </span>
-          ))}
-        </div>
-      )}
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 w-full text-[var(--color-muted)]">
-        <div class="w-full flex-wrap">
+      <div class="flex flex-col items-center gap-4 py-6">
+        <span class="text-sm text-[var(--color-muted)]">{formatUpdateDate(post.lastModified)}</span>
+        {post.tags?.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {post.tags.map(tag => (
+              <a href={`/${encodeURIComponent(tag ?? 'unknown')}`} class="text-xs uppercase border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)] px-2 py-1 rounded-lg">
+                <span>
+                  # {tag}
+                </span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+      <div class="flex flex-row py-6 gap-2 items-center w-full text-[var(--color-muted)]">
+        <div class="flex flex-1">
           {prev && (
             <a href={`/blog/${prev.slug}`} rel="prev" class="group flex flex-col text-left items-start">
               <div class="text-sm uppercase">Sebelumnya</div>
@@ -110,7 +120,7 @@ const contentHtml = result.toString();
             </a>
           )}
         </div>
-        <div class="w-full flex-0">
+        <div class="flex flex-shrink-0">
           {next && (
             <a href={`/blog/${next.slug}`} rel="next" class="group flex flex-col text-right items-end">
               <div class="text-sm uppercase">Selanjutnya</div>
@@ -119,9 +129,7 @@ const contentHtml = result.toString();
           )}
         </div>
       </div>
-      <div class="mt-6">
-        <BackToTop client:visible />
-      </div>
+      <BackToTop client:visible />
     </BottomLayout>
   </Container>
 </BaseLayout>
