@@ -3,6 +3,8 @@ import { SEO } from 'astro-seo';
 import { SITE } from '../consts';
 import SpeedInsights from '@vercel/speed-insights/astro';
 
+const GTM_ID = import.meta.env.GTM_ID;
+
 const {
   title = SITE.title,
   description = SITE.description,
@@ -10,6 +12,14 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const gtmScript = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`;
+
 ---
 <!-- SEO Meta -->
 <SEO
@@ -52,9 +62,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta charset="utf-8" />
 <meta name="generator" content={Astro.generator} />
+
 <meta name="color-scheme" content="light dark" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+
 <meta name="apple-mobile-web-app-title" content={title} />
 
 <!-- Font Preload -->
@@ -120,4 +132,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     initDrawer();
   });
 </script>
+<script is:inline set:html={gtmScript}></script>
+<script is:inline src="https://accounts.google.com/gsi/client" async defer></script>
 <SpeedInsights />
