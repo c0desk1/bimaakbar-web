@@ -20,7 +20,7 @@ const Pagination: FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="text-sm px-2 py-1 border border-[var(--color-border)] hover:bg-[var(--color-hover)] rounded-full disabled:opacity-30">
+        className="text-sm px-2 py-1 border border-[var(--color-border)] hover:bg-[var(--color-hover)] rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-30">
         Sebelumnya
       </button>
 
@@ -33,8 +33,7 @@ const Pagination: FC<PaginationProps> = ({
               ? "bg-[var(--color-hover)] text-[var(--color-fg)]"
               : "text-[var(--color-muted)] hover:bg-[var(--color-hover)]"
           }`}
-          aria-current={currentPage === page ? "page" : undefined}
-        >
+          aria-current={currentPage === page ? "page" : undefined}>
           {page}
         </button>
       ))}
@@ -42,8 +41,7 @@ const Pagination: FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="text-sm px-2 py-1 border border-[var(--color-border)] hover:bg-[var(--color-hover)] rounded-full disabled:opacity-30"
-      >
+        className="text-sm px-2 py-1 border border-[var(--color-border)] hover:bg-[var(--color-hover)] rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-30">
         Berikutnya
       </button>
     </nav>
