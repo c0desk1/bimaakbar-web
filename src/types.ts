@@ -29,23 +29,22 @@ export type Socials = {
     HREF: string
 }[]
 
-export type Blog = {
-    id: string;
-    title: string;
-    slug: string;
-    description: string;
-    content?: string;
-    category: string;
-    tags: string[];
-    author: string;
-    date: string | Date;
-    lastModified?: string | Date;
-    cover?: string | null;
-    featured?: boolean;
-    status: string;
-    canonicalUrl?: string;
-    metaTitle?: string;
-    metaDescription?: string;
-    metaKeywords?: string[];  
+export interface Blog {
+  id: string
+  title: string
+  slug: string
+  description: string
+  content: string
+  category: string
+  tags: string[]
+  author: string
+  date: string
+  lastModified: string
+  cover: string | null
+  featured: boolean
+  status: 'PUBLISHED' | 'DRAFT'
+  canonicalUrl: string
+  metaTitle?: string
+  metaDescription?: string
+  metaKeywords?: string[]
 }
-    
