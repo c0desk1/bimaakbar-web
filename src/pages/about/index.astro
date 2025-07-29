@@ -1,0 +1,77 @@
+---
+// src/pages/about/index.astro
+import { Image } from 'astro:assets';
+import { SITE, ABOUT } from '../../consts';
+import BimaAkbar from '../../assets/avatar.avif';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import Container from '../../components/Container.astro';
+---
+
+<BaseLayout title={ABOUT.title} description={ABOUT.description}>
+  <TopLayout>
+    <section class="prose">
+      <div class="flex flex-col items-center text-center justify-center">
+        <h1 class="font-semibold">
+          Tentang Saya
+        </h1>
+        <div class="flex flex-col md:flex-row w-auto gap-4 items-center text-left">
+          <Image 
+            src={BimaAkbar} 
+            alt={SITE.title}
+            width={64}
+            height={64}
+            loading="eager" />
+          <summary>
+            Halo! Saya <a href="/">{SITE.title}</a>, seorang pengembang web dan penggemar teknologi 
+            dengan hasrat untuk menciptakan solusi digital yang elegan dan efisien. 
+            Perjalanan saya di dunia pemrograman dimulai dari rasa penasaran sederhana 
+            tentang bagaimana sebuah situs web bekerja, dan kini telah berkembang menjadi 
+            karier yang saya cintai.
+          </summary>
+        </div>
+      </div>  
+    </section>
+  </TopLayout>
+  <Container size='md'>
+    <article class="prose">
+      <h2>Latar Belakang & Keahlian</h2>
+      <p>
+        Dengan latar belakang di bidang [Sebutkan bidang studi atau pengalaman Anda, misal: Teknik Informatika], 
+        saya memiliki fondasi yang kuat dalam pemecahan masalah dan desain sistem. 
+        Saya berspesialisasi dalam pengembangan front-end menggunakan teknologi modern 
+        seperti React, Vue, dan tentu saja, Astro. Saya juga memiliki pengalaman 
+        dengan back-end menggunakan Node.js dan Express.
+      </p>
+      
+      <ul>
+        <li><strong>Bahasa Pemrograman:</strong> JavaScript, TypeScript, HTML, CSS</li>
+        <li><strong>Framework & Library:</strong> React, Next.js, Astro, Tailwind CSS</li>
+        <li><strong>Tools & Platform:</strong> Git, GitHub, Vercel, Figma</li>
+      </ul>
+
+      <h2>Misi Saya</h2>
+      <p>
+        Misi saya adalah membangun aplikasi yang tidak hanya berfungsi dengan baik, 
+        tetapi juga memberikan pengalaman pengguna yang luar biasa. Saya percaya bahwa 
+        kode yang bersih, arsitektur yang terstruktur, dan perhatian pada detail 
+        adalah kunci untuk mencapai hal tersebut.
+      </p>
+      <hr>
+      <span>Terakhir diperbarui: <time>{new Date ().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</time></span>
+    </article>
+  </Container>
+  <BottomLayout>
+    <a href="/" class="group flex w-auto items-center rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] hover:bg-[var(--color-hover)]">
+      <div class="flex w-full items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+          <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+          <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+        </svg>
+        <span class="w-full items-center">
+          Kembali ke Beranda
+        </span>
+      </div>
+    </a>
+</BaseLayout>

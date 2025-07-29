@@ -1,0 +1,51 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import { CONTACT } from '../../consts';
+import Container from "../../components/Container.astro";
+---
+<BaseLayout title={CONTACT.title} description={CONTACT.description}>
+    <TopLayout>
+        <div class='prose flex flex-col w-auto text-center'>
+            <h1>Hubungi Saya</h1>  
+            <summary>Ingin menyapa? Silakan isi form.</summary>
+        </div>
+    </TopLayout>
+    <Container size="md">
+        <section id="form-section" class="w-full ">
+            <form class="space-y-6 bg-[var(--color-bg-secondary)] border border-[var(--color-border)] p-8 shadow-sm rounded-xl" on:submit|preventDefault={() => alert('Pesan berhasil dikirim!')}>
+                <div class="mb-4">
+                    <label for="name" class="block text-lg mb-2">Nama</label>
+                    <input id="name" name="name" type="text" required class="w-full text-md px-4 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]" placeholder="Nama" />
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-lg mb-2">Email</label>
+                    <input id="email" name="email" type="email" required class="w-full text-md px-4 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]" placeholder="nama@email.com" />
+                </div>   
+                <div class="mb-4">
+                    <label for="message" class="block text-lg mb-2">Pesan</label>
+                    <textarea id="message" name="message" required rows="5" class="w-full text-md px-4 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]" placeholder="Tulis pesan..." />
+                </div>
+                <button type="submit" class="justify-center w-full py-2 px-4 bg-[var(--color-accent)] border border-transparent cursor-pointer text-[var(--color-fg)] rounded-full hover:text[var(--color-accent-fg)] hover:bg-[var(--color-bg)] hover:border-[var(--color-border)]">Kirim</button>
+                <p class="prose">Atau hubungi saya langsung melalui <a href="mailto:bimaakbar@my.id">Email</a></p>
+            </form>
+        </section>
+    </Container>
+    <BottomLayout>
+        <section class="w-full items-center text-center">
+            <a href="/"  class="group flex w-auto mt-6 items-center rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] hover:bg-[var(--color-hover)]">
+                <div class="flex w-full items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+                    <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+                    <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+                  </svg>
+                  <span class="w-full items-center">
+                    Kembali ke Beranda
+                  </span>
+                </div>
+            </a>
+        </section>
+    </BottomLayout>
+</BaseLayout>

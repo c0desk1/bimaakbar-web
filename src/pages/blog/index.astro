@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import BlogFilter from "../../components/BlogFilter.tsx";
+import Container from '../../components/Container.astro';
+
+
+const res = await fetch(import.meta.env.CMS_API_URL);
+if (!res.ok) throw new Error("Gagal memuat data artikel dari CMS API");
+
+const posts = await res.json();
+const hasPosts = posts.length > 0;
+---
+
+<BaseLayout title="Blog" description="Kumpulan artikel terbaru dari kami">
+  {hasPosts ? (
+      <Container size="md">
+<div class="w-full">
+      <!-- Hero -->
+      <section class="bg-[var(--color-bg-secondary)]">
+        <div class="container mx-auto px-4 py-8">
+          <Hero title="Blog" subtitle="Artikel, panduan, dan update terbaru" centered />
+        </div>
+      </section>
+
+      <!-- Filter & Posts -->
+      <section class="container mx-auto px-4 py-8">
+        <BlogFilter client:load />
+      </section>
+    </div>
+      </Container>
+    
+  ) : (
+    <main class="min-h-[dvh] flex flex-col justify-center items-center text-center p-6">
+      <p class="text-xl text-center text-[var(--color-muted)] mb-6">
+        Tidak ada postingan
+      </p>
+      <a
+        href="/"
+        class="group flex w-auto items-center rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-3 py-2 text-[var(--color-fg)] hover:bg-[var(--color-hover)]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mr-2 stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)] transition-all"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Kembali ke Beranda
+      </a>
+    </main>
+  )}
+</BaseLayout>

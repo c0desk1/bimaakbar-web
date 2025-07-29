@@ -1,0 +1,43 @@
+---
+import PostCard from './PostCard.tsx';
+import type { Post } from '../types';
+
+const res = await fetch(import.meta.env.CMS_API_URL);
+
+if (!res.ok) {
+  throw new Error('Gagal fetch recent posts');
+}
+
+const posts: Post[] = await res.json();
+const recentPosts = posts
+  .filter((post) => String(post.status).toUpperCase() !== 'DRAFT')
+  .slice(0, 6);;
+
+---
+
+<section class="w-full py-6">
+  {recentPosts.length === 0 ? (
+    <p class="text-lg text-center text-[var(--color-muted)]/50">
+      Tidak ada postingan terbaru.
+    </p>
+  ) : (
+    <>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-[var(--color-fg)]">Terbaru</h2>
+        <a
+          href="/blog"
+          class="text-sm hover:text-[var(--color-fg)] text-[var(--color-muted)] hover:bg-[var(--color-hover)] py-2 px-3 rounded-full"
+        >
+          Semua Postingan
+        </a>
+      </div>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
+        {recentPosts.map((post) => (
+          <li>
+            <PostCard post={post} />
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</section>

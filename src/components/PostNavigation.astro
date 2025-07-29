@@ -1,0 +1,101 @@
+---
+import PostCard from './PostCard.tsx';
+import type { Post } from '../types';
+
+const { currentSlug, category } = Astro.props;
+
+const res = await fetch(import.meta.env.CMS_API_URL);
+if (!res.ok) throw new Error('Gagal fetch navigasi post');
+
+const posts: Post[] = await res.json();
+
+// Urutkan berdasarkan tanggal terbaru
+const sortedPosts = posts
+  .filter((p) => p.status === 'PUBLISHED')
+  .sort(
+    (a, b) =>
+      new Date(b.date ?? 0).getTime() - new Date(a.date ?? 0).getTime()
+  );
+
+// Temukan posisi artikel saat ini
+const index = sortedPosts.findIndex(
+  (p) => p.slug.trim().toLowerCase() === currentSlug.trim().toLowerCase()
+);
+
+const prev = index > 0 ? sortedPosts[index - 1] : null;
+const next = index >= 0 && index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null;
+
+// Related posts (kategori sama)
+let relatedPosts = sortedPosts
+  .filter(
+    (p) =>
+      p.slug.trim().toLowerCase() !== currentSlug.trim().toLowerCase() &&
+      p.category?.toLowerCase() === category?.toLowerCase()
+  )
+  .slice(0, 3);
+
+// Fallback: jika tidak ada related, ambil terbaru lain
+if (relatedPosts.length === 0) {
+  relatedPosts = sortedPosts
+    .filter((p) => p.slug.trim().toLowerCase() !== currentSlug.trim().toLowerCase())
+    .slice(0, 3);
+}
+---
+
+<section class="w-full">
+  <!-- Prev / Next -->
+  <div class="flex flex-col md:flex-row justify-between gap-6 mb-10">
+    <div class="flex-1">
+      {prev && (
+        <a
+          href={`/blog/${prev.slug}`}
+          class="block group p-4 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-hover)] transition-colors"
+        >
+          <div class="text-xs uppercase text-[var(--color-muted)] mb-1">
+            Sebelumnya
+          </div>
+          <div class="font-semibold text-[var(--color-fg)] group-hover:underline leading-snug">
+            {prev.title}
+          </div>
+        </a>
+      )}
+    </div>
+    <div class="flex-1 text-right">
+      {next && (
+        <a
+          href={`/blog/${next.slug}`}
+          class="block group p-4 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-hover)] transition-colors"
+        >
+          <div class="text-xs uppercase text-[var(--color-muted)] mb-1 text-right">
+            Selanjutnya
+          </div>
+          <div class="font-semibold text-[var(--color-fg)] group-hover:underline leading-snug">
+            {next.title}
+          </div>
+        </a>
+      )}
+    </div>
+  </div>
+
+  <!-- Related Posts -->
+  {relatedPosts.length > 0 && (
+    <>
+      <h3 class="text-center text-lg font-semibold mb-6 text-[var(--color-fg)]">
+        {relatedPosts[0].category?.toLowerCase() === category?.toLowerCase()
+          ? 'Artikel Terkait'
+          : 'Artikel Lainnya'}
+      </h3>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {relatedPosts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    </>
+  )}
+
+  {index === -1 && relatedPosts.length === 0 && (
+    <p class="text-center text-[var(--color-muted)]">
+      Tidak ada navigasi atau artikel terkait.
+    </p>
+  )}
+</section>
