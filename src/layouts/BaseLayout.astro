@@ -1,0 +1,35 @@
+---
+// src/layouts/BaseLayout.astro
+import "../styles/global.css";
+import { SITE } from '../consts';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '@vercel/analytics/astro';
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image = '/open-graph.png'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+    <head>
+        <BaseHead title={title} description={description} image={image} />
+    </head>
+    <body class="grid-bg">
+        <Header />
+        <MobileMenu />
+        <main>
+            <slot />
+        </main>
+        <Footer />
+        <noscript>
+            <iframe src={`https://www.googletagmanager.com/ns.html?id=${import.meta.env.GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+    </body> 
+</html>
+

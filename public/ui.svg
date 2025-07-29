@@ -13,9 +13,28 @@
     </symbol>
 
     <!-- close -->
-    <symbol id="close" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-      <path d="M18 6L6 18"/>
-      <path d="M6 6l12 12"/>
+    <symbol id="close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M18 6L6 18" />
+      <path d="M6 6l12 12" />
+    </symbol>  
+    
+    <!-- Bookmark -->
+    <symbol id="bookmarked" 
+      viewBox="0 0 24 24"
+      fill="var(--color-fg)"
+      stroke="none">
+      <path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
+    </symbol>
+
+    <symbol id="bookmark" 
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--color-fg)"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" />
     </symbol>
 
     <!-- search -->
@@ -49,7 +68,7 @@
       <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
     </symbol>
 
-    <!-- square -->
+    <!-- spacer -->
     <symbol 
       id="spacer" 
       viewBox="0 0 24 24"  
@@ -76,6 +95,7 @@
       <path d="M12 5l7 7-7 7"/>
     </symbol>
 
+    <!-- backtotop -->
     <symbol id="backtotop" 
       viewBox="0 0 24 24"  
       fill="none"  
@@ -100,6 +120,19 @@
       stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M6 15l6 -6l6 6" />
+    </symbol>
+
+    <!-- arrow -left -->
+     <symbol 
+      id="arrow-left"
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke-width="2" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+      class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+      <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+      <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
     </symbol>
 
     <!-- bread crumb -->

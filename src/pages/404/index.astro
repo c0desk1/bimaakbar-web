@@ -1,0 +1,30 @@
+---
+// src/pages/about/index.astro
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import { ERROR } from '../../consts';
+---
+<BaseLayout title={ERROR.title} description={ERROR.description}>
+  <Container size="md">
+    <main class="min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-16">
+      <h1 class="text-7xl font-bold tracking-tight text-[var(--color-fg)] sm:text-7xl">
+         404
+      </h1>
+      <p class="mt-6 text-md text-[var(--color-muted)]">
+        Halaman yang kamu cari tidak ditemukan. Mungkin sudah dipindahkan atau tautan salah.
+      </p>
+      <a href="/" class="group flex w-auto mt-6 items-center gap-2 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] hover:bg-[var(--color-hover)]">
+        <div class="flex w-full items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+            <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+            <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+          </svg>
+          <span class="w-full items-center">
+            Kembali ke Beranda
+          </span>
+        </div>
+      </a>
+    </main>
+  </Container>
+</BaseLayout>

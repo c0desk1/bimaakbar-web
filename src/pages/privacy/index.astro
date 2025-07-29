@@ -1,0 +1,66 @@
+---
+// src/pages/privacy.astro
+import {PRIVACY} from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import Container from '../../components/Container.astro';
+---
+<BaseLayout title={PRIVACY.title} description={PRIVACY.description}>
+  <TopLayout>
+    <section class="prose">
+      <h1>Privacy Policy</h1>
+      <summary>This Privacy Policy explains how we collect, use, and protect information from visitors of our website <a>bimaakbar.web.id</a> (referred to as "we", "our", or "the site").</summary>
+    </section>
+  </TopLayout>
+  <Container size="md">
+      <article class="prose">
+        <h2>1. Information We Collect</h2>
+        <ul>
+          Our blog does not directly collect any personal information from users. However, we use third-party services such as:
+          <li>Blogger API v3: to fetch and display blog posts from our Blogger site.</li>
+          <li>Cloudflare Pages: for website hosting and caching.</li>
+          <li>Google Fonts / Fonts CDN: for font rendering (if applicable).</li>
+        </ul>
+        <h2>
+          2. Cookies
+        </h2>
+        <p>We do not set cookies directly. However, third-party services such as Google may use cookies to manage API access or track analytics (if analytics are enabled in the future).</p>
+        
+        <h2>
+          3. Data Sharing
+        </h2>
+        <p>We do not share your data with any third parties. All content displayed is publicly available through Blogger.</p>
+        
+        <h2>
+          4. Third-Party Links
+        </h2>
+        <p>Our blog may include links to external sites. We are not responsible for the content or privacy practices of those websites.</p>
+
+        <h2>5. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with the updated date.</p>
+
+        <h2>6. Contact</h2>
+        <p>For any questions regarding this Privacy Policy, you can contact us at:
+          <a href="mailto:contact@bimaakbar.web.id">Email</a> or <a href="/contact">Here</a>.
+        </p>
+        <hr>
+        <span>Terakhir diperbarui: <time>{new Date ().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}</time></span>
+      </article>
+  </Container>
+  <BottomLayout>
+    <section id="back" class="w-full items-center text-center">
+      <a href="/" class="group flex w-auto items-center rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] hover:bg-[var(--color-hover)]">
+        <div class="flex w-full items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+            <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+            <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+          </svg>
+          <span class="w-full items-center">
+            Kembali ke beranda
+          </span>
+        </div>
+      </a>
+    </section>
+  </BottomLayout>
+</BaseLayout>

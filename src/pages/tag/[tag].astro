@@ -1,0 +1,47 @@
+---
+import { fetchBlog } from '../../utils/fetchBlog';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopLayout from '../../layouts/TopLayout.astro';
+import BottomLayout from '../../layouts/BottomLayout.astro';
+import PostCard from '../../components/PostCard.tsx';
+import Container from "../../components/Container.astro";
+import Hero from "../../components/Hero.astro";
+import {Tags} from '../../consts';
+
+const allPosts = await fetchBlog();
+const currentTag = decodeURIComponent(Astro.params.tag ?? '');
+
+const filteredPosts = allPosts.filter(post =>
+  Array.isArray(post.tags) && post.tags.includes(currentTag)
+);
+---
+
+<BaseLayout title={currentTag} description={`Postingan dari tag: ${currentTag}`}>
+  <TopLayout>
+    <Hero title={currentTag} subtitle={`Postingan dari tag: ${currentTag}`} />
+  </TopLayout>
+  <Container size="md">
+    {filteredPosts.length > 0 ? (
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredPosts.map(post => (
+          <PostCard client:load post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--color-muted)]">Tidak ada postingan dengan tag: <strong>{currentTag}</strong></p>
+    )}
+  </Container>
+  <BottomLayout>
+    <a href="/tag" class="group flex w-auto items-center rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-2 py-1 text-[var(--color-fg)] hover:bg-[var(--color-hover)]">
+      <div class="flex w-full items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="items-center stroke-[var(--color-muted)] group-hover:stroke-[var(--color-fg)]">
+          <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+          <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
+        </svg>
+        <span class="w-full items-center">
+          Kembali ke {Tags.title}
+        </span>
+      </div>
+    </a>
+  </BottomLayout>
+</BaseLayout>
