@@ -1,0 +1,37 @@
+---
+// src/components/Socials.astro
+import {SITE, HOME, BLOG, ABOUT, PRIVACY, TERMS, CONTACT} from "../consts"
+---
+<div class="flex w-full">
+  <div class="flex-1 items-center">
+    <nav class="w-auto">
+      <ul>
+        <li>
+          <a href='/tag' target="_blank" rel="noopener noreferrer" aria-label='Tag cloud' class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">Tag Cloud</p>
+          </a>
+          <a href='/rss.xml' target="_blank" rel="noopener noreferrer" aria-label={`Rss feed untuk ${SITE.title}`} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">RSS</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="flex-shrink-0">
+    <nav>
+      <ul>
+        <li>
+          <a href='/privacy' target="_blank" rel="noopener noreferrer" aria-label={PRIVACY.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{PRIVACY.title}</p>
+          </a>
+          <span class="text-[var(--color-muted)]">|</span>
+          <a href='/terms' target="_blank" rel="noopener noreferrer" aria-label={TERMS.title} class="items-center">
+            <p class="text-sm text-[var(--color-muted)] hover:text-[var(--color-fg)]">{TERMS.title}</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
