@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import { SITE } from "../consts";
 import { con } from "../lib/utils"
 import Container from "./Container.astro"
+import Logo from '../assets/bimaakbar-logo.png';
 import Navigation from "./Navigation.astro";
 import StatusIndicator from './StatusIndicator.astro';
 import DarkMode from "./ui/DarkMode.astro";
@@ -20,7 +21,7 @@ import Copyrgiht from './ui/Copyright.astro';
         <div class="flex-shrink-0 items-center text-start h-auto w-auto">
           <a href="/" aria-label={`Logo ${SITE.title}`} 
           class={con("w-auto h-auto md:block", "items-center text-center justify-start", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src='../../src/assets/bimaakbar-logo.png' alt={SITE.title} width={16} height={16} loading="eager" />
+          <Image src={Logo} alt={SITE.title} width={16} height={16} loading="eager" />
           </a>
         </div>
         
