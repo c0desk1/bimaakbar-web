@@ -14,9 +14,30 @@ const subpath = pathname.match(/[^/]+/g)
   <Container size="md">
     <div class="flex w-full items-center justify-between py-4 h-16 gap-4">
       <div class="flex-row items-center h-full hidden md:block">
-        <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:invert" />
-        </a>
+        <a href="/" aria-label={`Logo ${SITE.title}`} class={con(
+    		"flex md:block", 
+    		"p-1 items-center text-center", 
+    		"invert dark:invert-0", 
+    		"cursor-pointer"
+  		)}>
+  		<Image 
+    		src={Logo}
+    		alt={SITE.title} 
+    		width={24} 
+    		height={24} 
+    		loading="eager" 
+    		class="dark:hidden"
+  		/>
+  		<Image 
+    		src={Logo}
+    		alt={SITE.title} 
+    		width={24} 
+    		height={24} 
+    		loading="eager" 
+    		class="hidden dark:block"
+  		/>
+		<h1>{SITE.title}</h1>
+		</a>
       </div>
       <nav class="hidden md:flex flex-1 items-center justify-start text-sm">
          {LINKS.map((LINK) => (
@@ -34,7 +55,7 @@ const subpath = pathname.match(/[^/]+/g)
         ))}
       </nav>
       <div class="items-center justify-center md:hidden h-full">
-        <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
+        <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "invert dark:invert-0", "cursor-pointer")}>
           <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:invert"/>
         </a>
       </div>
