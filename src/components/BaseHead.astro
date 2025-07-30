@@ -20,8 +20,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
 j.src='https://www.googletagmanager.com/gtm.js?id=' + i + dl;
 f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
-
 ---
+
 <SEO
   title={fullTitle}
   description={description}
@@ -44,6 +44,7 @@ f.parentNode.insertBefore(j,f);
   }}
 />
 
+<!-- Fonts & Icons -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin="anonymous" />
 <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin="anonymous" />
 
@@ -52,8 +53,8 @@ f.parentNode.insertBefore(j,f);
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
+<!-- Meta -->
 <meta charset="utf-8" />
-
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <meta name="apple-mobile-web-app-title" content={title} />
@@ -63,90 +64,57 @@ f.parentNode.insertBefore(j,f);
 
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={image}>
+<meta property="twitter:image" content={image} />
 
+<!-- Scripts -->
 <script is:inline async defer set:html={gtmScript}></script>
 <script is:inline async defer src="https://accounts.google.com/gsi/client"></script>
 
+<!-- THEME SCRIPT ala next-themes -->
 <script is:inline>
   const storageKey = "theme";
+  const userPref = localStorage.getItem(storageKey);
 
-  function applyTheme(theme) {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+  // Default ikut system
+  if (userPref === "light" || userPref === "dark") {
+    document.documentElement.classList.add(userPref);
   }
+  // Jika tidak ada, biarkan prefers-color-scheme (CSS) yang jalan
 
-  function updateActiveButton(index) {
-    document.querySelectorAll(".theme-btn").forEach((btn, i) => {
-      btn.classList.toggle("active", i === index);
-    });
-  }
+  // Buat toggle button sinkron
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".theme-btn");
 
-  function setupThemeButtons() {
-    document.querySelectorAll(".theme-btn").forEach((btn, index) => {
+    function setActive(theme) {
+      buttons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.theme === theme);
+      });
+    }
+
+    // aktifkan sesuai class di html
+    const currentTheme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : document.documentElement.classList.contains("light")
+        ? "light"
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+    setActive(currentTheme);
+
+    buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const selected = btn.dataset.theme;
-        localStorage.setItem(storageKey, selected);
-        applyTheme(selected);
-        updateActiveButton(index);
+        // reset
+        document.documentElement.classList.remove("dark", "light");
+        // jika pilih 'system', hapus class & biarkan preferensi OS
+        if (selected === "system") {
+          localStorage.removeItem(storageKey);
+        } else {
+          document.documentElement.classList.add(selected);
+          localStorage.setItem(storageKey, selected);
+        }
+        setActive(selected);
       });
     });
-  }
-
-  function reflectPreference() {
-    const saved = localStorage.getItem(storageKey) || "light";
-    applyTheme(saved);
-
-    const index = saved === "dark" ? 1 : 0;
-    updateActiveButton(index);
-  }
-
-  // Drawer (biarkan sesuai logicmu sebelumnya)
-  function toggleDrawer() {
-    document.getElementById("drawer")?.classList.toggle("open");
-    document.getElementById("header-drawer-button")?.classList.toggle("open");
-  }
-  function initDrawer() {
-    document.getElementById("header-drawer-button")?.addEventListener("click", toggleDrawer);
-  }
-
-  function handleError(_error, context) {
-    console.error(`Error pada ${context}`);
-  }
-
-  // Jalankan saat halaman siap
-  document.addEventListener("DOMContentLoaded", () => {
-    try {
-      reflectPreference();
-      setupThemeButtons();
-      initDrawer();
-    } catch (error) {
-      handleError(error, "DOMContentLoaded");
-    }
-  });
-
-  document.addEventListener("astro:after-swap", () => {
-    const header = document.querySelector('header[aria-label="Base Header"]');
-    const scrollThreshold = 10;
-    let isScrolled = false;
-
-    function handleScroll() {
-      const scrolledCurrently = window.scrollY > scrollThreshold;
-      if (scrolledCurrently !== isScrolled) {
-        isScrolled = scrolledCurrently;
-        if (header) header.classList.toggle("is-scrolled", isScrolled);
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll);
-
-    try {
-      reflectPreference();
-      setupThemeButtons();
-      initDrawer();
-      handleScroll();
-    } catch (error) {
-      handleError(error, "astro:after-swap");
-    }
   });
 </script>
-
