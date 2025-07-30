@@ -5,13 +5,14 @@ import { con } from '../../lib/utils';
 <div id="theme-switcher"
   class="relative flex grid-cols-2 items-center gap-2 px-1 py-1 w-auto h-6 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-full overflow-hidden">
 
+  <!-- Indikator (geser kiri/kanan) -->
   <div id="theme-indicator"
     class="absolute top-0 left-0 w-1/2 h-full border border-[var(--color-muted)]/30 transition-transform duration-300 rounded-full z-0">
   </div>
 
   <!-- Light -->
   <button data-theme="light"
-    class={con("theme-btn md:block", "size-4 items-center text-center justify-center",
+    class={con("theme-btn md:block relative z-10", "size-4 flex items-center justify-center",
     "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")}
     title="Light mode">
     <svg class="size-full" stroke="var(--color-muted)">
@@ -21,7 +22,7 @@ import { con } from '../../lib/utils';
 
   <!-- Dark -->
   <button data-theme="dark"
-    class={con("theme-btn md:block", "size-4 items-center text-center justify-center",
+    class={con("theme-btn md:block relative z-10", "size-4 flex items-center justify-center",
     "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")}
     title="Dark mode">
     <svg class="size-full" stroke="var(--color-muted)">
@@ -29,3 +30,54 @@ import { con } from '../../lib/utils';
     </svg>
   </button>
 </div>
+
+<style>
+  /* Tambahkan efek active ke icon */
+  .theme-btn.active svg {
+    stroke: var(--color-fg);
+    opacity: 1;
+  }
+  .theme-btn svg {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+</style>
+
+<script>
+  const indicator = document.getElementById('theme-indicator');
+  const buttons = document.querySelectorAll('.theme-btn');
+  const html = document.documentElement;
+
+  function updateIndicator(theme) {
+    // light = kiri (0), dark = kanan (translateX 100%)
+    if (theme === 'dark') {
+      indicator.style.transform = 'translateX(100%)';
+    } else {
+      indicator.style.transform = 'translateX(0%)';
+    }
+  }
+
+  // Initial state
+  const currentTheme = html.classList.contains('dark')
+    ? 'dark'
+    : html.classList.contains('light')
+      ? 'light'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+  updateIndicator(currentTheme);
+
+  // Listener toggle
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selected = btn.dataset.theme;
+
+      html.classList.remove('light', 'dark');
+      html.classList.add(selected);
+      localStorage.setItem('theme', selected);
+
+      updateIndicator(selected);
+      buttons.forEach((b) => b.classList.toggle('active', b === btn));
+    });
+  });
+</script>
