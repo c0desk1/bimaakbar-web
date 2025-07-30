@@ -85,17 +85,8 @@ const contentHtml = (await remark().use(html).process(post.content || 'Tidak ada
           {formatUpdateDate(post.lastModified)}
         </div>
       </div>
-      <aside class="lg:col-span-1">
-        <div class="border border-[var(--color-border)] rounded-xl p-4 bg-[var(--color-bg-secondary)] sticky top-16">
-          <h3 class="text-sm font-semibold mb-2 text-[var(--color-fg)]">Tentang artikel ini</h3>
-          <p class="text-xs text-[var(--color-muted)] mb-2">Kategori: <strong>{post.category}</strong></p>
-          <p class="text-xs text-[var(--color-muted)]">Penulis: <strong>{post.author}</strong></p>
-          <div class="flex justify-center mt-4">
-            <BackToTop client:visible />
-          </div>
-        </div>
-      </aside>
     </div>
+<BackToTop client:visible />
     <PostNavigation currentSlug={post.slug} category={post.category} />
   </Container>
 </BaseLayout>
