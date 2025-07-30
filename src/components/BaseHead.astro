@@ -70,20 +70,9 @@ f.parentNode.insertBefore(j,f);
 
 <script is:inline>
   const storageKey = "theme";
-  const themeOrder = ["light", "dark", "system"];
 
   function applyTheme(theme) {
-    if (theme === "system") {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.classList.toggle("dark", prefersDark);
-    } else {  
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    }
-  }
-
-  function moveIndicator(index) {
-    const indicator = document.getElementById("theme-indicator");
-    if (indicator) indicator.style.transform = `translateX(${index * 100}%)`;
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }
 
   function updateActiveButton(index) {
@@ -98,73 +87,66 @@ f.parentNode.insertBefore(j,f);
         const selected = btn.dataset.theme;
         localStorage.setItem(storageKey, selected);
         applyTheme(selected);
-        moveIndicator(index);
         updateActiveButton(index);
       });
     });
   }
-   
-  function toggleDrawer() {
-      document.getElementById("drawer")?.classList.toggle("open");
-      document.getElementById("header-drawer-button")?.classList.toggle("open");
-  }
-
-  function initDrawer() {
-      document.getElementById("header-drawer-button")?.addEventListener("click", toggleDrawer);
-  }
 
   function reflectPreference() {
-    const saved = localStorage.getItem(storageKey) || "system";
-    const index = themeOrder.indexOf(saved);
+    const saved = localStorage.getItem(storageKey) || "light";
     applyTheme(saved);
-    moveIndicator(index);
+
+    const index = saved === "dark" ? 1 : 0;
     updateActiveButton(index);
-   
-    initDrawer();
   }
 
-function handleError(_error, context) {
-  const errorMessage = `Error pada ${context}`;
-  console.error(errorMessage);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  try {
-    reflectPreference();
-    setupThemeButtons();
-    initDrawer();
-  } catch (error) {
-    handleError(error, "DOMContentLoaded");
+  // Drawer (biarkan sesuai logicmu sebelumnya)
+  function toggleDrawer() {
+    document.getElementById("drawer")?.classList.toggle("open");
+    document.getElementById("header-drawer-button")?.classList.toggle("open");
   }
-});
+  function initDrawer() {
+    document.getElementById("header-drawer-button")?.addEventListener("click", toggleDrawer);
+  }
 
-document.addEventListener("astro:after-swap", () => {
-  
-  const header = document.querySelector('header[aria-label="Base Header"]');
-  const scrollThreshold = 10;
-  let isScrolled = false;
-  
-  function handleScroll () { 
-    const scrolledCurrently = window.scrollY > scrollThreshold;
-    if (scrolledCurrently !== isScrolled) {
-      isScrolled = scrolledCurrently;
-      if (header) {
-        header.classList.toggle("is-scrolled", isScrolled);
+  function handleError(_error, context) {
+    console.error(`Error pada ${context}`);
+  }
+
+  // Jalankan saat halaman siap
+  document.addEventListener("DOMContentLoaded", () => {
+    try {
+      reflectPreference();
+      setupThemeButtons();
+      initDrawer();
+    } catch (error) {
+      handleError(error, "DOMContentLoaded");
+    }
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    const header = document.querySelector('header[aria-label="Base Header"]');
+    const scrollThreshold = 10;
+    let isScrolled = false;
+
+    function handleScroll() {
+      const scrolledCurrently = window.scrollY > scrollThreshold;
+      if (scrolledCurrently !== isScrolled) {
+        isScrolled = scrolledCurrently;
+        if (header) header.classList.toggle("is-scrolled", isScrolled);
       }
     }
-      
-  };
 
-  window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-  try {
-    reflectPreference();
-    setupThemeButtons();
-    initDrawer();
-    handleScroll();
-  } catch (error) {
-    handleError(error, "astro:after-swap");
-  }
-});
+    try {
+      reflectPreference();
+      setupThemeButtons();
+      initDrawer();
+      handleScroll();
+    } catch (error) {
+      handleError(error, "astro:after-swap");
+    }
+  });
 </script>
 
