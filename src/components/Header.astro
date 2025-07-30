@@ -24,7 +24,7 @@ const subpath = pathname.match(/[^/]+/g)
       </button>
       <div class="flex-row items-center h-full hidden md:block">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="color-[var(--color-fg)]" />
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="invert dark:invert-0" />
         </a>
       </div>
       <nav class="hidden md:flex flex-1 items-center justify-start text-sm">
@@ -44,7 +44,7 @@ const subpath = pathname.match(/[^/]+/g)
       </nav>
       <div class="items-center justify-center md:hidden h-full">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="color-[var(--color-fg)]"/>
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="invert dark:invert-0"/>
         </a>
       </div>
       <div class="flex items-center h-full">
