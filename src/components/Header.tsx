@@ -8,7 +8,6 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const router = useRouter()
 
   // Scroll effect
   useEffect(() => {
