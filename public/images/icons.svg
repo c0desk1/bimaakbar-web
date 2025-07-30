@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <symbol id="menu" viewBox="0 0 24 24"  
+            fill="none"  
+            stroke="currentColor"  
+            stroke-width="2"  
+            stroke-linecap="round"  
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M4 8l16 0" />
+            <path d="M4 16l16 0" />
+        </symbol>
+
+        <symbol id="close" viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M18 6L6 18" />
+            <path d="M6 6l12 12" />
+        </symbol>
+
+        <symbol id="sun" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2"/>
+            <path d="M12 21v2"/>
+            <path d="M4.22 4.22l1.42 1.42"/>
+            <path d="M18.36 18.36l1.42 1.42"/>
+            <path d="M1 12h2"/>
+            <path d="M21 12h2"/>
+            <path d="M4.22 19.78l1.42-1.42"/>
+            <path d="M18.36 5.64l1.42-1.42"/>
+          </symbol>
+      
+          <symbol id="moon" viewBox="0 0 24 24" fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+          </symbol>
+
+          <symbol id='logo' viewBox="0 0 96 96" fill="currentColor" stroke="none">
+            <image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAAAXNSR0IArs4c6QAABSxJREFUeF7tnd9rHFUUx8+5O/4AfREJO+u2GiQIBkQQxH8gBfGxgg9CDWihoD6LL4JQEIv6oqAvfeqzP0DFF/UP8EH/ALWFpmZmkuh2KYb86N495m534mazP+bOnLuXmTmBJm3Y3DPz/ez57N25txkE+fCaAC6gugrD8HEiai6gVilKKKXu9nq933d2dv51DmBlZeWB3d3d9xBxHQBUKRJyfJBEtAUAF+M4/s05gOXl5QcPDg6uAMBbANBwfG6lGB4RI631+a2trV8EgAdkAsBD6KMlBYAA8JyA5/LSAQLAcwKey0sHCADPCXguLx0gADwn4Lm8dIAA8JyA5/LSAQLAcwKey0sHCADPCXguLx0gADwn4Lm8dECNAZR1UZ5z6ZaGHfDywtaEDw8P3yWiCyXbFREgYpOIAgBgBQAAtwDgfBzHv3IOPKmxG61Waw0ANrTWh54736q8UuosIl4DgDOMAAgA9ono0/39/Q+73W7XJQAT/hsAcElr/cr29vZ1qwQ8P7jZbD6plPoZAJ5gAGCCNx8m/Cta60/MpizzDScAVldX7+90Oq8i4scAcEdrfU4AwC4Rfa61vpyG7wpAIwzDC4j4PgCcHepnrcYAUu18ppT6KIqiv0ebm7sDUu18AACPDDvspta6jgCmascJgDHtmPDNlNMcRJ0BTNSOCwDj2knn+3UFMFM73ADGtTP6ZqtuADJphw3AFO2Mjl9HAHO1wwVgmnbqCiCzdjgAzNJO3QBYa6cQgAzaqSMAK+0UAZBFO3UCkEs7eQFk1U4dABTSjjUAS+3UBUBu7dgCsNVO1QEU1o4NgDzaqSoANu1kAlBAO1UGwKKdLACKaKeKANLFlImXlEdP2Pbvky5HF9VOFQGcWsmyDXra408AYNJOlQD8BABLk1ayXADg0k6VAHxPRN9NWsniBhC0Wq3XASBdyeLav1Paq6HtdvuMWcnTWn85uobLFXw6zkBBYRg+j4hfAUCbee9OWQE02u32M3t7ezc6nc4d7tBPzYKazeYLjUbjayJ6jLlYGQFgGIYvKaUuAcDbURRtMGdyYrhBBwiA40wG4R/tiPsCEc3M51wcxzcFgMsE/h/bTEJeNOEbFSPiDSJaEwCLCT995ptfLPW02U6DiNcFwGLDHzzz00kIIv4pANwDOKGd0RmgAHAf/intjO6VFQBuARzPdqa99xEA7gCMa8dMxU9dlBQAbgDM1M6Jd6jyIsxOYK52BAB75scDZtKOAHADILN2BAA/ACvtCABeANbaEQB8AHJpRwDwAMitHQFQHEAh7QiAYgDGtVNoXVveCdvBYNGOdIBd6Omjp15SzjfcvZ+qUgf8RUSvEZGTxW2l1LNHt0a5PFzJKqSdSnYAIvaGN63pFXlGzvjZhwDgUebtNKYDugCwHkXRt46O+16nmU+Od0W4PP50bO5fuWDGNVtq/iGi9SRJfgSAuy5OxDUAF8e8qDHT/w+wQUTvJEnyjQsIAmA2TgPB/LlFRG8mSfIDN30BMD/RtBOc6EgAzAeQvh6Yr+w6EgDZAKQQ2HUkALIDGO0ENh0JADsA7DoSAPYAWHUkAPIBYNORAMgPgEVHAqAYgMI6EgDFARTSkQDgAZBbRwKAD0AuHQkAXgDWOhIA/ACsdCQA3ADIrCMB4A5AJh0JALcA5upIALgHMFNHAwCtVuu5o3ulXDU3rVnM8dSyymBljYhu9/v9i+YOSubfAwBLS0sPB0HwVL/fv6+W0Sz4pIMguL25ufmH4eFiO8eCT6fc5f4DLv15u6sYGZkAAAAASUVORK5CYII=" x="0" y="0" width="96" height="96" class="dark" />
+        </symbol>
+
+        <symbol id='github' viewBox="0 0 24 24"  
+            fill="none"  
+            stroke="currentColor"  
+            stroke-width="2"  
+            stroke-linecap="round"  
+            stroke-linejoin="round">
+            
+            <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+        </symbol>
+
+        <symbol id='clock' viewBox="0 0 24 24"
+            fill="none"  
+            stroke="currentColor"  
+            stroke-width="2"  
+            stroke-linecap="round"  
+            stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+            <path d="M12 7v5l3 3" />
+        </symbol>
+
+        <symbol id='calender' viewBox="0 0 24 24"
+            fill="none"  
+            stroke="currentColor"  
+            stroke-width="2"  
+            stroke-linecap="round"  
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+            <path d="M16 3l0 4" />
+            <path d="M8 3l0 4" />
+            <path d="M4 11l16 0" />
+            <path d="M8 15h2v2h-2z" />
+        </symbol>
+
+    </defs>
+</svg>
