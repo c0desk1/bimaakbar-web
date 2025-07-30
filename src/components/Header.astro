@@ -9,6 +9,7 @@ import Bookmark from "./ui/Bookmark.tsx";
 const { pathname } = Astro.url
 const subpath = pathname.match(/[^/]+/g)
 ---
+
 <header id="header" aria-label="Base Header" class="fixed top-0 z-50 bg-transparent border-b border-transparent backdrop-blur-lg [&.is-scrolled]:bg-[var(--color-bg)]/50 [&.is-scrolled]:border-[var(--color-border)]">
   <Container size="md">
     <div class="flex w-full items-center justify-between py-4 h-16 gap-4">
@@ -22,7 +23,7 @@ const subpath = pathname.match(/[^/]+/g)
       </button>
       <div class="flex-row items-center h-full hidden md:block">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src='../../src/assets/bimaakbar-logo.png' alt={SITE.title} width={24} height={24} loading="eager" class="text-[var(--color-fg)]" />
+          <Image src='../../src/assets/bimaakbar-logo.png' alt={SITE.title} width={24} height={24} loading="eager" />
         </a>
       </div>
       <nav class="hidden md:flex flex-1 items-center justify-start text-sm">
