@@ -27,8 +27,9 @@ export default function Card({
           <Image
             src={cover}
             alt={title}
-            width={100}
-            height={100}
+            width={400}
+            height={225}
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
