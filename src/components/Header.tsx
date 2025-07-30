@@ -1,22 +1,19 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Container } from "@/components/Container"
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  // Scroll effect
+  
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Dark mode toggle
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark")
@@ -27,7 +24,6 @@ export default function Header() {
     }
   }, [darkMode])
 
-  // Load theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme")
     if (savedTheme === "dark") setDarkMode(true)
