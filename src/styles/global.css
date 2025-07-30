@@ -134,6 +134,13 @@ body {
   font-family: var(--font-sans);
 }
 
+main {
+  display: block;
+  flex: 1;
+  margin: 64px auto;
+  font-family: var(--font-sans);
+}
+
 /* =========================
   6. Toggle Button Styling
 ========================= */
@@ -168,7 +175,6 @@ body {
 ::-webkit-scrollbar-button {
   background-color: transparent;
 }
-
 
 header {
   height: 64px;
