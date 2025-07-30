@@ -139,6 +139,9 @@ main {
   flex: 1;
   margin: 64px auto;
   font-family: var(--font-sans);
+max-width: 800px;
+padding: 4px;
+border: 1px solid var(--color-border);
 }
 
 /* =========================
