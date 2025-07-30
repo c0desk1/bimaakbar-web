@@ -1,23 +1,13 @@
 import Link from "next/link"
+import Image from "next/image"
 import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/mdx"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import Breadcrumb from "@/components/ui/Breadcrumb"
 import ShareButtons from "@/components/ui/ShareButtons"
-
+import Card from "@/components/ui/Card"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
-
-interface PostData {
-  title: string
-  excerpt?: string
-  date: string
-  cover?: string
-  category?: string
-  tags?: string[]
-  author: string
-  readingTime: string
-  lastModified?: string
-}
+import { PostMeta } from "@/types"
 
 const components = {
   Button: (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
@@ -36,10 +26,20 @@ export default async function BlogDetail({
   const { slug } = await params
   const { content, data } = getPostBySlug(slug) as {
     content: string
-    data: PostData
+    data: PostMeta
   }
 
   const { prev, next } = getAdjacentPosts(slug)
+
+  const allPosts = getAllPosts()
+  const related = allPosts
+    .filter(
+      (p) =>
+        p.slug !== slug &&
+        (p.category === data.category ||
+          p.tags?.some((tag) => data.tags?.includes(tag)))
+    )
+    .slice(0, 3)
 
   return (
     <main className="py-16 max-w-4xl mx-auto gap-4">
@@ -93,9 +93,11 @@ export default async function BlogDetail({
         </div>
         {data.cover && (
           <div className="w-full h-64 md:h-80 mb-6 overflow-hidden rounded-lg">
-            <img
+            <Image
               src={data.cover}
               alt={data.title}
+              width={920}
+              height={480}
               className="w-full h-full object-cover"
             />
           </div>
@@ -142,6 +144,24 @@ export default async function BlogDetail({
           </Link>
         ) : (
           <div />
+        )}
+        {related.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-xl font-semibold mb-4">Artikel Terkait</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {related.map((post) => (
+                <Card
+                  key={post.slug}
+                  slug={post.slug}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  cover={post.cover}
+                  category={post.category}
+                  readingTime={post.readingTime}
+                />
+              ))}
+            </div>
+          </div>
         )}
       </div>
       <BackToTop />

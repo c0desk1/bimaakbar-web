@@ -14,7 +14,7 @@ export function con(...classes: unknown[]) {
         if (typeof c === "string") return c;
         if (typeof c === "object" && c !== null) {
           return Object.entries(c)
-            .filter(([_, value]) => Boolean(value))
+            .filter(([, value]) => Boolean(value))
             .map(([key]) => key);
         }
         return [];

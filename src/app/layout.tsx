@@ -1,7 +1,6 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import { Geist } from "next/font/google"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Container } from "@/components/Container"

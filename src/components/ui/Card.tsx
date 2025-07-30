@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 interface CardProps {
   slug: string
@@ -23,9 +24,11 @@ export default function Card({
       className="group block rounded-lg border border-[var(--border)] hover:border-[var(--accent)] hover:shadow-md transition overflow-hidden bg-[var(--background)]">
       {cover && (
         <div className="w-full h-48 overflow-hidden">
-          <img
+          <Image
             src={cover}
             alt={title}
+            width={100}
+            height={100}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>

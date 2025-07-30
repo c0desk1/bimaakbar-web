@@ -1,20 +1,9 @@
+// src/lib/mdx.ts
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import readingTime from "reading-time"
-
-export interface PostMeta {
-  slug: string
-  title: string
-  excerpt: string
-  date: string
-  cover?: string
-  category?: string
-  tags?: string[]
-  author?: string
-  readingTime?: string
-  lastModified?: string
-}
+import { PostMeta } from "@/types"
 
 const contentPath = path.join(process.cwd(), "content", "blog")
 
@@ -26,23 +15,26 @@ export function getAllPosts(): PostMeta[] {
     const filePath = path.join(contentPath, file)
     const source = fs.readFileSync(filePath, "utf8")
     const { data, content } = matter(source)
-
-    const stats = fs.statSync(filePath)
-    const lastModified = stats.mtime.toISOString().split("T")[0]
-
-    return {
+    const postData: Partial<PostMeta> = {
       slug: file.replace(/\.mdx$/, ""),
-      title: data.title,
-      excerpt: data.excerpt,
-      date: data.date,
-      cover: data.cover,
-      category: data.category,
-      tags: data.tags || [],
-      author: data.author || "Admin",
+      title: data.title as string,
+      excerpt: data.excerpt as string,
+      date: data.date as string,
+      cover: (data.cover as string) || undefined,
+      category: data.category as string,
+      tags: (data.tags as string[]) || [],
+      author: (data.author as string) || "Admin",
       readingTime: content ? readingTime(content).text : undefined,
-      lastModified: data.lastModified || lastModified || undefined,
+      lastModified: (data.lastModified as string) || undefined,
+    };
+
+    if (!postData.lastModified) {
+      const stats = fs.statSync(filePath);
+      postData.lastModified = stats.mtime.toISOString().split("T")[0];
     }
-  })
+
+    return postData as PostMeta;
+  });
 }
 
 export function getPostBySlug(slug: string) {
@@ -58,17 +50,17 @@ export function getPostBySlug(slug: string) {
   return {
     content,
     data: {
-      title: data.title,
-      excerpt: data.excerpt,
-      date: data.date,
-      cover: data.cover,
-      category: data.category,
-      tags: data.tags || [],
-      author: data.author || "Admin",
+      title: data.title as string,
+      excerpt: data.excerpt as string,
+      date: data.date as string,
+      cover: (data.cover as string) || null,
+      category: data.category as string,
+      tags: (data.tags as string[]) || [],
+      author: (data.author as string) || "Admin",
       readingTime: readingTime(content).text,
-      lastModified: data.lastModified || lastModified,
-    },
-  }
+      lastModified: (data.lastModified as string) || lastModified,
+    } as PostMeta,
+  };
 }
 
 export function getAdjacentPosts(slug: string) {
