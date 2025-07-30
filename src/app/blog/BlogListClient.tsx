@@ -2,17 +2,17 @@
 import { useState, useMemo } from "react"
 import Fuse from "fuse.js"
 import Card from "@/components/ui/Card"
+import { PostMeta } from "@/types"
 
 interface BlogListClientProps {
-  posts: any[]
+  posts: PostMeta[]
 }
 
 export default function BlogListClient({ posts }: BlogListClientProps) {
   const [query, setQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [visibleCount, setVisibleCount] = useState(6) // tampil 6 artikel pertama
+  const [visibleCount, setVisibleCount] = useState(6)
 
-  // Ambil semua kategori unik
   const categories = useMemo(() => {
     const allCategories = posts
       .map((p) => p.category)
@@ -20,15 +20,13 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
     return [...new Set(allCategories)]
   }, [posts])
 
-  // Fuse.js search
   const fuse = useMemo(() => {
     return new Fuse(posts, {
       keys: ["title", "excerpt", "tags", "category"],
       threshold: 0.3,
     })
   }, [posts])
-
-  // Filter + search
+  
   const filteredPosts = useMemo(() => {
     let result = query ? fuse.search(query).map((r) => r.item) : posts
 
@@ -39,14 +37,11 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
     return result
   }, [query, fuse, posts, selectedCategory])
 
-  // Artikel yang ditampilkan sesuai visibleCount
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
     <main className="py-12 max-w-6xl mx-auto px-4">
       <h1 className="text-3xl font-bold mb-6">Blog</h1>
-
-      {/* Search bar */}
       <div className="mb-6">
         <input
           type="text"
@@ -56,8 +51,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--background)]"
         />
       </div>
-
-      {/* Filter kategori */}
       {categories.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-8">
           <button
@@ -85,8 +78,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           ))}
         </div>
       )}
-
-      {/* Posts */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visiblePosts.length > 0 ? (
           visiblePosts.map((post) => (
@@ -104,8 +95,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           <p className="text-[var(--muted)]">Artikel tidak ditemukan.</p>
         )}
       </div>
-
-      {/* Load More Button */}
       {visibleCount < filteredPosts.length && (
         <div className="flex justify-center mt-8">
           <button
