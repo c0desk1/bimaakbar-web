@@ -1,23 +1,31 @@
 ---
-//src/components/ui/DarkMode.astro
-import {con} from '../../lib/utils'
+import { con } from '../../lib/utils';
 ---
-<div id="theme-switcher" class="relative flex grid-cols-3 items-center gap-2 px-1 py-1 w-auto h-6 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-full overflow-hidden">
-  <div id="theme-indicator" class="absolute top-0 left-0 w-1/3 h-full border border-[var(--color-muted)]/30 transition-transform duration-300 rounded-full z-0"></div>
-  <button data-theme="light" class={con("theme-btn md:block", "size-4 items-center text-center justify-center", "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")} title="Light mode">
+
+<div id="theme-switcher"
+  class="relative flex grid-cols-2 items-center gap-2 px-1 py-1 w-auto h-6 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-full overflow-hidden">
+
+  <div id="theme-indicator"
+    class="absolute top-0 left-0 w-1/2 h-full border border-[var(--color-muted)]/30 transition-transform duration-300 rounded-full z-0">
+  </div>
+
+  <!-- Light -->
+  <button data-theme="light"
+    class={con("theme-btn md:block", "size-4 items-center text-center justify-center",
+    "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")}
+    title="Light mode">
     <svg class="size-full" stroke="var(--color-muted)">
       <use href="/ui.svg#sun" />
     </svg>
   </button>
-  <button  id="theme-btn" aria-label="auto"
-  aria-live="polite" data-theme="dark" class={con("theme-btn md:block", "size-4 items-center text-center justify-center", "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")} title="Dark mode">
+
+  <!-- Dark -->
+  <button data-theme="dark"
+    class={con("theme-btn md:block", "size-4 items-center text-center justify-center",
+    "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")}
+    title="Dark mode">
     <svg class="size-full" stroke="var(--color-muted)">
       <use href="/ui.svg#moon" />
-    </svg>
-  </button>
-  <button data-theme="system" class={con("theme-btn md:block", "size-4 items-center text-center justify-center", "fill-[var(--color-muted)] fill:stroke-[var(--color-fg)]", "cursor-pointer")} title="System mode">
-    <svg class="size-full pointer-events-none" fill="var(--color-muted)">
-      <use href="/ui.svg#system" />
     </svg>
   </button>
 </div>
