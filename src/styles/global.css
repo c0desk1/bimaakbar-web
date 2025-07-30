@@ -52,11 +52,11 @@
     --background: #111827;
     --foreground: #ffffff;
 
-    --color-bg: #000000;
+    --color-bg: var(--background);
     --color-bg-secondary: #0A0A0A;
     --color-card-bg: #121212;
 
-    --color-fg: #E5E5E5;
+    --color-fg: var(--foreground);
     --color-muted: #888888;
 
     --color-border: rgba(255, 255, 255, 0.06);
@@ -96,11 +96,11 @@ html.dark {
   --background: #111827;
   --foreground: #ffffff;
 
-  --color-bg: #000000;
+  --color-bg: var(--background);
   --color-bg-secondary: #0A0A0A;
   --color-card-bg: #121212;
 
-  --color-fg: #E5E5E5;
+  --color-fg: var(--foreground);
   --color-muted: #888888;
 
   --color-border: rgba(255, 255, 255, 0.06);
