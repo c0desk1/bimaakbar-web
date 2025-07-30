@@ -19,7 +19,7 @@ export default function BlogFilter() {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    fetch(import.meta.env.PUBLIC_CMS_API_URL)
+    fetch(import.meta.env.CMS_API_URL)
       .then((res) => res.json())
       .then((data: Post[]) => {
         setPosts(data);
