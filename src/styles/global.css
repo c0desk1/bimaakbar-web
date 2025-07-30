@@ -1,4 +1,6 @@
-/*BASE LAYER & FONT FACE */
+/* =========================
+  1. Tailwind & Font Face
+========================= */
 @import 'tailwindcss';
 
 @font-face {
@@ -8,7 +10,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "Atkinson";
   src: url("/fonts/atkinson-bold.woff") format("woff");
@@ -17,38 +18,15 @@
   font-display: swap;
 }
 
+/* =========================
+  2. Default Variables (Light)
+========================= */
 :root {
   --background: #ffffff;
   --foreground: #000000;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111827;
-    --foreground: #ffffff;
-  }
-}
-
-html.dark {
-  --background: #111827;
-  --foreground: #ffffff;
-}
-
-html.light {
-  --background: #ffffff;
-  --foreground: #000000;
-}
-
-/* Agar browser tahu ada 2 mode */
-html {
-  color-scheme: light dark;
-}
-
-/*ROOT VARIABLES & THEMING*/
-:root {
   --color-bg: #F7F7F7;
   --color-bg-secondary: #f9f9f9;
-
   --color-card-bg: #FFFFFF;
 
   --color-fg: #111111;
@@ -59,40 +37,88 @@ html {
 
   --color-accent: #00a4e6;
   --color-accent-fg: #FFFFFF;
-  
 
   --font-sans: 'Atkinson', sans-serif;
   --font-mono: 'Menlo', 'Consolas', 'monospace';
 
+  color-scheme: light;
+}
+
+/* =========================
+  3. Dark Mode (system default)
+========================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827;
+    --foreground: #ffffff;
+
+    --color-bg: #000000;
+    --color-bg-secondary: #0A0A0A;
+    --color-card-bg: #121212;
+
+    --color-fg: #E5E5E5;
+    --color-muted: #888888;
+
+    --color-border: rgba(255, 255, 255, 0.06);
+    --color-hover: rgba(17, 17, 17, 0.8);
+
+    --color-accent: #00a4e6;
+    --color-accent-fg: #111111;
+
+    color-scheme: dark;
+  }
+}
+
+/* =========================
+  4. Manual Override (toggle)
+========================= */
+html.light {
+  --background: #ffffff;
+  --foreground: #000000;
+
+  --color-bg: #F7F7F7;
+  --color-bg-secondary: #f9f9f9;
+  --color-card-bg: #FFFFFF;
+
+  --color-fg: #111111;
+  --color-muted: #6B6B6B;
+
+  --color-border: #E5E5E5;
+  --color-hover: #EAEAEA;
+
+  --color-accent: #00a4e6;
+  --color-accent-fg: #FFFFFF;
+
+  color-scheme: light;
 }
 
 html.dark {
+  --background: #111827;
+  --foreground: #ffffff;
+
   --color-bg: #000000;
+  --color-bg-secondary: #0A0A0A;
   --color-card-bg: #121212;
 
   --color-fg: #E5E5E5;
   --color-muted: #888888;
 
-  --color-bg-secondary: #0A0A0A;
-  
-  
   --color-border: rgba(255, 255, 255, 0.06);
-  --color-hover: rgba(17, 17, 17, 0.800);
+  --color-hover: rgba(17, 17, 17, 0.8);
 
   --color-accent: #00a4e6;
   --color-accent-fg: #111111;
-  
+
   color-scheme: dark;
 }
 
-/* ───────────────────────────────
-RESET & GLOBAL ELEMENT
-─────────────────────────────── */
+/* =========================
+  5. Reset & Global Element
+========================= */
 html {
   box-sizing: border-box;
-  color-scheme: light;
   scroll-behavior: smooth;
-  background-color: var(--color-bg);
+  
   scroll-padding-top: 88px;
   font-family: var(--font-sans);
 }
@@ -108,11 +134,41 @@ body {
   font-family: var(--font-sans);
 }
 
-main {
-  flex: 1;
-  margin: 64px auto;
-  width: 100%;
+/* =========================
+  6. Toggle Button Styling
+========================= */
+.theme-btn {
+  opacity: 0.6;
+  transition: all 0.3s ease-in-out;
 }
+.theme-btn.active {
+  opacity: 1;
+}
+
+/* =========================
+  7. Global Utilities (Scrollbars, Selection, etc)
+========================= */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-accent);
+  border: 1px solid var(--color-accent-fg);
+}
+::-webkit-scrollbar-button {
+  background-color: transparent;
+}
+
 
 header {
   height: 64px;
