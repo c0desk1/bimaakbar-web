@@ -11,7 +11,7 @@ const { pathname } = Astro.url
 const subpath = pathname.match(/[^/]+/g)
 ---
 
-<header id="header" aria-label="Base Header" class="fixed top-0 z-50 bg-transparent border-b border-transparent backdrop-blur-lg [&.is-scrolled]:bg-[var(--color-bg)]/50 [&.is-scrolled]:border-[var(--color-border)]">
+<header id="header" aria-label="Base Header" class="fixed top-0 z-50 bg-transparent border-b border-transparent backdrop-blur-lg">
   <Container size="md">
     <div class="flex w-full items-center justify-between py-4 h-16 gap-4">
       <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={con("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[var(--color-hover)]", "stroke-[var(--color-fg)] hover:stroke-[var(--color-fg)", "border border-[var(--color-border)]", "cursor-pointer")}>
@@ -24,7 +24,7 @@ const subpath = pathname.match(/[^/]+/g)
       </button>
       <div class="flex-row items-center h-full hidden md:block">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" />
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:inverted"/>
         </a>
       </div>
       <nav class="hidden md:flex flex-1 items-center justify-start text-sm">
@@ -44,7 +44,7 @@ const subpath = pathname.match(/[^/]+/g)
       </nav>
       <div class="items-center justify-center md:hidden h-full">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" />
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:inverted"/>
         </a>
       </div>
       <div class="flex items-center h-full">
