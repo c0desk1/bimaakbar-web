@@ -4,7 +4,6 @@ import { Image } from 'astro:assets';
 import { con } from "../lib/utils"
 import { SITE, LINKS } from "../consts";
 import Container from "./Container.astro";
-import Bookmark from "./ui/Bookmark.tsx";
 import Logo from '../assets/bimaakbar-logo.png'
 
 const { pathname } = Astro.url
@@ -14,17 +13,9 @@ const subpath = pathname.match(/[^/]+/g)
 <header id="header" aria-label="Base Header" class="fixed top-0 z-50 bg-transparent border-b border-transparent backdrop-blur-lg">
   <Container size="md">
     <div class="flex w-full items-center justify-between py-4 h-16 gap-4">
-      <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={con("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[var(--color-hover)]", "stroke-[var(--color-fg)] hover:stroke-[var(--color-fg)", "border border-[var(--color-border)]", "cursor-pointer")}>
-        <svg id="drawer-open" stroke="var(--color-fg)" class="size-full pointer-events-none">
-          <use href="/ui.svg#menu"></use>
-        </svg>
-        <svg id="drawer-close" stroke="var(--color-fg)" class="size-full pointer-events-none">
-          <use href="/ui.svg#close"></use>
-        </svg>
-      </button>
       <div class="flex-row items-center h-full hidden md:block">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="invert dark:invert-0" />
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:invert" />
         </a>
       </div>
       <nav class="hidden md:flex flex-1 items-center justify-start text-sm">
@@ -44,11 +35,18 @@ const subpath = pathname.match(/[^/]+/g)
       </nav>
       <div class="items-center justify-center md:hidden h-full">
         <a href="/" aria-label={`Logo ${SITE.title}`} class={con("flex md:block", "p-1 items-center text-center", "stroke-[var(--color-muted)] hover:stroke-[var(--color-fg)]", "cursor-pointer")}>
-          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="invert dark:invert-0"/>
+          <Image src={Logo} alt={SITE.title} width={24} height={24} loading="eager" class="dark:invert"/>
         </a>
       </div>
       <div class="flex items-center h-full">
-        <Bookmark client:load />
+        <button id="header-drawer-button" aria-label={`Toggle drawer open and closed`} class={con("flex md:hidden", "size-9 rounded-full p-2 items-center justify-center", "bg-transparent hover:bg-[var(--color-hover)]", "stroke-[var(--color-fg)] hover:stroke-[var(--color-fg)", "border border-[var(--color-border)]", "cursor-pointer")}>
+        <svg id="drawer-open" stroke="var(--foreground)" class="size-full pointer-events-none">
+          <use href="/ui.svg#menu"></use>
+        </svg>
+        <svg id="drawer-close" stroke="var(--foreground)" class="size-full pointer-events-none">
+          <use href="/ui.svg#close"></use>
+        </svg>
+      </button>
       </div>
     </div>
   </Container>
