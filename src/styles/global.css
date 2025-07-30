@@ -17,6 +17,33 @@
   font-display: swap;
 }
 
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827;
+    --foreground: #ffffff;
+  }
+}
+
+html.dark {
+  --background: #111827;
+  --foreground: #ffffff;
+}
+
+html.light {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+/* Agar browser tahu ada 2 mode */
+html {
+  color-scheme: light dark;
+}
+
 /*ROOT VARIABLES & THEMING*/
 :root {
   --color-bg: #F7F7F7;
