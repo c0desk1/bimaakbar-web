@@ -96,8 +96,9 @@ export default async function BlogDetail({
             <Image
               src={data.cover}
               alt={data.title}
-              width={920}
-              height={480}
+              width={1280}
+              height={720}
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>
