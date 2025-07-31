@@ -41,6 +41,9 @@ main {
   overflow-x: hidden;
   color: var(--foreground);
   overflow-wrap: break-word;
+  margin-inline: auto;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .prose h1, h1 { font-size: 2.5rem; }
@@ -86,8 +89,8 @@ main {
 }
 .prose p {
   margin-bottom: 2rem;
-  line-height: 1.5rem;
-  opacity: 0.5;
+  line-height: 1.6;
+  opacity: 0.85;
   color: var(--foreground);
   font-size: medium;
 }
@@ -115,7 +118,7 @@ main {
   cursor: help;
 }
 .prose a {
-  color: var(--color-accent);
+  color: var(--accent);
   background-image: linear-gradient(var(--accent), var(--accent));
   background-size: 0% 2px;
   background-position: 0% 100%;
@@ -188,7 +191,7 @@ main {
   font-family: 'Fira Code', monospace;
   font-size: 0.85em;
   word-break: break-word;
-  color: var(--color-fg);
+  color: var(--foreground);
 }
 .prose figure {
   margin: 1.5em 0;
@@ -219,8 +222,9 @@ main {
   border-radius: 8px;
   font-style: italic;
   margin-bottom: 2em;
-  color: var(--color-fg);
+  color: var(--foreground);
   border: 2px dashed var(--border);
+  line-height: 1.6;
 }
 .prose blockquote > :last-child {
   margin-bottom: 0;
@@ -264,7 +268,7 @@ main {
   width: auto;
 }
 .prose td {
-  color: var(--color-fg);
+  color: var(--foreground);
   border-top: 0.1px solid var(--border);
   padding: 0.5rem;
   text-align: left;
@@ -371,5 +375,5 @@ main {
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
-  color: var(--color-fg);
+  color: var(--foreground);
 }
