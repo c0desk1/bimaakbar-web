@@ -61,18 +61,11 @@ export default function RootLayout({
       className={Atkinson.className}
       suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                }
-              })();
-            `,
-          }}
-        />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(function() { const theme = localStorage.getItem('theme'); const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; if (theme === 'dark' || (!theme && prefersDark)) { document.documentElement.classList.add('dark'); }})();`
+        }}
+      />
       </head>
       <body className="antialiased">
         <Header />

@@ -1,21 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Atkinson";
-  src: url("/fonts/atkinson-regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson";
-  src: url("/fonts/atkinson-bold.woff") format("woff");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --background: #F7F7F7;
   --foreground: #111111;
@@ -206,7 +190,7 @@ main {
   font-family: 'Fira Code', monospace;
   font-size: 0.85em;
   word-break: break-word;
-  color: var(--foreground);
+  color: var(--color-fg);
 }
 .prose figure {
   margin: 1.5em 0;
@@ -233,11 +217,13 @@ main {
 .prose blockquote {
   min-width: fit-content; 
   padding-inline: 12px;
-  background: var(--hover);
+  background: var(--background);
+  border-radius: 8px;
   font-style: italic;
   margin-bottom: 1rem;
-  color: var(--foreground);
-  border-left: 2px solid var(--accent);
+  color: var(--color-fg);
+  border: 2px dashed var(--border);
+  border-left: 5px solid var(--accent);
 }
 .prose blockquote > :last-child {
   margin-bottom: 0;
@@ -257,13 +243,13 @@ main {
 .prose table {
 	border-radius: 8px;
 	margin-bottom: 1em;
-	border-collapse: separate;
-	border-spacing: 0;
-	width: 100%;
-	overflow-x: auto;
-	overflow: hidden;
-	border: 1px solid var(--border);
-	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  overflow-x: auto;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .prose thead {
   background-color: var(--hover);
@@ -272,6 +258,13 @@ main {
 .prose tbody {
   background-color: var(--background);
   width: 100%;
+}
+.prose table caption {
+  caption-side: top;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
 }
 .prose th {
   color: var(--foreground);
@@ -342,18 +335,74 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
-
+.prose .embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.prose .embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
 .prose hr {
   border: none;
   border-top: 1px solid var(--border);
   padding-block: 6px;
 }
-
+.prose .footnotes {
+  margin: 2em 0;
+  border-top: 1px solid var(--border);
+  padding-top: 1em;
+  font-size: 0.9em;
+  color: var(--muted);
+}
+.prose .sr-only {
+  position: absolute;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  word-wrap: normal;
+}
+[data-footnote-backref]::before {
+  content: '[';
+}
+[data-footnote-backref]::after {
+  content: ']';
+}
 .prose kbd {
   background-color: var(--background);
   border: 1px solid var(--border);
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
-  color: var(--foreground);
+  color: var(--color-fg);
+}
+.prose details {
+  background-color: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  margin: 1.5em 0;
+}
+.prose details[open] > summary::before {
+  content: '−';
+}
+.prose summary {
+  cursor: pointer;
+  color: var(--muted);
+  list-style: none;
+  margin-bottom: 1em;
+  font-size: medium;
+}
+.prose summary::before {
+  content: '+';
+  margin-right: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  transition: transform 0.2s ease-in-out;
 }

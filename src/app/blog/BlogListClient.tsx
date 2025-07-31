@@ -23,10 +23,10 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const fuse = useMemo(() => {
     return new Fuse(posts, {
       keys: ["title", "excerpt", "tags", "category"],
-      threshold: 0.3,
+      threshold: 0.4,
     })
   }, [posts])
-  
+
   const filteredPosts = useMemo(() => {
     let result = query ? fuse.search(query).map((r) => r.item) : posts
 
@@ -44,21 +44,21 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
       <h1 className="text-3xl font-bold mb-6">Blog</h1>
       <div className="mb-6">
         <input
-          type="text"
-          placeholder="Cari artikel..."
+          type="seacrh"
+          placeholder="Cari..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--background)]"
+          className="w-full px-2 py-1 border border-[var(--border)] rounded-full bg-[var(--background)]"
         />
       </div>
       {categories.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-8">
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-3 py-1 rounded-md border ${
+            className={`px-2 py-0.5 rounded-full border border-[var(--border)] ${
               selectedCategory === null
-                ? "bg-[var(--accent)] text-white"
-                : "bg-[var(--background)] text-[var(--foreground)]"
+                ? "bg-[var(--background)] text-[var(--foreground)]"
+                : "bg-[var(--hover)] text-[var(--foreground)]"
             }`}
           >
             Semua
@@ -67,10 +67,10 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1 rounded-md border ${
+              className={`px-2 py-0.5 rounded-full border border-[var(--border)] ${
                 selectedCategory === cat
-                  ? "bg-[var(--accent)] text-white"
-                  : "bg-[var(--background)] text-[var(--foreground)]"
+                  ? "bg-[var(--background)] text-[var(--foreground)]"
+                  : "bg-[var(--hover)] text-[var(--muted)]"
               }`}
             >
               {cat}
@@ -78,7 +78,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           ))}
         </div>
       )}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 gap-6">
         {visiblePosts.length > 0 ? (
           visiblePosts.map((post) => (
             <Card
@@ -86,9 +86,9 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
               slug={post.slug}
               title={post.title}
               excerpt={post.excerpt}
+              date={post.date}
               cover={post.cover}
               category={post.category}
-date={post.date}
               readingTime={post.readingTime}
             />
           ))
@@ -100,8 +100,7 @@ date={post.date}
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setVisibleCount((prev) => prev + 6)}
-            className="px-6 py-2 bg-[var(--accent)] text-white rounded-md hover:opacity-80"
-          >
+            className="px-6 py-2 bg-[var(--background)] text-[var(--accent)] rounded-full hover:opacity-80">
             Tampilkan Lebih Banyak
           </button>
         </div>

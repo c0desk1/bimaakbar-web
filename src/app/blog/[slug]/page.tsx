@@ -61,8 +61,7 @@ export default async function BlogDetail({
                 width={14}
                 height={14}
                 stroke="var(--foreground)"
-                className="block"
-              >
+                className="block">
                 <use href="/images/icons.svg#clock" />
               </svg>
               <span>{data.readingTime}</span>
@@ -99,6 +98,7 @@ export default async function BlogDetail({
               width={1280}
               height={720}
               loading="lazy"
+              priority
               className="w-full h-full object-cover"
             />
           </div>
@@ -156,9 +156,9 @@ export default async function BlogDetail({
                   slug={post.slug}
                   title={post.title}
                   excerpt={post.excerpt}
+                  date={post.date}
                   cover={post.cover}
                   category={post.category}
-date={post.date}
                   readingTime={post.readingTime}
                 />
               ))}
