@@ -97,11 +97,11 @@ export default async function BlogDetail({
               width={1280}
               height={720}
               loading="lazy"
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
         )}
-        <div className="prose dark:prose-invert max-w-none">
+        <div className="prose dark:prose-invert">
           <MDXRemote source={content} components={components} />
         </div>
         {data.tags?.map((tag: string) => (
