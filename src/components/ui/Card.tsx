@@ -35,11 +35,13 @@ export default function Card({
             </span>
           )}
           {readingTime && (
+            <div className="flex items-center">
               <svg width={14} height={14} stroke={`var(--foreground)`} className="mx-1">
                 <use href="/images/icons.svg#clock" />
               </svg>
-			<span> {readingTime}</span>
-			)}
+              <span> {readingTime}</span>
+            </div>
+          )}
         </div>
         <h2 className="text-lg font-semibold text-[var(--foreground)] mb-2">
           {title}
