@@ -34,21 +34,18 @@ export default function Card({
               {category}
             </span>
           )}
-          {readingTime && 
-              <svg
-                width={14}
-                height={14}
-                stroke="var(--foreground)"
-                className="block"
-              >
+          {readingTime && (
+              <svg width={14} height={14} stroke="var(--foreground)" className="mx-1">
                 <use href="/images/icons.svg#clock" />
-              </svg><span> {readingTime}</span>}
+              </svg>
+			<span> {readingTime}</span>
+			)}
         </div>
         <h2 className="text-lg font-semibold text-[var(--foreground)] mb-2">
           {title}
         </h2>
         <p className="text-sm text-[var(--muted)] line-clamp-3">{excerpt}</p>
-        <p className="text-sm text-[var(--muted)]">{date}</p>
+        <p className="text-sm text-[var(--muted)] mt-auto">{date}</p>
       </div>
     </Link>
   )
