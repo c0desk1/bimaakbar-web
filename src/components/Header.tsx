@@ -41,7 +41,7 @@ export default function Header() {
           ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
           : "bg-transparent border-transparent"
       }`}>
-      <Container size="md">
+      <Container size="lg">
         <div className="flex items-center justify-between w-full py-3 gap-4">
           <Link href="/" className="flex w-fit items-center">
             <svg

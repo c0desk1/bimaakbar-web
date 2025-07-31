@@ -21,10 +21,10 @@ export default function ShareButtons({ title }: { title: string }) {
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-full bg-green-500 text-white hover:opacity-80"
-      >
-        <svg width={18} height={18}>
-          <use href="/images/icons.svg#whatsapp" />
+        className="p-2 rounded-full border border-[var(--border)] bg-[var(--background)] hover:stroke-green">
+        <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-green-500">
+          <title>Whatsapp</title>
+          <use href="/images/icons.svg#wa" />
         </svg>
       </a>
 
@@ -32,18 +32,18 @@ export default function ShareButtons({ title }: { title: string }) {
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 rounded-full bg-blue-500 text-white hover:opacity-80"
-      >
-        <svg width={18} height={18}>
+        className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)] hover:stroke-black">
+        <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-black">
+          <title>X</title>
           <use href="/images/icons.svg#twitter" />
         </svg>
       </a>
 
       <button
         onClick={() => navigator.clipboard.writeText(url)}
-        className="p-2 rounded-full bg-gray-500 text-white hover:opacity-80"
-      >
-        <svg width={18} height={18}>
+        className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)] hover:stroke-white">
+        <svg width={18} height={18} stroke="var(--muted)">
+          <title>Salin</title>
           <use href="/images/icons.svg#copy" />
         </svg>
       </button>

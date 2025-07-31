@@ -32,6 +32,7 @@ body {
 
 main {
   margin: 56px auto;
+  flex: 1;
 }
 
 .prose {

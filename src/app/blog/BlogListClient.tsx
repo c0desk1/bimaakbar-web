@@ -40,7 +40,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
-    <main className="py-12 max-w-6xl mx-auto px-4">
+    <main className="py-12">
       <h1 className="text-3xl font-bold mb-6">Blog</h1>
       <div className="mb-6">
         <input
@@ -78,7 +78,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           ))}
         </div>
       )}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-3 gap-6">
         {visiblePosts.length > 0 ? (
           visiblePosts.map((post) => (
             <Card

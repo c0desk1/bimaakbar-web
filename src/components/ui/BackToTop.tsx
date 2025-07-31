@@ -19,9 +19,8 @@ export default function BackToTop() {
   return visible ? (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 p-2 rounded-full bg-[var(--accent)] text-[var(--foreground)] shadow-md hover:opacity-80 z-50"
-      aria-label="Back to top"
-    >
+      className="fixed bottom-6 right-6 p-2 rounded-full border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] shadow-md hover:bg-[var(--hover)] z-50"
+      aria-label="Back to top">
       <svg width={20} height={20} stroke="white" fill="none" viewBox="0 0 24 24">
         <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
       </svg>
