@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { PostMeta } from "@/types"
-import { formatDate } from "@lib/utils"
+import { formatDate } from "@/lib/utils"
 
 export default function Card({
   slug,
