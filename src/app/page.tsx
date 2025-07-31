@@ -23,6 +23,7 @@ export default async function HomePage() {
               excerpt={post.excerpt}
               cover={post.cover}
               category={post.category}
+date={post.date}
               readingTime={post.readingTime}
             />
           ))}
@@ -41,6 +42,7 @@ export default async function HomePage() {
               excerpt={post.excerpt}
               cover={post.cover}
               category={post.category}
+date={post.date}
               readingTime={post.readingTime}
             />
           ))}
