@@ -1,3 +1,4 @@
+
 import Link from "next/link"
 import Image from "next/image"
 import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/mdx"
@@ -91,7 +92,7 @@ export default async function BlogDetail({
       <article className="prose">
         <MDXRemote source={content} components={components} />
       </article>
-      <div className="flex flex-row w-full items-center py-6 mb-8">
+      <div className="flex flex-col md:flex-row w-full items-center py-6 mb-8">
         <div className="flex-1">
           {data.lastModified && (
             <time
