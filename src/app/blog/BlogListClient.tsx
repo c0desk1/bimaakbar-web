@@ -88,6 +88,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
               excerpt={post.excerpt}
               cover={post.cover}
               category={post.category}
+date={post.date}
               readingTime={post.readingTime}
             />
           ))
