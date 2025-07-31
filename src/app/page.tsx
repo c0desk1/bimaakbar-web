@@ -16,6 +16,7 @@ export default async function HomePage() {
       <section>
         <Hero />
       </section>
+<div className="h-12 w-full bg-[repeating-linear-gradient(45deg,var(--border),var(--border)_1px,transparent_1px,transparent_8px)]" />
       <section className="mb-8">
         <h2 className="text-2xl font-bold mb-6">Trending</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -33,6 +34,7 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+<div className="h-12 w-full bg-[repeating-linear-gradient(45deg,var(--border),var(--border)_1px,transparent_1px,transparent_8px)]" />
       <section>
         <h2 className="text-2xl font-bold mb-6">Terbaru</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
