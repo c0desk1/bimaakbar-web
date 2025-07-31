@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { PostMeta } from "@/types"
+import { formatDate } from "@lib/utils"
 
 export default function Card({
   slug,
@@ -34,7 +35,9 @@ export default function Card({
               {category}
             </span>
           )}
-          <p className="text-sm text-[var(--muted)] line-clamp-3">{date}</p>
+          <time dateTime={date} className="text-sm text-[var(--muted)] line-clamp-3">
+  			{formatDate(date)}
+			</time>
         </div>
         <h2 className="text-lg font-semibold text-[var(--foreground)] mb-2">
           {title}
