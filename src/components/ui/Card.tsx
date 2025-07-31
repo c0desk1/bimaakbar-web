@@ -23,31 +23,30 @@ export default function Card({
             width={400}
             height={225}
             loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
       )}
       <div className="p-4">
         <div className="flex items-center gap-2 text-xs text-[var(--muted)] mb-2">
           {category && (
-            <span className="rounded-xl border border-[var(--border)] text-[var(--foreground)] px-2 py-1">
+            <span className="uppercase rounded-xl border border-[var(--border)] text-[var(--foreground)] px-2 py-1">
               {category}
             </span>
           )}
           {readingTime && (
-            <div className="flex items-center">
-              <svg width={14} height={14} stroke={`var(--foreground)`} className="mx-1">
+            <div className="flex items-center gap-1">
+              <svg width={14} height={14} stroke={`var(--foreground)`}>
                 <use href="/images/icons.svg#clock" />
               </svg>
-              <span> {readingTime}</span>
+              <span>{readingTime}</span>
             </div>
           )}
         </div>
         <h2 className="text-lg font-semibold text-[var(--foreground)] mb-2">
           {title}
         </h2>
-        <p className="text-sm text-[var(--muted)] line-clamp-3">{excerpt}</p>
-        <p className="text-sm text-[var(--muted)] mt-auto">{date}</p>
+        <p className="text-sm text-[var(--muted)] line-clamp-3 mb-2">{excerpt}</p>
+        <p className="text-sm text-[var(--muted)]">{date}</p>
       </div>
     </Link>
   )
