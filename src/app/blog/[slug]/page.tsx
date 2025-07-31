@@ -8,6 +8,7 @@ import Card from "@/components/ui/Card"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
 import { PostMeta } from "@/types"
+import { formatDate } from "@/lib/utils"
 
 const components = {
   Button: (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
@@ -44,11 +45,13 @@ export default async function BlogDetail({
   return (
     <main className="py-16 max-w-4xl mx-auto gap-2">
       <ReadingProgress />
-      <Breadcrumb items={[
+      <Breadcrumb
+        items={[
           { label: "Home", href: "/" },
           { label: "Blog", href: "/blog" },
           { label: data.title },
-      ]} />
+        ]}
+      />
       <article className="prose">
         <div className="flex flex-col items-center text-md text-[var(--muted)] gap-1 mb-4">
           <div className="flex w-full items-center gap-2">
@@ -68,72 +71,91 @@ export default async function BlogDetail({
                   width={14}
                   height={14}
                   stroke="var(--foreground)"
-                  className="block items-center">
+                  className="block items-center"
+                >
                   <use href="/images/icons.svg#clock" />
                 </svg>
                 <span>{data.readingTime}</span>
               </div>
             )}
-            {data.lastModified && (
+            {data.date && (
               <div className="flex flex-shrink-0 items-center gap-1 text-md">
                 <svg
                   width={14}
                   height={14}
                   stroke="var(--foreground)"
-                  className="block items-center">
+                  className="block items-center"
+                >
                   <use href="/images/icons.svg#calender" />
                 </svg>
-                <span>{data.date}</span>
+                <time dateTime={data.date}>{formatDate(data.date)}</time>
               </div>
             )}
           </div>
         </div>
+
         {data.cover && (
-          <>
-            <Image
-              src={data.cover}
-              alt={data.title}
-              width={1280}
-              height={720}
-              loading="lazy"
-              className="w-full h-auto object-cover"
-            />
-          </>
+          <Image
+            src={data.cover}
+            alt={data.title}
+            width={1280}
+            height={720}
+            loading="lazy"
+            className="w-full h-auto object-cover"
+          />
         )}
+
         <div className="prose dark:prose-invert">
           <MDXRemote source={content} components={components} />
         </div>
+
         {data.tags?.map((tag: string) => (
-          <span key={tag} className="px-2 py-1 text-xs rounded bg-[var(--background)] border border-[var(--border)] gap-4">
+          <span
+            key={tag}
+            className="px-2 py-1 text-xs rounded bg-[var(--background)] border border-[var(--border)] gap-4"
+          >
             #{tag}
           </span>
         ))}
       </article>
-		<span className="text-sm text-[var(--muted)]">Terakhir diubah: {data.lastModified}</span>
+
+      {data.lastModified && (
+        <time
+          className="text-sm text-[var(--muted)]"
+          dateTime={data.lastModified}
+        >
+          Terakhir diubah: {formatDate(data.lastModified)}
+        </time>
+      )}
+
       <ShareButtons title={data.title} />
+
       {related.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-xl font-semibold mb-4">Postingan Terkait</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {related.map((post) => (
-                <Card
-                  key={post.slug}
-                  slug={post.slug}
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  date={post.date}
-                  cover={post.cover}
-                  category={post.category}
-                  readingTime={post.readingTime}
-                />
-              ))}
-            </div>
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold mb-4">Postingan Terkait</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {related.map((post) => (
+              <Card
+                key={post.slug}
+                slug={post.slug}
+                title={post.title}
+                excerpt={post.excerpt}
+                date={post.date}
+                cover={post.cover}
+                category={post.category}
+                readingTime={post.readingTime}
+              />
+            ))}
           </div>
-        )}
+        </div>
+      )}
+
       <div className="mt-10 pt-6 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
         {prev ? (
-          <Link href={`/blog/${prev.slug}`}
-            className="group flex flex-col items-start p-4">
+          <Link
+            href={`/blog/${prev.slug}`}
+            className="group flex flex-col items-start p-4"
+          >
             <span className="text-xs text-[var(--muted)]">Sebelumnya</span>
             <span className="text-[var(--muted)] font-medium group-hover:text-[var(--foreground)] line-clamp-2">
               {prev.title}
@@ -157,6 +179,7 @@ export default async function BlogDetail({
           <div />
         )}
       </div>
+
       <BackToTop />
     </main>
   )
