@@ -35,7 +35,7 @@ export default function Card({
             </span>
           )}
           {readingTime && (
-              <svg width={14} height={14} stroke="var(--foreground)" className="mx-1">
+              <svg width={14} height={14} stroke={`var(--foreground)`} className="mx-1">
                 <use href="/images/icons.svg#clock" />
               </svg>
 			<span> {readingTime}</span>
