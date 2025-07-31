@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useMemo } from "react"
 import Fuse from "fuse.js"
 import Card from "@/components/ui/Card"
@@ -14,20 +15,16 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const [visibleCount, setVisibleCount] = useState(6)
 
   const categories = useMemo(() => {
-    const allCategories = posts
-      .map((p) => p.category)
-      .filter(Boolean) as string[]
-    return [...new Set(allCategories)]
-  }, [posts])
-
-  const fuse = useMemo(() => {
-    return new Fuse(posts, {
-      keys: ["title", "excerpt", "tags", "category"],
-      threshold: 0.4,
-    })
+    const all = posts.map((p) => p.category).filter(Boolean) as string[]
+    return [...new Set(all)]
   }, [posts])
 
   const filteredPosts = useMemo(() => {
+    const fuse = new Fuse(posts, {
+      keys: ["title", "excerpt", "tags", "category"],
+      threshold: 0.4,
+    })
+
     let result = query ? fuse.search(query).map((r) => r.item) : posts
 
     if (selectedCategory) {
@@ -35,22 +32,26 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
     }
 
     return result
-  }, [query, fuse, posts, selectedCategory])
+  }, [query, posts, selectedCategory])
 
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
     <main className="py-12">
       <h1 className="text-3xl font-bold mb-6">Blog</h1>
+
+      {/* Search */}
       <div className="mb-6">
         <input
-          type="seacrh"
+          type="search"
           placeholder="Cari..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full px-2 py-1 border border-[var(--border)] rounded-full bg-[var(--background)]"
         />
       </div>
+
+      {/* Category Filter */}
       {categories.length > 0 && (
         <div className="flex flex-wrap gap-3 mb-8">
           <button
@@ -78,6 +79,8 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           ))}
         </div>
       )}
+
+      {/* Post List */}
       <div className="grid md:grid-cols-3 gap-6">
         {visiblePosts.length > 0 ? (
           visiblePosts.map((post) => (
@@ -96,11 +99,14 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           <p className="text-[var(--muted)]">Artikel tidak ditemukan.</p>
         )}
       </div>
+
+      {/* Load More */}
       {visibleCount < filteredPosts.length && (
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setVisibleCount((prev) => prev + 6)}
-            className="px-6 py-2 bg-[var(--background)] text-[var(--accent)] rounded-full hover:opacity-80">
+            className="px-6 py-2 bg-[var(--background)] text-[var(--accent)] rounded-full hover:opacity-80"
+          >
             Tampilkan Lebih Banyak
           </button>
         </div>
