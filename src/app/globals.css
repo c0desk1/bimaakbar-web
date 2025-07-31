@@ -224,7 +224,6 @@ main {
   margin-bottom: 1rem;
   color: var(--color-fg);
   border: 2px dashed var(--border);
-  border-left: 5px solid var(--accent);
 }
 .prose blockquote > :last-child {
   margin-bottom: 0;
