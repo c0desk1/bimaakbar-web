@@ -9,7 +9,7 @@ interface BreadcrumbProps {
 const DefaultSeparator = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-4 h-4 mx-2 text-[var(--muted)] flex-shrink-0"
+    className="w-3.5 h-3.5 mx-1 text-[var(--muted)] flex-shrink-0"
     fill="none"
     viewBox="0 0 24 24"
     stroke="var(--foreground)"
