@@ -158,6 +158,7 @@ export default async function BlogDetail({
                   excerpt={post.excerpt}
                   cover={post.cover}
                   category={post.category}
+date={post.date}
                   readingTime={post.readingTime}
                 />
               ))}
