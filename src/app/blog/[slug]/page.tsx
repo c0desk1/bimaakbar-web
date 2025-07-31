@@ -49,7 +49,6 @@ export default async function BlogDetail({
         items={[
           { label: "Home", href: "/" },
           { label: "Blog", href: "/blog" },
-          { label: data.title },
         ]}
       />
       <h1 className="text-[var(--foreground)] text-center text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
