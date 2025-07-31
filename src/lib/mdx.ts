@@ -1,21 +1,11 @@
-// src/lib/mdx.ts
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import readingTime from "reading-time"
 import { PostMeta } from "@/types"
+import { formatDate } from "@/lib/utils"
 
 const contentPath = path.join(process.cwd(), "content", "blog")
-
-// Format tanggal: 01 Jan 2025
-function formatDate(input: string | Date): string {
-  const date = new Date(input)
-  return date.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  })
-}
 
 function getPostData(filePath: string, slug: string): PostMeta {
   const source = fs.readFileSync(filePath, "utf8")
