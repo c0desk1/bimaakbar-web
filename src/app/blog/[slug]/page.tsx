@@ -43,6 +43,7 @@ export default async function BlogDetail({
   return (
     <main className="py-16 max-w-4xl mx-auto">
       <ReadingProgress />
+
       <Breadcrumb
         items={[
           { label: "Home", href: "/" },
@@ -50,7 +51,9 @@ export default async function BlogDetail({
           { label: data.title },
         ]}
       />
+
       <article className="prose">
+        {/* Meta section */}
         <div className="flex flex-col gap-2 mb-4 text-[var(--muted)] text-sm">
           <div className="flex items-center gap-2">
             {data.category && (
@@ -60,7 +63,9 @@ export default async function BlogDetail({
             )}
             <span>{data.author}</span>
           </div>
+
           <h1 className="w-full text-3xl font-bold text-[var(--foreground)]">{data.title}</h1>
+
           <div className="flex flex-wrap items-center gap-4">
             {data.readingTime && (
               <div className="flex items-center gap-1">
@@ -70,6 +75,7 @@ export default async function BlogDetail({
                 <span>{data.readingTime}</span>
               </div>
             )}
+
             {data.date && (
               <div className="flex items-center gap-1">
                 <svg width={14} height={14} stroke="var(--foreground)">
@@ -80,6 +86,8 @@ export default async function BlogDetail({
             )}
           </div>
         </div>
+
+        {/* Cover */}
         {data.cover && (
           <Image
             src={data.cover}
@@ -90,10 +98,14 @@ export default async function BlogDetail({
             className="w-full h-auto object-cover rounded-md"
           />
         )}
+
+        {/* MDX Content */}
         <div className="prose dark:prose-invert">
           <MDXRemote source={content} components={components} />
         </div>
-        {data.tags?.length > 0 && (
+
+        {/* Tags */}
+        {Array.isArray(data.tags) && data.tags.length > 0 && (
           <div className="mt-8 flex flex-wrap gap-2">
             {data.tags.map((tag) => (
               <span
@@ -106,6 +118,8 @@ export default async function BlogDetail({
           </div>
         )}
       </article>
+
+      {/* Last Modified */}
       {data.lastModified && (
         <time
           className="block mt-6 text-sm text-[var(--muted)]"
@@ -114,7 +128,11 @@ export default async function BlogDetail({
           Terakhir diubah: {formatDate(data.lastModified)}
         </time>
       )}
+
+      {/* Share */}
       <ShareButtons title={data.title} />
+
+      {/* Related Posts */}
       {related.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl font-semibold mb-4">Postingan Terkait</h2>
@@ -125,6 +143,8 @@ export default async function BlogDetail({
           </div>
         </section>
       )}
+
+      {/* Navigation */}
       <div className="mt-10 pt-6 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
         {prev ? (
           <Link href={`/blog/${prev.slug}`} className="group flex flex-col items-start p-4">
@@ -133,7 +153,9 @@ export default async function BlogDetail({
               {prev.title}
             </span>
           </Link>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
 
         {next ? (
           <Link href={`/blog/${next.slug}`} className="group flex flex-col items-end text-right p-4">
@@ -142,7 +164,9 @@ export default async function BlogDetail({
               {next.title}
             </span>
           </Link>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
       </div>
 
       <BackToTop />
