@@ -83,8 +83,7 @@ export default async function BlogDetail({
                   className="block items-center">
                   <use href="/images/icons.svg#calender" />
                 </svg>
-                <span>{data.date}, </span>
-                <span>Terakhir diubah: {data.lastModified}</span>
+                <span>{data.date}</span>
               </div>
             )}
           </div>
@@ -109,6 +108,7 @@ export default async function BlogDetail({
             #{tag}
           </span>
         ))}
+        <span>Terakhir diubah: {data.lastModified}</span>
       </article>
       <ShareButtons title={data.title} />
       {related.length > 0 && (
@@ -133,9 +133,9 @@ export default async function BlogDetail({
       <div className="mt-10 pt-6 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
         {prev ? (
           <Link href={`/blog/${prev.slug}`}
-            className="group flex flex-col items-start p-4 rounded-lg border border-[var(--border)] hover:border-[var(--accent)] hover:shadow transition">
+            className="group flex flex-col items-start p-4">
             <span className="text-xs text-[var(--muted)]">Sebelumnya</span>
-            <span className="text-[var(--foreground)] font-medium group-hover:text-[var(--accent)] line-clamp-2">
+            <span className="text-[var(--muted)] font-medium group-hover:text-[var(--foreground)] line-clamp-2">
               {prev.title}
             </span>
           </Link>
@@ -146,10 +146,10 @@ export default async function BlogDetail({
         {next ? (
           <Link
             href={`/blog/${next.slug}`}
-            className="group flex flex-col items-end text-right p-4 rounded-lg border border-[var(--border)] hover:border-[var(--accent)] hover:shadow transition"
+            className="group flex flex-col items-end text-right p-4"
           >
             <span className="text-xs text-[var(--muted)]">Selanjutnya</span>
-            <span className="text-[var(--foreground)] font-medium group-hover:text-[var(--accent)] line-clamp-2">
+            <span className="text-[var(--muted)] font-medium group-hover:text-[var(--foreground)] line-clamp-2">
               {next.title}
             </span>
           </Link>
