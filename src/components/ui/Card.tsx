@@ -2,15 +2,6 @@ import Link from "next/link"
 import Image from "next/image"
 import {PostMeta} from "@/types"
 
-interface CardProps {
-  slug: string
-  title: string
-  excerpt: string
-  cover?: string
-  category?: string
-  readingTime?: string
-}
-
 export default function Card({
   slug,
   title,
