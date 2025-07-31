@@ -89,7 +89,7 @@ export default async function BlogDetail({
           </div>
         </div>
         {data.cover && (
-          <div className="w-full h-64 md:h-80 mb-6 overflow-hidden rounded-lg">
+          <>
             <Image
               src={data.cover}
               alt={data.title}
@@ -98,7 +98,7 @@ export default async function BlogDetail({
               loading="lazy"
               className="w-full h-auto object-cover"
             />
-          </div>
+          </>
         )}
         <div className="prose dark:prose-invert">
           <MDXRemote source={content} components={components} />
@@ -108,8 +108,8 @@ export default async function BlogDetail({
             #{tag}
           </span>
         ))}
-        <span>Terakhir diubah: {data.lastModified}</span>
       </article>
+		<span className="text-sm text-[var(--muted)]">Terakhir diubah: {data.lastModified}</span>
       <ShareButtons title={data.title} />
       {related.length > 0 && (
           <div className="mt-12">
