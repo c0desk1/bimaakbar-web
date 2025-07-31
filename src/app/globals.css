@@ -53,13 +53,6 @@ html {
 
 body {
   background-color: var(--background);
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 19px,
-    rgba(255, 255, 255, 0.03) 20px
-  );
-  background-size: 20px 20px;
 color: var(--foreground);
 }
 
