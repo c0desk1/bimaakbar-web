@@ -182,6 +182,7 @@ main {
   font-size: inherit;
   font-family: inherit;
   text-align: left;
+  border: transparent;
 }
 .prose code {
   background-color: var(--background);
@@ -259,13 +260,6 @@ main {
   background-color: var(--background);
   width: 100%;
 }
-.prose table caption {
-  caption-side: top;
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 0.5rem;
-  color: var(--accent);
-}
 .prose th {
   color: var(--foreground);
   padding: 0.5rem;
@@ -319,6 +313,7 @@ main {
 .prose span {
   font-size: smaller;
   color: var(--muted);
+  opacity: 90%;
 }
 
 .prose iframe,
@@ -381,28 +376,4 @@ main {
   border-radius: 4px;
   font-size: 0.9em;
   color: var(--color-fg);
-}
-.prose details {
-  background-color: var(--hover);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0.75rem 1.25rem;
-  margin: 1.5em 0;
-}
-.prose details[open] > summary::before {
-  content: '−';
-}
-.prose summary {
-  cursor: pointer;
-  color: var(--muted);
-  list-style: none;
-  margin-bottom: 1em;
-  font-size: medium;
-}
-.prose summary::before {
-  content: '+';
-  margin-right: 0.75rem;
-  font-weight: 700;
-  color: var(--accent);
-  transition: transform 0.2s ease-in-out;
 }
