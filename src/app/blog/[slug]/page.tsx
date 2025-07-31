@@ -38,7 +38,7 @@ export default async function BlogDetail({
         p.slug !== slug &&
         (p.category === data.category || p.tags?.some((tag) => data.tags?.includes(tag)))
     )
-    .slice(0, 6)
+    .slice(0, 3)
 
   return (
     <main className="py-16 max-w-4xl mx-auto">
