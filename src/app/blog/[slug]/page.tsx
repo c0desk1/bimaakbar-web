@@ -43,7 +43,7 @@ export default async function BlogDetail({
     .slice(0, 3)
 
   return (
-    <main className="py-14 gap-6 mx-auto max-w-screen-md border-s border-e border-[var(--border)] px-8">
+    <main className="py-14 gap-6 mx-auto">
       <ReadingProgress />
       <Breadcrumb
         items={[
