@@ -309,8 +309,7 @@ main {
 .prose span {
   font-size: smaller;
   color: var(--muted);
-  opacity: 90%;
-  margin-bottom: 2em;
+  opacity: 80%;
 }
 
 .prose iframe,
