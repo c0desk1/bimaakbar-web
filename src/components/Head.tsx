@@ -1,4 +1,4 @@
-// components/HeadSection.tsx
+// components/Head.tsx
 import Head from "next/head"
 
 export default function HeadSection() {
@@ -7,8 +7,6 @@ export default function HeadSection() {
       <title>Bima Akbar</title>
       <meta name="description" content="Blog ringan dan cepat dengan Next.js" />
       <link rel="icon" href="/favicon.ico" />
-      <link rel="preload" href="/globals.css" as="style" />
-      <link rel="stylesheet" href="/globals.css" />
       <script
         dangerouslySetInnerHTML={{
           __html: `(function() {
