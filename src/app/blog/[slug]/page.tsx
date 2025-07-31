@@ -31,19 +31,17 @@ export default async function BlogDetail({
   }
 
   const { prev, next } = getAdjacentPosts(slug)
-
   const allPosts = getAllPosts()
   const related = allPosts
     .filter(
       (p) =>
         p.slug !== slug &&
-        (p.category === data.category ||
-          p.tags?.some((tag) => data.tags?.includes(tag)))
+        (p.category === data.category || p.tags?.some((tag) => data.tags?.includes(tag)))
     )
-    .slice(0, 3)
+    .slice(0, 6)
 
   return (
-    <main className="py-16 max-w-4xl mx-auto gap-2">
+    <main className="py-16 max-w-4xl mx-auto">
       <ReadingProgress />
       <Breadcrumb
         items={[
@@ -53,39 +51,28 @@ export default async function BlogDetail({
         ]}
       />
       <article className="prose">
-        <div className="flex flex-col items-center text-md text-[var(--muted)] gap-1 mb-4">
-          <div className="flex w-full items-center gap-2">
+        <div className="flex flex-col gap-2 mb-4 text-[var(--muted)] text-sm">
+          <div className="flex items-center gap-2">
             {data.category && (
-              <span className="px-2 py-0.5 text-sm rounded-full bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)]">
+              <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)]">
                 {data.category}
               </span>
             )}
             <span>{data.author}</span>
           </div>
-          <h1 className="w-full font-bold">{data.title}</h1>
-          <div className="flex w-full items-center gap-4">
+          <h1 className="w-full text-3xl font-bold text-[var(--foreground)]">{data.title}</h1>
+          <div className="flex flex-wrap items-center gap-4">
             {data.readingTime && (
-              <div className="flex flex-1 items-center gap-1 mb-1 text-md">
-                <svg
-                  aria-label="Waktu baca"
-                  width={14}
-                  height={14}
-                  stroke="var(--foreground)"
-                  className="block items-center"
-                >
+              <div className="flex items-center gap-1">
+                <svg width={14} height={14} stroke="var(--foreground)">
                   <use href="/images/icons.svg#clock" />
                 </svg>
                 <span>{data.readingTime}</span>
               </div>
             )}
             {data.date && (
-              <div className="flex flex-shrink-0 items-center gap-1 text-md">
-                <svg
-                  width={14}
-                  height={14}
-                  stroke="var(--foreground)"
-                  className="block items-center"
-                >
+              <div className="flex items-center gap-1">
+                <svg width={14} height={14} stroke="var(--foreground)">
                   <use href="/images/icons.svg#calender" />
                 </svg>
                 <time dateTime={data.date}>{formatDate(data.date)}</time>
@@ -93,7 +80,6 @@ export default async function BlogDetail({
             )}
           </div>
         </div>
-
         {data.cover && (
           <Image
             src={data.cover}
@@ -101,83 +87,62 @@ export default async function BlogDetail({
             width={1280}
             height={720}
             loading="lazy"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover rounded-md"
           />
         )}
-
         <div className="prose dark:prose-invert">
           <MDXRemote source={content} components={components} />
         </div>
-
-        {data.tags?.map((tag: string) => (
-          <span
-            key={tag}
-            className="px-2 py-1 text-xs rounded bg-[var(--background)] border border-[var(--border)] gap-4"
-          >
-            #{tag}
-          </span>
-        ))}
+        {data.tags?.length > 0 && (
+          <div className="mt-8 flex flex-wrap gap-2">
+            {data.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-1 text-xs rounded bg-[var(--background)] border border-[var(--border)]"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
       </article>
-
       {data.lastModified && (
         <time
-          className="text-sm text-[var(--muted)]"
+          className="block mt-6 text-sm text-[var(--muted)]"
           dateTime={data.lastModified}
         >
           Terakhir diubah: {formatDate(data.lastModified)}
         </time>
       )}
-
       <ShareButtons title={data.title} />
-
       {related.length > 0 && (
-        <div className="mt-12">
+        <section className="mt-12">
           <h2 className="text-xl font-semibold mb-4">Postingan Terkait</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {related.map((post) => (
-              <Card
-                key={post.slug}
-                slug={post.slug}
-                title={post.title}
-                excerpt={post.excerpt}
-                date={post.date}
-                cover={post.cover}
-                category={post.category}
-                readingTime={post.readingTime}
-              />
+              <Card key={post.slug} {...post} />
             ))}
           </div>
-        </div>
+        </section>
       )}
-
       <div className="mt-10 pt-6 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
         {prev ? (
-          <Link
-            href={`/blog/${prev.slug}`}
-            className="group flex flex-col items-start p-4"
-          >
+          <Link href={`/blog/${prev.slug}`} className="group flex flex-col items-start p-4">
             <span className="text-xs text-[var(--muted)]">Sebelumnya</span>
-            <span className="text-[var(--muted)] font-medium group-hover:text-[var(--foreground)] line-clamp-2">
+            <span className="font-medium group-hover:text-[var(--foreground)] line-clamp-2">
               {prev.title}
             </span>
           </Link>
-        ) : (
-          <div />
-        )}
+        ) : <div />}
 
         {next ? (
-          <Link
-            href={`/blog/${next.slug}`}
-            className="group flex flex-col items-end text-right p-4"
-          >
+          <Link href={`/blog/${next.slug}`} className="group flex flex-col items-end text-right p-4">
             <span className="text-xs text-[var(--muted)]">Selanjutnya</span>
-            <span className="text-[var(--muted)] font-medium group-hover:text-[var(--foreground)] line-clamp-2">
+            <span className="font-medium group-hover:text-[var(--foreground)] line-clamp-2">
               {next.title}
             </span>
           </Link>
-        ) : (
-          <div />
-        )}
+        ) : <div />}
       </div>
 
       <BackToTop />
