@@ -47,7 +47,6 @@ export default async function BlogDetail({
       <ReadingProgress />
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
           { label: "Blog", href: "/blog" },
         ]}
       />
