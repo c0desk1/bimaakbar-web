@@ -2,7 +2,7 @@ import React from "react"
 import Link from "next/link"
 
 interface BreadcrumbProps {
-  items: { label: string | undefined; href?: string }[]
+  items: { label: string; href?: string }[]
   separator?: React.ReactNode
 }
 
@@ -24,7 +24,7 @@ export default function Breadcrumb({
   separator = DefaultSeparator,
 }: BreadcrumbProps) {
   return (
-    <nav className="w-full items-center flex justify-center py-4 overflow-x-auto border-t border-[var(--border)]">
+    <nav className="w-full flex justify-center py-4 overflow-x-auto border-t border-[var(--border)]">
       <ol className="flex justify-center items-center whitespace-nowrap text-sm text-[var(--muted-foreground)] text-ellipsis overflow-x-auto scrollbar-thin scrollbar-thumb-[var(--border)] scrollbar-track-transparent"
         aria-label="Breadcrumb">
         {items.map((item, index) => {
