@@ -117,7 +117,7 @@ export default async function BlogDetail({
           <div>
             <Spacer />
             <h2 className="px-4 py-2 text-xl font-bold border-t border-[var(--border)]">Postingan Terkait</h2>
-            <div className="grid md:grid-cols-2 border-t border-[var(--border)]">
+            <div className="grid md:grid-cols-3 border-t border-[var(--border)]">
               {related.map((post) => (
                 <Card
                   key={post.slug}
