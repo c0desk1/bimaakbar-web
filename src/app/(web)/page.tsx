@@ -22,7 +22,7 @@ export default async function HomePage() {
         <Spacer />
         <section className="items-center border-t border-[var(--border)]">
           <h2 className="px-4 py-2 text-2xl font-bold">Trending</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 border-t border-[var(--border)]">
+          <div className="grid md:grid-cols-3 border-t border-[var(--border)]">
             {trendingPosts.map((post) => (
               <Card
                 key={post.slug}
