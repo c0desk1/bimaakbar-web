@@ -42,7 +42,7 @@ export default async function BlogDetail({
         (p.category === data.category ||
           p.tags?.some((tag) => data.tags?.includes(tag)))
     )
-    .slice(0, 3)
+    .slice(0, 6)
 
   return (
     
@@ -53,29 +53,41 @@ export default async function BlogDetail({
         <Breadcrumb items={[
             { label: "Home", href: "/" },
             { label: "Blog", href: "/blog" },
+            { label: data.category, href: "/blog" },
         ]} />
         <h1 className="px-4 text-[var(--foreground)] text-center text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
           {data.title}
         </h1>
-        <div className="flex justify-center items-center gap-2 text-sm text-[var(--muted-foreground)] px-4 mb-16">
+        <div className="flex justify-center items-center gap-3 text-sm text-[var(--muted-foreground)] px-4 mb-16">
           <Image
             src="/web-app-manifest-192x192.png"
             alt="Author"
-            width={18}
-            height={18}
-            className="rounded-full border border-[var(--border)]"
+            width={16}
+            height={16}
+            loading="lazy"
+            className="h-5 w-5 rounded-full"
           />
           <span>{data.author}</span>
-          <span className="opacity-60">{data.category}</span>
+          <div className="flex items-center gap-1">
+            <svg width={16} height={16} stroke="var(--foreground)" className="opacity-80">
+                <use href="/images/icons.svg#category" />
+              </svg>
+            <span className="opacity-85">{data.category}</span>
+          </div>
         </div>
         <div className="flex items-center w-full justify-between text-sm text-[var(--muted-foreground)] px-4 mb-4">
           <div className="flex items-center gap-1">
-            <svg width={16} height={16} stroke="currentColor" className="opacity-80">
+            <svg width={16} height={16} stroke="var(--foreground)" className="opacity-80">
               <use href="/images/icons.svg#clock" />
             </svg>
             <span>{data.readingTime}</span>
           </div>
-          <time dateTime={data.date}>{formatDate(data.date)}</time>
+          <div className="flex items-center gap-1">
+            <svg width={16} height={16} stroke="var(--foreground)" className="opacity-80">
+              <use href="/images/icons.svg#calendar" />
+            </svg>
+            <time dateTime={data.date}>{formatDate(data.date)}</time>
+          </div>
         </div>
         {data.cover && (
           <div className="hidden px-4 mb-8">
@@ -84,7 +96,7 @@ export default async function BlogDetail({
               alt={data.title}
               width={1200}
               height={630}
-              className="w-full mx-auto max-w-screen-md h-auto rounded-xl border border-[var(--border)]"
+              className="w-full mx-auto max-w-screen-md h-auto"
               priority
             />
           </div>
@@ -93,26 +105,27 @@ export default async function BlogDetail({
         <article className="prose px-4">
           <MDXRemote source={content} components={components} />
         </article>
-        <div className="flex flex-col md:flex-row w-full justify-between items-center py-6 px-4 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center py-6 px-4 gap-4">
           {data.lastModified && (
             <time
               className="text-sm text-[var(--muted-foreground)]"
               dateTime={data.lastModified}>Terakhir diubah: {formatDate(data.lastModified)}
             </time>
           )}
-          <div className="gap-4">
+          <div className="flex items-center gap-2">
             {data.tags?.map((tag: string) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 text-sm text-[var(--muted-foreground)] rounded-xl bg-[var(--background)] border border-[var(--border)] w-auto gap-4">#{tag}
-              </span>
+              <div  key={tag} className="flex items-center gap-1 text-[var(--muted-foreground)] text-sm hover:text-[var(--foreground)]">
+                <svg width={16} height={16} stroke="var(--foreground)">
+                  <use href="/images/icons.svg#tag" />
+                </svg>
+                <span>{tag}</span>
+              </div>
             ))}
           </div>
         </div>
         <div className="px-4 border-y border-[var(--border)]">
           <ShareButtons title={data.title} />
         </div>
-        
         {related.length > 0 && (
           <div>
             <Spacer />

@@ -54,7 +54,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             placeholder="Cari..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full px-4 py-1 border border-[var(--border)] rounded-xl bg-[var(--background)] focus:ring-1 ring-[var(--accent)]"
+            className="w-full px-4 py-1 border border-[var(--border)] focus:ring-2"
           />
         </div>
         {categories.length > 0 && (
