@@ -40,7 +40,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
-    <main className="relative border-x border-[var(--border)]">
+    <main className="relative border-x border-[var(--border)] mt-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <section className="items-center py-14">
       <Breadcrumb items={[

@@ -15,7 +15,8 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="py-14">
+    <main className="relative border-x border-[var(--border)] mt-14">
+      <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <h1 className="text-3xl font-bold mb-6">Hubungi Saya</h1>
       <p className="text-lg text-[var(--muted)] mb-8">
         Punya pertanyaan, kerjasama, atau sekadar menyapa? Silakan kirim pesan

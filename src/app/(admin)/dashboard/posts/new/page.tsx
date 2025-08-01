@@ -1,13 +1,7 @@
+"use client"
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { $getRoot, $insertNodes } from 'lexical';
-import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 
 export default function NewPostPage() {
   const router = useRouter();

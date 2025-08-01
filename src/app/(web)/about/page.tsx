@@ -1,6 +1,7 @@
 export default function AboutPage() {
     return (
-      <main className="py-16">
+      <main className="relative border-x border-[var(--border)] mt-14">
+      <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
         <article className="prose">
           <h1>Tentang Saya</h1>
           <p>

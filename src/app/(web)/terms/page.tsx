@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <main className="py-14 gap-6">
+    <main className="relative border-x border-[var(--border)] mt-14">
+      <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <article className="prose">
         <h1>Terms & Conditions</h1>
         <p>
