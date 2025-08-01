@@ -9,7 +9,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Header />
-      <Container size="md">{children}</Container>
+      <Container size="lg">{children}</Container>
       <Footer />
     </>
   )
