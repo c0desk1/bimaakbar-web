@@ -1,10 +1,29 @@
-import Sidebar from '@/components/Sidebar';
+// src/app/(admin)/dashboard/layout.tsx
+import { ReactNode } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import Sidebar from "@/app/_components/_ui/Sidebar";
+import Topbar from "@/app/_components/_ui/Topbar";
+
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  const session = await getServerSession(authOptions);
+
+
+  if (!session) {
+    redirect('/login');
+  }
+
   return (
-    <main className="relative border-x border-[var(--border)] gap-4">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      {children}
-    </main>
+      <div className="flex flex-col flex-1">
+        <Topbar />
+        <main className="flex-1 overflow-y-auto p-6 bg-[var(--background)]">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 }
