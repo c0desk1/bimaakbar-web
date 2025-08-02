@@ -4,12 +4,12 @@ import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   return (
-    <div className="text-center px-4">
+    <div className="text-center px-4 rounded-[var(--radius)] bg-[var(--card)] text-[var(--foreground)]">
       <h1 className="text-3xl font-bold mb-6">Masuk ke Dashboard</h1>
 
       <button
         onClick={() => signIn('github')}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--accent)] text-[var(--foreground)] rounded hover:bg-[var(--accent)]/90 transition"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
