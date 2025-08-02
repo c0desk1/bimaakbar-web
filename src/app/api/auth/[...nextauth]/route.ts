@@ -1,19 +1,27 @@
-import NextAuth from "next-auth";
+// src/app/api/auth/[...nextauth]/route.ts
+import NextAuth, { AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
+  
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return `${baseUrl}/dashboard`;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
