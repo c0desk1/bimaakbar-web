@@ -1,10 +1,17 @@
-// src/app/(admin)/dashboard/page.tsx
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Selamat datang di dashboard 👋</h2>
-      <p className="text-[var(--muted-foreground)]">Ini adalah halaman admin pribadi untuk mengelola kontenmu.</p>
-    </div>
+    <main className="max-w-4xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-semibold">Dashboard</h1>
+    </main>
   );
 }
