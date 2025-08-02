@@ -1,20 +1,10 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
-import { redirect } from "next/navigation";;
+// src/app/(admin)/dashboard/page.tsx
 
-export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/login");
-  }
-
+export default function DashboardPage() {
   return (
     <div>
-      <h1>Dashboard Admin</h1>
-      <p>Selamat datang, {session.user?.name}</p>
-      
+      <h2 className="text-2xl font-semibold mb-4">Selamat datang di dashboard 👋</h2>
+      <p className="text-[var(--muted-foreground)]">Ini adalah halaman admin pribadi untuk mengelola kontenmu.</p>
     </div>
   );
 }
-
