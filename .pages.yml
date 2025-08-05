@@ -33,7 +33,7 @@ content:
   - name: about
     label: About
     type: file
-    path: src/app/about/page.tsx
+    path: content/pages/about.md
     fields:
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
