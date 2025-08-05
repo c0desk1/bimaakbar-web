@@ -6,7 +6,7 @@ content:
   - name: posts
     label: Posts
     type: collection
-    path: content/blog
+    path: _posts
     view:
       fields: [ coverImage, title, date, publish ]
     fields:
@@ -27,13 +27,13 @@ content:
           - { name: url, label: URL, type: image }
       - { name: body, label: Body, type: rich-text }
       - { name: tags, label: Tags, type: string, list: true }
-      - { name: category, label: Category, type: string, list: true }
+      - { name: category, label: Category, type: string }
       - { name: publish, label: Publish, type: boolean }
 
   - name: about
     label: About
     type: file
-    path: src/app/about/page.tsx
+    path: src/app/about/page.md
     fields:
       - { name: layout, type: string, hidden: true, default: "@/app/layout" }
       - { name: title, label: Title, type: string }
