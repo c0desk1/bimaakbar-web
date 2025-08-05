@@ -1,23 +1,25 @@
 ---
-title: "Mengenal Dark Mode di Next.js"
-excerpt: "Cara mengaktifkan dan mengatur dark mode dengan Tailwind dan Next.js."
-date: "2025-07-30"
-coverImage: "/assets/open-graph.png"
-category: "Coding"
-tags: ["nextjs", "seo", "performance"]
+title: Mengenal Dark Mode di Next.js
+excerpt: Cara mengaktifkan dan mengatur dark mode dengan Tailwind dan Next.js.
+coverImage: /assets/open-graph.png
+date: 2025-08-05T23:33:00.000Z
 author:
   name: Bima Akbar
-  picture: "/assets/avatar.avif"
+  picture: /assets/avatar.avif
 ogImage:
-  url: "/assets/open-graph.png"
+  url: /assets/open-graph.png
+tags:
+  - nextjs
+  - seo
+  - performance
+category: Coding
 publish: true
 ---
+Artikel ini membahas bagaimana dark mode bisa diintegrasikan dengan class `.dark` di Next.js.
 
-Artikel ini membahas bagaimana dark mode bisa diintegrasikan dengan class `.dark` di Next.js.  
+Contoh kode:
 
-Contoh kode:  
-
-```tsx
+````tsx
 document.documentElement.classList.add("dark")
 
 
@@ -36,3 +38,4 @@ SEO adalah salah satu hal terpenting untuk blog.
 Dengan **Next.js Metadata API**, kamu bisa menambahkan `title`, `description`, dan `OpenGraph`.  
 
 Lanjutkan membaca untuk detailnya!
+````
