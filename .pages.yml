@@ -11,16 +11,17 @@ content:
     fields:
       - { name: author, label: Author, type: string }
       - { name: created_at, label: Date, type: date }
-      - { name: modDatetime, label: Date, type: date }
+      - { name: updated_at, label: Date, type: date }
       - { name: title, label: Title, type: string, required: true }
       - { name: cover, label: Title, type: string }
       - { name: slug, label: Slug, type: string }
-      - { name: featured, label: Featured, type: boolean }
       - { name: status, label: Status, type: boolean }
+      - { name: category, label: Categories, type: string, list: true }
       - { name: tags, label: Tags, type: string, list: true }
-      - { name: ex, label: Description, type: string }
+      - { name: excerpt, label: Description, type: string }
       - { name: content, label: Body, type: rich-text }
+      
   - name: about
-    label: About page
+    label: About
     type: file
     path: src/app/(web)/about/page.tsx
