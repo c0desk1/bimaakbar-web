@@ -6,7 +6,7 @@ content:
   - name: posts
     label: Posts
     type: collection
-    path: _posts
+    path: collection/blog
     view:
       fields: [ coverImage, title, date, publish ]
     fields:
