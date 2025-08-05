@@ -33,16 +33,16 @@ export function getAllPosts(): PostMeta[] {
 
   return fs
     .readdirSync(contentPath)
-    .filter((file) => file.endsWith(".mdx"))
+    .filter((file) => file.endsWith(".md"))
     .map((file) => {
-      const slug = file.replace(/\.mdx$/, "")
+      const slug = file.replace(/\.md$/, "")
       const filePath = path.join(contentPath, file)
       return getPostData(filePath, slug)
     })
 }
 
 export function getPostBySlug(slug: string) {
-  const filePath = path.join(contentPath, `${slug}.mdx`)
+  const filePath = path.join(contentPath, `${slug}.md`)
   if (!fs.existsSync(filePath)) throw new Error(`Post ${slug} not found`)
 
   const source = fs.readFileSync(filePath, "utf8")
