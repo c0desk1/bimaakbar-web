@@ -3,6 +3,7 @@ import Image from "next/image"
 import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/posts"
 import { PostMeta } from "@/types"
 import { formatDate } from "@/lib/utils"
+import PostHeader from "@/components/post-header.tsx"
 import Spacer from "@/components/ui/Spacer"
 import Breadcrumb from "@/components/ui/Breadcrumb"
 import ShareButtons from "@/components/ui/ShareButtons"
@@ -43,6 +44,7 @@ export default async function BlogDetail({
             { label: "Home", href: "/" },
             { label: "Blog", href: "/blog" },
         ]} />
+<PostHeader data={data} />
         <h1 className="px-4 text-[var(--foreground)] text-center text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
           {data.title}
         </h1>
