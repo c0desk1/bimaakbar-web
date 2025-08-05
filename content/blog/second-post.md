@@ -2,10 +2,14 @@
 title: "Mengenal Dark Mode di Next.js"
 excerpt: "Cara mengaktifkan dan mengatur dark mode dengan Tailwind dan Next.js."
 date: "2025-07-30"
-coverImage: "/images/open-graph.png"
+coverImage: "/assets/open-graph.png"
 category: "Coding"
 tags: ["nextjs", "seo", "performance"]
-author: "Bima Akbar"
+author:
+  name: Bima Akbar
+  picture: "/assets/avatar.avif"
+ogImage:
+  url: "/assets/open-graph.png"
 publish: true
 ---
 

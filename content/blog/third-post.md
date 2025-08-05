@@ -2,10 +2,14 @@
 title: "Panduan Astro"
 date: "2025-07-30"
 excerpt: "panduan astro deskripsi"
-coverImage: "/images/open-graph.png"
+coverImage: "/assets/open-graph.png"
 category: "Coding"
 tags: ["astro", "seo", "performance"]
-author: "Bima Akbar"
+author:
+  name: Bima Akbar
+  picture: "/assets/avatar.avif"
+ogImage:
+  url: "/assets/open-graph.png"
 publish: true
 ---
 
