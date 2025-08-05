@@ -9,11 +9,6 @@ export const siteMetadata: Metadata = {
     },
     description: siteConfig.description,
     metadataBase: new URL(siteConfig.url),
-    icons: {
-        icon: "/favicon.ico",
-        shortcut: "/favicon.ico",
-        apple: "/favicon.ico",
-    },
     openGraph: {
         title: siteConfig.name,
         description: siteConfig.description,
