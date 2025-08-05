@@ -35,6 +35,5 @@ content:
     type: file
     path: src/app/about/page.md
     fields:
-      - { name: layout, type: string, hidden: true, default: "@/app/layout" }
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
