@@ -23,5 +23,4 @@ content:
   - name: about
     label: About page
     type: file
-    path: src/app/about/page.tsx
-    }
+    path: src/app/(web)/about/page.tsx
