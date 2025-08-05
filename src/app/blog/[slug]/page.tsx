@@ -48,11 +48,11 @@ export default async function BlogDetail({
         </h1>
         <div className="flex justify-center items-center gap-2 text-sm text-[var(--muted-foreground)] px-4 mb-16">
           <Image
-            src="/web-app-manifest-192x192.png"
-            alt="Author"
+           src={data.author?.picture || ''}
+           alt={data.author?.name || 'Admmin'}
             width={18}
             height={18}
-            className="rounded-full border border-[var(--border)]"
+            className="rounded-full"
           />
           <span>{data.author?.name}</span>
           <span className="opacity-60">{data.category}</span>
@@ -60,10 +60,10 @@ export default async function BlogDetail({
         <div className="flex items-center w-full justify-between text-sm text-[var(--muted-foreground)] px-4 mb-4">
           <div className="flex items-center gap-1">
             <svg width={16} height={16} stroke="currentColor" className="opacity-80">
-              <use href="/images/icons.svg#clock" />
+              <use href="/images/icons.svg#calender" />
             </svg>
+            <time dateTime={data.date}>{formatDate(data.date)}</time>
           </div>
-          <time dateTime={data.date}>{formatDate(data.date)}</time>
         </div>
         {data.coverImage && (
           <div className="hidden px-4 mb-8">
