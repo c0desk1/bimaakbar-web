@@ -33,7 +33,7 @@ content:
   - name: about
     label: About
     type: file
-    path: src/app/about/page.md
+    path: src/app/about/page.tsx
     fields:
       - { name: layout, type: string, hidden: true, default: "@/app/layout" }
       - { name: title, label: Title, type: string }
