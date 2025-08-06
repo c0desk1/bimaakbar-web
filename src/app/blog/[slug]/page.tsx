@@ -7,15 +7,17 @@ import Breadcrumb from "@/components/ui/Breadcrumb"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
 
-import type { Metadata } from "next"
+import type { Metadata, ResolvingMetadata } from "next"
 import { siteConfig } from "@/config"
 
 export async function generateMetadata(
-  props: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> },
+  _parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = props.params
+  const { slug } = await params
 
-  const { data } = await getPostBySlug(slug)
+  const { data } = await getPostBySlug(slug) // kalau async
+  // atau: const { data } = getPostBySlug(slug) // kalau sync
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
