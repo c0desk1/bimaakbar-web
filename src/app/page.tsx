@@ -4,7 +4,7 @@ import Card from "@/components/ui/Card"
 import Hero from "@/components/ui/Hero"
 
 export default async function HomePage() {
-  const posts = getAllPosts()
+  const posts = await getAllPosts()
 
   const recentPosts = [...posts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
