@@ -1,6 +1,6 @@
 import { getPageBySlug } from "@/lib/posts"
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const { content, data } = await getPageBySlug("about")
     return (
       <main className="relative border-x border-[var(--border)] mt-14 px-4">
@@ -13,3 +13,4 @@ export default function AboutPage() {
     )
 
   }  
+
