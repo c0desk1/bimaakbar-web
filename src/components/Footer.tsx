@@ -24,7 +24,16 @@ export default function Footer() {
           </p>
           <div className="flex items-center justify-center md:justify-end gap-3">
             <Link 
-              href="https://github.com" 
+              href="/rss.xml" 
+              target="_blank" 
+              aria-label="Rss" 
+              className="w-5 h-5 flex items-center justify-center hover:opacity-70">
+              <svg stroke="var(--foreground)" width={20} height={20} className="size-full">
+                <use href="/images/icons.svg#rss" />
+              </svg>
+            </Link>
+            <Link 
+              href="https://github.com/c0desk1" 
               target="_blank" 
               aria-label="Github" 
               className="w-5 h-5 flex items-center justify-center hover:opacity-70">
