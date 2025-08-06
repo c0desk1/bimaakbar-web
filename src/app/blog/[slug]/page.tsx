@@ -14,7 +14,8 @@ export async function generateMetadata(
   props: { params: { slug: string } }
 ): Promise<Metadata> {
   const { slug } = props.params
-  const { data } = getPostBySlug(slug)
+
+  const { data } = await getPostBySlug(slug)
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
