@@ -15,12 +15,11 @@ import type { Metadata, ResolvingMetadata } from "next"
 import { siteConfig } from "@/config"
 
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = params
+  const { slug } = await params
   const { data } = await getPostBySlug(slug)
-
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
     : data.ogImage
@@ -65,7 +64,7 @@ export default async function BlogDetail({
 }: {
   params: { slug: string }
 }) {
-  const { slug } = params
+  const { slug } = await params
   const { content, data } = await getPostBySlug(slug) as {
     content: string
     data: PostMeta
