@@ -11,9 +11,9 @@ author:
 ogImage:
   url: /assets/1000134145.png
 tags:
-  - Fl studio
-  - Plugin
+  - FL studio
   - Mixing
+  - Plugin
 category: Musik
 publish: true
 ---
