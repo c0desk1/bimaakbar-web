@@ -1,5 +1,9 @@
 import { PostMeta } from "@/types"
-import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/posts"
+import {
+  getPostBySlug,
+  getAllPosts,
+  getAdjacentPosts,
+} from "@/lib/posts"
 import PostHeader from "@/components/post-header"
 import PostBody from "@/components/post-body"
 import PostFooter from "@/components/post-footer"
@@ -10,12 +14,12 @@ import BackToTop from "@/components/ui/BackToTop"
 import type { Metadata, ResolvingMetadata } from "next"
 import { siteConfig } from "@/config"
 
+// ✅ Metadata generator
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: { slug: string } },
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = params
-
   const { data } = getPostBySlug(slug)
 
   const ogImage = data.ogImage
@@ -52,11 +56,13 @@ export async function generateMetadata(
   }
 }
 
+// ✅ Untuk Static Site Generation
 export function generateStaticParams() {
   const posts = getAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
 
+// ✅ Page Component
 export default async function BlogDetail({
   params,
 }: {
@@ -85,10 +91,12 @@ export default async function BlogDetail({
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <ReadingProgress />
       <section className="py-14">
-        <Breadcrumb items={[
-          { label: "Home", href: "/" },
-          { label: "Blog", href: "/blog" },
-        ]} />
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Blog", href: "/blog" },
+          ]}
+        />
         <PostHeader data={data} />
         <PostBody content={content} />
         <PostFooter data={data} prev={prev} next={next} related={related} />
