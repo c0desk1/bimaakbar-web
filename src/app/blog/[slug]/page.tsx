@@ -1,27 +1,28 @@
-import { PostMeta } from "@/types";
+import { PostMeta } from "@/types"
 import {
   getPostBySlug,
   getAllPosts,
   getAdjacentPosts,
-} from "@/lib/posts";
-import PostHeader from "@/components/post-header";
-import PostBody from "@/components/post-body";
-import PostFooter from "@/components/post-footer";
-import Breadcrumb from "@/components/ui/Breadcrumb";
-import ReadingProgress from "@/components/ui/ReadingProgress";
-import BackToTop from "@/components/ui/BackToTop";
+} from "@/lib/posts"
+import PostHeader from "@/components/post-header"
+import PostBody from "@/components/post-body"
+import PostFooter from "@/components/post-footer"
+import Breadcrumb from "@/components/ui/Breadcrumb"
+import ReadingProgress from "@/components/ui/ReadingProgress"
+import BackToTop from "@/components/ui/BackToTop"
 
-import type { Metadata } from "next";
-import { siteConfig } from "@/config";
+import type { Metadata } from "next"
+import { siteConfig } from "@/config"
 
 type Props = {
-  params: { slug: string };
-};
+  params: Promise<{ slug: string }>
+}
 
-export async function generateMetadata({ params }: { params: Promise<Props['params']> }): Promise<Metadata> {
-  const { slug } = await params;
-  const { data } = await getPostBySlug(slug);
-const ogImage = data.ogImage
+export async function generateMetadata(
+  { params }: Props ): Promise<Metadata> {
+  const { slug } = await params
+  const { data } = await getPostBySlug(slug)
+  const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
     : data.coverImage
     ? `${siteConfig.url}${data.coverImage}`
@@ -52,24 +53,25 @@ const ogImage = data.ogImage
       description: data.excerpt,
       images: [ogImage],
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  const posts = await getAllPosts()
+  return posts.map((post) => ({ slug: post.slug }))
 }
 
-export default async function BlogDetail({ params }: Props) {
-  const { slug } = params;
+export default async function BlogDetail(
+  { params }: Props ) {
+  const { slug } = await params
   const { content, data } = await getPostBySlug(slug) as {
-    content: string;
-    data: PostMeta;
-  };
+    content: string
+    data: PostMeta
+  }
 
-  const { prev, next } = await getAdjacentPosts(slug);
+  const { prev, next } = await getAdjacentPosts(slug)
 
-  const allPosts = await getAllPosts();
+  const allPosts = await getAllPosts()
   const related = allPosts
     .filter(
       (p) =>
@@ -77,7 +79,7 @@ export default async function BlogDetail({ params }: Props) {
         (p.category === data.category ||
           p.tags?.some((tag) => data.tags?.includes(tag)))
     )
-    .slice(0, 3);
+    .slice(0, 3)
 
   return (
     <main className="relative mt-14">
@@ -96,5 +98,5 @@ export default async function BlogDetail({ params }: Props) {
       </section>
       <BackToTop />
     </main>
-  );
+  )
 }
