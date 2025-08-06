@@ -3,13 +3,13 @@ title: Plugin Reverb Gratis Terbaik untuk FL Studio (2025)
 excerpt: Temukan 5 plugin reverb gratis terbaik untuk FL Studio. Tambahkan
   kedalaman dan karakter unik ke musikmu tanpa biaya. Cocok untuk mixing,
   ambient, hingga sound design. Semua plugin legal, ringan, dan mudah digunakan.
-coverImage: /assets/1000134145.png
-date: 2025-08-06T13:39:00.000Z
+coverImage: /assets/plugin-reverb-gratis-terbaik-untuk-fl-studio-2025.webp
+date: 2025-08-06T19:51:00.000Z
 author:
   name: Bima Akbar
   picture: /assets/avatar.avif
 ogImage:
-  url: /assets/1000134145.png
+  url: /assets/plugin-reverb-gratis-terbaik-untuk-fl-studio-2025.webp
 tags:
   - FL studio
   - Mixing
