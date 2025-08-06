@@ -22,7 +22,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
           className="rounded-full w-8 h-8"
         />
         <span className="text-xl font-bold">{data.author?.name}</span>
-        <span className="text-xl opacity-90">{data.category}</span>
+        <span className="text-xl text-[var(--muted-foreground)]">{data.category}</span>
       </div>
       {data.coverImage && (
         <div className="prose">
@@ -33,6 +33,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
             height={630}
             className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority
+            fetchPriority="high"
           />
         </div>
       )}
@@ -46,5 +47,4 @@ export default function PostHeader({ data }: PostHeaderProps) {
       </div>
     </div>
   )
-
 }

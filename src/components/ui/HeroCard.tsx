@@ -22,6 +22,7 @@ export default function Card({
             height={630}
             className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority
+            fetchPriority="high"
           />
         </div>
       )}
@@ -51,4 +52,3 @@ export default function Card({
     
   )
 }
-

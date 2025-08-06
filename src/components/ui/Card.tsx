@@ -21,7 +21,8 @@ export default function Card({
             width={1200}
             height={630}
             className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
-            priority />
+            priority
+            fetchPriority="high" />
         </div>
       )}
       <div className="flex w-full justify-between items-center text-xs mb-2">
@@ -30,7 +31,7 @@ export default function Card({
             {category}
           </span>
         )}
-        <time dateTime={date} className="text-md">
+        <time dateTime={date} className="text-md mb-4">
           {formatDate(date)}
         </time>
       </div>
@@ -46,4 +47,3 @@ export default function Card({
     </div>
   )
 }
-

@@ -1,5 +1,16 @@
+import { Metadata } from "next"
+import { siteMetadata } from "@/lib/metadata"
 import { getPageBySlug } from "@/lib/posts"
 
+export const metadata: Metadata = {
+  ...siteMetadata,
+  title: "Tentang",
+  description: "Tentang saya",
+  alternates: {
+    ...siteMetadata.alternates,
+    canonical: `${siteMetadata.metadataBase}/about`,
+  },
+}
 export default async function AboutPage() {
   const { content, data } = await getPageBySlug("about")
     return (
@@ -11,6 +22,4 @@ export default async function AboutPage() {
         </article>
       </main>
     )
-
   }  
-

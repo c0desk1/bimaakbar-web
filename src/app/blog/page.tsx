@@ -1,10 +1,17 @@
+import { Metadata } from "next"
+import { siteMetadata } from "@/lib/metadata"
 import { getAllPosts } from "@/lib/posts"
 import BlogListClient from "./BlogListClient"
-import { Metadata } from "next"
+
 
 export const metadata: Metadata = {
+  ...siteMetadata,
   title: "Blog",
-  description: "Kebijakan privasi situs Bima Akbar terkait pengumpulan, penggunaan, dan perlindungan data pengguna.",
+  description: "Daftar postingan artikel blog.",
+  alternates: {
+    ...siteMetadata.alternates,
+    canonical: `${siteMetadata.metadataBase}/blog`,
+  },
 }
 
 export default async function BlogPage() {
