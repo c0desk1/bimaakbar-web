@@ -48,9 +48,9 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             { label: "Blog", href: "/blog" },
           ]}
         />
-        <h2 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
+        <h1 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
           Blog
-        </h2>
+        </h1>
         <div className="mb-6">
           <input
             type="search"
