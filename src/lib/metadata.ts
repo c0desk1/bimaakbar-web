@@ -16,7 +16,7 @@ export const siteMetadata: Metadata = {
         siteName: siteConfig.name,
         images: [
         {
-            url: "/assets/open-graph.png",
+            url: "siteConfig.url/assets/open-graph.png",
             width: 1200,
             height: 630,
             alt: siteConfig.name,
@@ -27,6 +27,7 @@ export const siteMetadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
+        title: siteConfig.name,
         site: siteConfig.twitter,
         creator: siteConfig.twitter,
         images: ["/assets/open-graph.png"],
