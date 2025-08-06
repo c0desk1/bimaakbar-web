@@ -20,9 +20,7 @@ type Props = {
 }
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
-  _parent: ResolvingMetadata
-): Promise<Metadata> {
+  { params }: Props ): Promise<Metadata> {
   const { slug } = await params
   const { data } = await getPostBySlug(slug)
   const ogImage = data.ogImage
@@ -64,11 +62,8 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export default async function BlogDetail({
-  params,
-}: {
-  params: { slug: string }
-}) {
+export default async function BlogDetail(
+  { params }: Props ) {
   const { slug } = await params
   const { content, data } = await getPostBySlug(slug) as {
     content: string
