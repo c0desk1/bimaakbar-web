@@ -15,7 +15,7 @@ interface PostFooterProps {
 export default function PostFooter({ data, prev, next, related }: PostFooterProps) {
   return (
     <>
-      <div className="flex flex-col md:flex-row w-full justify-start md:justify-start items-center mb-4">
+      <div className="flex flex-col md:flex-row w-full justify-start md:justify-start items-center mb-6">
         <div className="flex items-center gap-2">
           {data.tags?.map((tag: string) => (
             <span
