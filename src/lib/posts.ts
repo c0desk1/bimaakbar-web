@@ -24,8 +24,9 @@ async function fileExists(filePath: string): Promise<boolean> {
 
 export async function getAllPosts(): Promise<PostMeta[]> {
   const fileNames = await fs.readdir(postsDirectory)
+  const markdownFiles = fileNames.filter((file) => file.endsWith('.md') || file.endsWith('.mdx'))
   const posts = await Promise.all(
-    fileNames.map(async (fileName) => {
+    markdownFiles.map(async (fileName) => {
       const slug = fileName.replace(/\.(md|mdx)$/, "")
       const fullPath = path.join(postsDirectory, fileName)
       const fileContents = await fs.readFile(fullPath, "utf8")
@@ -42,6 +43,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     .filter((post) => post.publish)
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 }
+
 
 export async function getPostBySlug(slug: string): Promise<{ content: string; data: PostMeta }> {
   const realSlug = slug.replace(/\.(md|mdx)$/, "")
