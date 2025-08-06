@@ -29,6 +29,17 @@ export default function ShareButtons({ title }: { title: string }) {
       </a>
 
       <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)]">
+        <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-blue-600">
+          <title>Facebook</title>
+          <use href="/images/icons.svg#facebook" />
+        </svg>
+      </a>
+
+      <a
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
@@ -50,4 +61,3 @@ export default function ShareButtons({ title }: { title: string }) {
     </div>
   )
 }
-
