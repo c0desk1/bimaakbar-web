@@ -7,4 +7,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-module.exports = (nextConfig);
+module.exports = nextConfig;
