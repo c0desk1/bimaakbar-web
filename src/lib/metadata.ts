@@ -32,6 +32,9 @@ export const siteMetadata: Metadata = {
         creator: siteConfig.twitter,
         images: [`${siteConfig.url}/assets/open-graph.png`],
     },
+verification: {
+google: 'kho65u9v63Iyq-j3KpnIKChy0yh_vVLZhzCrBDpnVVs',
+},
     manifest: "/site.webmanifest",
     keywords: [siteConfig.name, "Next.js", "Blog", "FL Studio", "Music", "Web Development"],
     robots: {
