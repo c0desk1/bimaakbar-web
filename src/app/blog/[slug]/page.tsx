@@ -59,9 +59,9 @@ export function generateStaticParams() {
 export default async function BlogDetail({
   params,
   }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
   }) {
-  const { slug } = await params
+  const { slug } = params
   const { content, data } = getPostBySlug(slug) as {
     content: string
     data: PostMeta
