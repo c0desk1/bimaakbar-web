@@ -14,8 +14,6 @@ import BackToTop from "@/components/ui/BackToTop"
 import type { Metadata } from "next"
 import { siteConfig } from "@/config"
 
-export const runtime = 'edge'
-
 type Props = {
   params: Promise<{ slug: string }>
 }
