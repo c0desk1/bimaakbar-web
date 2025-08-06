@@ -42,7 +42,6 @@ export const siteMetadata: Metadata = {
       "application/rss+xml": `${siteConfig.url}/rss.xml`,
     },
   },
-  manifest: "/site.webmanifest",
   keywords: [
     siteConfig.name,
     "Next.js",
