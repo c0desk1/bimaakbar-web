@@ -9,7 +9,6 @@ import Footer from "@/components/Footer"
 import { Container } from "@/components/Container"
 
 export const metadata = siteMetadata;
-export const runtime = 'edge'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
