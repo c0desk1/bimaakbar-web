@@ -7,6 +7,50 @@ import Breadcrumb from "@/components/ui/Breadcrumb"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
 
+import type { Metadata } from "next"
+import { siteConfig } from "@/config"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
+  const { data } = getPostBySlug(params.slug)
+
+  const ogImage = data.ogImage
+    ? `${siteConfig.url}${data.ogImage}`
+    : data.image
+    ? `${siteConfig.url}${data.image}`
+    : `${siteConfig.url}/assets/open-graph.png`
+
+  return {
+    title: data.title,
+    description: data.excerpt || data.description,
+    openGraph: {
+      title: data.title,
+      description: data.excerpt || data.description,
+      url: `${siteConfig.url}/blog/${params.slug}`,
+      siteName: siteConfig.name,
+      type: "article",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: data.title,
+        },
+      ],
+      locale: "id_ID",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title,
+      description: data.excerpt || data.description,
+      images: [ogImage],
+    },
+  }
+}
+
 export function generateStaticParams() {
   const posts = getAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
