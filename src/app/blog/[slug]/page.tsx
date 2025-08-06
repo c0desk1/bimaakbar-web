@@ -16,8 +16,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
 
-  const { data } = await getPostBySlug(slug) // kalau async
-  // atau: const { data } = getPostBySlug(slug) // kalau sync
+  const { data } = getPostBySlug(slug)
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
