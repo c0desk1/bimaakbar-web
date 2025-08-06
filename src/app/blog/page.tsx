@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: "Kebijakan privasi situs Bima Akbar terkait pengumpulan, penggunaan, dan perlindungan data pengguna.",
 }
 
-export default function BlogPage() {
-  const posts = getAllPosts()
+export default async function BlogPage() {
+  const posts = await getAllPosts()
 
   return (
     <BlogListClient posts={posts} />
