@@ -1,18 +1,19 @@
 ---
-title: "Panduan Astro"
-date: "2025-07-30"
-excerpt: "panduan astro deskripsi"
-coverImage: "/assets/og/open-graph.png"
-category: "Coding"
-tags: ["astro", "seo", "performance"]
+title: Panduan Astro
+excerpt: panduan astro deskripsi
+coverImage: /assets/og/open-graph.png
 author:
   name: Bima Akbar
-  picture: "/assets/author/avatar.avif"
+  picture: /assets/author/avatar.avif
 ogImage:
-  url: "/assets/og/open-graph.png"
-publish: true
+  url: /assets/og/open-graph.png
+tags:
+  - astro
+  - seo
+  - performance
+category: Coding
+publish: false
 ---
-
 Hot new platform? Niche corner of the internet? Or one specific to your area? This post will guide you through how to add a new social icon to the theme.
 
 ## Table of contents
@@ -37,7 +38,7 @@ For this guide we are going to use the StackOverflow icon as our example.
 
 > In this case, we are going to use the `StackOverflow` as an example.
 
-Searching on Tabler for 'StackOverflow' we get a single icon (https://tabler.io/icons/icon/brand-stackoverflow), we are going to need the svg code, so save it for later.
+Searching on Tabler for 'StackOverflow' we get a single icon ([https://tabler.io/icons/icon/brand-stackoverflow](https://tabler.io/icons/icon/brand-stackoverflow)), we are going to need the svg code, so save it for later.
 
 ```html
 <svg
@@ -65,12 +66,12 @@ Searching on Tabler for 'StackOverflow' we get a single icon (https://tabler.io/
 
 We need to do some tidy up on what the theme provides us.
 
-1. remove all classes other than `icon-tabler`
-2. remove width & height
-3. remove the viewBox
-4. remove the stroke-width
-5. remove the stroke
-6. remove the fill
+1.  remove all classes other than `icon-tabler`
+2.  remove width & height
+3.  remove the viewBox
+4.  remove the stroke-width
+5.  remove the stroke
+6.  remove the fill
 
 This should leave you with the following
 
