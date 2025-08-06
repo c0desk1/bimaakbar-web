@@ -11,13 +11,13 @@ export const metadata = siteMetadata;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <ThemeScript />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <Header />
-      <Container size="md">{children}</Container>
+      <Container size="lg">{children}</Container>
       <Footer />
       </body>
     </html>

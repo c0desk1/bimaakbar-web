@@ -9,7 +9,7 @@ export default function Footer() {
       itemScope
       itemType="http://schema.org/WPFooter"
       className="w-full border-t border-[var(--border)] bg-[var(--background)]">
-      <Container size="md">
+      <Container size="lg">
         <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 py-6 text-sm text-[var(--muted-foreground)] w-full">
           <nav
             role="navigation"

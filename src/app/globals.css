@@ -96,17 +96,6 @@ main {
   min-height: 100dvh;
 }
 
-.icons {
-  height: 16px;
-  width: 16px;
-  align-items: center;
-}
-
-.logo {
-  height: 32px;
-  width: 32px;
-}
-
 h1 {
 	font-size: 2.5rem;
 }
@@ -227,7 +216,7 @@ p {
 }
 .prose ul::marker,
 .prose li::marker { 
-  color: var(--muted);
+  color: var(--accent);
   opacity: 50%;
 }
 .prose ul ul,
@@ -240,13 +229,13 @@ p {
 .prose pre {
   width: 100%;
   background-color: var(--card);
-  border-color: var(--border);
+  border: 1px solid var(--border);
   color: var(--foreground);
   border-radius: 12px;
   font-size: 0.875rem;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   line-height: 1.3;
-  overflow-x: auto;
+  overflow: auto;
   margin-bottom: 2rem;
   text-align: left;
   width: 100%;

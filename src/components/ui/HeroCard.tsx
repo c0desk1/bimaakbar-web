@@ -14,19 +14,19 @@ export default function Card({
   return (
     <Link href={`/blog/${slug}`}
       className="group block bg-[var(--card)] hover:bg-[var(--hover)] border-b border-[var(--border)] overflow-hidden">
-      {coverImage && (
-        <div className="flex-1 w-full h-auto overflow-hidden">
-          <Image
-            src={coverImage}
-            alt={title}
-            width={400}
-            height={225}
-            className="w-auto h-auto"
-            priority />
-        </div>
-      )}
-      <div className="h-full w-full p-4">
-        <div className="flex w-full justify-between items-center text-xs mb-2">
+      <div className="flex h-full w-full p-4 justify-between">
+        {coverImage && (
+          <div className="overflow-hidden">
+            <Image
+              src={coverImage}
+              alt={title}
+              width={400}
+              height={225}
+              className="w-auto h-auto"
+              priority />
+          </div>
+        )}
+        <div className="flex flex-col w-auto justify-between items-center text-sm mb-2 text-start">
           {category && (
             <span className="uppercase text-[var(--foreground)] px-2 py-1 rounded-xl border border-[var(--border)]">
               {category}
@@ -35,11 +35,11 @@ export default function Card({
           <time dateTime={date} className="text-sm text-[var(--muted-foreground)] line-clamp-3">
             {formatDate(date)}
           </time>
+          <h2 className="font-semibold text-[var(--foreground)] mb-2">
+            {title}
+          </h2>
+          <p className="text-[var(--muted-foreground)] line-clamp-3">{excerpt}</p>
         </div>
-        <h2 className="font-semibold text-[var(--foreground)] mb-2">
-          {title}
-        </h2>
-        <p className="text-[var(--muted-foreground)] line-clamp-3">{excerpt}</p>
       </div>
     </Link>
   )

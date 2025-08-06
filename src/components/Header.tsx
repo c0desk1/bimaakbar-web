@@ -37,22 +37,21 @@ export default function Header() {
 
   return (
     <header
-  className={clsx(
-    "fixed top-0 w-full z-50 max-h-16 transition-all",
-    isScrolled
-      ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
-      : "bg-transparent border-transparent"
-  )}
->
-      <Container size="md">
+      className={clsx(
+        "fixed top-0 w-full z-50 max-h-14 transition-all",
+        isScrolled
+          ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
+          : "bg-transparent border-transparent"
+      )}>
+      <Container size="lg">
         <div className="flex items-center justify-between w-full py-3 gap-4">
           <Link href="/" className="flex w-fit items-center">
             <svg
-              aria-label="Logo"
-              fill="var(--muted-foreground)"
+              aria-label="brand"
+              fill="var(--foreground)"
               width={32}
               height={32}
-              className="p-1 dark:invert">
+              className="p-1">
               <title>Bima Akbar</title>
               <use href="/images/icons.svg#logo" />
             </svg>
@@ -67,7 +66,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="size-6 p-1 hover:opacity-50"
+              className="size-8 p-1 rounded-full hover:bg-[var(--hover)] cursor-pointer"
               aria-label="Toggle Dark Mode">
               <svg stroke="var(--foreground)" width="32" height="32" className="size-full">
                 <use href={`/images/icons.svg#${darkMode ? "sun" : "moon"}`} />
@@ -75,7 +74,7 @@ export default function Header() {
             </button>
             <button
               onClick={toggleMenu}
-              className="md:hidden size-8 p-1 hover:opacity-50"
+              className="md:hidden size-8 p-1 rounded-full hover:bg-[var(--hover)] cursor-pointer"
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label="Toggle Menu">

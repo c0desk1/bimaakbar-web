@@ -16,10 +16,10 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [visibleCount, setVisibleCount] = useState(6)
 
-  // Ambil semua kategori unik dari array
   const categories = useMemo(() => {
-    const allCategories = posts.flatMap((p) => p.category || [])
-    return [...new Set(allCategories)]
+    const allCategories = posts.map((p) => p.category)
+    const validCategories = allCategories.filter(cat => cat)
+    return [...new Set(validCategories as string[])]
   }, [posts])
 
   const filteredPosts = useMemo(() => {
@@ -31,11 +31,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
     let result = query ? fuse.search(query).map((r) => r.item) : posts
 
     if (selectedCategory) {
-      result = result.filter((p) =>
-        Array.isArray(p.category)
-          ? p.category.includes(selectedCategory)
-          : false
-      )
+      result = result.filter((p) => p.category === selectedCategory)
     }
 
     return result
@@ -56,8 +52,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
         <h1 className="text-[var(--foreground)] text-center text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
           Blog
         </h1>
-
-        {/* Search */}
         <div className="px-4 mb-6">
           <input
             type="search"
@@ -67,8 +61,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             className="w-full px-4 py-1 border border-[var(--border)] rounded-xl bg-[var(--background)] focus:ring-1 ring-[var(--accent)]"
           />
         </div>
-
-        {/* Kategori */}
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-3 px-4 pb-8 border-b border-[var(--border)]">
             <button
@@ -77,8 +69,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
                 selectedCategory === null
                   ? "bg-[var(--background)] text-[var(--foreground)]"
                   : "bg-[var(--card)] text-[var(--muted-foreground)]"
-              }`}
-            >
+              }`}>
               Semua
             </button>
             {categories.map((cat) => (
@@ -89,46 +80,42 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
                   selectedCategory === cat
                     ? "bg-[var(--background)] text-[var(--foreground)]"
                     : "bg-[var(--card)] text-[var(--muted-foreground)]"
-                }`}
-              >
+                }`}>
                 {cat}
               </button>
             ))}
           </div>
         )}
-
-        {/* Daftar Post */}
         <Spacer />
-        <div className="grid md:grid-cols-2 border-t border-[var(--border)]">
-          {visiblePosts.length > 0 ? (
-            visiblePosts.map((post) => (
-              <Card
-                key={post.slug}
-                slug={post.slug}
-                title={post.title}
-                excerpt={post.excerpt}
-                date={post.date}
-                coverImage={post.coverImage}
-                category={post.category}
-              />
-            ))
-          ) : (
-            <p className="text-center items-center text-[var(--muted-foreground)]">
-              Tidak ada postingan.
-            </p>
-          )}
-        </div>
-
-        {/* Tombol "Tampilkan lebih banyak" */}
-        {visibleCount < filteredPosts.length && (
-          <div className="flex justify-center mt-8 px-4">
-            <button
-              onClick={() => setVisibleCount((prev) => prev + 6)}
-              className="px-6 py-2 bg-[var(--card)] text-[var(--accent)] rounded-full hover:opacity-80"
-            >
-              Tampilkan Lebih Banyak
-            </button>
-          </div>
+        {visiblePosts.length > 0 ? (
+          <>
+            <div className="grid md:grid-cols-2 border-t border-[var(--border)]">
+              {visiblePosts.map((post) => (
+                <Card
+                  key={post.slug}
+                  slug={post.slug}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  date={post.date}
+                  coverImage={post.coverImage}
+                  category={post.category}
+                />
+              ))}
+            </div>
+            {visibleCount < filteredPosts.length && (
+              <div className="flex justify-center mt-8 px-4">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 6)}
+                  className="px-6 py-2 bg-[var(--card)] text-[var(--accent)] rounded-full hover:opacity-80">
+                  Tampilkan Lebih Banyak
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="text-xl text-center items-center justify-center w-full text-[var(--muted-foreground)]">
+            Tidak ada postingan.
+          </p>
         )}
       </section>
     </main>

@@ -1,5 +1,5 @@
-import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/posts"
 import { PostMeta } from "@/types"
+import { getPostBySlug, getAllPosts, getAdjacentPosts } from "@/lib/posts"
 import PostHeader from "@/components/post-header"
 import PostBody from "@/components/post-body"
 import PostFooter from "@/components/post-footer"
@@ -7,11 +7,16 @@ import Breadcrumb from "@/components/ui/Breadcrumb"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
 
+export function generateStaticParams() {
+  const posts = getAllPosts()
+  return posts.map((post) => ({ slug: post.slug }))
+}
+
 export default async function BlogDetail({
   params,
-}: {
+  }: {
   params: Promise<{ slug: string }>
-}) {
+  }) {
   const { slug } = await params
   const { content, data } = getPostBySlug(slug) as {
     content: string
@@ -46,9 +51,4 @@ export default async function BlogDetail({
       <BackToTop />
     </main>
   )
-}
-
-export function generateStaticParams() {
-  const posts = getAllPosts()
-  return posts.map((post) => ({ slug: post.slug }))
 }
