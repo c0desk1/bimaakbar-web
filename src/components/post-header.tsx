@@ -25,7 +25,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
         <span className="text-xl text-[var(--muted-foreground)]">{data.category}</span>
       </div>
       {data.coverImage && (
-        <div className="prose">
+        <div>
           <Image
             src={data.coverImage}
             alt={data.title}
