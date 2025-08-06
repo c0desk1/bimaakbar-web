@@ -142,8 +142,6 @@ main {
   transition: opacity 0.2s ease-in-out;
   margin-left: 0.5rem;
   font-weight: 600;
-  color: var(--border);
-  user-select: none;
 }
 .prose p {
   margin-bottom: 2rem;
