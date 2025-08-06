@@ -18,7 +18,7 @@ tags:
   - android
   - pc
 category: Game
-publish: true
+publish: false
 ---
 Gaming telah menempuh perjalanan panjang dari awal mulanya yang hanya berupa piksel. Apa yang dulunya sekadar hobi khusus kini telah menjelma menjadi fenomena global, memikat jutaan orang, dan bertransformasi menjadi industri dinamis yang memadukan teknologi, seni, dan komunitas. Namun, gaming bukan hanya sekadar cara menghabiskan waktu; ia adalah dunia yang dinamis dan beraneka ragam yang menawarkan sesuatu untuk semua orang.
 
