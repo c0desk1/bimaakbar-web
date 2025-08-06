@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "fs/promises" // Import the promises-based version of fs
 import path from "path"
 import matter from "gray-matter"
 import { remark } from "remark"
@@ -13,14 +13,14 @@ interface PageFrontMatter {
 
 const postsDirectory = path.join(process.cwd(), "content/blog")
 
-export function getAllPosts(): PostMeta[] {
-  const fileNames = fs.readdirSync(postsDirectory)
+export async function getAllPosts(): Promise<PostMeta[]> {
+  const fileNames = await fs.readdir(postsDirectory)
 
-  return fileNames
-    .map((fileName) => {
+  const posts = await Promise.all(
+    fileNames.map(async (fileName) => {
       const slug = fileName.replace(/\.md$/, "")
       const fullPath = path.join(postsDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, "utf8")
+      const fileContents = await fs.readFile(fullPath, "utf8")
       const { data } = matter(fileContents)
 
       return {
@@ -28,17 +28,20 @@ export function getAllPosts(): PostMeta[] {
         slug,
       }
     })
+  )
+
+  return posts
     .filter((post) => post.publish)
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
-export function getPostBySlug(slug: string): { content: string; data: PostMeta } {
+export async function getPostBySlug(slug: string): Promise<{ content: string; data: PostMeta }> {
   const realSlug = slug.replace(/\.md$/, "")
   const fullPath = path.join(postsDirectory, `${realSlug}.md`)
-  const fileContents = fs.readFileSync(fullPath, "utf8")
+  const fileContents = await fs.readFile(fullPath, "utf8")
 
   const { data, content } = matter(fileContents)
-  const processedContent = remark().use(html).processSync(content)
+  const processedContent = await remark().use(html).process(content)
   const contentHtml = processedContent.toString()
 
   return {
@@ -50,11 +53,11 @@ export function getPostBySlug(slug: string): { content: string; data: PostMeta }
   }
 }
 
-export function getAdjacentPosts(slug: string): {
+export async function getAdjacentPosts(slug: string): Promise<{
   prev: PostMeta | null
   next: PostMeta | null
-} {
-  const posts = getAllPosts()
+}> {
+  const posts = await getAllPosts()
   const index = posts.findIndex((post) => post.slug === slug)
 
   const prev = index > 0 ? posts[index - 1] : null
@@ -63,15 +66,15 @@ export function getAdjacentPosts(slug: string): {
   return { prev, next }
 }
 
-export function getPageBySlug(slug: string): {
+export async function getPageBySlug(slug: string): Promise<{
   content: string
   data: PageFrontMatter
-} {
+}> {
   const filePath = path.join(process.cwd(), `content/pages/${slug}.md`)
-  const fileContents = fs.readFileSync(filePath, "utf8")
+  const fileContents = await fs.readFile(filePath, "utf8")
 
   const { data, content } = matter(fileContents)
-  const processedContent = remark().use(html).processSync(content)
+  const processedContent = await remark().use(html).process(content)
   const contentHtml = processedContent.toString()
 
   return {
