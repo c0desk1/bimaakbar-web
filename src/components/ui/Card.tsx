@@ -18,8 +18,8 @@ export default function Card({
           <Image
             src={coverImage}
             alt={`Cover Image for ${title}`}
-            width={1280}
-            height={720}
+            width={1200}
+            height={630}
             className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority />
         </div>
@@ -46,3 +46,4 @@ export default function Card({
     </div>
   )
 }
+
