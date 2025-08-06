@@ -14,9 +14,9 @@ export default function Card({
   return (
     <Link href={`/blog/${slug}`}
       className="group block bg-[var(--card)] hover:bg-[var(--hover)] border-b border-[var(--border)] overflow-hidden">
-      <div className="flex h-full w-full p-4 justify-between">
+      <div className="flex md:flex-col h-full w-full justify-between">
         {coverImage && (
-          <div className="overflow-hidden">
+          <div className="overflow-hidden flex-1">
             <Image
               src={coverImage}
               alt={title}
@@ -26,7 +26,7 @@ export default function Card({
               priority />
           </div>
         )}
-        <div className="flex flex-col w-auto justify-between items-center text-sm mb-2 text-start">
+        <div className="flex flex-col items-center text-sm mb-2 text-start">
           {category && (
             <span className="uppercase text-[var(--foreground)] px-2 py-1 rounded-xl border border-[var(--border)]">
               {category}
