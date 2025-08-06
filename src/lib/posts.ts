@@ -1,4 +1,4 @@
-import fs from "fs/promises" // Import the promises-based version of fs
+import fs from "fs/promises"
 import path from "path"
 import matter from "gray-matter"
 import { remark } from "remark"
@@ -13,12 +13,20 @@ interface PageFrontMatter {
 
 const postsDirectory = path.join(process.cwd(), "content/blog")
 
+async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath)
+    return true
+  } catch {
+    return false
+  }
+}
+
 export async function getAllPosts(): Promise<PostMeta[]> {
   const fileNames = await fs.readdir(postsDirectory)
-
   const posts = await Promise.all(
     fileNames.map(async (fileName) => {
-      const slug = fileName.replace(/\.md$/, "")
+      const slug = fileName.replace(/\.(md|mdx)$/, "")
       const fullPath = path.join(postsDirectory, fileName)
       const fileContents = await fs.readFile(fullPath, "utf8")
       const { data } = matter(fileContents)
@@ -36,10 +44,20 @@ export async function getAllPosts(): Promise<PostMeta[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<{ content: string; data: PostMeta }> {
-  const realSlug = slug.replace(/\.md$/, "")
-  const fullPath = path.join(postsDirectory, `${realSlug}.md`)
-  const fileContents = await fs.readFile(fullPath, "utf8")
+  const realSlug = slug.replace(/\.(md|mdx)$/, "")
+  const mdPath = path.join(postsDirectory, `${realSlug}.md`)
+  const mdxPath = path.join(postsDirectory, `${realSlug}.mdx`)
 
+  let fullPath = ''
+  if (await fileExists(mdPath)) {
+    fullPath = mdPath
+  } else if (await fileExists(mdxPath)) {
+    fullPath = mdxPath
+  } else {
+    throw new Error(`Post not found: ${realSlug}`)
+  }
+
+  const fileContents = await fs.readFile(fullPath, "utf8")
   const { data, content } = matter(fileContents)
   const processedContent = await remark().use(html).process(content)
   const contentHtml = processedContent.toString()

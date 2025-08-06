@@ -32,6 +32,4 @@ export async function GET() {
       "Content-Type": "application/xml; charset=UTF-8",
     },
   });
-
 }
-

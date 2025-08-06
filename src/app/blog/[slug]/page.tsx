@@ -4,6 +4,7 @@ import {
   getAllPosts,
   getAdjacentPosts,
 } from "@/lib/posts"
+
 import PostHeader from "@/components/post-header"
 import PostBody from "@/components/post-body"
 import PostFooter from "@/components/post-footer"
@@ -24,7 +25,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const { data } = await getPostBySlug(slug);
 const imagePath =
-    data.ogImage?.url || data.coverImage || "assets/open-graph.png";
+    data.ogImage?.url || data.coverImage || "assets/og/open-graph.png";
 
 const ogImage = imagePath.startsWith("http")
     ? imagePath

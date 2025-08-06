@@ -57,10 +57,10 @@ export default function Header() {
             </svg>
           </Link>
 
-          <nav role="navigation" className="hidden md:flex gap-6 text-[var(--muted-foreground)]">
-            <Link href="/" className="font-bold tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Home</Link>
-            <Link href="/blog" className="font-bold tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
-            <Link href="/about" className="font-bold tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">About</Link>
+          <nav role="navigation" className="text-xl hidden md:flex gap-6 text-[var(--muted-foreground)]">
+            <Link href="/" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Home</Link>
+            <Link href="/blog" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
+            <Link href="/about" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">About</Link>
             
           </nav>
 
