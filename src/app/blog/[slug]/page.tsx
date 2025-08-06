@@ -14,13 +14,12 @@ import BackToTop from "@/components/ui/BackToTop"
 import type { Metadata, ResolvingMetadata } from "next"
 import { siteConfig } from "@/config"
 
-// ✅ Metadata generator
 export async function generateMetadata(
   { params }: { params: { slug: string } },
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = params
-  const { data } = getPostBySlug(slug)
+  const { data } = await getPostBySlug(slug)
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
@@ -56,9 +55,8 @@ export async function generateMetadata(
   }
 }
 
-// ✅ Untuk Static Site Generation
-export function generateStaticParams() {
-  const posts = getAllPosts()
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
 
@@ -69,14 +67,14 @@ export default async function BlogDetail({
   params: { slug: string }
 }) {
   const { slug } = params
-  const { content, data } = getPostBySlug(slug) as {
+  const { content, data } = await getPostBySlug(slug) as {
     content: string
     data: PostMeta
   }
 
-  const { prev, next } = getAdjacentPosts(slug)
+  const { prev, next } = await getAdjacentPosts(slug)
 
-  const allPosts = getAllPosts()
+  const allPosts = await getAllPosts()
   const related = allPosts
     .filter(
       (p) =>
