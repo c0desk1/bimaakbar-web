@@ -34,6 +34,7 @@ export const siteMetadata: Metadata = {
     },
 verification: {
 google: 'kho65u9v63Iyq-j3KpnIKChy0yh_vVLZhzCrBDpnVVs',
+yandex: '0750847de0e7aa96',
 },
     manifest: "/site.webmanifest",
     keywords: [siteConfig.name, "Next.js", "Blog", "FL Studio", "Music", "Web Development"],
