@@ -5,7 +5,6 @@ import Fuse from "fuse.js"
 import { PostMeta } from "@/types"
 import Breadcrumb from "@/components/ui/Breadcrumb"
 import Card from "@/components/ui/Card"
-import Spacer from "@/components/ui/Spacer"
 
 interface BlogListClientProps {
   posts: PostMeta[]
@@ -40,19 +39,19 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
-    <main className="relative border-x border-[var(--border)] mt-14">
+    <main className="relative mt-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
-      <section className="items-center py-14">
-        <Breadcrumb
+      <section>
+        <Breadcrumb 
           items={[
             { label: "Home", href: "/" },
             { label: "Blog", href: "/blog" },
           ]}
         />
-        <h1 className="text-[var(--foreground)] text-center text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
+        <h2 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
           Blog
-        </h1>
-        <div className="px-4 mb-6">
+        </h2>
+        <div className="mb-6">
           <input
             type="search"
             placeholder="Cari..."
@@ -62,10 +61,10 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           />
         </div>
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-3 px-4 pb-8 border-b border-[var(--border)]">
+          <div className="flex flex-wrap gap-4 mb-6">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-2 py-0.5 rounded-xl border border-[var(--border)] ${
+              className={`px-2 py-0.5 rounded-[var(--radius)] border border-[var(--border)] ${
                 selectedCategory === null
                   ? "bg-[var(--background)] text-[var(--foreground)]"
                   : "bg-[var(--card)] text-[var(--muted-foreground)]"
@@ -76,7 +75,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2 py-0.5 rounded-xl border border-[var(--border)] ${
+                className={`px-2 py-0.5 rounded-[var(--radius)] border border-[var(--border)] ${
                   selectedCategory === cat
                     ? "bg-[var(--background)] text-[var(--foreground)]"
                     : "bg-[var(--card)] text-[var(--muted-foreground)]"
@@ -86,10 +85,9 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             ))}
           </div>
         )}
-        <Spacer />
         {visiblePosts.length > 0 ? (
           <>
-            <div className="grid md:grid-cols-2 border-t border-[var(--border)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 lg:gap-x-6 gap-y-14 md:gap-y-16 mb-16">
               {visiblePosts.map((post) => (
                 <Card
                   key={post.slug}
@@ -105,7 +103,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             {visibleCount < filteredPosts.length && (
               <div className="flex justify-center mt-8 px-4">
                 <button
-                  onClick={() => setVisibleCount((prev) => prev + 6)}
+                  onClick={() => setVisibleCount((prev) => prev + 4)}
                   className="px-6 py-2 bg-[var(--card)] text-[var(--accent)] rounded-full hover:opacity-80">
                   Tampilkan Lebih Banyak
                 </button>

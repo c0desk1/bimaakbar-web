@@ -96,18 +96,6 @@ main {
   min-height: 100dvh;
 }
 
-h1 {
-	font-size: 2.5rem;
-}
-h2 {
-	font-size: 1.5rem;
-}
-p {
-  line-height: 1.6;
-  opacity: 0.85;
-  color: var(--foreground);
-}
-
 .prose {
   width: 100%;
   color: var(--foreground);

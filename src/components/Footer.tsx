@@ -36,7 +36,7 @@ export default function Footer() {
               href="https://tiktok.com/@bimaakbarmusicc" 
               target="_blank" 
               aria-label="Tiktok" 
-              className="w-5 h-5 flex items-center justify-center hover:opacity-70">
+              className="w-5 h-5 flex items-center justify-center hover:[opacity-70]">
               <svg stroke="var(--foreground)" width={20} height={20} className="size-full">
                 <use href="/images/icons.svg#tiktok" />
               </svg>

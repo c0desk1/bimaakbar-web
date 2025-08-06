@@ -24,8 +24,8 @@ export default function Breadcrumb({
   separator = DefaultSeparator,
 }: BreadcrumbProps) {
   return (
-    <nav className="w-full flex justify-center py-4 overflow-x-auto border-t border-[var(--border)]">
-      <ol className="flex justify-center items-center whitespace-nowrap text-sm text-[var(--muted-foreground)] text-ellipsis overflow-x-auto scrollbar-thin scrollbar-thumb-[var(--border)] scrollbar-track-transparent"
+    <nav className="w-full flex justify-center py-4 overflow-x-auto">
+      <ol className="flex justify-center items-center whitespace-nowrap text-md text-[var(--muted-foreground)] text-ellipsis overflow-x-auto scrollbar-thin scrollbar-thumb-[var(--border)] scrollbar-track-transparent"
         aria-label="Breadcrumb">
         {items.map((item, index) => {
           const isLast = index === items.length - 1

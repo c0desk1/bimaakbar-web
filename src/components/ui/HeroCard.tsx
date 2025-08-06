@@ -12,35 +12,42 @@ export default function Card({
   category,
 }: PostMeta) {
   return (
-    <Link href={`/blog/${slug}`}
-      className="group block bg-[var(--card)] hover:bg-[var(--hover)] border-b border-[var(--border)] overflow-hidden">
-      <div className="flex md:flex-col h-full w-full justify-between">
-        {coverImage && (
-          <div className="overflow-hidden flex-1">
-            <Image
-              src={coverImage}
-              alt={title}
-              width={400}
-              height={225}
-              className="w-auto h-auto"
-              priority />
-          </div>
-        )}
-        <div className="flex flex-col items-center text-sm mb-2 text-start">
+    <section>
+      {coverImage && (
+        <div className="mb-8">
+          <Image
+            src={coverImage}
+            alt={`Cover Image for ${title}`}
+            width={1280}
+            height={720}
+            className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
+            priority
+          />
+        </div>
+      )}
+      <div className="md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8 mb-20 md:mb-28">
+        <div>
+          <h2 className="text-[var(--foreground)] mb-4 text-4xl lg:text-5xl leading-tight">
+            <Link href={`/blog/${slug}`}
+              aria-label={title}
+              className="hover:underline">
+              {title}
+            </Link>
+          </h2>
+          <time dateTime={date} className="mb-4 md:mb-0 text-md">
+            {formatDate(date)}
+          </time>
+        </div>
+        <div>
+          <p className="text-md leading-relaxed mb-4 line-clamp-3">{excerpt}</p>
           {category && (
             <span className="uppercase text-[var(--foreground)] px-2 py-1 rounded-xl border border-[var(--border)]">
               {category}
             </span>
           )}
-          <time dateTime={date} className="text-sm text-[var(--muted-foreground)] line-clamp-3">
-            {formatDate(date)}
-          </time>
-          <h2 className="font-semibold text-[var(--foreground)] mb-2">
-            {title}
-          </h2>
-          <p className="text-[var(--muted-foreground)] line-clamp-3">{excerpt}</p>
-        </div>
+        </div>        
       </div>
-    </Link>
+    </section>
+    
   )
 }

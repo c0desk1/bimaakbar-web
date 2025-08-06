@@ -13,6 +13,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(function() {
+            const theme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (theme === 'dark' || (!theme && prefersDark)) {
+              document.documentElement.classList.add('dark');
+            }
+          })();`,
+        }}
+      />
         <ThemeScript />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

@@ -36,7 +36,7 @@ export default async function BlogDetail({
     .slice(0, 3)
 
   return (
-    <main className="relative border-x border-[var(--border)] mt-14">
+    <main className="relative mt-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <ReadingProgress />
       <section className="py-14">

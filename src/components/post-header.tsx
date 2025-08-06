@@ -9,36 +9,36 @@ interface PostHeaderProps {
 
 export default function PostHeader({ data }: PostHeaderProps) {
   return (
-    <div className="flex flex-col px-4">
-      <h1 className="text-[var(--foreground)] text-center md:text-left text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-8">
+    <div className="flex flex-col">
+      <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-tight md:leading-none mb-12 text-center md:text-left">
         {data.title}
       </h1>
-      <div className="flex justify-center md:justify-start items-center gap-2 text-sm text-[var(--muted-foreground)] mb-4">
+      <div className="flex items-center justify-center md:justify-start gap-2 text-md text-[var(--muted-foreground)] mb-4">
         <Image
           src={data.author?.picture || ''}
-          alt={data.author?.name || 'Admin'}
+          alt={data.author?.name || 'Author'}
           width={18}
           height={18}
-          className="rounded-full"
+          className="rounded-full w-8 h-8"
         />
-        <span>{data.author?.name}</span>
-        <span className="opacity-60">{data.category}</span>
+        <span className="text-xl font-bold">{data.author?.name}</span>
+        <span className="text-xl opacity-90">{data.category}</span>
       </div>
       {data.coverImage && (
-        <div className="prose mb-4">
+        <div className="prose">
           <Image
             src={data.coverImage}
             alt={data.title}
-            width={1200}
-            height={630}
-            className="w-auto h-auto"
+            width={1280}
+            height={720}
+            className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority
           />
         </div>
       )}
-      <div className="flex items-center w-full justify-between text-sm text-[var(--muted-foreground)] mb-8">
+      <div className="flex items-center text-md text-[var(--muted-foreground)] mb-4">
         <div className="flex items-center gap-1">
-          <svg width={16} height={16} stroke="currentColor" className="opacity-80">
+          <svg width={16} height={16} stroke="currentColor">
             <use href="/images/icons.svg#calender" />
           </svg>
           <time dateTime={data.date}>{formatDate(data.date)}</time>

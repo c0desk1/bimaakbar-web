@@ -31,7 +31,7 @@ export const Container: React.FC<ContainerProps> = ({
   return (
     <div
       className={con(
-        "w-full h-full mx-auto px-4",
+        "w-full h-full mx-auto px-5",
         size === "sm" && "max-w-screen-sm",
         size === "md" && "max-w-screen-md",
         size === "lg" && "max-w-screen-lg",

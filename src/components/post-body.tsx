@@ -5,7 +5,7 @@ interface PostBodyProps { content: string; }
 export default function PostBody({ content }: PostBodyProps) {
     return (
         <article
-            className="prose px-4"
+            className="prose"
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );

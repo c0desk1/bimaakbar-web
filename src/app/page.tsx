@@ -14,33 +14,26 @@ export default async function HomePage() {
   const trendingPosts = posts.slice(0, 1)
 
   return (
-    <main className="relative border-x border-[var(--border)] mt-14">
+    <main className="relative mt-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <section>
+        <Hero />
+        {trendingPosts.map((post) => (
+          <HeroCard
+            key={post.slug}
+            slug={post.slug}
+            title={post.title}
+            excerpt={post.excerpt}
+            date={post.date}
+            coverImage={post.coverImage}
+            category={post.category} />
+        ))}
         <Spacer />
-        <section className="border-y border-[var(--border)]">
-          <Hero />
-        </section>
-        <Spacer />
-        <section className="items-center border-t border-[var(--border)]">
-          <h2 className="px-4 py-2 text-2xl font-bold">Trending</h2>
-          <div className="grid border-t border-[var(--border)]">
-            {trendingPosts.map((post) => (
-              <HeroCard
-                key={post.slug}
-                slug={post.slug}
-                title={post.title}
-                excerpt={post.excerpt}
-                date={post.date}
-                coverImage={post.coverImage}
-                category={post.category} />
-            ))}
-          </div>
-        </section>
-        <Spacer />
-        <section className="items-center border-t border-[var(--border)]">
-          <h2 className="px-4 py-2 text-2xl font-bold">Terbaru</h2>
-          <div className="grid md:grid-cols-2 border-t border-[var(--border)]">
+        <section>
+          <h2 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
+            Lainnya
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 lg:gap-x-6 gap-y-14 md:gap-y-16 mb-16">
             {recentPosts.map((post) => (
               <Card
                 key={post.slug}

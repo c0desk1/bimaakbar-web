@@ -5,14 +5,13 @@ import { siteConfig } from '@/config';
 
 export default function Hero() {
   return (
-    <section className="font-sans min-h-[30vh] flex flex-col justify-center items-center text-center">
-      <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-        <span className="text-[var(--foreground)]">{siteConfig.name}</span>
+    <section className="flex-col md:flex-row flex items-center md:justify-between mt-16 mb-16 md:mb-12">
+      <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
+        {siteConfig.name}.
       </h1>
-
-      <p className="mt-4 text-lg text-[var(--muted-foreground)] max-w-xl">
+      <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
         {siteConfig.description}
-      </p>
+      </h4>
     </section>
   );
 }

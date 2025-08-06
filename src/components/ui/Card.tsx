@@ -12,35 +12,37 @@ export default function Card({
   category,
 }: PostMeta) {
   return (
-    <Link href={`/blog/${slug}`}
-      className="group block bg-[var(--card)] hover:bg-[var(--hover)] border-b border-[var(--border)] overflow-hidden">
+    <div>
       {coverImage && (
-        <div className="flex-1 w-full h-auto overflow-hidden">
+        <div className="mb-4">
           <Image
             src={coverImage}
-            alt={title}
-            width={400}
-            height={225}
-            className="w-auto h-auto"
+            alt={`Cover Image for ${title}`}
+            width={1280}
+            height={720}
+            className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority />
         </div>
       )}
-      <div className="h-full w-full p-4">
-        <div className="flex w-full justify-between items-center text-xs mb-2">
-          {category && (
-            <span className="uppercase text-[var(--foreground)] px-2 py-1 rounded-xl border border-[var(--border)]">
-              {category}
-            </span>
-          )}
-          <time dateTime={date} className="text-sm text-[var(--muted-foreground)] line-clamp-3">
-            {formatDate(date)}
-          </time>
-        </div>
-        <h2 className="font-semibold text-[var(--foreground)] mb-2">
-          {title}
-        </h2>
-        <p className="text-[var(--muted-foreground)] line-clamp-3">{excerpt}</p>
+      <div className="flex w-full justify-between items-center text-xs mb-2">
+        {category && (
+          <span className="uppercase text-[var(--foreground)] px-2 py-1 rounded-xl border border-[var(--border)]">
+            {category}
+          </span>
+        )}
+        <time dateTime={date} className="text-md mb-4">
+          {formatDate(date)}
+        </time>
       </div>
-    </Link>
+      <h3 className="text-3xl mb-3 leading-snug">
+        <Link 
+          as={`/blog/${slug}`}
+          href={`/blog/${slug}`}
+          className="hover:underline">
+        {title}
+        </Link>
+      </h3>
+      <p className="text-md leading-relaxed mb-4">{excerpt}</p>
+    </div>
   )
 }
