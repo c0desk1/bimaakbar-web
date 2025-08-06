@@ -14,7 +14,7 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params
 
   const { data } = getPostBySlug(slug)
 
