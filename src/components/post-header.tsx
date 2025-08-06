@@ -29,8 +29,8 @@ export default function PostHeader({ data }: PostHeaderProps) {
           <Image
             src={data.coverImage}
             alt={data.title}
-            width={1280}
-            height={720}
+            width={1200}
+            height={630}
             className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
             priority
           />
@@ -46,4 +46,5 @@ export default function PostHeader({ data }: PostHeaderProps) {
       </div>
     </div>
   )
+
 }
