@@ -14,8 +14,13 @@ import BackToTop from "@/components/ui/BackToTop"
 import type { Metadata, ResolvingMetadata } from "next"
 import { siteConfig } from "@/config"
 
+type Props = {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params, searchParams }: Props,
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params
