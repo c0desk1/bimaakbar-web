@@ -19,14 +19,16 @@ type Props = {
 }
 
 export async function generateMetadata(
-  { params }: Props ): Promise<Metadata> {
-  const { slug } = await params
-  const { data } = await getPostBySlug(slug)
-  const ogImage = data.ogImage
-    ? `${siteConfig.url}${data.ogImage}`
-    : data.coverImage
-    ? `${siteConfig.url}${data.coverImage}`
-    : `${siteConfig.url}/assets/open-graph.png`;
+  { params }: Props
+): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = await getPostBySlug(slug);
+const imagePath =
+    data.ogImage?.url || data.coverImage || "assets/open-graph.png";
+
+const ogImage = imagePath.startsWith("http")
+    ? imagePath
+    : `${siteConfig.url}/${imagePath.replace(/^\/+/, "")}`;
 
   return {
     title: data.title,
@@ -53,7 +55,7 @@ export async function generateMetadata(
       description: data.excerpt,
       images: [ogImage],
     },
-  }
+  };
 }
 
 export async function generateStaticParams() {
