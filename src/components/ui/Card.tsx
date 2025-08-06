@@ -30,7 +30,7 @@ export default function Card({
             {category}
           </span>
         )}
-        <time dateTime={date} className="text-md mb-4">
+        <time dateTime={date} className="text-md">
           {formatDate(date)}
         </time>
       </div>
