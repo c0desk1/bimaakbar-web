@@ -9,10 +9,11 @@ export default function Hero() {
       <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-tight md:pr-8">
         {siteConfig.name}.
       </h1>
-      <h3 className="text-center md:text-left text-lg mt-5 md:pl-8">
+      <span className="text-center md:text-left text-lg mt-5 md:pl-8">
         {siteConfig.description}
-      </h3>
+      </span>
     </section>
   );
 }
+
 
