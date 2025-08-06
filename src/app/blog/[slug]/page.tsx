@@ -10,12 +10,11 @@ import BackToTop from "@/components/ui/BackToTop"
 import type { Metadata } from "next"
 import { siteConfig } from "@/config"
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-}): Promise<Metadata> {
-  const { data } = getPostBySlug(params.slug)
+export async function generateMetadata(
+  props: { params: { slug: string } }
+): Promise<Metadata> {
+  const { slug } = props.params
+  const { data } = getPostBySlug(slug)
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
@@ -29,7 +28,7 @@ export async function generateMetadata({
     openGraph: {
       title: data.title,
       description: data.excerpt || data.description,
-      url: `${siteConfig.url}/blog/${params.slug}`,
+      url: `${siteConfig.url}/blog/${slug}`,
       siteName: siteConfig.name,
       type: "article",
       images: [
@@ -58,9 +57,9 @@ export function generateStaticParams() {
 
 export default async function BlogDetail({
   params,
-  }: {
+}: {
   params: { slug: string }
-  }) {
+}) {
   const { slug } = params
   const { content, data } = getPostBySlug(slug) as {
     content: string
@@ -85,8 +84,8 @@ export default async function BlogDetail({
       <ReadingProgress />
       <section className="py-14">
         <Breadcrumb items={[
-            { label: "Home", href: "/" },
-            { label: "Blog", href: "/blog" },
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/blog" },
         ]} />
         <PostHeader data={data} />
         <PostBody content={content} />
