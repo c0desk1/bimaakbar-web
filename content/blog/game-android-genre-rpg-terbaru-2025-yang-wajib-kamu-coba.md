@@ -3,13 +3,13 @@ title: 5 Game Android Genre RPG Terbaru 2025 yang Wajib Kamu Coba
 excerpt: Tahun 2025 menghadirkan deretan game RPG Android terbaru dengan grafis
   memukau dan gameplay inovatif. Dari dunia cyberpunk hingga petualangan
   dungeon, inilah 5 judul yang wajib kamu coba!
-coverImage: /assets/5-game-android-genre-rpg-terbaru-2025.webp
+coverImage: /assets/og/5-game-android-genre-rpg-terbaru-2025.webp
 date: 2025-08-06T19:39:00.000Z
 author:
   name: Bima Akbar
-  picture: /assets/avatar.avif
+  picture: /assets/author/avatar.avif
 ogImage:
-  url: /assets/5-game-android-genre-rpg-terbaru-2025.webp
+  url: /assets/og/5-game-android-genre-rpg-terbaru-2025.webp
 tags:
   - Android
   - Game
