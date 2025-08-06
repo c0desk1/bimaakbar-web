@@ -15,12 +15,12 @@ export const siteMetadata: Metadata = {
         url: siteConfig.url,
         siteName: siteConfig.name,
         images: [
-        {
-            url: "siteConfig.url/assets/open-graph.png",
-            width: 1200,
-            height: 630,
-            alt: siteConfig.name,
-        },
+            {
+                url: `${siteConfig.url}/assets/open-graph.png`,
+                width: 1200,
+                height: 630,
+                alt: siteConfig.name,
+            },
         ],
         locale: "id_ID",
         type: "website",
@@ -30,10 +30,10 @@ export const siteMetadata: Metadata = {
         title: siteConfig.name,
         site: siteConfig.twitter,
         creator: siteConfig.twitter,
-        images: ["/assets/open-graph.png"],
+        images: [`${siteConfig.url}/assets/open-graph.png`],
     },
     manifest: "/site.webmanifest",
-    keywords: [siteConfig.name, "Next.js", "Blog", "Web Development"],
+    keywords: [siteConfig.name, "Next.js", "Blog", "FL Studio", "Music", "Web Development"],
     robots: {
         index: true,
         follow: true,
