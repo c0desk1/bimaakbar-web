@@ -7,11 +7,12 @@ import Hero from "@/components/ui/Hero"
 export default async function HomePage() {
   const posts = await getAllPosts()
 
-  const recentPosts = [...posts]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 4)
-
-  const trendingPosts = posts.slice(0, 1)
+  const sortedPosts = [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+  
+  const trendingPosts = sortedPosts.slice(0, 1)
+  const recentPosts = sortedPosts.slice(1, 5)
 
   return (
     <main className="relative mt-14">
