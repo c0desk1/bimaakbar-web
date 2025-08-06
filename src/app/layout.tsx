@@ -13,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+<meta name="google-site-verification" content="kho65u9v63Iyq-j3KpnIKChy0yh_vVLZhzCrBDpnVVs" />
       <script
         dangerouslySetInnerHTML={{
           __html: `(function() {
