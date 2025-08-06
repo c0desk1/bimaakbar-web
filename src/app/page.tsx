@@ -1,5 +1,4 @@
 import { getAllPosts } from "@/lib/posts"
-import Spacer from "@/components/ui/Spacer"
 import HeroCard from "@/components/ui/HeroCard"
 import Card from "@/components/ui/Card"
 import Hero from "@/components/ui/Hero"
@@ -28,9 +27,8 @@ export default async function HomePage() {
             coverImage={post.coverImage}
             category={post.category} />
         ))}
-        <Spacer />
         <section>
-          <h2 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
+          <h2 className="mb-4 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
             Lainnya
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 lg:gap-x-6 gap-y-14 md:gap-y-16 mb-16">
@@ -46,7 +44,6 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
-        <Spacer />
       </section>
     </main>
   )
