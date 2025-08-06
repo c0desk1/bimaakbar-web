@@ -6,19 +6,19 @@ excerpt: Gaming telah menempuh perjalanan panjang dari awal mulanya yang hanya
   industri dinamis yang memadukan teknologi, seni, dan komunitas. Namun, gaming
   bukan hanya sekadar cara menghabiskan waktu; ia adalah dunia yang dinamis dan
   beraneka ragam yang menawarkan sesuatu untuk semua orang.
-coverImage: /assets/open-graph.png
+coverImage: /assets/og/bimaakbar-og-blog.webp
 date: 2025-08-05T23:33:00.000Z
 author:
   name: Bima Akbar
-  picture: /assets/avatar.avif
+  picture: /assets/author/avatar.avif
 ogImage:
-  url: /assets/open-graph.png
+  url: /assets/og/bimaakbar-og-blog.webp
 tags:
   - game
   - android
   - pc
 category: Game
-publish: false
+publish: true
 ---
 Gaming telah menempuh perjalanan panjang dari awal mulanya yang hanya berupa piksel. Apa yang dulunya sekadar hobi khusus kini telah menjelma menjadi fenomena global, memikat jutaan orang, dan bertransformasi menjadi industri dinamis yang memadukan teknologi, seni, dan komunitas. Namun, gaming bukan hanya sekadar cara menghabiskan waktu; ia adalah dunia yang dinamis dan beraneka ragam yang menawarkan sesuatu untuk semua orang.
 
