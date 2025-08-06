@@ -21,6 +21,7 @@ export default function ShareButtons({ title }: { title: string }) {
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Bagikan ke WhatsApp"
         className="p-2 rounded-full border border-[var(--border)] bg-[var(--background)]">
         <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-green-500">
           <title>Whatsapp</title>
@@ -32,6 +33,7 @@ export default function ShareButtons({ title }: { title: string }) {
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Bagikan ke Facebook"
         className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)]">
         <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-blue-600">
           <title>Facebook</title>
@@ -43,6 +45,7 @@ export default function ShareButtons({ title }: { title: string }) {
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Bagikan ke X"
         className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)]">
         <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-black">
           <title>X</title>
@@ -52,6 +55,7 @@ export default function ShareButtons({ title }: { title: string }) {
 
       <button
         onClick={() => navigator.clipboard.writeText(url)}
+        aria-label="Salin tautan"
         className="p-2 rounded-full bg-[var(--background)] border border-[var(--border)]">
         <svg width={18} height={18} stroke="var(--muted)">
           <title>Salin</title>
