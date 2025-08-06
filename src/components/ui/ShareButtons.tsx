@@ -24,7 +24,7 @@ export default function ShareButtons({ title }: { title: string }) {
         className="p-2 rounded-full border border-[var(--border)] bg-[var(--background)]">
         <svg width={18} height={18} stroke="var(--muted)" className="hover:stroke-green-500">
           <title>Whatsapp</title>
-          <use href="/images/icons.svg#wa" />
+          <use href="/images/icons.svg#whatsapp" />
         </svg>
       </a>
 
@@ -50,3 +50,4 @@ export default function ShareButtons({ title }: { title: string }) {
     </div>
   )
 }
+
