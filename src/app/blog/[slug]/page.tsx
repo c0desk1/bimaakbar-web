@@ -23,16 +23,16 @@ export async function generateMetadata(
 
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
-    : data.image
-    ? `${siteConfig.url}${data.image}`
+    : data.ogImage
+    ? `${siteConfig.url}${data.ogImage}`
     : `${siteConfig.url}/assets/open-graph.png`
 
   return {
     title: data.title,
-    description: data.excerpt || data.description,
+    description: data.excerpt,
     openGraph: {
       title: data.title,
-      description: data.excerpt || data.description,
+      description: data.excerpt,
       url: `${siteConfig.url}/blog/${slug}`,
       siteName: siteConfig.name,
       type: "article",
@@ -49,7 +49,7 @@ export async function generateMetadata(
     twitter: {
       card: "summary_large_image",
       title: data.title,
-      description: data.excerpt || data.description,
+      description: data.excerpt,
       images: [ogImage],
     },
   }
@@ -60,7 +60,6 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-// ✅ Page Component
 export default async function BlogDetail({
   params,
 }: {
