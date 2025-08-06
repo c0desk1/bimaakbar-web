@@ -12,6 +12,12 @@ export const metadata: Metadata = {
     ...siteMetadata.alternates,
     canonical: `${siteMetadata.metadataBase}/blog`,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog",
+    description: "Daftar postingan artikel blog.",
+    images: [`${siteMetadata.metadataBase}/assets/og/bimaakbar-og-blog.webp`],
+  },
 }
 
 export default async function BlogPage() {

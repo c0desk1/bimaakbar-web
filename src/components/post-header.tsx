@@ -16,7 +16,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
       <div className="flex items-center justify-center md:justify-start gap-2 text-md text-[var(--muted-foreground)] mb-4">
         <Image
           src={data.author?.picture || ''}
-          alt={data.author?.name || 'Author'}
+          alt={data.author?.name || ''}
           width={18}
           height={18}
           className="rounded-full w-8 h-8"
