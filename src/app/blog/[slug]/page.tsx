@@ -11,12 +11,11 @@ import Breadcrumb from "@/components/ui/Breadcrumb"
 import ReadingProgress from "@/components/ui/ReadingProgress"
 import BackToTop from "@/components/ui/BackToTop"
 
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 import { siteConfig } from "@/config"
 
 type Props = {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export async function generateMetadata(
@@ -25,8 +24,8 @@ export async function generateMetadata(
   const { data } = await getPostBySlug(slug)
   const ogImage = data.ogImage
     ? `${siteConfig.url}${data.ogImage}`
-    : data.ogImage
-    ? `${siteConfig.url}${data.ogImage}`
+    : data.coverImage
+    ? `${siteConfig.url}${data.coverImage}`
     : `${siteConfig.url}/assets/open-graph.png`
 
   return {
