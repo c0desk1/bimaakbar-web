@@ -13,7 +13,7 @@ tags:
   - seo
   - performance
 category: Coding
-publish: true
+publish: false
 ---
 Artikel ini membahas bagaimana dark mode bisa diintegrasikan dengan class `.dark` di Next.js.
 
