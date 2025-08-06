@@ -7,7 +7,7 @@ coverImage: /assets/og/plugin-reverb-gratis-terbaik-untuk-fl-studio-2025.webp
 date: 2025-08-06T19:51:00.000Z
 author:
   name: Bima Akbar
-  picture: /assets/avatar.avif
+  picture: /assets/author/avatar.avif
 ogImage:
   url: /assets/og/plugin-reverb-gratis-terbaik-untuk-fl-studio-2025.webp
 tags:
