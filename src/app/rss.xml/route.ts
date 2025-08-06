@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { getAllPosts } from "@/lib/posts";
 import { siteConfig } from "@/config";
 
@@ -35,3 +34,4 @@ export async function GET() {
   });
 
 }
+
