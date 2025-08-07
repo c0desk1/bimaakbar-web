@@ -3,16 +3,16 @@ import React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions",
-  description: "Syarat dan ketentuan penggunaan situs Bima Akbar",
+  title: "Syarat & Ketentuan",
+  description: "Syarat dan ketentuan penggunaan situs",
 }
 
 export default function TermsPage() {
   return (
-    <main className="relative border-x border-[var(--border)] mt-14 px-4">
+    <main className="relative my-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <article className="prose">
-        <h1>Terms & Conditions</h1>
+        <h1>Syarat & Ketentuan</h1>
         <p>
           Dengan mengakses situs ini, Anda setuju untuk terikat oleh Syarat dan Ketentuan Penggunaan,
           hukum dan peraturan yang berlaku, dan setuju bahwa Anda bertanggung jawab untuk mematuhi hukum lokal yang relevan.
