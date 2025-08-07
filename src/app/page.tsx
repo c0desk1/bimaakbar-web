@@ -31,7 +31,7 @@ export default async function HomePage() {
         ))}
         <Spacer />
         <section>
-          <h2 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
+          <h2 className="mb-8 text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
             Lainnya
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 lg:gap-x-6 gap-y-14 md:gap-y-16 mb-16">
