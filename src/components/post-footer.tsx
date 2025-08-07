@@ -31,7 +31,7 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
       {related.length > 0 && (
         <div>
           <Spacer />
-          <h2 className="my-4 text-5xl md:text-4xl font-bold tracking-tighter leading-tight">
+          <h2 className="my-4 text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
             Postingan Terkait
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 lg:gap-x-6 gap-y-14 md:gap-y-16 mb-16">
