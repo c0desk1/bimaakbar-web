@@ -34,7 +34,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
             priority
             fetchPriority="high"
-            className="rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
+            className="mb-6 rounded-[var(--radius)] w-full h-auto hover:shadow-lg transition-shadow duration-200"
           />
         </div>
       )}
