@@ -3,16 +3,19 @@ title: 5 Plugin Compressor Gratis untuk FL Studio
 excerpt: Temukan 5 plugin reverb gratis terbaik untuk FL Studio. Tambahkan
   kedalaman dan karakter unik ke musikmu tanpa biaya. Cocok untuk mixing,
   ambient, hingga sound design. Semua plugin legal, ringan, dan mudah digunakan.
+coverImage: /assets/og/5-plugin-compressor-fl-studio-gratis.webp
 date: 2025-08-07T12:24:00.000Z
 author:
   name: Bima Akbar
   picture: /assets/author/avatar.avif
+ogImage:
+  url: /assets/og/5-plugin-compressor-fl-studio-gratis.webp
 tags:
   - FL Studio
   - Plugins
   - Compressor
 category: Musik
-publish: false
+publish: true
 ---
 Compressor adalah salah satu alat penting dalam dunia produksi musik digital. Plugin ini berfungsi untuk mengurangi rentang dinamis (dynamic range) dari sebuah sinyal audio, membuat bagian yang keras menjadi lebih pelan dan bagian yang pelan menjadi lebih keras. Dengan begitu, trek audio akan terdengar lebih konsisten dan padat. Jika kamu seorang pengguna FL Studio yang sedang mencari plugin compressor gratis berkualitas, ada beberapa pilihan luar biasa yang bisa kamu coba. 🎧
 
