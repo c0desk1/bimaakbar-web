@@ -19,10 +19,10 @@ export default function PostHeader({ data }: PostHeaderProps) {
           alt={data.author?.name || ''}
           width={18}
           height={18}
-          className="rounded-full w-8 h-8"
+          className="rounded-full w-6 h-6"
         />
-        <span className="text-xl font-bold">{data.author?.name}</span>
-        <span className="text-xl text-[var(--muted-foreground)]">{data.category}</span>
+        <span className="text-md font-bold">{data.author?.name}</span>
+        <span className="text-md text-[var(--muted-foreground)]">{data.category}</span>
       </div>
       {data.coverImage && (
         <div>
