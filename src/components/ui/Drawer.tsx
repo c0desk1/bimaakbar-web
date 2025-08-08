@@ -4,8 +4,7 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LazyMotion, domAnimation } from "motion/react"
-import * as m from "motion/react-m"
+import { LazyMotion, domAnimation, AnimatePresence, m } from "motion"
 import { cn } from "@/lib/utils"
 import { Icon } from "./Icons"
 import { siteConfig } from "@/config"
@@ -47,7 +46,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
 
   return ReactDOM.createPortal(
     <LazyMotion features={domAnimation}>
-      <m.AnimatePresence>
+      <AnimatePresence>
         <>
           {/* Overlay */}
           <m.div
@@ -77,7 +76,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               }
               setDragAmount(0)
             }}
-            style={{ height: "60vh", maxHeight: "60vh", willChange: "transform", touchAction: "none" }}
+            style={{ height: "80vh", maxHeight: "80vh", willChange: "transform", touchAction: "none" }}
           >
             <div className="h-full flex flex-col justify-between p-4">
               {/* Header */}
@@ -94,7 +93,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                 </Icon>
               </div>
 
-              {/* Navigation Items */}
+              {/* Navigation */}
               <div className="flex flex-col gap-4 overflow-y-auto">
                 {siteConfig.navigation.map((item, index) => {
                   const isAccordion = "links" in item
@@ -125,7 +124,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                             </svg>
                           </button>
 
-                          <m.AnimatePresence initial={false}>
+                          <AnimatePresence initial={false}>
                             {openIndex === index && (
                               <m.div
                                 initial={{ opacity: 0, height: 0 }}
@@ -149,7 +148,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                                 ))}
                               </m.div>
                             )}
-                          </m.AnimatePresence>
+                          </AnimatePresence>
                         </>
                       ) : (
                         <Link
@@ -203,7 +202,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
             </div>
           </m.div>
         </>
-      </m.AnimatePresence>
+      </AnimatePresence>
     </LazyMotion>,
     document.body
   )
