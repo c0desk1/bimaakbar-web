@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/Buttons"
 import {Breadcrumb} from "@/components/ui/Breadcrumb"
+import Hero from "@/components/ui/Hero"
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(false)
@@ -17,26 +18,27 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="relative mt-22 mb-14">
+    <section className="relative mt-22 mb-22">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
-      <Breadcrumb
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Kontak", href: "/contact" },
-          ]}
-      />
-      <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-4">Hubungi Saya</h1>
-      <p className="text-md text-[var(--muted-foreground)] mb-8">
-        Punya pertanyaan, kerjasama, atau sekadar menyapa? Silakan kirim pesan
-        melalui form di bawah atau email saya di{" "}
-        <a
-          href="mailto:contact@bimaakbar.my.id"
-          className="text-[var(--accent)] hover:underline">
-          contact@bimaakbar.my.id
-        </a>
-        .
-      </p>
-
+      <Breadcrumb items={[
+        { label: "Home", href: "/" },
+        { label: "Kontak", href: "/contact" },
+      ]} />
+      <Hero
+        title="Hubungi Saya"
+        description="Punya pertanyaan atau sekadar menyapa? Silakan kirim pesan
+        melalui form di bawah atau email saya"
+        align="left">
+          <Button
+            variant="outline"
+            size='sm'
+            type="submit"
+            disabled={loading}>
+            <a href="mailto:contact@bimaakbar.my.id">
+              Email
+            </a>
+          </Button>
+      </Hero>
       {success ? (
         <div className="p-4 bg-green-100 text-green-700 rounded-[var(--radius)]">
           Pesan berhasil terkirim! Saya akan balas secepatnya.
@@ -77,16 +79,14 @@ export default function ContactPage() {
             ></textarea>
           </div>
           <Button
-            variant="ghost"
+            variant="outline"
             size='md'
             type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-[var(--accent)] text-[var(--accent-foreground)] rounded-md hover:opacity-80 disabled:opacity-50"
-          >
+            disabled={loading}>
             {loading ? "Mengirim..." : "Kirim Pesan"}
           </Button>
         </form>
       )}
-    </main>
+    </section>
   )
 }

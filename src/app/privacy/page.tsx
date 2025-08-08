@@ -1,7 +1,8 @@
 import React from "react"
 import { Metadata } from "next"
-import { Breadcrumb } from "@/components/ui/Breadcrumb"
 import { siteMetadata } from "@/lib/metadata"
+import Hero from "@/components/ui/Hero"
+import { Breadcrumb } from "@/components/ui/Breadcrumb"
 
 export const metadata: Metadata = {
     ...siteMetadata,
@@ -11,20 +12,22 @@ export const metadata: Metadata = {
       ...siteMetadata.alternates,
       canonical: `${siteMetadata.metadataBase}/privacy`,
     },
-  }
+}
 
 export default function PrivacyPage() {
     return (
-        <main className="relative mt-14">
+        <section className="relative mt-22 mb-14">
             <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
             <Breadcrumb 
                 items={[
                     { label: "Beranda", href: "/" },
                     { label: 'Privasi', href: "/privacy" },
-                ]}
-            />
+                ]} />
+            <Hero
+                title= "Privasi & Kebijakan"
+                description="Kebijakan privasi situs Bima Akbar terkait pengumpulan, penggunaan, dan perlindungan data pengguna."
+                align="left" />
             <article className="prose">
-                <h1>Privasi & Kebijakan</h1>
                 <p>
                 Kami menghargai privasi Anda. Halaman ini menjelaskan bagaimana kami mengumpulkan, menggunakan,
                 dan melindungi data pribadi Anda saat menggunakan situs ini.
@@ -60,6 +63,6 @@ export default function PrivacyPage() {
                 <a href="/contact">Contact</a>.
                 </p>
             </article>
-        </main>
+        </section>
     )
 }

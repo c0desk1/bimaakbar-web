@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import Fuse from "fuse.js"
 import { PostMeta } from "@/types"
+import Hero from "@/components/ui/Hero"
 import {Breadcrumb} from "@/components/ui/Breadcrumb"
 import Card from "@/components/ui/Card"
 import { Button } from "@/components/ui/Buttons"
@@ -41,7 +42,7 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
   const visiblePosts = filteredPosts.slice(0, visibleCount)
 
   return (
-    <main className="relative mt-22 mb-14">
+    <section className="relative mt-22 mb-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <section>
         <Breadcrumb 
@@ -50,9 +51,11 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             { label: "Blog", href: "/blog" },
           ]}
         />
-        <h1 className="mb-8 text-5xl md:text-7xl font-bold tracking-tighter leading-tight">
-          Blog
-        </h1>
+        <Hero
+            title="Blog"
+            description="Jelajahi artikel dan postingan lainnya."
+            align="left"
+          />
         <div className="mb-6">
           <input
             type="search"
@@ -62,31 +65,23 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
             className="w-full px-4 py-1 border border-[var(--border)] rounded-xl bg-[var(--background)] focus:ring-1 ring-[var(--accent)]"
           />
         </div>
-        <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />
+        <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />        
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-4 mb-6">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setSelectedCategory(null)}
-              className={`px-2 py-0.5 rounded-[var(--radius)] border border-[var(--border)] ${
-                selectedCategory === null
-                  ? "bg-[var(--background)] text-[var(--foreground)]"
-                  : "bg-[var(--card)] text-[var(--muted-foreground)]"
-              }`}>
+              active={selectedCategory === null}>
               Semua
             </Button>
             {categories.map((cat) => (
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2 py-0.5 rounded-[var(--radius)] border border-[var(--border)] ${
-                  selectedCategory === cat
-                    ? "bg-[var(--background)] text-[var(--foreground)]"
-                    : "bg-[var(--card)] text-[var(--muted-foreground)]"
-                }`}>
+                active={selectedCategory === cat}>
                 {cat}
               </Button>
             ))}
@@ -123,6 +118,6 @@ export default function BlogListClient({ posts }: BlogListClientProps) {
           </p>
         )}
       </section>
-    </main>
+    </section>
   )
 }

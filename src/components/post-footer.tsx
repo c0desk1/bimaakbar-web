@@ -4,6 +4,7 @@ import ShareButtons from "@/components/ui/ShareButtons";
 import Card from "@/components/ui/Card";
 import { PostMeta } from "@/types";
 import AdBox from '@/components/ui/AdBox';
+import { Badge } from "./ui/Badge";
 
 interface PostFooterProps {
   data: PostMeta;
@@ -18,10 +19,11 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
       <div className="flex flex-col md:flex-row w-full justify-start md:justify-start items-center mb-6">
         <div className="flex items-center gap-2">
           {data.tags?.map((tag: string) => (
-            <span
+            <Badge
               key={tag}
-              className="px-2 py-0.5 text-sm text-[var(--muted-foreground)] rounded-xl bg-[var(--background)] border border-[var(--border)]">#{tag}
-            </span>
+              variant="outline">
+                #{tag}
+            </Badge>
           ))}
         </div>
       </div>

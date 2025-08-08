@@ -15,13 +15,14 @@ export const metadata = siteMetadata;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" suppressHydrationWarning>
-     
       <GoogleTagManager gtmId="GTM-TJXJBGLX" />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Analytics />
         <ThemeProvider attribute="class">
           <Header />
-          <Container size="md">{children}</Container>
+          <main>
+            <Container size="md">{children}</Container>
+          </main>
           <Footer />
         </ThemeProvider>
       </body>

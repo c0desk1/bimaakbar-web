@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { PostMeta } from "@/types"
 import { formatDate } from "@/lib/utils"
+import { Badge } from "./Badge"
 
 export default function Card({
   slug,
@@ -27,9 +28,9 @@ export default function Card({
       )}
       <div className="flex w-full justify-between items-center text-sm mb-2">
         {category && (
-          <span className="text-[var(--foreground)] px-2 py-0.5 rounded-[var(--radius)] border border-[var(--border)]">
+          <Badge variant="secondary">
             {category}
-          </span>
+          </Badge>
         )}
         <time dateTime={date} className="text-md">
           {formatDate(date)}

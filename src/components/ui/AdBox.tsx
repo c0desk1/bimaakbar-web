@@ -70,7 +70,7 @@ export default function AdBox({
       <div
         ref={containerRef}
         style={{ width, height }}
-        className="overflow-hidden"
+        className="overflow-hidden max-w-[728px] w-auto"
       />
     </div>
   )

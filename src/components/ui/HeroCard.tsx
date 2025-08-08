@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { PostMeta } from "@/types"
 import { formatDate } from "@/lib/utils"
+import { Badge } from "./Badge"
 
 export default function Card({
   slug,
@@ -42,9 +43,9 @@ export default function Card({
         <div>
           <p className="text-md leading-relaxed mb-4 line-clamp-3">{excerpt}</p>
           {category && (
-            <span className="text-[var(--foreground)] text-sm px-2 py-0.5 rounded-xl border border-[var(--border)]">
+            <Badge>
               {category}
-            </span>
+            </Badge>
           )}
         </div>        
       </div>

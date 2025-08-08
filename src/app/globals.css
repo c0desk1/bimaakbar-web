@@ -13,8 +13,8 @@
   --popover: oklch(0.94 0.005 250);
   --popover-foreground: oklch(0.10 0.01 250);
 
-  --primary: oklch(0.35 0.02 20);
-  --primary-foreground: oklch(0.98 0.005 250);
+  --primary: oklch(0.88 0.01 250); /* slightly darker for contrast */
+  --primary-foreground: oklch(0.10 0.01 250);
 
   --secondary: oklch(0.80 0.01 250);
   --secondary-foreground: oklch(0.08 0.01 250);
@@ -22,12 +22,12 @@
   --muted: oklch(0.88 0.005 250);
   --muted-foreground: oklch(0.40 0.01 250);
 
-  --accent: oklch(0.50 0.02 250);
+  --accent: oklch(0.55 0.04 250); /* a bit more vibrant */
   --accent-foreground: oklch(0.98 0.005 250);
 
   --border: oklch(0.85 0.005 250);
   --input: oklch(0.90 0.005 250);
-  --ring: oklch(0.40 0.02 20);
+  --ring: oklch(0.60 0.02 250); /* brighter focus ring for clarity */
 
   --radius: 0.625rem;
   --font-sans: var(--font-geist-sans);
@@ -46,7 +46,7 @@
   --popover: oklch(0.14 0.01 250);
   --popover-foreground: oklch(0.98 0.005 250);
 
-  --primary: oklch(0.80 0.01 250);
+  --primary: oklch(0.88 0.01 250); /* match light mode */
   --primary-foreground: oklch(0.08 0.01 250);
 
   --secondary: oklch(0.35 0.02 20);
@@ -55,17 +55,15 @@
   --muted: oklch(0.25 0.01 250);
   --muted-foreground: oklch(0.65 0.01 250);
 
-  --accent: oklch(0.40 0.02 250);
+  --accent: oklch(0.45 0.03 250); /* slight vibrancy */
   --accent-foreground: oklch(0.98 0.005 250);
 
   --border: oklch(0.98 0.005 250 / 10%);
   --input: oklch(0.98 0.005 250 / 15%);
-  --ring: oklch(0.65 0.02 20);
+  --ring: oklch(0.60 0.02 250); /* brighter focus ring for clarity */
 
   --hover: rgba(255, 255, 255, 0.06);
 }
-
-
 
 * {
   box-sizing: border-box;

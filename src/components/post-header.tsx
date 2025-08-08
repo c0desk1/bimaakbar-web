@@ -3,6 +3,7 @@ import Image from "next/image"
 import { PostMeta } from "@/types"
 import { formatDate } from "@/lib/utils"
 import { siteConfig } from "@/config"
+import { Badge } from "./ui/Badge"
 
 interface PostHeaderProps {
   data: PostMeta
@@ -25,7 +26,7 @@ export default function PostHeader({ data }: PostHeaderProps) {
         <span className="text-md font-bold">{data.author?.name || siteConfig.name}</span> 
       </div>
       <div className="flex items-center justify-between text-md text-[var(--muted-foreground)] mb-4">
-        <span className="text-md text-[var(--muted-foreground)]">{data.category || "Tidak ada kategori"}</span>
+        <Badge variant="secondary">{data.category || "Tidak ada kategori"}</Badge>
         <div className="flex items-center gap-1">
           <svg width={16} height={16} stroke="currentColor">
             <use href="/images/icons.svg#calender" />

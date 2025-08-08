@@ -1,7 +1,8 @@
 import React from "react"
 import type { Metadata } from "next"
-import { Breadcrumb } from "@/components/ui/Breadcrumb"
 import { siteMetadata } from "@/lib/metadata"
+import Hero from "@/components/ui/Hero"
+import { Breadcrumb } from "@/components/ui/Breadcrumb"
 
 export const metadata: Metadata = {
   ...siteMetadata,
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <main className="relative my-14">
+    <section className="relative mt-22 mb-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <Breadcrumb 
         items={[
@@ -24,8 +25,12 @@ export default function TermsPage() {
           { label: 'Syarat & Ketentuan', href: "/terms" },
         ]}
       />
+      <Hero
+            title="Syarat & Ketentuan"
+            description="Syarat dan ketentuan penggunaan situs"
+            align="left"
+      />
       <article className="prose">
-        <h1>Syarat & Ketentuan</h1>
         <p>
           Dengan mengakses situs ini, Anda setuju untuk terikat oleh Syarat dan Ketentuan Penggunaan,
           hukum dan peraturan yang berlaku, dan setuju bahwa Anda bertanggung jawab untuk mematuhi hukum lokal yang relevan.
@@ -58,6 +63,6 @@ export default function TermsPage() {
           <a href="/contact">Contact</a>.
         </p>
       </article>
-    </main>
+    </section>
   )
 }

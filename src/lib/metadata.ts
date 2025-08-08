@@ -49,6 +49,7 @@ export const siteMetadata: Metadata = {
     "FL Studio",
     "Music",
     "Web Development",
+    "Game"
   ],
   robots: {
     index: true,

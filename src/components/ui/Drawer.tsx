@@ -10,7 +10,7 @@ type DrawerProps = {
   children: React.ReactNode
 }
 
-export default function Drawer({ isOpen, children, onClose }: DrawerProps) {
+export default function Drawer({ isOpen, children }: DrawerProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -34,8 +34,7 @@ export default function Drawer({ isOpen, children, onClose }: DrawerProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '-100%', opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="md:hidden fixed inset-x-0 top-14 z-40 bg-[var(--background)]/90 shadow-sm backdrop-blur-md p-safe pt-[env(safe-area-inset-top)] h-full"
-        >
+          className="md:hidden fixed inset-x-0 top-14 z-40 bg-[var(--background)]/90 shadow-sm backdrop-blur-md p-safe pt-[env(safe-area-inset-top)] h-full">
           <div className="relative h-full overflow-y-auto">
             {children}
           </div>
