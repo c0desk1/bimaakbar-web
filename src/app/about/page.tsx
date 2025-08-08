@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const { data, content } = await getPageBySlug("about")
     return (
-      <section className="relative mt-22 mb-14">
+      <section className="relative my-14">
         <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
         <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: data.title, href: "/about" },]}/>
         <div className="flex flex-col md:flex-row h-auto gap-14">
