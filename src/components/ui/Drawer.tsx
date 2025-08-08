@@ -78,8 +78,8 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               setDragAmount(0)
             }}
             style={{
-              height: "80vh",
-              maxHeight: "80vh",
+              height: "60vh",
+              maxHeight: "60vh",
               willChange: "transform",
               touchAction: "pan-y"
             }}
@@ -91,7 +91,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
 
             <div className="h-full flex flex-col justify-between p-4 pt-0">
               {/* Header */}
-              <div className="flex justify-between items-center h-auto pb-2">
+              <div className="flex justify-between items-center h-auto mb-4">
                 <h2 className="text-xl font-semibold">{siteConfig.name}</h2>
                 <Icon
                   onClick={onClose}
@@ -142,7 +142,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="pl-4 flex flex-col gap-2"
+                                className="flex flex-col gap-4"
                               >
                                 {item.links?.map((link) => (
                                   <Link
@@ -179,7 +179,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               </div>
 
               {/* Footer */}
-              <div className="mt-6 border-t border-[var(--border)] pt-4 flex items-center justify-between text-sm text-[var(--muted-foreground)]">
+              <div className="my-6 border-t border-[var(--border)] flex items-center text-sm text-[var(--muted-foreground)]">
                 <div className="flex items-center justify-center md:justify-end gap-3">
                   {[
                     ["Rss", "/rss.xml", "rss"],
@@ -201,14 +201,6 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                     </Link>
                   ))}
                 </div>
-                <Icon
-                  onClick={toggleDarkMode}
-                  className="md:hidden flex items-center p-1 rounded hover:bg-[var(--hover)]"
-                >
-                  <svg stroke="var(--foreground)" width="20" height="20">
-                    <use href={`/images/icons.svg#${darkMode ? "sun" : "moon"}`} />
-                  </svg>
-                </Icon>
               </div>
             </div>
           </m.div>
