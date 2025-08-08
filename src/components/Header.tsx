@@ -75,8 +75,7 @@ export default function Header() {
             </Icon>
             <Icon
               onClick={() => setOpen(true)}
-              aria-controls="mobile-menu"
-              aria-label="Toggle Menu"
+              aria-label="Tombol Menu"
               className="md:hidden size-8 p-1 rounded-full hover:bg-[var(--hover)] cursor-pointer">
               <svg stroke="var(--foreground)" className="size-full">
                 <use href="/images/icons.svg#menu" />
@@ -86,7 +85,6 @@ export default function Header() {
         </div>
       </Container>
       <Drawer
-id= "mobile-menu"
         open={open}
         onClose={() => setOpen(false)}
         darkMode={darkMode}
