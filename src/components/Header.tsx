@@ -31,13 +31,13 @@ export default function Header() {
   return (
     <header
       className={clsx(
-        "fixed top-0 w-full z-50 h-14 transition-all items-center",
+        "fixed top-0 w-full z-50 h-14 transition-all items-baseline",
         isScrolled
           ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
           : "bg-[var(--background)]/90 border-transparent"
       )}>
       <Container size="md" className="justify-between">
-        <div className="flex items-baseline justify-between w-full">
+        <div className="flex items-baseline justify-between w-full py-2">
           <Link href="/" className="flex w-fit items-center gap-1">
             <svg
               aria-label="brand"
