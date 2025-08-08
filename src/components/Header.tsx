@@ -1,13 +1,13 @@
 "use client"
 import { useState, useEffect } from "react"
+import { useTheme } from 'next-themes';
 import Link from "next/link"
 import clsx from "clsx"
 import { Container } from "@/components/Container"
 import { Icon } from "./ui/Icons"
 import { siteConfig } from "@/config"
-import Drawer from './ui/Drawer'
 import { motion, AnimatePresence } from 'motion/react';
-import { useTheme } from 'next-themes';
+import Drawer from './ui/Drawer'
 import AdBox from "./ui/AdBox"
 
 export default function Header() {
@@ -34,10 +34,10 @@ export default function Header() {
         "fixed top-0 w-full z-50 max-h-14 transition-all items-center",
         isScrolled
           ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
-          : "bg-transparent border-transparent"
+          : "bg-[var(--background)]/90 border-transparent"
       )}>
       <Container size="md" className="justify-between">
-        <div className="flex items-center justify-between w-full py-2 gap-2">
+        <div className="flex items-center justify-between w-full py-2">
           <Link href="/" className="flex w-fit items-center gap-1">
             <svg
               aria-label="brand"
