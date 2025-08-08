@@ -77,9 +77,9 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               }
               setDragAmount(0)
             }}
-            style={{ height: "60vh", willChange: "transform", touchAction: "none" }}
+            style={{ height: "60vh", max-height: "60vh", willChange: "transform", touchAction: "none" }}
           >
-            <div className="h-full flex flex-col justify-between p-4 overflow-y-auto overscroll-contain">
+            <div className="h-full flex flex-col justify-between p-4">
               {/* Header */}
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">{siteConfig.name}</h2>
@@ -95,7 +95,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               </div>
 
               {/* Navigation Items */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 overflow-y-auto">
                 {siteConfig.navigation.map((item, index) => {
                   const isAccordion = "links" in item
                   return (
@@ -104,7 +104,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                         <>
                           <button
                             onClick={() => toggleAccordion(index)}
-                            className="w-full flex items-center justify-between text-left font-semibold mb-2"
+                            className="w-full flex items-center justify-between text-left font-semibold"
                           >
                             {item.title}
                             <svg
@@ -156,7 +156,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                           href={item.href!}
                           onClick={() => handleLinkClick(item.href!)}
                           className={cn(
-                            "w-full text-left font-semibold mb-2 block",
+                            "w-full text-left font-semibold block",
                             pathname === item.href && "text-[var(--foreground)]"
                           )}
                         >
