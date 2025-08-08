@@ -69,24 +69,29 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.2}
             onDrag={(event, info) => setDragAmount(info.offset.y)}
-            onDragEnd={() => {
-              if (dragAmount > 100) {
+            onDragEnd={(event, info) => {
+              if (info.offset.y > 100 || info.velocity.y > 500) {
                 onClose()
               }
               setDragAmount(0)
             }}
             style={{
-              height: "60vh",
-              maxHeight: "60vh",
+              height: "80vh",
+              maxHeight: "80vh",
               willChange: "transform",
-              touchAction: "none"
+              touchAction: "pan-y"
             }}
           >
-            <div className="h-full flex flex-col justify-between p-4">
+            {/* Handle Bar */}
+            <div className="w-full flex justify-center py-2">
+              <div className="w-10 h-1.5 bg-[var(--muted-foreground)] rounded-full" />
+            </div>
+
+            <div className="h-full flex flex-col justify-between p-4 pt-0">
               {/* Header */}
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center h-auto pb-2">
                 <h2 className="text-xl font-semibold">{siteConfig.name}</h2>
                 <Icon
                   onClick={onClose}
@@ -100,7 +105,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               </div>
 
               {/* Navigation Items */}
-              <div className="flex flex-col gap-4 overflow-y-auto">
+              <div className="flex flex-col gap-4 overflow-y-auto overflow-x-hidden flex-1">
                 {siteConfig.navigation.map((item, index) => {
                   const isAccordion = "links" in item
                   return (
