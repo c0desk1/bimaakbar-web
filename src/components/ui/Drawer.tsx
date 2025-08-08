@@ -4,7 +4,8 @@ import * as React from "react"
 import ReactDOM from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LazyMotion, domAnimation, AnimatePresence, m } from "motion"
+import { LazyMotion, AnimatePresence, domAnimation } from "motion/react"
+import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
 import { Icon } from "./Icons"
 import { siteConfig } from "@/config"
@@ -76,7 +77,12 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               }
               setDragAmount(0)
             }}
-            style={{ height: "80vh", maxHeight: "80vh", willChange: "transform", touchAction: "none" }}
+            style={{
+              height: "60vh",
+              maxHeight: "60vh",
+              willChange: "transform",
+              touchAction: "none"
+            }}
           >
             <div className="h-full flex flex-col justify-between p-4">
               {/* Header */}
@@ -93,7 +99,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
                 </Icon>
               </div>
 
-              {/* Navigation */}
+              {/* Navigation Items */}
               <div className="flex flex-col gap-4 overflow-y-auto">
                 {siteConfig.navigation.map((item, index) => {
                   const isAccordion = "links" in item
