@@ -77,7 +77,7 @@ export function Drawer({ open, onClose, darkMode, toggleDarkMode }: DrawerProps)
               }
               setDragAmount(0)
             }}
-            style={{ height: "60vh", max-height: "60vh", willChange: "transform", touchAction: "none" }}
+            style={{ height: "60vh", maxHeight: "60vh", willChange: "transform", touchAction: "none" }}
           >
             <div className="h-full flex flex-col justify-between p-4">
               {/* Header */}
