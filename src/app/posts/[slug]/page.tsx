@@ -88,7 +88,7 @@ export default async function BlogDetail(
     .slice(0, 3)
 
   return (
-    <section className="relative mt-22 mb-14">
+    <section className="relative my-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
       <ReadingProgress />
       <section>
