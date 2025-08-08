@@ -19,11 +19,11 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
       <div className="flex flex-col md:flex-row w-full justify-start md:justify-start items-center mb-6">
         <div className="flex items-center gap-2">
           {data.tags?.map((tag: string) => (
-            <Badge
-              key={tag}
-              variant="outline">
+            <Link key={tag} href={`/tags/${tag?.toLowerCase()}`}>
+              <Badge variant="outline">
                 #{tag}
-            </Badge>
+              </Badge>  
+            </Link>
           ))}
         </div>
       </div>

@@ -1,0 +1,41 @@
+import { getAllPosts } from "@/lib/posts";
+import type { PostMeta } from "@/types";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import Hero from "@/components/ui/Hero";
+import TagPostList from "@/components/TagPostList";
+import { capitalizeFirstLetter } from "@/lib/utils";
+
+type Params = {
+  params: Promise<{ slug: string }>
+}
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  return {
+    title: `${capitalizeFirstLetter((await params).slug)}`,
+    description: `Artikel dengan tag ${(await params).slug}.`,
+  };
+}
+
+export default async function TagPage({ params }: Params) {
+  const allPosts = await getAllPosts();
+  const slug = (await params).slug.toLowerCase()
+
+  const filteredPosts = allPosts.filter((post: PostMeta) =>
+    post.tags?.map((tag) => tag.toLowerCase()).includes(slug)
+  );
+
+  if (filteredPosts.length === 0) {
+    return notFound();
+  }
+
+  return (
+    <section className="max-w-3xl mx-auto px-4 py-12">
+      <Hero
+        title={capitalizeFirstLetter((await params).slug)}
+        description={`Postingan yang ditandai dengan tag "${(await params).slug}"`}
+        align="left"
+      />
+      <TagPostList posts={filteredPosts} />
+    </section>
+  );
+}

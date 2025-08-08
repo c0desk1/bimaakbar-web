@@ -4,6 +4,7 @@ import { PostMeta } from "@/types"
 import { formatDate } from "@/lib/utils"
 import { siteConfig } from "@/config"
 import { Badge } from "./ui/Badge"
+import Link from "next/link"
 
 interface PostHeaderProps {
   data: PostMeta
@@ -26,7 +27,9 @@ export default function PostHeader({ data }: PostHeaderProps) {
         <span className="text-md font-bold">{data.author?.name || siteConfig.name}</span> 
       </div>
       <div className="flex items-center justify-between text-md text-[var(--muted-foreground)] mb-4">
-        <Badge variant="secondary">{data.category || "Tidak ada kategori"}</Badge>
+        <Link href={`/category/${data.category?.toLowerCase()}`}>
+          <Badge variant="secondary">{data.category || "Tidak ada kategori"}</Badge>
+        </Link>
         <div className="flex items-center gap-1">
           <svg width={16} height={16} stroke="currentColor">
             <use href="/images/icons.svg#calender" />

@@ -29,8 +29,7 @@ export function Button({
         className
       )}
       disabled={disabled || isLoading}
-      {...props}
-    >
+      {...props}>
       {isLoading ? "Loading..." : children}
     </button>
   );

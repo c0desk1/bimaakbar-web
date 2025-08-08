@@ -32,26 +32,4 @@ export const siteConfig = {
         ],
       },
     ],
-    Sosial: [
-      {
-        label: 'Github',
-        href: 'https://github.com/c0desk1',
-        icon: '/images/icons.svg#github',
-      },
-      {
-        label: 'Tiktok',
-        href: 'https://tiktok.com/@bimaakbarmusicc',
-        icon: '/images/icons.svg#tiktok',
-      },
-      {
-        label: 'Instagram',
-        href: 'https://instagram.com/notmesound',
-        icon: '/images/icons.svg#instagram',
-      },
-      {
-        label: 'Youtube',
-        href: 'https://youtube.com/@bimaakbarmusic',
-        icon: '/images/icons.svg#youtube',
-      },
-    ]
 }  

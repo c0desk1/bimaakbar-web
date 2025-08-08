@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { siteMetadata } from "@/lib/metadata"
 import { getAllPosts } from "@/lib/posts"
-import BlogListClient from "./BlogListClient"
+import BlogPostListProps from "../../components/BlogPostList"
 
 
 export const metadata: Metadata = {
@@ -24,6 +24,6 @@ export default async function BlogPage() {
   const posts = await getAllPosts()
 
   return (
-    <BlogListClient posts={posts} />
+    <BlogPostListProps posts={posts} />
   )
 }
