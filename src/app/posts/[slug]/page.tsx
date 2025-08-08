@@ -35,12 +35,12 @@ const ogImage = imagePath.startsWith("http")
     title: data.title,
     description: data.excerpt,
     alternates: {
-      canonical: `${siteConfig.url}/blog/${slug}`,
+      canonical: `${siteConfig.url}/posts/${slug}`,
     },
     openGraph: {
       title: data.title,
       description: data.excerpt,
-      url: `${siteConfig.url}/blog/${slug}`,
+      url: `${siteConfig.url}/posts/${slug}`,
       siteName: siteConfig.name,
       type: "article",
       images: [

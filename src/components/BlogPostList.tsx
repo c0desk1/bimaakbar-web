@@ -65,7 +65,12 @@ export default function BlogListClient({ posts }: BlogPostListProps) {
             className="w-full px-4 py-1 border border-[var(--border)] rounded-xl bg-[var(--background)] focus:ring-1 ring-[var(--accent)]"
           />
         </div>
-        <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />        
+        <div className="md:hidden block max-w-[468px] items-center">
+          <AdBox adKey="1b0f67e1399f6f10b0bcf31c5543f394" width={468} height={60} /> 
+        </div>
+        <div className="md:block hidden max-w-[728] items-center">
+          <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />
+        </div>   
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-4 mb-6">
             <Button

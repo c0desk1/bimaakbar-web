@@ -5,13 +5,8 @@ import { remark } from "remark"
 import html from "remark-html"
 import { PostMeta } from "@/types"
 
-interface PageFrontMatter {
-  title: string
-  layout?: string
-  coverImage?: string
-}
-
 const postsDirectory = path.join(process.cwd(), "content/blog")
+const pagesDirectory = path.join(process.cwd(), 'content/pages')
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {
@@ -44,7 +39,6 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
-
 export async function getPostBySlug(slug: string): Promise<{ content: string; data: PostMeta }> {
   const realSlug = slug.replace(/\.(md|mdx)$/, "")
   const mdPath = path.join(postsDirectory, `${realSlug}.md`)
@@ -73,10 +67,7 @@ export async function getPostBySlug(slug: string): Promise<{ content: string; da
   }
 }
 
-export async function getAdjacentPosts(slug: string): Promise<{
-  prev: PostMeta | null
-  next: PostMeta | null
-}> {
+export async function getAdjacentPosts(slug: string): Promise<{ prev: PostMeta | null; next: PostMeta | null }> {
   const posts = await getAllPosts()
   const index = posts.findIndex((post) => post.slug === slug)
 
@@ -86,19 +77,9 @@ export async function getAdjacentPosts(slug: string): Promise<{
   return { prev, next }
 }
 
-export async function getPageBySlug(slug: string): Promise<{
-  content: string
-  data: PageFrontMatter
-}> {
-  const filePath = path.join(process.cwd(), `content/pages/${slug}.md`)
-  const fileContents = await fs.readFile(filePath, "utf8")
-
-  const { data, content } = matter(fileContents)
-  const processedContent = await remark().use(html).process(content)
-  const contentHtml = processedContent.toString()
-
-  return {
-    content: contentHtml,
-    data: data as PageFrontMatter,
-  }
+export async function getPageBySlug(slug: string) {
+  const filePath = path.join(pagesDirectory, `${slug}.mdx`)
+  const fileContent = await fs.readFile(filePath, 'utf8')
+  const { data, content } = matter(fileContent)
+  return { data, content }
 }

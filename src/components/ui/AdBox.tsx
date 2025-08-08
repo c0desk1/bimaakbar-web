@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { Icon } from './Icons'
+import { Button } from './Buttons'
 
 type AdBoxProps = {
   adKey: string
@@ -53,10 +53,11 @@ export default function AdBox({
   return (
     <div
       className={`relative my-6 w-fit mx-auto bg-[var(--background)] border border-[var(--border)] rounded-md shadow-sm p-2 ${className}`}>
-      <Icon
+      <Button
         onClick={() => setVisible(false)}
+        variant='ghost'
         aria-label="Tutup Iklan"
-        className="absolute top-1 right-1 p-1 rounded hover:bg-[var(--hover)] text-[var(--muted-foreground)]">
+        className="absolute top-1 right-1 p-1 size-8 text-[var(--muted-foreground)]">
         <svg
           aria-label="Close"
           fill="var(--foreground)"
@@ -66,7 +67,7 @@ export default function AdBox({
           <title>Tutup Iklan</title>
           <use href="/images/icons.svg#close" />
         </svg>
-      </Icon>
+      </Button>
       <div
         ref={containerRef}
         style={{ width, height }}
