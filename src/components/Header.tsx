@@ -31,26 +31,26 @@ export default function Header() {
   return (
     <header
       className={clsx(
-        "fixed top-0 w-full z-50 h-14 transition-all items-baseline",
+        "fixed top-0 w-full z-50 h-14 py-2 transition-all items-baseline",
         isScrolled
           ? "bg-[var(--background)]/90 shadow-sm backdrop-blur-md border-b border-[var(--border)]"
           : "bg-[var(--background)]/90 border-transparent"
       )}>
-      <Container size="md" className="justify-between">
-        <div className="flex items-baseline justify-between h-full">
+      <Container size="md">
+        <div className="flex items-center justify-between h-full w-full">
           <Link href="/" className="flex w-fit items-center gap-1">
             <svg
               aria-label="brand"
               stroke="var(--foreground)"
               width={32}
               height={32}
-              className="p-1">
+              className="p-1.5">
               <title>{siteConfig.name}</title>
               <use href="/images/icons.svg#logo" />
             </svg>
-            <span className="text-3xl font-bold hidden md:block">{siteConfig.name}.</span>
+            <span className="text-2xl font-bold hidden md:block">{siteConfig.name}.</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <nav aria-label="Main Navigation" className="text-md font-semibold hidden md:flex gap-6 text-[var(--muted-foreground)]">
               <Link href="/" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Home</Link>
               <Link href="/blog" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
@@ -58,7 +58,7 @@ export default function Header() {
             </nav>
             <Icon
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              className="size-8 p-1 rounded-full hover:bg-[var(--hover)] transition"
+              className="size-8 hover:bg-[var(--hover)] transition"
               aria-label="Toggle Dark Mode">
               <AnimatePresence mode="wait">
                 {isDark ? (
@@ -149,7 +149,7 @@ export default function Header() {
       <Drawer isOpen={open} onClose={() => setOpen(false)}>
         <div className="h-full w-full p-6">
           <h2 className="text-2xl font-bold mb-4">Halo!</h2>
-          <nav aria-label="Main Navigation" className="flex flex-col text-xl font-semibold gap-2 text-[var(--foreground)] my-6 overflow-y-auto">
+          <nav aria-label="Main Navigation" className="flex flex-col text-xl font-semibold gap-2 text-[var(--foreground)] my-6">
             <span className="text-sm font-semibold text-[var(--muted-foreground)] mt-2">Menu</span>
             <Link href="/" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Beranda</Link>
             <Link href="/blog" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
