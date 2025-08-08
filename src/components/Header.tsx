@@ -60,7 +60,7 @@ export default function Header() {
             <span className="text-3xl font-bold hidden md:block">{siteConfig.name}.</span>
           </Link>
           <div className="flex items-center gap-4">
-            <nav role="navigation" className="text-md font-semibold hidden md:flex gap-6 text-[var(--muted-foreground)]">
+            <nav aria-label="Main Navigation" className="text-md font-semibold hidden md:flex gap-6 text-[var(--muted-foreground)]">
               <Link href="/" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Home</Link>
               <Link href="/blog" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
               <Link href="/about" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">About</Link>
@@ -86,6 +86,7 @@ export default function Header() {
         </div>
       </Container>
       <Drawer
+id= "mobile-menu"
         open={open}
         onClose={() => setOpen(false)}
         darkMode={darkMode}
