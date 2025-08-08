@@ -87,8 +87,6 @@ export default function Header() {
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
-        darkMode={darkMode}
-        toggleDarkMode={toggleTheme}
       />
     </header>
     
