@@ -37,7 +37,7 @@ export default function Header() {
           : "bg-[var(--background)]/90 border-transparent"
       )}>
       <Container size="md" className="justify-between">
-        <div className="flex items-baseline justify-between w-full py-2">
+        <div className="flex items-baseline justify-between h-full">
           <Link href="/" className="flex w-fit items-center gap-1">
             <svg
               aria-label="brand"
