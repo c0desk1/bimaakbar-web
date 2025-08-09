@@ -6,7 +6,7 @@ content:
   - name: posts
     label: Posts
     type: collection
-    path: content/blog
+    path: content/posts
     view:
       fields: [ coverImage, title, date, publish ]
     fields:
@@ -25,10 +25,10 @@ content:
         type: object
         fields:
           - { name: url, label: URL, type: image }
-      - { name: body, label: Body, type: rich-text }
       - { name: tags, label: Tags, type: string, list: true }
       - { name: category, label: Category, type: string }
       - { name: publish, label: Publish, type: boolean }
+      - { name: body, label: Body, type: rich-text }
 
   - name: about
     label: About
