@@ -14,7 +14,7 @@ export default async function HomePage() {
   const recentPosts = sortedPosts.slice(1)
 
   return (
-    <section className="relative mt-14">
+    <section className="relative my-14">
       <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-[var(--border)] transform z-0 opacity-20" />
 
       <section>
