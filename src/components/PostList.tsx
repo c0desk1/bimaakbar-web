@@ -7,7 +7,6 @@ import CardSkeleton from "@/components/ui/CardSkeleton"
 import Link from "next/link"
 import { PostMeta } from "@/types"
 import { Button } from "./ui/Buttons"
-import AdBox from "./ui/AdBox"
 
 type Props = {
     posts: PostMeta[];
@@ -38,12 +37,6 @@ type Props = {
           <Card key={post.slug} {...post} />
         ))}
       </div>
-      <div className="w-full hidden md:block">
-        <AdBox
-          scriptSrc="//pl27383165.profitableratecpm.com/95de12b00fe17cd9b5845ff88f120760/invoke.js"
-          containerId="container-95de12b00fe17cd9b5845ff88f120760"
-        />
-      </div>
       {visibleCount < Math.min(posts.length, maxPosts) && (
         <div className="flex justify-center mb-8">
           <Button
@@ -56,11 +49,11 @@ type Props = {
 
       {posts.length > maxPosts && (
         <div className="flex justify-center">
-            <Button variant="outline">
-                <Link href="/blog">
-                    Lihat Semua Artikel
-                </Link>
-            </Button>
+          <Button variant="outline">
+            <Link href="/blog">
+              Lihat Semua Artikel
+            </Link>
+          </Button>
         </div>
       )}
     </>
