@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }: Params) {
         description={`Postingan dan artikel berdasarkan ${capitalizeFirstLetter(slug)}`}
         align="left"
       />
-      <CategoryPostList posts={filteredPosts} initialCount={6} />
+      <CategoryPostList posts={filteredPosts} initialCount={4} />
     </section>
   )
 }

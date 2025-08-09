@@ -1,11 +1,45 @@
+// next.config.ts
 import createMDX from '@next/mdx'
+
+import remarkGfm from 'remark-gfm'
+import remarkSmartypants from 'remark-smartypants'
+
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypePrettyCode from 'rehype-pretty-code'
+
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'satnaing.dev',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'user-images.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co',
+        pathname: '/**',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
   },
 }
@@ -13,36 +47,28 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
   options: {
+    remarkPlugins: [
+      remarkGfm,
+      remarkSmartypants,
+    ],
     rehypePlugins: [
       rehypeSlug,
-      [rehypeAutolinkHeadings, {
-        behavior: 'append',
-        properties: {
-          className: ['anchor'],
-          ariaHidden: 'true',
-        },
-        content: {
-          type: 'element',
-          tagName: 'svg',
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'wrap',
           properties: {
-            className: ['anchor-icon'],
-            viewBox: '0 0 16 16',
-            fill: 'currentColor',
-            width: '16',
-            height: '16',
+            className: ['anchor-heading'],
           },
-          children: [
-            {
-              type: 'element',
-              tagName: 'path',
-              properties: {
-                d: 'M7.775 3.275a.75.75 0 0 1 1.06 0l3.89 3.89a.75.75 0 0 1 0 1.06l-3.89 3.89a.75.75 0 0 1-1.06-1.06L10.44 8 7.775 5.335a.75.75 0 0 1 0-1.06z',
-              },
-              children: [],
-            },
-          ],
         },
-      }],
+      ],
+      [
+        rehypePrettyCode,
+        {
+          theme: 'github-dark',
+          keepBackground: false
+        }
+      ]
     ],
   },
 })

@@ -1,12 +1,9 @@
-// src/app/blog/[slug]/components/PostBody.tsx
-
-interface PostBodyProps { content: string; }
-
-export default function PostBody({ content }: PostBodyProps) {
+// components/post-body.tsx
+export default function PostBody({ children }: { children: React.ReactNode }) {
     return (
-        <article
-            className="prose"
-            dangerouslySetInnerHTML={{ __html: content }}
-        />
+      <article className="prose max-w-none">
+        {children}
+      </article>
     );
   }
+  

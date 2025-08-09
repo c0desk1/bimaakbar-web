@@ -32,8 +32,8 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
       </div>
       {related.length > 0 && (
         <div>
-          <div className="flex max-w-[300px] w-auto">
-            <AdBox adKey="bf6f85746fe8f2ec32585d28c26e841a" width={300} height={250} />
+          <div className="flex md:hidden w-auto max-w-[320px]">
+            <AdBox adKey="22b4b4effc5ef8f49cb94210e8edda45" width={320} height={50} />
           </div>
           <h2 className="my-4 text-3xl md:text-4xl font-bold tracking-tighter leading-tight">
             Postingan Terkait
@@ -53,6 +53,15 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
           </div>
         </div>
       )}
+      <div className="flex max-w-[300px] w-auto md:hidden">
+        <AdBox adKey="bf6f85746fe8f2ec32585d28c26e841a" width={300} height={250} />
+      </div>
+      <div className="w-full hidden md:block">
+        <AdBox
+          scriptSrc="//pl27383165.profitableratecpm.com/95de12b00fe17cd9b5845ff88f120760/invoke.js"
+          containerId="container-95de12b00fe17cd9b5845ff88f120760"
+        />
+      </div>
       <div className="border-b border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
         {prev ? (
           <Link
@@ -79,9 +88,9 @@ export default function PostFooter({ data, prev, next, related }: PostFooterProp
           <div />
         )}
       </div>
-      <div className="flex lg:block md:hidden w-auto max-w-[728px]">
+      <div className="hidden md:block w-auto max-w-[728px]">
         <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />
-      </div>  
+      </div>
     </>
   );
 }

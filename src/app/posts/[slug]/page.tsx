@@ -1,56 +1,44 @@
-import { PostMeta } from "@/types"
+// app/blog/[slug]/page.tsx
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { mdxComponents } from "@/components/mdx-components";
+import type { Metadata } from "next";
+import { siteConfig } from "@/config";
+import { PostMeta } from "@/types";
 import {
   getPostBySlug,
   getAllPosts,
   getAdjacentPosts,
-} from "@/lib/posts"
+} from "@/lib/posts";
 
-import PostHeader from "@/components/post-header"
-import PostBody from "@/components/post-body"
-import PostFooter from "@/components/post-footer"
-import {Breadcrumb} from "@/components/ui/Breadcrumb"
-import ReadingProgress from "@/components/ui/ReadingProgress"
-import BackToTop from "@/components/ui/BackToTop"
-
-import type { Metadata } from "next"
-import { siteConfig } from "@/config"
+import PostHeader from "@/components/post-header";
+import PostFooter from "@/components/post-footer";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import BackToTop from "@/components/ui/BackToTop";
+import PostBody from "@/components/post-body";
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata(
-  { params }: Props
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const { data } = await getPostBySlug(slug);
-const imagePath =
-    data.ogImage?.url || data.coverImage || "assets/og/open-graph.png";
+  const imagePath = data.ogImage?.url || data.coverImage || "assets/og/open-graph.png";
 
-const ogImage = imagePath.startsWith("http")
-    ? imagePath
-    : `${siteConfig.url}/${imagePath.replace(/^\/+/, "")}`;
+  const ogImage = imagePath.startsWith("http") ? imagePath : `${siteConfig.url}/${imagePath.replace(/^\/+/, "")}`;
 
   return {
     title: data.title,
     description: data.excerpt,
-    alternates: {
-      canonical: `${siteConfig.url}/posts/${slug}`,
-    },
+    alternates: { canonical: `${siteConfig.url}/posts/${slug}` },
     openGraph: {
       title: data.title,
       description: data.excerpt,
       url: `${siteConfig.url}/posts/${slug}`,
       siteName: siteConfig.name,
       type: "article",
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: data.title,
-        },
-      ],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: data.title }],
       locale: "id_ID",
     },
     twitter: {
@@ -63,21 +51,17 @@ const ogImage = imagePath.startsWith("http")
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts()
-  return posts.map((post) => ({ slug: post.slug }))
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export default async function BlogDetail(
-  { params }: Props ) {
-  const { slug } = await params
-  const { content, data } = await getPostBySlug(slug) as {
-    content: string
-    data: PostMeta
-  }
+export default async function BlogDetail({ params }: Props) {
+  const { slug } = await params;
+  const { content, data } = await getPostBySlug(slug) as { content: string; data: PostMeta };
 
-  const { prev, next } = await getAdjacentPosts(slug)
+  const { prev, next } = await getAdjacentPosts(slug);
 
-  const allPosts = await getAllPosts()
+  const allPosts = await getAllPosts();
   const related = allPosts
     .filter(
       (p) =>
@@ -85,7 +69,7 @@ export default async function BlogDetail(
         (p.category === data.category ||
           p.tags?.some((tag) => data.tags?.includes(tag)))
     )
-    .slice(0, 3)
+    .slice(0, 3);
 
   return (
     <section className="relative my-14">
@@ -100,10 +84,12 @@ export default async function BlogDetail(
           ]}
         />
         <PostHeader data={data} />
-        <PostBody content={content} />
+        <PostBody>
+          <MDXRemote source={content} components={mdxComponents } />
+        </PostBody>
         <PostFooter data={data} prev={prev} next={next} related={related} />
       </section>
       <BackToTop />
     </section>
-  )
+  );
 }

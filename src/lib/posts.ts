@@ -1,85 +1,85 @@
-import fs from "fs/promises"
-import path from "path"
-import matter from "gray-matter"
-import { remark } from "remark"
-import html from "remark-html"
-import { PostMeta } from "@/types"
+// lib/posts.ts
+import fs from "fs/promises";
+import path from "path";
+import matter from "gray-matter";
+import type { PostMeta } from "@/types";
 
-const postsDirectory = path.join(process.cwd(), "content/blog")
-const pagesDirectory = path.join(process.cwd(), 'content/pages')
+const postsDirectory = path.join(process.cwd(), "content/posts");
+const pagesDirectory = path.join(process.cwd(), "content/pages");
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {
-    await fs.access(filePath)
-    return true
+    await fs.access(filePath);
+    return true;
   } catch {
-    return false
+    return false;
   }
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
-  const fileNames = await fs.readdir(postsDirectory)
-  const markdownFiles = fileNames.filter((file) => file.endsWith('.md') || file.endsWith('.mdx'))
+  const fileNames = await fs.readdir(postsDirectory);
+  const markdownFiles = fileNames.filter((file) =>
+    /\.(md|mdx)$/.test(file)
+  );
+
   const posts = await Promise.all(
     markdownFiles.map(async (fileName) => {
-      const slug = fileName.replace(/\.(md|mdx)$/, "")
-      const fullPath = path.join(postsDirectory, fileName)
-      const fileContents = await fs.readFile(fullPath, "utf8")
-      const { data } = matter(fileContents)
+      const slug = fileName.replace(/\.(md|mdx)$/, "");
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = await fs.readFile(fullPath, "utf8");
+      const { data } = matter(fileContents);
 
       return {
         ...(data as PostMeta),
         slug,
-      }
+      };
     })
-  )
+  );
 
   return posts
-    .filter((post) => post.publish)
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .filter((post) => post.publish ?? true)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 export async function getPostBySlug(slug: string): Promise<{ content: string; data: PostMeta }> {
-  const realSlug = slug.replace(/\.(md|mdx)$/, "")
-  const mdPath = path.join(postsDirectory, `${realSlug}.md`)
-  const mdxPath = path.join(postsDirectory, `${realSlug}.mdx`)
+  const realSlug = slug.replace(/\.(md|mdx)$/, "");
+  const mdPath = path.join(postsDirectory, `${realSlug}.md`);
+  const mdxPath = path.join(postsDirectory, `${realSlug}.mdx`);
 
-  let fullPath = ''
+  let fullPath = "";
   if (await fileExists(mdPath)) {
-    fullPath = mdPath
+    fullPath = mdPath;
   } else if (await fileExists(mdxPath)) {
-    fullPath = mdxPath
+    fullPath = mdxPath;
   } else {
-    throw new Error(`Post not found: ${realSlug}`)
+    throw new Error(`Post not found: ${realSlug}`);
   }
 
-  const fileContents = await fs.readFile(fullPath, "utf8")
-  const { data, content } = matter(fileContents)
-  const processedContent = await remark().use(html).process(content)
-  const contentHtml = processedContent.toString()
+  const fileContents = await fs.readFile(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
 
   return {
-    content: contentHtml,
+    content,
     data: {
       ...(data as PostMeta),
       slug: realSlug,
     },
-  }
+  };
 }
 
 export async function getAdjacentPosts(slug: string): Promise<{ prev: PostMeta | null; next: PostMeta | null }> {
-  const posts = await getAllPosts()
-  const index = posts.findIndex((post) => post.slug === slug)
+  const posts = await getAllPosts();
+  const index = posts.findIndex((post) => post.slug === slug);
 
-  const prev = index > 0 ? posts[index - 1] : null
-  const next = index < posts.length - 1 ? posts[index + 1] : null
+  const prev = index > 0 ? posts[index - 1] : null;
+  const next = index < posts.length - 1 ? posts[index + 1] : null;
 
-  return { prev, next }
+  return { prev, next };
 }
 
 export async function getPageBySlug(slug: string) {
-  const filePath = path.join(pagesDirectory, `${slug}.mdx`)
-  const fileContent = await fs.readFile(filePath, 'utf8')
-  const { data, content } = matter(fileContent)
-  return { data, content }
+  const filePath = path.join(pagesDirectory, `${slug}.mdx`);
+  const fileContent = await fs.readFile(filePath, "utf8");
+  const { data, content } = matter(fileContent);
+  return { data, content };
 }

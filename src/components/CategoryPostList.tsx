@@ -5,6 +5,7 @@ import type { PostMeta } from "@/types"
 import Card from "@/components/ui/Card"
 import CardSkeleton from "@/components/ui/CardSkeleton"
 import { Button } from "@/components/ui/Buttons"
+import AdBox from "./ui/AdBox"
 
 type Props = {
   posts: PostMeta[]
@@ -31,7 +32,12 @@ export default function CategoryPostList({ posts, initialCount = 6 }: Props) {
         {visiblePosts.map((post) => (
           <Card key={post.slug} {...post} />
         ))}
-
+        <div className="w-full hidden md:block">
+          <AdBox
+            scriptSrc="//pl27383165.profitableratecpm.com/95de12b00fe17cd9b5845ff88f120760/invoke.js"
+            containerId="container-95de12b00fe17cd9b5845ff88f120760"
+          />
+        </div>
         {loading &&
           Array.from({ length: initialCount }).map((_, i) => (
             <CardSkeleton key={`skeleton-${i}`} />

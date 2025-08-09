@@ -52,9 +52,10 @@ export default function Header() {
           </Link>
           <div className="flex items-center gap-2">
             <nav aria-label="Main Navigation" className="text-md font-semibold hidden md:flex gap-6 text-[var(--muted-foreground)]">
-              <Link href="/" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Home</Link>
+              <Link href="/" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Beranda</Link>
               <Link href="/blog" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Blog</Link>
-              <Link href="/about" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">About</Link>
+              <Link href="/archive" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Arsip</Link>
+              <Link href="/about" className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Tentang</Link>
             </nav>
             <Icon
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
@@ -149,9 +150,6 @@ export default function Header() {
       <Drawer isOpen={open} onClose={() => setOpen(false)}>
         <div className="h-auto w-full p-6 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-4">Halo!</h2>
-          <div className="flex max-w-[300px] w-auto">
-            <AdBox adKey="bf6f85746fe8f2ec32585d28c26e841a" width={300} height={250} />
-          </div>
           <nav aria-label="Main Navigation" className="flex flex-col flex-1 text-xl font-semibold gap-2 text-[var(--foreground)] mb-14">
             <span className="text-sm font-semibold text-[var(--muted-foreground)] mt-2">Menu</span>
             <Link href="/" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Beranda</Link>
@@ -159,12 +157,16 @@ export default function Header() {
             <Link href="/about" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Tentang</Link>
             <Link href="/contact" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Kontak</Link>
             <span className="text-sm font-semibold text-[var(--muted-foreground)] mt-2">Discover</span>
-            <Link href="/rss" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">RSS</Link>
+            <Link href="/archive" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Arsip</Link>
+            <Link href="/rss" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Rss</Link>
             <Link href="/sitemap" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Sitemap</Link>
             <span className="text-sm font-semibold text-[var(--muted-foreground)] mt-2">Legal</span>
             <Link href="/privacy" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Privasi</Link>
             <Link href="/terms" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Syarat & Ketentuan</Link>
           </nav>
+          <div className="flex md:hidden w-auto max-w-[320px]">
+            <AdBox adKey="22b4b4effc5ef8f49cb94210e8edda45" width={320} height={50} />
+          </div>
         </div>
       </Drawer>
     </header>

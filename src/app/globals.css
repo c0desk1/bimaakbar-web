@@ -136,9 +136,26 @@ main {
   color: inherit;
 }
 
-.prose h2:hover .anchor,
-.prose h3:hover .anchor,
-.prose h4:hover .anchor {
+.prose .anchor-heading {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+.prose .anchor-heading::after {
+  content: '🔗';
+  opacity: 0;
+  margin-left: 0.5rem;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.prose .anchor-heading:hover::after {
+  opacity: 1;
+}
+
+.prose h2:hover .anchor-heading,
+.prose h3:hover .anchor-heading,
+.prose h4:hover .anchor-heading {
   opacity: 1;
 }
 
@@ -311,15 +328,15 @@ main {
 }
 
 .prose table {
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    overflow-x: auto;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  overflow-x: auto;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .prose thead {
   background-color: var(--hover);
@@ -379,11 +396,11 @@ main {
   height: auto;
   display: block;
   margin: 0 auto;
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin-bottom: 2em;
-  border: 1px dashed var(--border);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  border: transparent;
 }
 .prose .embed {
   position: relative;
