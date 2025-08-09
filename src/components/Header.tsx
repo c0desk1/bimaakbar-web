@@ -149,7 +149,7 @@ export default function Header() {
       <Drawer isOpen={open} onClose={() => setOpen(false)}>
         <div className="h-full w-full p-6">
           <h2 className="text-2xl font-bold mb-4">Halo!</h2>
-          <AdBox adKey="1b0f67e1399f6f10b0bcf31c5543f394" width={468} height={60} /> 
+                    <AdBox adKey="bf6f85746fe8f2ec32585d28c26e841a" width={300} height={250} />
           <nav aria-label="Main Navigation" className="flex flex-col text-xl font-semibold gap-2 text-[var(--foreground)] my-6">
             <span className="text-sm font-semibold text-[var(--muted-foreground)] mt-2">Menu</span>
             <Link href="/" onClick={() => setOpen(false)} className="tracking-tighter leading-tight md:leading-none hover:text-[var(--foreground)]">Beranda</Link>
