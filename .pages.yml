@@ -33,7 +33,7 @@ content:
   - name: about
     label: About
     type: file
-    path: content/pages/about.md
+    path: content/pages/about.mdx
     fields:
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
