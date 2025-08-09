@@ -6,7 +6,7 @@ content:
   - name: posts
     label: Posts
     type: collection
-    path: content/blog/*.mdx
+    path: content/blog
     view:
       fields: [ coverImage, title, date, publish ]
     fields:
