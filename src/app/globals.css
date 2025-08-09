@@ -71,7 +71,6 @@
 
 html, body {
   overflow-x: hidden;
-  overscroll-behavior: contain;
 }
 
 body {
