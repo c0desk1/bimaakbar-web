@@ -66,7 +66,7 @@ export default function BlogListClient({ posts }: BlogPostListProps) {
           />
         </div>
         <div className="md:hidden block max-w-[468px] items-center">
-          <AdBox adKey="1b0f67e1399f6f10b0bcf31c5543f394" width={468} height={60} /> 
+          <AdBox adKey="bf6f85746fe8f2ec32585d28c26e841a" width={300} height={250} /> 
         </div>
         <div className="md:block hidden max-w-[728] items-center">
           <AdBox adKey="177b7537aa75413ec5727808a5a52b49" width={728} height={90} />
